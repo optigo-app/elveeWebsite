@@ -78,64 +78,62 @@ export default function ContimueWithMobile() {
     };
 
     return (
-        <div className='paddingTopMobileSet' style={{ backgroundColor: '#c0bbb1', paddingTop: '110px' }}>
+        <div className='paddingTopMobileSet' style={{ backgroundColor: 'rgba(66, 66, 66, 0.05)' }}>
             <ToastContainer />
             {isLoading && (
                 <div className="loader-overlay">
                     <CircularProgress className='loadingBarManage' />
                 </div>
             )}
-            <div style={{ backgroundColor: '#c0bbb1' }}>
-                <div className='smling-forgot-main'>
-                    <p style={{
-                        textAlign: 'center',
-                        paddingBlock: '60px',
-                        marginTop: '15px',
-                        fontSize: '40px',
-                        color: '#7d7f85',
-                        fontFamily: 'FreightDispProBook-Regular,Times New Roman,serif'
-                    }}
-                        className='AuthScreenMainTitle'
-                    >Continue With Mobile</p>
-                    <p style={{
-                        textAlign: 'center',
-                        marginTop: '-60px',
-                        fontSize: '15px',
-                        color: '#7d7f85',
-                        fontFamily: 'FreightDispProBook-Regular,Times New Roman,serif'
-                    }}
-                        className='AuthScreenSubTitle'
-                    >We'll check if you have an account, and help create one if you don't.</p>
+            <div>
+                <div className='smling-forgot-main-Color'>
+                    <div className='smling-forgot-main'>
+                        <p style={{
+                            textAlign: 'center',
+                            paddingBlock: '60px',
+                            marginTop: '15px',
+                            fontSize: '25px',
+                            fontFamily: 'PT Sans, sans-serif'
+                        }}
+                            className='AuthScreenMainTitle'
+                        >Continue With Mobile</p>
+                        <p style={{
+                            textAlign: 'center',
+                            marginTop: '-70px',
+                            fontSize: '15px',
+                            color: '#7d7f85',
+                            fontFamily: 'PT Sans, sans-serif'
+                        }}
+                            className='AuthScreenSubTitle'
+                        >We'll check if you have an account, and help create one if you don't.</p>
 
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                        <TextField
-                            autoFocus
-                            id="outlined-basic"
-                            label="Enetr Mobile No"
-                            variant="outlined"
-                            className='labgrowRegister'
-                            onKeyDown={(event) => {
-                                if (event.key === 'Enter') {
-                                    handleSubmit();
-                                }
-                            }}
-                            style={{ margin: '15px' }}
-                            value={mobileNo}
-                            onChange={(e) => handleInputChange(e, setMobileNo, 'mobileNo')}
-                            error={!!errors.mobileNo}
-                            helperText={errors.mobileNo}
-                        />
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                            <TextField
+                                autoFocus
+                                id="outlined-basic"
+                                label="Enetr Mobile No"
+                                variant="outlined"
+                                className='labgrowRegister'
+                                onKeyDown={(event) => {
+                                    if (event.key === 'Enter') {
+                                        handleSubmit();
+                                    }
+                                }}
+                                style={{ margin: '15px' }}
+                                value={mobileNo}
+                                onChange={(e) => handleInputChange(e, setMobileNo, 'mobileNo')}
+                                error={!!errors.mobileNo}
+                                helperText={errors.mobileNo}
+                            />
 
-                        <button className='submitBtnForgot' onClick={handleSubmit}>
-                            SUBMIT
-                        </button>
-                        <Button style={{ marginTop: '10px', color: 'gray' }} onClick={() => navigation('/LoginOption')}>CANCEL</Button>
+                            <button className='submitBtnForgot' onClick={handleSubmit}>
+                                SUBMIT
+                            </button>
+                            <Button style={{ marginTop: '10px', color: 'gray' }} onClick={() => navigation('/LoginOption')}>CANCEL</Button>
+                        </div>
                     </div>
-                    <Footer />
                 </div>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'center', paddingBlock: '30px' }}>
-                <p style={{ margin: '0px', fontWeight: 500, width: '100px', color: 'white', cursor: 'pointer' }} onClick={() => window.scrollTo(0, 0)}>BACK TO TOP</p>
+                <Footer />
             </div>
         </div>
     );

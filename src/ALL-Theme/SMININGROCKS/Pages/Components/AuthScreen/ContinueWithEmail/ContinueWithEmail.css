@@ -3,10 +3,15 @@
     margin-left: 0px !important;
 }
 
-
-.smling-forgot-main {
-    margin-inline: 6%;
+.smling-forgot-main {    
     background-color: white;
+    width: 30%;
+}
+.smling-forgot-main-Color{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10% 0px 8% 0px;
 }
 
 .labGrowForgot {
@@ -15,24 +20,22 @@
 }
 
 .submitBtnForgot {
-    height: 60px;
-    width: 420px;
-    color: white;
-    background-color: #7d7f85;
-    border: 0;
+    height: 40px;
+    width: 430px;
+    border: 1px solid black;
     margin-top: 10px;
-    font-size: 13px;
-    font-weight: 500;
-    letter-spacing: 1;
+    font-size: 14px;
+    color: #424242;
+    font-weight: 600!important;
+    letter-spacing: 1px;
     transition: all 0.5s ease;
-}
-
-.submitBtnForgot:hover {
+    font-family: 'PT Sans', sans-serif;
+    cursor: pointer;
     background-color: white;
-    color: #7d7f85;
-    border: 1px solid #7d7f85;
 }
-
+.submitBtnForgot:hover{
+    background-color: rgba(66, 66, 66, 0.05);
+}
 .cancleForgot {
     color: #7d7f85;
     font-size: 12px;
@@ -65,6 +68,11 @@
     margin-top: 10px;
 }
 
+@media screen and (max-width: 1500px) {
+    .smling-forgot-main{
+        width: 50%;
+    }
+}
 
 @media screen and (max-width: 950px) {
     .AuthScreenMainTitle {
@@ -83,25 +91,60 @@
 
 
 }
+@media screen and (max-width: 1200px) {
+
+    .smling-forgot-main-Color{
+        padding-top: 20%;
+    }
+    .smling-forgot-main{
+        width: 70%;
+    }
+}
+
+@media screen and (max-width: 950px) {
+    .AuthScreenMainTitle {
+        font-size: 25px !important;
+        padding-bottom: 50px !important;
+    }
+
+    .AuthScreenSubTitle {
+        font-size: 12px !important;
+        margin-inline: 15%;
+    }
+
+    .smling-forgot-main {
+        margin-inline: 2% !important;
+    }
+
+
+}
 
 @media screen and (max-width: 700px) {
     .labGrowForgot {
         width: 90%;
     }
 
+ 
     .submitBtnForgot {
-        width: 50%;
-        height: 50px!important;
+        width: 90%;
+        height: 50px !important;
 
     }
    
+    .smling-forgot-main-Color {
+        padding-top: 30%;
+    }
+
+    .smling-forgot-main {
+        width: 85%;
+    }
 }
 
 @media screen and (max-width: 500px) {
 
     .submitBtnForgot {
-        width: 70%;
-        height: 40px!important;
+        width: 90%;
+        height: 40px !important;
     }
 
     .AuthScreenSubTitle{

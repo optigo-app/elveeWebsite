@@ -68,8 +68,8 @@ export default function ContinueWithEmail() {
                 toast.error('You are not a customer, contact to admin')
             } else if (response.Data.rd[0].stat == 1 && response.Data.rd[0].islead == 0) {
                 navigation('/LoginWithEmail', { state: { email: trimmedEmail } });
-                if(trimmedEmail){
-                    localStorage.setItem("userEmailForPdList",trimmedEmail);
+                if (trimmedEmail) {
+                    localStorage.setItem("userEmailForPdList", trimmedEmail);
                 }
             } else {
                 navigation('/register', { state: { email: trimmedEmail } });
@@ -82,33 +82,33 @@ export default function ContinueWithEmail() {
     };
 
     return (
-        <div className='paddingTopMobileSet' style={{ backgroundColor: '#c0bbb1', paddingTop: '110px' }}>
-        <ToastContainer />
+        <div className='paddingTopMobileSet' style={{ backgroundColor: 'rgba(66, 66, 66, 0.05)' }}>
+            <ToastContainer />
 
             {isLoading && (
                 <div className="loader-overlay">
                     <CircularProgress className='loadingBarManage' />
                 </div>
             )}
-            <div style={{ backgroundColor: '#c0bbb1' }}>
+            <div className='smling-forgot-main-Color'>
                 <div className='smling-forgot-main'>
                     <p style={{
-                        textAlign: 'center',
-                        paddingBlock: '60px',
-                        marginTop: '15px',
-                        fontSize: '40px',
-                        color: '#7d7f85',
-                        fontFamily: 'FreightDispProBook-Regular,Times New Roman,serif'
-                    }}
+                            textAlign: 'center',
+                            paddingBlock: '60px',
+                            marginTop: '15px',
+                            fontSize: '25px',
+                            // color: '#7d7f85',
+                            fontFamily: 'PT Sans, sans-serif'
+                        }}
                         className='AuthScreenMainTitle'
                     >Continue With Email</p>
                     <p style={{
-                        textAlign: 'center',
-                        marginTop: '-60px',
-                        fontSize: '15px',
-                        color: '#7d7f85',
-                        fontFamily: 'FreightDispProBook-Regular,Times New Roman,serif'
-                    }}
+                            textAlign: 'center',
+                            marginTop: '-70px',
+                            fontSize: '15px',
+                            // color: '#7d7f85',
+                            fontFamily: 'PT Sans, sans-serif'
+                        }}
 
                         className='AuthScreenSubTitle'
                     >We'll check if you have an account, and help create one if you don't.</p>
@@ -145,12 +145,9 @@ export default function ContinueWithEmail() {
                         <button type='submit' className='submitBtnForgot' onClick={handleSubmit}>SUBMIT</button>
                         <Button style={{ marginTop: '10px', color: 'gray' }} onClick={() => navigation('/LoginOption')}>CANCEL</Button>
                     </div>
-                    <Footer />
                 </div>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'center', paddingBlock: '30px' }}>
-                <p style={{ margin: '0px', fontWeight: 500, width: '100px', color: 'white', cursor: 'pointer' }} onClick={() => window.scrollTo(0, 0)}>BACK TO TOP</p>
-            </div>
+            <Footer />
         </div>
     );
 }
