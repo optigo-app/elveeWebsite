@@ -1,69 +1,80 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './Footer.css'
-import { FaFacebookF } from "react-icons/fa";
-import { FaTwitter } from "react-icons/fa";
-import { AiFillInstagram } from "react-icons/ai";
-import { FaYoutube } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
+import { IoLocationOutline } from "react-icons/io5";
+import { IoMdCall } from "react-icons/io";
+import { IoMdMail } from "react-icons/io";
 
 export default function Footer() {
 
+    const [selectedFooteVal, setSelectedVal] = useState(0);
     const navigation = useNavigate();
 
     return (
         <div>
-            {/* <div className='footerTopMain'>
-                <p className='foTopTitle'>Let's Smile Together</p>
-                <div className='inputMain'>
-                    <input type='text' placeholder='Email Address' className='foInputBox' />
-                    <div>
-                        <button className='footerSignupBtn'>SIGN UP</button>
+            <div className='ElveFooterMain'>
+                <div className='ElveFooter1'>
+                    <p className='elveBox1Title'>Sign Up For Newslatter</p>
+                    <div style={{ marginTop: '20px', display: 'flex' }}>
+                        <input type='text' placeholder='Enter Your Email' className='eleBox1InputBox' />
+                        <button className='elevBox1Btn'>Subscribe</button>
                     </div>
                 </div>
-                <p className='foTopDescription'>Get early access to new products and special offers!</p>
-            </div> */}
-            <div className='footerBottomMain'>
-                <div className='footerIconMain'>
-                    <div className='footerFace'>
-                        <FaFacebookF style={{ color: '#7d7f85' }} />
-                    </div>
-                    <div className='footerTwi'>
-                        <FaTwitter style={{ color: '#7d7f85' }} />
-                    </div>
-                    <div className='footerInsta'>
-                        <AiFillInstagram style={{ color: '#7d7f85' }} />
-                    </div>
-                    <div className='footerYou'>
-                        <FaYoutube style={{ color: '#7d7f85' }} />
-                    </div>
+                <div className='ElveFooter2'>
+                    <p className='ElevFooterBoxTitle'>Our Company</p>
+                    <p className='ElveFooterDesc'>About Us</p>
+                    <p className='ElveFooterDesc'>Careers</p>
+                    <p className='ElveFooterDesc'>History</p>
+                    <p className='ElveFooterDesc'>Contact Us</p>
+                    <p className='ElveFooterDesc'>Terms and Conditions</p>
                 </div>
-                <div className='footerMoreOption'>
-                    <p className='footerMoreOptionData' onClick={() => { navigation('/contactUs'); window.scrollTo(0, 0); }}>CONTACT US</p>
-                    <p className='footerMoreOptionData' onClick={() => {navigation('/faq'); window.scrollTo(0, 0); }}>FAQ</p>
-                    <p className='footerMoreOptionData' onClick={() => {navigation('/servicePolicy'); window.scrollTo(0, 0); }}>SERVICE POLICY</p>
-                    {/* <p className='footerMoreOptionData' onClick={() => navigation('/press')}>PRESS</p> */}
+                <div className='ElveFooter3'>
+                    <p className='ElevFooterBoxTitle'>Customer Care</p>
+                    <p className='ElveFooterDesc'>Customer Services</p>
+                    <p className='ElveFooterDesc'>Book an Appoinment</p>
+                    <p className='ElveFooterDesc'>Customize</p>
+                    <p className='ElveFooterDesc'>FAQ</p>
                 </div>
-                <div className='footerMoreText'>
-                    <p style={{
-                        color: '#7d7f85',
-                        fontSize: '12px',
-                        fontWeight: 500,
-                        marginInline: '15px'
-                    }}>© 2024, KayraCreation</p>
+                <div className='ElveFooter4'>
+                    <p className='ElevFooterBoxTitle'>Office</p>
+                    <div style={{ display: 'flex' }}>
+                        <p className='ElevBox4Title' onClick={() => setSelectedVal(0)} style={{ textDecoration: selectedFooteVal === 0 && 'underline' }}>INDIA</p>
+                        <p className='ElevBox4Title' onClick={() => setSelectedVal(1)} style={{ textDecoration: selectedFooteVal === 1 && 'underline', marginLeft: '50px' }}>USA</p>
+                    </div>
+                    {
+                        selectedFooteVal === 0 ?
+                            <div>
+                                <p style={{ display: 'flex', fontFamily: 'PT Sans, sans-serif' , height: '70px'}}>
+                                    <IoLocationOutline style={{ width: '50px' , height: 'fit-content'}} />
+                                    <span>Plot No. – M1 To M6, Gujarat Hira Bourse Gem & Jewellery Park, Pal-Hazira Road, Ichchhapore, Surat - 394510</span>
+                                </p>
+                                <p style={{ fontFamily: 'PT Sans, sans-serif' }}>
+                                    <IoMdCall />
+                                    +91 261 6105100
+                                </p>
+                                <p style={{ fontFamily: 'PT Sans, sans-serif' }}>
+                                    <IoMdMail />
+                                    <span style={{ marginLeft: '5px' }}>info@elvee.in</span>
+                                </p>
+                            </div>
+                            :
+                            <div>
+                                <p style={{ display: 'flex', fontFamily: 'PT Sans, sans-serif' , height: '70px'}}>
+                                    <IoLocationOutline style={{width: '22px' , height: '22px'}}/>
+                                    <span>1177 6th Avenue, Suite 5099, New York,NY 10036.</span>
+                                </p>
+                                <p style={{ fontFamily: 'PT Sans, sans-serif' }}>
+                                    <IoMdCall />
+                                    (646) 284-4466
+                                </p>
+                                <p style={{ fontFamily: 'PT Sans, sans-serif' }}>
+                                    <IoMdMail />
+                                    <span style={{ marginLeft: '5px' }}>Contact.usa@elveepromise.com</span>
+                                </p>
+                            </div>
 
-                    <p style={{
-                        color: '#7d7f85',
-                        fontSize: '12px',
-                        fontWeight: 500,
-                        cursor: 'pointer'
-                    }}>Terms & Privacy</p>
+                    }
                 </div>
-            </div>
-                {/* <div className='text-end me-3'>
-                    <span style={{fontSize:'6px',color:'#7D7f85'}}>R66B1-V66.23-04-2024.06:20PM</span>
-                </div> */}
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <img src='https://smilingrocks.com/cdn/shop/t/157/assets/passport.svg?v=152807140915720846441675380017' style={{ height: '80px', cursor: 'pointer', paddingBlock: '10px' }} />
             </div>
         </div>
     )

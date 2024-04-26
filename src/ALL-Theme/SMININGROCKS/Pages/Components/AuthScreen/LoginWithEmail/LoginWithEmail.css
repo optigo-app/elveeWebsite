@@ -3,25 +3,24 @@
 }
 
 
-.SmilingLoginCodeBtn {
-    height: 60px;
-    width: 420px;
-    color: white;
-    background-color: #7d7f85;
-    border: 0;
+.submitBtnForgot {
+    height: 40px;
+    width: 430px;
+    border: 1px solid black;
     margin-top: 10px;
-    font-size: 13px;
-    font-weight: 500;
-    letter-spacing: 1;
+    font-size: 14px;
+    color: #424242;
+    font-weight: 600 !important;
+    letter-spacing: 1px;
     transition: all 0.5s ease;
-}
-
-.SmilingLoginCodeBtn:hover {
+    font-family: 'PT Sans', sans-serif;
+    cursor: pointer;
     background-color: white;
-    color: #7d7f85;
-    border: 1px solid #7d7f85;
 }
 
+.submitBtnForgot:hover {
+    background-color: rgba(66, 66, 66, 0.05);
+}
 
 @media screen and (max-width: 700px) {
 
