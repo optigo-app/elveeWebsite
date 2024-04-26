@@ -182,9 +182,6 @@ const ProductList = () => {
     }
   }, [cartData])
 
-  console.log("cartFlag",cartData,cartFlag)
-  console.log("wishFlag",WishData,wishFlag)
-
   const WishListToCart = () =>{
     let findData = Object.keys(wishFlag).filter((wd) => Object.keys(cartFlag).find((cd) => wd === cd))
     console.log("findData",findData)
