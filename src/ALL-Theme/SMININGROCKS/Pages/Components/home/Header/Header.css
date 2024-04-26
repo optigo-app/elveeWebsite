@@ -1,7 +1,10 @@
 .sminingHeaderWeb {
-    height: 110px;
-    position: absolute;
+    height: 80px;
+    position: sticky;
     width: 100%;
+    top: 0;
+    z-index: 1;
+    background-color: #e1e1e1;
 }
 
 
@@ -90,13 +93,11 @@
 }
 
 .Smining-Top-Header {
-
     display: flex;
-    top: 0px;
-    padding: 0px;
-    z-index: 1;
-    height: 110px;
-    margin-inline: 6%;
+   justify-content: center;
+   align-items: center;
+   height: 80px;
+   z-index: 1;
 }
 
 .similingCartBotttomMain {
@@ -132,7 +133,7 @@
     align-items: center;
     gap: 28px;
     text-transform: uppercase;
-    color: white;
+    color: black;
     font-size: 13px;
     margin-left: -2em;
     margin-top: 15px;
@@ -578,6 +579,11 @@
     width: 300px;
     object-fit: cover;
 }
+
+.logoImage1{
+    width: 50%;
+}
+
 @media (max-width:1640px){
     .menuImages{
         height: 200px;
