@@ -144,7 +144,7 @@ export default function Header() {
     navigation("/productpage")
     setHeaderData2(param)
   }
-
+console.log('menudata')
   // const transformData = (data) => {
 
   //   const transformedData = data?.reduce((acc, item) => {
