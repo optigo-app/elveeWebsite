@@ -1,0 +1,71 @@
+
+.promo-daimondBoxMain {
+    display: flex;
+    margin-inline: 90px;
+}
+
+.promo-daimondBox1 {
+    border: none !important;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-inline: 10%;
+}
+
+.promo-daimondBox2 {
+    height: 550px;
+    width: 50%;
+
+}
+
+.promo-daimondBox2-image {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    margin-top: 5px;
+}
+
+.promo-foundersDesc {
+    display: flex;
+    justify-content: center;
+}
+
+.promo-foundersImges {
+    width: 50%;
+    margin-block: 50px;
+}
+
+
+
+@media screen and (max-width: 1200px) {
+
+    .promo-daimondBoxMain {
+        display: flex;
+        flex-direction: column;
+        margin-inline: 10px;
+    }
+
+    .promo-daimondBox1 {
+        width: 100%;
+        order: 2;
+
+    }
+
+    .promo-daimondBox2 {
+        object-fit: cover;
+        width: 100%;
+        order: 1;
+    }
+
+}
+
+@media screen and (max-width: 600px) {
+    .promo-daimondBox2-image {
+        height: 290px;
+    }
+    .promo-daimondBox2 {
+        height: auto;
+    }
+}
