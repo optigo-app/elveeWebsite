@@ -2116,6 +2116,7 @@ const ProductList = () => {
                           <div className="part-content" onClick={toggleDetailDrawer}>
                             Filter
                             <FilterListIcon />
+                            
                           </div>
                         </div>
                         <div className="part secondfilteDiv" style={{ flex: '20%' }}>
