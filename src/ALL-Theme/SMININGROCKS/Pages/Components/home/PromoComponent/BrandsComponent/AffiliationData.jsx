@@ -1,7 +1,7 @@
 import React from 'react'
 import './Styles.css'
 
-const BrandsComponent = () => {
+const AffiliationData = () => {
     return (
         <div>
             <p className='mt-5 mb-4' style={{textAlign:'center', fontSize:'20px'}}>introducing our exclusive brands</p>
@@ -16,4 +16,4 @@ const BrandsComponent = () => {
     )
 }
 
-export default BrandsComponent
+export default AffiliationData

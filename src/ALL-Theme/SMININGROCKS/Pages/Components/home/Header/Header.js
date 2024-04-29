@@ -18,6 +18,8 @@ import Cart from "./Cart";
 import titleImg from "../../../assets/Logo1.png";
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { storImagePath } from "../../../../Utils/globalFunctions/GlobalFunction";
+import { FaPowerOff } from "react-icons/fa";
+import { IoPersonOutline } from "react-icons/io5";
 
 export default function Header() {
   const navigation = useNavigate();
@@ -383,7 +385,6 @@ export default function Header() {
   }, []);
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
   const handleDropdownOpen = () => {
     setIsDropdownOpen(true);
   };
@@ -437,14 +438,29 @@ export default function Header() {
     }
   }
 
-
-
   function capitalizeText(text) {
     return text?.toLowerCase()?.split(' ').map((word) => {
       return word.charAt(0).toUpperCase() + word.slice(1);
     }).join(' ');
   }
 
+  const setIsLoginState = useSetRecoilState(loginState)
+  const handleLogout = () => {
+    setIsLoginState('false')
+    localStorage.clear();
+    localStorage.setItem('LoginUser', 'false');
+    localStorage.removeItem('storeInit');
+    localStorage.removeItem('loginUserDetail');
+    localStorage.removeItem('remarks');
+    localStorage.removeItem('selectedAddressId');
+    localStorage.removeItem('orderNumber');
+    localStorage.removeItem('registerEmail');
+    localStorage.removeItem('UploadLogicalPath');
+    localStorage.removeItem('remarks');
+    localStorage.removeItem('registerMobile');
+    navigation('/')
+    window.location.reload();
+  }
 
   return (
     <>
@@ -778,97 +794,167 @@ export default function Header() {
       )}
 
       <div className="sminingHeaderWeb ">
-        <div className="Smining-Top-Header ">
-          <div
-            style={{
-              width: "90%",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <ul className="nav-ul-shop" style={{ listStyle: "none", padding: 0 }}>
-              <li
-                className="nav-li-smining"
-                style={{ cursor: "pointer" }}
-                onClick={() => navigation("/ourBrands")}
-              >
-                Our Brands
-              </li>
-              <li
-                className="nav-li-smining"
-                style={{ cursor: "pointer" }}
-                onClick={() => navigation("/products")}
-              >
-                Products
-              </li>
-              <li
-                className="nav-li-smining"
-                style={{ cursor: "pointer" }}
-                onClick={() => navigation("/ourCraftmanship")}
-              >
-                Our Craftsmanship
-              </li>
-                <a href="/" style={{display:'flex', justifyContent:'center', alignItems:'center', marginTop:'-15px'}}>
-                  <img src={titleImg} alt="Title" className="logoImage1"/>
+        {islogin == 'false' ?
+          <div className="Smining-Top-Header ">
+            <div
+              style={{
+                width: "90%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <ul className="nav-ul-shop" style={{ listStyle: "none", padding: 0, marginTop: '24px' }}>
+                <li
+                  className="nav-li-smining"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => navigation("/ourBrands")}
+                >
+                  Our Brands
+                </li>
+                <li
+                  className="nav-li-smining"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => navigation("/products")}
+                >
+                  Products
+                </li>
+                <li
+                  className="nav-li-smining"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => navigation("/ourCraftmanship")}
+                >
+                  Our Craftsmanship
+                </li>
+                <a href="/" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '-15px' }}>
+                  <img src={titleImg} alt="Title" className="logoImage1" />
                 </a>
-              <li
-                className="nav-li-smining"
-                style={{ cursor: "pointer" }}
-                onClick={() => navigation("/gallery")}
-              >
-                Gallery
-              </li>
-              <li
-                className="nav-li-smining"
-                style={{ cursor: "pointer" }}
-                onClick={() => navigation("/socialMedia")}
-              >
-                Social Media
-              </li>
-              <li
-                className="nav-li-smining"
-                style={{ cursor: "pointer" }}
-                onClick={() => navigation("/contact")}
-              >
-                Contact
-              </li>
-            </ul>
-          </div>
+                <li
+                  className="nav-li-smining"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => navigation("/gallery")}
+                >
+                  Gallery
+                </li>
+                <li
+                  className="nav-li-smining"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => navigation("/socialMedia")}
+                >
+                  Social Media
+                </li>
+                <li
+                  className="nav-li-smining"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => navigation("/contact")}
+                >
+                  Contact
+                </li>
+              </ul>
+            </div>
 
-          <div
-            style={{
-              width: "10%",
-              display: "flex",
-            }}
-          >
-            <ul className="nav-ul-shop">
-              {/* <li
-                className="nav-li-smining"
-                style={{ cursor: "pointer" }}
-                onClick={() => navigation("/aboutUs")}
-              >
-                {ABOUT_US}
-              </li> */}
-              {islogin === "true" ? (
+            <div
+              style={{
+                width: "10%",
+                display: "flex",
+              }}
+            >
+              <ul className="nav-ul-shop" style={{ marginTop: '24px' }}>
+                {islogin === "true" ? (
+                  <li
+                    className="nav-li-smining"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => navigation("/account")}
+                  >
+                    {ACCOUNT}
+                  </li>
+                ) : (
+                  <li
+                    className="nav-li-smining"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => navigation('/LoginOption')}
+                  >
+                    Log In
+                  </li>
+                )}
+              </ul>
+            </div>
+          </div>
+          :
+          <div className="Smining-Top-LoginHeader">
+            <div
+              style={{
+                width: "70%",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <a href="/" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '-20px' }}>
+                <img src={titleImg} alt="Title" className="logoImage1" />
+              </a>
+              <ul className="nav-ul-shop" style={{ listStyle: "none", padding: 0, marginTop: '24px' }}>
                 <li
                   className="nav-li-smining"
                   style={{ cursor: "pointer" }}
-                  onClick={() => navigation("/account")}
+                  // onClick={() => navigation("/ourBrands")}
+                   onMouseEnter={handleDropdownOpen}
+                  onMouseLeave={handleDropdownClose}
                 >
-                  {ACCOUNT}
+                  Our Brands
                 </li>
-              ) : (
                 <li
                   className="nav-li-smining"
                   style={{ cursor: "pointer" }}
-                  onClick={() => navigation('/LoginOption')}
+                  onClick={() => navigation("/products")}
                 >
-                  {LOGIN}
+                  Products
                 </li>
-              )}
-              {islogin === "true" &&
+                <li
+                  className="nav-li-smining"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => navigation("/ourCraftmanship")}
+                >
+                  Our Craftsmanship
+                </li>
+                <li
+                  className="nav-li-smining"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => navigation("/gallery")}
+                >
+                  Gallery
+                </li>
+                <li
+                  className="nav-li-smining"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => navigation("/socialMedia")}
+                >
+                  Social Media
+                </li>
+                <li
+                  className="nav-li-smining"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => navigation("/contact")}
+                >
+                  Contact
+                </li>
+              </ul>
+            </div>
+
+            <div
+              style={{
+                width: "30%",
+                display: "flex",
+                justifyContent: 'end',
+                marginRight: '20px'
+              }}
+            >
+              <ul className="nav-ul-shop" style={{ marginTop: '24px' }}>
                 <>
+                  <li onClick={toggleOverlay} style={{}}>
+                    <IoSearchOutline
+                      style={{ height: "20px", cursor: "pointer", width: "20px" }}
+                    />
+                  </li>
                   <Badge
                     badgeContent={getWishListCount}
                     max={1000}
@@ -887,11 +973,6 @@ export default function Header() {
                       </li>
                     </Tooltip>
                   </Badge>
-                  <li onClick={toggleOverlay} style={{}}>
-                    <IoSearchOutline
-                      style={{ height: "20px", cursor: "pointer", width: "20px" }}
-                    />
-                  </li>
                   <Badge
                     badgeContent={getCartListCount}
                     max={1000}
@@ -902,28 +983,34 @@ export default function Header() {
                       <li
                         onClick={toggleCartDrawer(true)}
                         style={{
-                          marginLeft: "-10px",
                           cursor: "pointer",
                           marginTop: "0px",
                         }}
                       >
-                        {/* <PiStarFourThin
-                          style={{
-                            cursor: "pointer",
-                            height: "35px",
-                            width: "35px",
-                          }}
-                        /> */}
                         <ShoppingCartOutlinedIcon
                           sx={{ height: '30px', width: '30px' }}
                         />
                       </li>
                     </Tooltip>
-                  </Badge></>}
-            </ul>
+                  </Badge></>
+                <li
+                  className="nav-li-smining"
+                  style={{ cursor: "pointer", textDecoration:'none' }}
+                  onClick={() => navigation("/account")}
+                >
+                 <IoPersonOutline fontSize='20px' />
+                </li>
+                <li
+                  className="nav-li-smining"
+                  style={{ cursor: "pointer" }}
+                  onClick={handleLogout}
+                >
+                 <FaPowerOff style={{fontSize:'20px'}}/>
+                </li>
+              </ul>
+            </div>
           </div>
-        </div>
-
+        }
         <div
           onMouseEnter={handleDropdownOpen}
           onMouseLeave={handleDropdownClose}
@@ -1107,12 +1194,12 @@ export default function Header() {
                 style={{ cursor: "pointer", color: 'black', marginRight: '15px' }}
                 onClick={() => navigation('/LoginOption')}
               >
-                {LOGIN}
+                Log in
               </li>
             )}
 
 
-            {islogin === "true" &&
+            {islogin === "false" &&
               <div className="mobileHeaderFixedMobileLastDiv" style={{ display: 'flex' }}>
                 <Badge
                   badgeContent={getWishListCount}
@@ -1165,17 +1252,6 @@ export default function Header() {
                         marginTop: "0px",
                       }}
                     >
-                      {/* <PiStarFourThin
-                        style={{
-                          cursor: "pointer",
-                          height: "30px",
-                          width: "30px",
-                          color: "white",
-
-                        }}
-                        className="mobileViewSmilingTop3Icone"
-
-                      /> */}
                       <ShoppingCartOutlinedIcon
                         sx={{ height: '30px', width: '30px', color: "white" }}
                       />
@@ -1187,136 +1263,6 @@ export default function Header() {
             }
           </div>
         </div>
-
-        {!drawerShowOverlay && (
-          <div
-            div
-            className={`Smining-Top-Header-fixed-main ${isHeaderFixed ? "fixed" : ""
-              } ${serachsShowOverlay ? "searchoverly" : ""}`}
-          >
-            <div
-              className="Smining-Top-Header-fixed"
-              style={{ display: "flex" }}
-            >
-              <div
-                style={{ display: "flex", margin: "5px", alignItems: "center" }}
-                className="mobileViewFirstDiv1"
-              >
-                {drawerShowOverlay ? (
-                  <IoClose
-                    style={{
-                      height: "30px",
-                      width: "30px",
-                      color: "black",
-                      cursor: "pointer",
-                    }}
-                    onClick={toggleDrawerOverlay}
-                  />
-                ) : (
-                  <MenuIcon
-                    style={{ fontSize: "35px", color: "#7d7f85" }}
-                    onClick={toggleDrawerOverlay}
-                    className="muIconeMobileHeader"
-
-                  />
-                )}
-              </div>
-              <div
-                className="mobileViewFirstDiv2"
-              >
-                <a href="/">
-                  <img src={titleImg} className="MainlogogMobileImage" />
-                </a>
-              </div>
-              {islogin === "false" && (
-                <div style={{
-                  display: 'flex',
-                  justifyContent: 'flex-end',
-                  width: '33.33%',
-                  marginRight: '15px'
-                }}>
-                  <li
-                    className="nav-li-smining"
-                    style={{ cursor: "pointer", color: '#7d7f85' }}
-                    onClick={() => navigation('/LoginOption')}
-                  >
-                    {LOGIN}
-                  </li>
-                </div>
-              )}
-              {islogin === "true" &&
-                <div className="mobileViewFirstDiv3" style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                  <Badge
-                    badgeContent={getWishListCount}
-                    max={1000}
-                    overlap={"rectangular"}
-                    color="secondary"
-                    style={{ marginInline: '5px' }}
-                    className="smilingHeaderWhishlistIcon"
-                  >
-                    <Tooltip title="WishList">
-                      <li style={{ listStyle: 'none' }} onClick={() => navigation("/myWishList")}>
-                        <PiStarThin
-                          style={{
-                            height: "25px",
-                            cursor: "pointer",
-                            width: "25px",
-                            color: "#7d7f85",
-                          }}
-                          className="mobileViewSmilingTop1Icone"
-                        />
-                      </li>
-                    </Tooltip>
-                  </Badge>
-
-                  <li onClick={toggleOverlay} style={{ listStyle: 'none', textAlign: 'center', marginInline: '10px' }}>
-                    <IoSearchOutline
-                      style={{
-                        height: "20px", cursor: "pointer", width: "20px",
-                        color: "#7d7f85",
-                      }}
-                      className="mobileViewSmilingTop2Icone"
-                    />
-                  </li>
-                  <Badge
-                    badgeContent={getCartListCount}
-                    max={1000}
-                    overlap={"rectangular"}
-                    color="secondary"
-                    style={{ marginInline: '10px' }}
-                  >
-                    <Tooltip title="Cart">
-                      <li
-                        onClick={toggleCartDrawer(true)}
-                        style={{
-                          marginLeft: "-10px",
-                          cursor: "pointer",
-                          listStyle: 'none',
-                          marginTop: "0px",
-                        }}
-                      >
-                        {/* <PiStarFourThin
-                          style={{
-                            cursor: "pointer",
-                            height: "30px",
-                            width: "30px",
-                            color: "#7d7f85",
-                          }}
-                          className="mobileViewSmilingTop3Icone"
-
-                        /> */}
-                        <ShoppingCartOutlinedIcon
-                          sx={{ height: '30px', width: '30px', color: '#7d7f85' }}
-                        />
-                      </li>
-                    </Tooltip>
-                  </Badge>
-
-                </div>
-              }
-            </div>
-          </div>
-        )}
       </div>
 
       <Cart open={openCart} toggleCartDrawer={toggleCartDrawer} />

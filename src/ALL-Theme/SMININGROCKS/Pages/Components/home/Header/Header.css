@@ -4,7 +4,8 @@
     width: 100%;
     top: 0;
     z-index: 1;
-    background-color: #e1e1e1;
+    font-family: "PT Sans", sans-serif !important;
+    background: white;
 }
 
 
@@ -94,10 +95,18 @@
 
 .Smining-Top-Header {
     display: flex;
-   justify-content: center;
-   align-items: center;
-   height: 80px;
-   z-index: 1;
+    justify-content: center;
+    align-items: center;
+    height: 80px;
+    z-index: 1;
+}
+
+.Smining-Top-LoginHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+    z-index: 1;
 }
 
 .similingCartBotttomMain {
@@ -202,6 +211,7 @@
 
 .nav-li-smining {
     font-weight: 500;
+    text-transform: capitalize;
 }
 
 .nav-li {
@@ -276,9 +286,8 @@
 }
 
 .nav-li-smining-fixed {
-    font-size: 13px;
+    font-size: 18px;
     font-weight: 500;
-    margin-top: 15px;
     margin: 0px;
     cursor: pointer;
 
@@ -306,9 +315,8 @@
 }
 
 .nav-li-smining {
-    font-size: 13px;
+    font-size: 18px;
     font-weight: 500;
-    margin-top: 15px;
     margin: 0px;
     cursor: pointer;
     position: relative;
@@ -316,7 +324,7 @@
     height: 22px;
 }
 
-.nav-li-smining::before {
+/* .nav-li-smining::before {
     content: '';
     position: absolute;
     bottom: 0;
@@ -325,17 +333,14 @@
     height: 1px;
     background-color: white;
     transition: width 0.3s ease-out;
-}
+} */
 
-.nav-li-smining:hover::before {
+/* .nav-li-smining:hover::before {
     width: 100%;
     left: 0;
     right: auto;
     transition: width 0.3s ease-out;
-}
-
-
-
+} */
 
 .mobileHeader {
     background-color: white;
@@ -574,18 +579,18 @@
     margin-top: 40% !important;
 }
 
-.menuImages{
+.menuImages {
     height: 250px;
     width: 300px;
     object-fit: cover;
 }
 
-.logoImage1{
+.logoImage1 {
     width: 50%;
 }
 
-@media (max-width:1640px){
-    .menuImages{
+@media (max-width:1640px) {
+    .menuImages {
         height: 200px;
         width: 180px;
         object-fit: cover;
@@ -607,7 +612,7 @@
 
     .mobileHeaderSmining {
         display: block !important;
-        background-color: rgb(192, 187, 177) !important;
+        background-color: #e1e1e1 !important;
         height: 90px !important;
     }
 
@@ -767,7 +772,7 @@
 
     .MainlogogMobileImage {
         width: 76% !important;
-        margin-top:-11px
+        margin-top: -11px
     }
 }
 
@@ -819,6 +824,11 @@
 
 
 @media screen and (max-width: 400px) {
+    .mobileHeaderSmining {
+        position: sticky;
+        top: 0;
+        height: 60px !important;
+    }
 
 
     .mobileViewFirstDiv {
@@ -878,9 +888,9 @@
     border-radius: 10px;
 }
 
- .smilingCartTab1Main {
-    min-width: max-content!important;
-    width: max-content!important;
+.smilingCartTab1Main {
+    min-width: max-content !important;
+    width: max-content !important;
 
 }
 
