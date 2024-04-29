@@ -18,6 +18,8 @@ import Cart from "./Cart";
 import titleImg from "../../../assets/KryaImagesVideo/Logo/KAYRA Final Logo.png";
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { storImagePath } from "../../../../Utils/globalFunctions/GlobalFunction";
+import { productListApiCall } from "../../../../Utils/API/ProductListAPI";
+import { getDesignPriceList } from "../../../../Utils/API/PriceDataApi";
 
 export default function Header() {
   const navigation = useNavigate();
@@ -113,11 +115,20 @@ export default function Header() {
     setMenul2data(tempMenu2data)
   };
 
-  const handelNewMenuData = (param) => {
+  const handelNewMenuData = async(param) => {
     setNewMenuData(param)
     setIsDropdownOpen(false)
     setDrawerShowOverlay(false)
-    navigation("/productpage")
+    setDrawerShowOverlay(false)
+    localStorage.setItem("menuparams",JSON.stringify(param))
+    await productListApiCall(param).then((res)=>{
+      if(res){
+        console.log("res",res);
+        localStorage.setItem("allproductlist", JSON.stringify(res))
+      }
+    })
+    await getDesignPriceList(param)
+    navigation("/productpage",{state:{menuFlag:true}})
   }
 
 
@@ -293,6 +304,7 @@ export default function Header() {
 
     setFinalData(transformedData);
   };
+
 
   const [islogin, setislogin] = useRecoilState(loginState);
   const [isB2bFlag, setIsB2BFlag] = useState('');

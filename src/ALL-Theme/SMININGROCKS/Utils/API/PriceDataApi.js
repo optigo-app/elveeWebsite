@@ -1,6 +1,6 @@
 import { CommonAPI } from "./CommonAPI";
 
-export const getDesignPriceList = async () => {
+export const getDesignPriceList = async (param) => {
 
   // console.log("datadesprice",data);
 
@@ -37,6 +37,8 @@ export const getDesignPriceList = async () => {
     return finalData;
   };
   
+  let encodedFilter = {"DesignNo":"","FilterKey":`${param?.data.param1name}`,"FilterVal":`${param?.data.param1dataname}`,"Metalid":`${loginUserDetail?.MetalId}`,"DiaQCid":`${loginUserDetail?.cmboDiaQCid}`,"CsQCid":`${loginUserDetail?.cmboCSQCid}`}
+
   const GetPriceReq = {
     "CurrencyRate": `${handelCurrencyData()?.CurrencyRate}`,
     "FrontEnd_RegNo": `${storeInit?.FrontEnd_RegNo}`,
@@ -49,7 +51,7 @@ export const getDesignPriceList = async () => {
     // "diamondpricelistname": `${storeInit.PolicyApplyOnName === "Customer Wise Policy" ? loginUserDetail?._diamondpricelistname : loginUserDetail?.diamondpricelistname}`,
     // "colorstonepricelistname": `${storeInit.PolicyApplyOnName === "Customer Wise Policy" ? loginUserDetail?._colorstonepricelistname : loginUserDetail?.colorstonepricelistname}`,
     // "SettingPriceUniqueNo": `${storeInit.PolicyApplyOnName === "Customer Wise Policy" ? loginUserDetail?._SettingPriceUniqueNo : loginUserDetail?.SettingPriceUniqueNo }`,
-    "DesignNo": ""
+    "Filter":btoa(JSON.stringify(encodedFilter)),
   }
 
   const encodedCombinedValue = btoa(JSON.stringify(GetPriceReq));
