@@ -251,11 +251,9 @@ const ProductList = () => {
             storeInit?.IsMetalCustomization === 1
               ?
               pda.A === product.autocode &&
-              pda.B === product.designno &&
-              pda.D === loginUserDetail?.cmboMetalType
+              pda.C === loginUserDetail?.MetalId
               :
-              pda.A === product.autocode &&
-              pda.B === product.designno
+              pda.A === product.autocode
         );
 
         const newPriceData1 = priceDataApi?.rd1?.filter(
@@ -264,12 +262,10 @@ const ProductList = () => {
             storeInit?.IsDiamondCustomization === 1
               ?
               pda.A === product.autocode &&
-              pda.B === product.designno &&
-              pda.H === loginUserDetail?.cmboDiaQualityColor?.split('#@#')[0] &&
-              pda.J === loginUserDetail?.cmboDiaQualityColor?.split('#@#')[1]
+              pda.G === loginUserDetail?.cmboDiaQCid?.split(',')[0] &&
+              pda.I === loginUserDetail?.cmboDiaQCid?.split(',')[1]     
               :
-              pda.A === product.autocode &&
-              pda.B === product.designno
+              pda.A === product.autocode 
 
         ).reduce((acc, obj) => acc + obj.S, 0)
 
@@ -279,12 +275,10 @@ const ProductList = () => {
             storeInit?.IsCsCustomization === 1
               ?
               pda.A === product.autocode &&
-              pda.B === product.designno &&
-              pda.H === loginUserDetail?.cmboCSQualityColor?.split('#@#')[0].toUpperCase() &&
-              pda.J === loginUserDetail?.cmboCSQualityColor?.split('#@#')[1].toUpperCase()
+              pda.H === loginUserDetail?.cmboCSQCid?.split(',')[0] &&
+              pda.J === loginUserDetail?.cmboCSQCid?.split(',')[1]
               :
-              pda.A === product.autocode &&
-              pda.B === product.designno
+              pda.A === product.autocode 
 
         ).reduce((acc, obj) => acc + obj.S, 0)
 
@@ -764,7 +758,38 @@ const ProductList = () => {
   //   return newFilter;
   // }
 
-  let NewFilterData = () => {
+  // let NewFilterData = () => {
+
+  //   const newFilter = [];
+
+  //   let categoryFilter = JSON.parse(localStorage.getItem("CategoryFilter"))
+  //   let ProductTypeFilter = JSON.parse(localStorage.getItem("ProductTypeFilter"))
+  //   let GenderFilter = JSON.parse(localStorage.getItem("GenderFilter"))
+  //   let CollectionFilter = JSON.parse(localStorage.getItem("CollectionFilter"))
+
+  //   if (categoryFilter) {
+  //     newFilter.push({ label: "CATEGORY", filterList: categoryFilter.map((res) => { return res?.CategoryName }), listType: 'CategoryName' })
+  //   }
+  //   if (ProductTypeFilter) {
+  //     newFilter.push({ label: "PRODUCT TYPE", filterList: ProductTypeFilter.map((res) => { return res?.ProducttypeName }), listType: 'ProducttypeName' })
+  //   }
+  //   if (GenderFilter) {
+  //     newFilter.push({ label: "GENDER", filterList: GenderFilter.map((res) => { return res?.GenderName }), listType: 'GenderName' })
+  //   }
+  //   if (CollectionFilter) {
+  //     newFilter.push({ label: "COLLECTION", filterList: CollectionFilter.map((res) => { return res?.CollectionName }), listType: 'CollectionName' })
+  //   }
+
+  //   newFilter.push({ label: "PRICE", filterList: [] });
+  //   newFilter.push({ label: "NETWT", filterList: [] });
+  //   newFilter.push({ label: "GROSSWT", filterList: [] });
+  //   newFilter.push({ label: "DIAMONDWT", filterList: [] });
+
+  //   return newFilter
+
+  // }
+
+  let NewFilterData1 = () => {
 
     const newFilter = [];
 
@@ -774,16 +799,16 @@ const ProductList = () => {
     let CollectionFilter = JSON.parse(localStorage.getItem("CollectionFilter"))
 
     if (categoryFilter) {
-      newFilter.push({ label: "CATEGORY", filterList: categoryFilter.map((res) => { return res?.CategoryName }), listType: 'CategoryName' })
+      newFilter.push({ label: "CATEGORY", filterList: categoryFilter.map((res) => { return {"label":res?.CategoryName,"id":res?.Categoryid} }), listType: 'Categoryid' })
     }
     if (ProductTypeFilter) {
-      newFilter.push({ label: "PRODUCT TYPE", filterList: ProductTypeFilter.map((res) => { return res?.ProducttypeName }), listType: 'ProducttypeName' })
+      newFilter.push({ label: "PRODUCT TYPE", filterList: ProductTypeFilter.map((res) => { return {"label":res?.ProducttypeName,"id":res?.Producttypeid} }), listType: 'Producttypeid' })
     }
     if (GenderFilter) {
-      newFilter.push({ label: "GENDER", filterList: GenderFilter.map((res) => { return res?.GenderName }), listType: 'GenderName' })
+      newFilter.push({ label: "GENDER", filterList: GenderFilter.map((res) => { return {"label":res?.GenderName,"id":res?.Genderid} }), listType: 'Genderid' })
     }
     if (CollectionFilter) {
-      newFilter.push({ label: "COLLECTION", filterList: CollectionFilter.map((res) => { return res?.CollectionName }), listType: 'CollectionName' })
+      newFilter.push({ label: "COLLECTION", filterList: CollectionFilter.map((res) => { return {"label":res?.CollectionName,"id":res?.Collectionid}}), listType: 'Collectionid' })
     }
 
     newFilter.push({ label: "PRICE", filterList: [] });
@@ -795,7 +820,7 @@ const ProductList = () => {
 
   }
 
-  // console.log("NewFilterData()",NewFilterData())
+  // console.log("NewFilterData()",NewFilterData1())
 
   const handleCheckboxChange = (e, ele, flist) => {
     const { name, checked, value } = e.target;
@@ -859,9 +884,6 @@ const ProductList = () => {
           acc[filter.type].push(filter);
           return acc;
         }, {});
-
-        // console.log("filtersByType",Object.values(filtersByType).every)
-
 
         // return Object.values(filtersByType).every(filters => {
         //     return filters.some(filter => product[filter.type] === filter.value);
@@ -1473,7 +1495,7 @@ const ProductList = () => {
   const filterDatasfunc = (priceRange, netWtRange, grossWtRange, diamondWtRange) => {
 
     const filteredData = (newProData.length ? newProData : ProductApiData2)?.filter((item) => {
-      const priceInRange = item?.price >= (priceRange[0]) && item?.price <= (priceRange[1]);
+      const priceInRange = item?.price >= priceRange[0] && item?.price <= priceRange[1];
       const netWtInRange = item.netwt >= netWtRange[0] && item.netwt <= netWtRange[1];
       const grossWtInRange = item.Grossweight >= grossWtRange[0] && item.Grossweight <= grossWtRange[1];
       const diamondWtInRange = item.diamondweight >= diamondWtRange[0] && item.diamondweight <= diamondWtRange[1];
@@ -1637,7 +1659,7 @@ const ProductList = () => {
 
       {isOpenDetail &&
         <div>
-          {NewFilterData().map((ele, index) => (
+          {NewFilterData1().map((ele, index) => (
             <>
               <Accordion
                 elevation={0}
@@ -1725,7 +1747,7 @@ const ProductList = () => {
                           width: "10px",
                         }}
                         onClick={(e) =>
-                          handleCheckboxChange(e, ele, flist)
+                          handleCheckboxChange(e, ele, flist.id)
                         }
                         size="small"
                       />
@@ -1736,7 +1758,7 @@ const ProductList = () => {
                           textTransform: "lowercase",
                         }}
                       >
-                        {flist}
+                        {flist.label}
                       </small>
                     </div>
                   ))}
@@ -1934,7 +1956,7 @@ const ProductList = () => {
                     </li>
                   </ul>
                   <div>
-                    {NewFilterData().map((ele, index) => (
+                    {NewFilterData1().map((ele, index) => (
                       <>
                         <Accordion
                           elevation={0}
@@ -2079,7 +2101,7 @@ const ProductList = () => {
                                     width: "10px",
                                   }}
                                   onClick={(e) =>
-                                    handleCheckboxChange(e, ele, flist)
+                                    handleCheckboxChange(e, ele, flist.id)
                                   }
                                   size="small"
                                 />
@@ -2090,7 +2112,7 @@ const ProductList = () => {
                                     textTransform: "lowercase",
                                   }}
                                 >
-                                  {flist}
+                                  {flist.label}
                                 </small>
                               </div>
                             ))}

@@ -161,25 +161,33 @@ const ProdDetail = () => {
 
     let loginInfo = JSON.parse(localStorage.getItem("loginUserDetail"))
     let ColorStoneQualityColor = JSON.parse(localStorage.getItem("ColorStoneQualityColor"))
-    setmtTypeOption(loginInfo?.cmboMetalType)
+    let DimondQualityColor = JSON.parse(localStorage.getItem("QualityColor"))
+    let MetalTypeData = JSON.parse(localStorage.getItem("MetalTypeData"))
 
-    console.log("checkData", loginInfo?.cmboDiaQualityColor !== "");
-
-    if (loginInfo?.cmboDiaQualityColor !== "") {
-      let qualityColor = `${loginInfo?.cmboDiaQualityColor.split("#@#")[0]?.toUpperCase()}#${loginInfo?.cmboDiaQualityColor.split("#@#")[1]?.toUpperCase()}`
-      setDiaQColOpt(qualityColor)
+    if(loginInfo?.MetalId !== 0){
+      let metalType = MetalTypeData?.find(item => item?.Metalid == loginInfo?.MetalId)
+      setmtTypeOption(metalType?.metaltype)
+    }else{
+      setmtTypeOption(MetalTypeData[0]?.metaltype)
     }
+
+    let diaQCVar = DimondQualityColor?.find(item => item.QualityId == loginInfo?.cmboDiaQCid?.split(',')[0] && item.ColorId == loginInfo?.cmboDiaQCid?.split(',')[1]);
+    if (loginInfo?.cmboDiaQCid !== "0,0") {
+      // let qualityColor = `${loginInfo?.cmboDiaQualityColor.split("#@#")[0]?.toUpperCase()}#${loginInfo?.cmboDiaQualityColor.split("#@#")[1]?.toUpperCase()}`
+      let qualityColor = `${diaQCVar?.Quality}#${diaQCVar?.color}`
+      setDiaQColOpt(qualityColor)
+    }   
     else {
       if (colorData && colorData?.length) {
         setDiaQColOpt(`${colorData[0]?.Quality}#${colorData[0]?.color}`)
       }
     }
-
-    let csQualColor = `${loginInfo?.cmboCSQualityColor.split("#@#")[0]?.toUpperCase()}-${loginInfo?.cmboCSQualityColor.split("#@#")[1]?.toUpperCase()}`
-
-    let dqcc = ColorStoneQualityColor?.find((dqc) => `${dqc.Quality}-${dqc.color}` === csQualColor)
-
-    if (dqcc) {
+    
+    // let dqcc = ColorStoneQualityColor?.find((dqc) => `${dqc.Quality}-${dqc.color}` === csQualColor)
+    
+    if (loginInfo?.cmboCSQCid !== "0,0") {
+      let csQCVar = ColorStoneQualityColor?.find(item => item?.QualityId === loginInfo?.cmboCSQCid?.split(',')[0] && item?.ColorId === loginInfo?.cmboCSQCid?.split(',')[1])
+      let csQualColor = `${csQCVar?.QualityId}-${csQCVar?.ColorId}`
       setCSQOpt(csQualColor)
     } else {
       let ref = `${ColorStoneQualityColor[0].Quality}-${ColorStoneQualityColor[0].color}`
@@ -193,8 +201,8 @@ const ProdDetail = () => {
 
   }, [colorData, sizeData])
 
-  // console.log("cSQopt",cSQopt);
-
+  console.log("cSQopt",mtTypeOption,diaQColOpt,cSQopt);
+  
   // console.log("productData",sizeOption)
 
   // useEffect(()=>{
@@ -350,11 +358,9 @@ const ProdDetail = () => {
       storeInit?.IsMetalCustomization === 1
         ?
         ele?.A === srProductsData?.autocode &&
-        ele?.B === srProductsData?.designno &&
-        ele?.D === mtTypeOption
+        ele?.C === mtTypeOption
         :
-        ele?.A === srProductsData?.autocode &&
-        ele?.B === srProductsData?.designno
+        ele?.A === srProductsData?.autocode 
     );
 
     console.log("mtrdData2222", mtrd)
@@ -370,12 +376,10 @@ const ProdDetail = () => {
       storeInit?.IsDiamondCustomization === 1
         ?
         ele.A === srProductsData?.autocode &&
-        ele.B === srProductsData?.designno &&
-        ele.H === diaQColOpt?.split("#")[0] &&
-        ele.J === diaQColOpt?.split("#")[1]
+        ele.G === diaQColOpt?.split("#")[0] &&
+        ele.I === diaQColOpt?.split("#")[1]
         :
-        ele.A === srProductsData?.autocode &&
-        ele.B === srProductsData?.designno
+        ele.A === srProductsData?.autocode 
 
     )
 
@@ -1518,7 +1522,7 @@ const ProdDetail = () => {
                     >
                       Metal Purity :
                       <span style={{ fontWeight: 'bold', letterSpacing: '2px' }}>
-                        {mtTypeOption ? mtTypeOption.split(" ")[1] : productData?.MetalPurity}
+                        {mtTypeOption ? mtTypeOption?.split(" ")[1] : productData?.MetalPurity}
                       </span>
                     </span>
                     <sapn
