@@ -1854,18 +1854,20 @@ const ProductList = () => {
   //   setProductApiData2(data);
   // }, []);
 
-  const handleSortChange = (e) => {
-    const selectedOption = e.target.value;
-    setSelectedSortOption(selectedOption);
-    setSelectedOptionData(selectedOption);
+
+  const handleSortChange = (option) => {
+    const selectedOption = option?.label;
+    setSelectedOptionData(option?.label);
+    setIsActive(false);
+    setSelectedSortOption(option?.label);
     let sortedData = [...ProductApiData2];
 
     if (selectedOption === 'PRICE HIGH TO LOW') {
-      sortedData.sort((a, b) => ((b?.price ?? 0) + (b?.markup ?? 0)) - ((a?.price ?? 0) + (a?.markup ?? 0)));
+      sortedData.sort((a, b) => ((b?.UnitCost ?? 0) + (b?.price ?? 0) + (b?.markup ?? 0)) - ((a?.UnitCost ?? 0) + (a?.price ?? 0) + (a?.markup ?? 0)));
     } else if (selectedOption === 'PRICE LOW TO HIGH') {
-      sortedData.sort((a, b) => ((a?.price ?? 0) + (a?.markup ?? 0)) - ((b?.price ?? 0) + (b?.markup ?? 0)));
+      sortedData.sort((a, b) => ((a?.UnitCost ?? 0) + (a?.price ?? 0) + (a?.markup ?? 0)) - ((b?.UnitCost ?? 0) + (b?.price ?? 0) + (b?.markup ?? 0)));
     } else {
-      setNewProData(ProductApiData2)
+      setNewProData(ProductApiData2);
     }
     setNewProData(sortedData);
   };
@@ -2641,13 +2643,11 @@ const ProductList = () => {
                   </div>
                 } */}
               </div>
-              <SmilingRock />
-              <Footer />
             </div>
           </div>
         </div>
       </div>
-
+      <Footer />
     </div >
   );
 };
