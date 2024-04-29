@@ -101,10 +101,7 @@ export default function Account() {
     }
 
     return (
-        <div style={{
-            backgroundColor: '#c0bbb1',
-            paddingTop: '110px'
-        }} className='accountPagTabSection'>
+        <div className='accountPagTabSection'>
             {/* {isLoading && (
                 <div className="loader-overlay">
                     <CircularProgress />
@@ -212,12 +209,9 @@ export default function Account() {
                         </Box>
                     </div>
 
-                    <Footer />
                 </div>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'center', paddingBlock: '30px' }}>
-                <p style={{ margin: '0px', fontWeight: 500, width: '100px', color: 'white', cursor: 'pointer' }} onClick={() => window.scrollTo(0, 0)}>BACK TO TOP</p>
-            </div>
+            <Footer />
         </div>
     )
 }

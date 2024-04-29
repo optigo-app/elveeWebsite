@@ -334,11 +334,12 @@
 }
 
 .feature-count {
-    font-weight: 500;
-    color: #7d7f85;
-    /* opacity: .7; */
+    font-weight: bold;
+    color: #1f1919;
+    opacity: .7;
 }
-.currencyFont{
+
+.currencyFont {
     margin-right: 2px !important;
 }
 
@@ -507,6 +508,7 @@
         margin: 0px !important;
         padding: 10px !important;
     }
+
     .feature {
         font-size: 12px !important;
     }
@@ -561,6 +563,7 @@
         margin: 0px 0px 0px 0px !important;
         padding-top: 10px;
     }
+
     .feature {
         font-size: 12px !important;
     }
