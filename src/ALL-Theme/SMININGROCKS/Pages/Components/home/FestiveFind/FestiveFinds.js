@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 // import banner1 from '../../../assets/banner1.jpg'
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { loginState } from '../../../../../../Recoil/atom';
+import { storImagePath } from '../../../../Utils/globalFunctions/GlobalFunction';
 
 export default function FestiveFinds() {
 
@@ -16,49 +17,32 @@ export default function FestiveFinds() {
     }
 
     return (
-        // <div>
-        //     <div className='FestiveMainImage'>
-        //         <img src={banner1} style={{ width: '100%' }} />
-        //         {islogin === 'true' && <div className='festiveBox'>
-        //             <p className='smilingFestiMainTitle1' style={{ color: 'gray' }}>LAB GROWN DIAMONDS</p>
-        //             <p className='smilingFestiMainTitle2' style={{ color: 'gray', fontSize: '40px', margin: '0px' }}>Festive Finds!</p>
-        //             <p className='smilingFestiMainTitle3' style={{ color: 'gray', margin: '0px', fontSize: '13px' }}>
-        //                 Explore your jewelry for upcoming holiday!
-        //             </p>
-        //             <div>
-        //                 <button className='DiscoverBtn' onClick={handleNaviagtion}>DISCOVER MORE</button>
-        //             </div>
-        //         </div>}
-        //     </div>
-        // </div>
-
         <div>
             <p className='gorGiftBoxMainTitleMobile'>Gifting Made Easy</p>
             <div className='gorGiftMain'>
                 <div className='gorGiftBox1'>
                     <div>
-                        <p className='gorGiftBoxMainTitleWeb'>Gifting Made Easy</p>
-                        <img src='https://www.gorjana.com/cdn/shop/files/Featured_collection_1-_Alphabets_1.jpg?v=1711663346&width=1000&em-format=avif&em-width=1000' className='gorGiftBox1Images' />
-                        <p className='gorGiftBoxDesc'>Top Gifts</p>
+                        <p className='gorGiftBoxMainTitleWeb'>WOMEN</p>
+                        <img src={`${storImagePath()}/images/HomePage/Promo/Set/1/promoSetBanner1Img1.png`} className='gorGiftBox1Images' />
                     </div>
                     <div className='gorGiftBox1Sub1'>
-                        <img src='https://www.gorjana.com/cdn/shop/files/Featured_collection_3-_Pearls_1.jpg?v=1711663394&width=1000&em-format=avif&em-width=1000' className='gorGiftBox1Images' />
-                        <p className='gorGiftBoxDesc'>Personalized Gifts</p>
+                        <p className='gorGiftBoxMainTitleWeb'>KIDS</p>
+                        <img src={`${storImagePath()}/images/HomePage/Promo/Set/1/promoSetBanner1Img3.png`} className='gorGiftBox1Images' />
                     </div>
                 </div>
                 <div className='gorGiftBox2'>
                     <div>
-                        <img src='https://www.gorjana.com/cdn/shop/files/Featured_collection_1.jpg?v=1711729489&width=1000&em-format=avif&em-width=1000' className='gorGiftBox2Images' />
-                        <p className='gorGiftBoxDesc'>Gifts Under $150</p>
+                        <p className='gorGiftBoxMainTitleWeb'>MEN</p>
+                        <img src={`${storImagePath()}/images/HomePage/Promo/Set/1/promoSetBanner1Img2.png`} className='gorGiftBox2Images' />
                     </div>
                     <div className='gorGiftBox2Sub1' >
-                        <img src='https://www.gorjana.com/cdn/shop/files/Featured_collection_4-_Hoops_Huggies_1.jpg?v=1711663371&width=1000&em-format=avif&em-width=1000' className='gorGiftBox2Images' />
-                        <p className='gorGiftBoxDesc'>Splurge Worthy Gifts</p>
+                        <p className='gorGiftBoxMainTitleWeb'>GIFTS</p>
+                        <img src={`${storImagePath()}/images/HomePage/Promo/Set/1/promoSetBanner1Img4.png`} className='gorGiftBox2Images' />
                     </div>
                 </div>
             </div>
 
-            <div className='gorLookBookMain' style={{
+            {/* <div className='gorLookBookMain' style={{
                 display: 'flex',
                 marginTop: '70px'
             }}>
@@ -69,7 +53,7 @@ export default function FestiveFinds() {
                     <p style={{ fontSize: '30px', margin: '0px', fontFamily: 'Freight Big Pro,serif' }}>The Spring Catalog Is Here</p>
                     <p style={{ fontSize: '13px', fontWeight: 500, cursor: 'pointer', textDecoration: 'underline' }}>View Lookbook</p>
                 </div>
-            </div>
+            </div> */}
 
 
             {/* <div style={{marginTop: '100px'}}>
