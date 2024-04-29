@@ -100,12 +100,6 @@
     margin-bottom: 1em;
 }
 
-.prodDetailWhitecont {
-    max-width: 1674px;
-    background-color: white;
-    width: 100%;
-}
-
 .compeletethelook_cont {
     padding: 0px 85px;
     display: flex;
@@ -140,21 +134,22 @@
 .product-detail-container {
     display: flex;
     width: 100%;
-    min-height: 1009px;
+    max-height: 1009px;
 }
 
 .srprodetail1 {
-    width: 60%
+    width: 50%
 }
 
 .srprodetail2 {
-    width: 40%;
+    width: 50%;
     display: flex;
     justify-content: center;
 }
 
 .srprodetail2-cont {
-    margin: 120px 150px 0px;
+    margin: 50px 150px 0px;
+    width: 50%;
 }
 
 .srthumb_images {
@@ -165,6 +160,10 @@
     /* z-index: 1; */
     top: 200px;
     position: absolute;
+}
+
+.prodDetailWhitecont {
+    width: 100%;
 }
 
 .srthumb_images_el {
@@ -199,6 +198,78 @@
     /* margin-top:80px; */
     margin-bottom: -60px;
     margin-top: 7%;
+}
+
+.smilingProdutDetltTitle {
+    text-align: start !important;
+    font-size: 40px;
+    font-family: "PT Sans", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    color: #424242;
+}
+
+.menuItemTimeEleveDeatil {
+    font-size: 15px;
+    color: rgb(66, 66, 66);
+    font-family: "PT Sans", sans-serif;
+}
+
+.menuitemSelectoreMain {
+    border: none;
+    outline: none;
+    font-size: 13px;
+    color: rgb(66, 66, 66);
+    font-family: "PT Sans", sans-serif;
+    font-weight: bold;
+    letter-spacing: 2.2px;
+}
+
+.mainpriceDeatilPage {
+    font-weight: bold;
+    font-size: 22px;
+    display: flex;
+    letter-spacing: 2.2px;
+    font-family: "PT Sans", sans-serif;
+}
+
+.addtocartcont {
+    border: 1px solid #d2815f;
+    width: 80%;
+    height: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 49px;
+    cursor: pointer;
+}
+
+.addtocartcont:hover {
+    background-color: #d2815f0d;
+}
+
+.addtocarttxt {
+    color: #d2815f;
+    font-family: "PT Sans", sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    position: relative;
+}
+
+
+.wishlistcont {
+    border: 1px solid #d2815f;
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.4%;
+    border-radius: 2px;
+}
+
+.wishlistcont:hover {
+    background-color: #d2815f0d;
 }
 
 @media screen and (max-width:1731px) {
@@ -241,8 +312,8 @@
         display: none !important;
     }
 
-    .smilingCompleteLookMainMobileImg{
-        width: 95%!important;
+    .smilingCompleteLookMainMobileImg {
+        width: 95% !important;
     }
 
     .ctl_img {

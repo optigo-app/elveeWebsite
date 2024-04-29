@@ -15,22 +15,24 @@
 }
 
 .createBtnRegister {
-    height: 60px;
-    width: 420px;
-    color: white;
-    background-color: #7d7f85;
-    border: 0;
+    height: 40px;
+    width: 95%;
+    margin-inline: 15px;
+    border: 1px solid black;
     margin-top: 10px;
-    font-size: 13px;
-    font-weight: 500;
-    letter-spacing: 1;
+    font-size: 14.5px;
+    color: #1f1919;
+    opacity: .8;
+    font-weight: 600 !important;
+    letter-spacing: 1px;
     transition: all 0.5s ease;
+    font-family: "PT Sans", sans-serif;
+    cursor: pointer;
+    background-color: white;
 }
 
 .createBtnRegister:hover {
-    background-color: white;
-    color: #7d7f85;
-    border: 1px solid #7d7f85;
+    background-color: rgba(66, 66, 66, 0.05);
 }
 
 .SmilingSignInHere {

@@ -10,6 +10,7 @@
 
 .smilingdeliverBox1{
     margin-top: 8%;
+    width: 100%;
 }
 
 .smilingdeliverBox2{
@@ -36,9 +37,10 @@
 }
 .addressData{
     margin: 0px;
-    font-family: 'TTCommons-Medium,Helvetica,sans-serif';
+    font-family: "PT Sans", sans-serif;
     color: rgb(125, 127, 133);
     text-transform: capitalize;
+    font-size: 14px;
     /* font-family: "FreightDisp Pro Medium"; */
 }
 
@@ -124,6 +126,12 @@
 }
 
 
+.smilingMobileDeliveryBtnMain{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 140px;
+    margin-top: 20px;
+}
 
 @media screen and (max-width: 900px) {
 

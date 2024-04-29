@@ -1,56 +1,90 @@
-
-.loginDailog{
-    margin-inline: 6%;
+.optionLoginMain {
     background-color: white;
-    padding: 15px;
+    width: 30%;
 }
 
+.loginDailog {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10% 0px 8% 0px;
+}
 
-.smilingLoginOptionMain{
+.smilingLoginOptionMain {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
-.loginDiTile{
-    font-size: 30px;
-    font-weight: 600;
+
+.loginDiTile {
+    font-size: 25px;
+    font-weight: 500;
     margin-top: 25px;
     text-align: center;
+    font-family: 'PT Sans', sans-serif;
 }
-.loginMail{
+
+.loginMail {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #888;
-    color: white;
+    border: 1px solid black;
     margin-inline: 7px;
-    height: 55px;
+    height: 45px;
     cursor: pointer;
-    width: 25%;
+    width: 75%;
     margin-top: 30px;
 }
-.loginMobile{
+
+.loginMail:hover {
+    background-color: rgba(66, 66, 66, 0.05);
+}
+
+
+
+.loginMobile {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #888;
-    color: white;
+    border: 1px solid black;
     margin-inline: 7px;
-    height: 55px;
+    height: 45px;
     cursor: pointer;
     margin-top: 25px;
-    width: 25%;
+    width: 75%;
+}
+
+.loginMobile:hover {
+    background-color: rgba(66, 66, 66, 0.05);
+}
+
+
+
+@media screen and (max-width: 1450px) {
+    .optionLoginMain {
+        width: 50%;
+    }
 }
 
 @media screen and (max-width: 1150px) {
 
-    .loginMail{
-        width: 50%!important;
+
+    .loginMail {
+        width: 50% !important;
     }
 
-    .loginMobile{
-        width: 50%!important;
+    .loginMobile {
+        width: 50% !important;
+    }
+
+    .optionLoginMain {
+        width: 80%;
+    }
+
+
+    .loginDailog {
+        padding-top: 20%;
     }
 }
 
@@ -58,35 +92,46 @@
 
 
 @media screen and (max-width: 900px) {
-    .loginDailog{
-        margin-inline: 2%!important;
+    .loginDailog {
+        margin-inline: 2% !important;
     }
 
 }
-    @media screen and (max-width: 700px) {
 
-    .loginMail{
-        width: 80%!important;
+@media screen and (max-width: 700px) {
+
+    .loginMail {
+        width: 80% !important;
     }
 
-    .loginMobile{
-        width: 80%!important;
+    .loginMobile {
+        width: 80% !important;
     }
 
-    .loginDiTile{
+    .loginDiTile {
         font-size: 25px;
     }
 
+    .loginDailog {
+        padding-top: 35%;
+    }
+
 }
 
 
+@media screen and (max-width: 500px) {
+    .loginDailog {
+        padding-top: 45%;
+    }
+}
+
 @media screen and (max-width: 400px) {
 
-    .loginMail{
-        width: 95%!important;
+    .loginMail {
+        width: 95% !important;
     }
 
-    .loginMobile{
-        width: 95%!important;
+    .loginMobile {
+        width: 95% !important;
     }
 }

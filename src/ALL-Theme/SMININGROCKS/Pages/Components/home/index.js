@@ -20,6 +20,15 @@ import { IoClose } from "react-icons/io5";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { CommonAPI } from '../../../Utils/API/CommonAPI';
 import { storImagePath } from '../../../Utils/globalFunctions/GlobalFunction';
+import PromoComponent1 from './PromoComponent/PromoComponent/PromoComponent1';
+import PromoComponent2 from './PromoComponent/PromoComponent/PromoComponent2';
+import BrandsComponent from './PromoComponent/BrandsComponent/BrandsComponent';
+import OurCraftmanShip from './OurCraftManShip/OurCraftmanShip';
+import GallerySlider from './Gallery/GaleryComponent';
+import CompanyData from './ComapnayData/CompanyData';
+import CountdownTimer from './CountDownTimer/CountDownTimer';
+import AffiliationData from './PromoComponent/BrandsComponent/AffiliationData';
+import SocialMedia from './Gallery/SocialMediaSlider';
 
 export default function Home() {
 
@@ -278,19 +287,27 @@ export default function Home() {
   
 
   return (
-    <div className='paddingTopMobileSet' style={{ backgroundColor: '#c0bbb1', paddingTop: '110px' }}>
+    <div className='paddingTopMobileSet' style={{ backgroundColor: 'white',paddingTop:'0px' }}>
       <div className='homeMain'>
         <Video />
-        <SmilingRock />
+        {/* <SmilingRock /> */}
+        <PromoComponent1/>
+        <BrandsComponent/>
+        <PromoComponent2/>
         <FestiveFinds />
-        <DaimondEveyone />
-        <ShopByCategory />
-        <SmilingBrides />
-        <FeaturedCollection />
+        <OurCraftmanShip/>
+        <GallerySlider/>
+        <CompanyData/>
+        <AffiliationData/>
+        <SocialMedia/>
+        {/* <DaimondEveyone /> */}
+        {/* <ShopByCategory /> */}
+        {/* <SmilingBrides /> */}
+        {/* <FeaturedCollection /> */}
         <div style={{ marginTop: '60px' }}>
-          <SustainAbility />
+          {/* <SustainAbility /> */}
         </div>
-        <ShopifySection />
+        {/* <ShopifySection /> */}
         {/* <ShopOurInstagram /> */}
         <Footer />
       </div>

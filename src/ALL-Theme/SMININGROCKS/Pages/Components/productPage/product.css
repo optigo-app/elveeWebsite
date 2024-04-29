@@ -1,19 +1,22 @@
 .finejwelery {
-    font-size: 16px;
     text-transform: uppercase;
     line-height: 1;
     margin-bottom: 10px;
     position: relative;
     cursor: pointer;
-    color: #7d7f85;
     list-style: none;
-    /* font-weight: 500; */
-    /* text-decoration:underline; */
+    color: #1f1919 !important;
+    opacity: 0.5;
+    font-size: 14.5px;
+    font-weight: bold;
+}
+
+.finejwelery:hover {
+    opacity: 1;
 }
 
 .smilingProductMain {
     width: 100%;
-    margin-inline: 6%;
     background-color: white;
 }
 
@@ -74,7 +77,7 @@
     color: #555050 !important;
 }
 
-.smilingProductDeatilTitleMobile{
+.smilingProductDeatilTitleMobile {
     font-size: 13px;
     text-transform: uppercase;
     font-weight: 500;
@@ -82,13 +85,13 @@
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    padding:0 5px;
-    min-height:19.5px;
-    width:300px;
-    margin:3px;
+    padding: 0 5px;
+    min-height: 19.5px;
+    width: 300px;
+    margin: 3px;
 }
 
-.smilingProductDeatilTitleMobilenotWidth{
+.smilingProductDeatilTitleMobilenotWidth {
     font-size: 13px;
     text-transform: uppercase;
     font-weight: 500;
@@ -96,22 +99,82 @@
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    padding:0 5px;
-    min-height:19.5px;
+    padding: 0 5px;
+    min-height: 19.5px;
     /* width:300px; */
-    margin:3px;
+    margin: 3px;
 }
 
-.productTitleLine{
+.productTitleLine {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-@media screen and (min-width: 1441px) {
+.part {
+    padding: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.part-content {
+    display: flex;
+    color: #7b7b7b;
+    font-size: 13.5px;
+    font-family: "PT Sans", sans-serif;
+    align-items: center;
+    cursor: pointer;
+    justify-content: end !important;
+    gap: 12px;
+}
+
+
+.smilingAllProductDataMainMobile {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.smilingProductSubMain {
+    justify-content: end;
+}
+
+.listing-image {
+    position: relative;
+}
+
+.cart-icon {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    width: 20px;
+}
+
+.wishlist-icon {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    width: 20px;
+}
+
+@media screen and (min-width: 1440px) {
     .smilingMobileProductListSideBar {
         display: none;
     }
+
+    .filterDivcontainer {
+        display: flex !important;
+
+    }
+}
+
+
+.smilingWebProductListSideBar {
+    width: 20%;
+    position: absolute;
+    /* padding: 52px 0px 40px 100px; */
 }
 
 @media screen and (max-width: 1441px) {
@@ -120,17 +183,18 @@
         display: none;
     }
 
-    .smilingFilterweb{
-        display: none!important;
+    .smilingFilterweb {
+        display: none !important;
     }
 
     .smilingProductMain {
-        margin-inline: 2%;
+        margin-inline: 0%;
     }
+
 
     .smilingProductSubMain {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
     }
 
     .smilingProductImageMain {
@@ -218,4 +282,757 @@
 
 .inputCheck:checked {
     background-color: '#7f7d85';
+}
+
+.text-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+    width: 100%;
+}
+
+.text-container h1 {
+    font-size: 39px;
+    text-align: left;
+    margin: 0px 0px 0px 60px;
+}
+
+
+.bg-image {
+    position: relative;
+    height: 20vh;
+    background-image: url("https://t4.ftcdn.net/jpg/02/92/56/91/360_F_292569116_Phht4uRj1YIuLFgBhrLu8171npBOcJcr.jpg");
+    background-size: cover;
+    background-position: center;
+    /* margin: 25px 100px 22px 100px; */
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.filterDivcontainer {
+    display: flex;
+    border: 1px solid #d9d9d9;
+    overflow: hidden;
+    justify-content: center;
+    margin-block: 20px;
+    /* margin: 0px 100px 0px 100px; */
+}
+
+.divider {
+    width: 1px;
+    background-color: #d9d9d9;
+}
+
+
+.select-button {
+    width: 100%;
+    color: #7b7b7b;
+    font-size: 13.5px;
+    background-color: #fff;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.smilingAllProductDataMainMobileShow2Image {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.main-ProdcutListConatiner {
+    font-family: "PT Sans", sans-serif;
+    width: 33%;
+}
+
+.main-ProdcutListConatiner2ImageShow {
+    width: 49.5%;
+}
+
+.main-ProdcutListConatiner4ImageShow {
+    width: 24.6%;
+}
+
+.smilingAllProductDataMainMobileShow4Image {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+
+.listing-card {
+    height: auto;
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+
+.selected-value {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+
+.select-dropdown {
+    position: absolute;
+    list-style: none;
+    background-color: #fff;
+    border: 1px solid #caced1;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    padding: 10px;
+    margin-top: 9.5px;
+    max-height: 205px;
+    transform: scaleY(0);
+    opacity: 0;
+    visibility: hidden;
+    z-index: 1;
+}
+
+.select-dropdown li {
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.select-dropdown li label {
+    width: 100%;
+    padding: 8px 10px;
+    cursor: pointer;
+    text-transform: uppercase;
+    line-height: 1.5;
+    font-size: 13px;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.select-dropdown li:hover,
+.select-dropdown input:checked~label {
+    background-color: #f2f2f2;
+}
+
+.custom-select.active .select-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: scaleY(1);
+}
+
+.listing-details {
+    padding: 5px 12px 0px 12px;
+    min-height: 50px;
+    font-family: "PT Sans", sans-serif;
+    overflow: hidden;
+}
+
+.listing4-details {
+    padding: 0px;
+}
+
+.property-type {
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 0.025em;
+    opacity: 0.7;
+    font-family: "PT Sans", sans-serif;
+    color: #1f1919;
+    height: 4vh;
+}
+
+.property4-type {
+    text-transform: uppercase;
+    font-size: 11.5px;
+    font-weight: 700;
+    font-family: "PT Sans", sans-serif;
+    letter-spacing: 0.025em;
+    opacity: 0.7;
+    color: #1f1919;
+}
+
+.listing-features {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 10px 0px 0px;
+    font-size: 14.5px;
+    border-top: 1px solid rgba(0, 0, 0, 0.04);
+    color: #4a5568;
+}
+
+.listing-features4 {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px 5px 16px 2px;
+    font-size: 14.5px;
+    border-top: 1px solid rgba(0, 0, 0, 0.04);
+    color: #4a5568;
+}
+
+.filtercategoryLable {
+    font-family: "PT Sans", sans-serif;
+    font-size: 13px;
+    font-weight: 500px !important;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    line-height: 1.5;
+    filter: contrast(10.4);
+    color: #424242;
+  }
+
+@media screen and (min-width: 776px) and (max-width: 1439px) {
+    .filterDivcontainer {
+        display: none !important;
+    }
+
+    .smilingProductSubMain {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .smilingWebProductListSideBar {
+        display: none !important;
+    }
+
+    .smilingProductImageMain {
+        padding: 0px 0px 0px 17px;
+    }
+
+    .main-ProdcutListConatiner {
+        width: 33%;
+    }
+
+    .background-image-container {
+        height: 290px;
+    }
+
+    .listing-details {
+        padding: 12px;
+    }
+
+    .smilingAllProductDataMainMobile {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: wrap;
+        margin: 10px;
+        gap: 2px;
+    }
+
+    .smilingProductMain {
+        margin-inline: 0%;
+    }
+
+
+
+    .listing-card {
+        width: 100%;
+    }
+
+    .property-type {
+        width: 100%;
+        font-size: 0.875rem;
+        font-weight: 700;
+        height: 7vh;
+    }
+
+    .price {
+        font-size: 1.4rem;
+    }
+
+    .address {
+        font-size: 0.95rem;
+    }
+
+    .listing-features {
+        padding: 7px;
+        font-size: 13.5px;
+    }
+
+    .filterMobileDivcontainer {
+        display: flex;
+        border: 1px solid #d9d9d9;
+        border-radius: 5px;
+        overflow: hidden;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .bg-image {
+        margin: 10px 15px 10px 15px;
+    }
+
+    .select-button {
+        font-size: 12.5px;
+    }
+
+    .select-button {
+        font-size: 12.5px;
+    }
+
+    .custom-select {
+        width: 85px;
+    }
+
+    .select-dropdown {
+        margin-top: 6px;
+    }
+
+    .part {
+        padding: 5px;
+        display: flex;
+        align-items: center;
+    }
+
+    .firstfilteDiv {
+        border-right: 0.01rem solid #d9d9d9 !important;
+    }
+
+    .secondfilteDiv {
+        border-right: 0.01rem solid #d9d9d9 !important;
+    }
+
+    .part-content {
+        display: flex;
+        color: #7b7b7b;
+        font-size: 12.5px;
+        font-family: "PT Sans", sans-serif;
+        align-items: center;
+        justify-content: end !important;
+    }
+
+}
+
+@media screen and (min-width: 426px) and (max-width: 775px) {
+    .filterDivcontainer {
+        display: none !important;
+    }
+
+    .smilingProductSubMain {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .smilingWebProductListSideBar {
+        display: none !important;
+    }
+
+    .smilingProductImageMain {
+        padding: 0px 0px 0px 17px;
+    }
+
+    .main-ProdcutListConatiner {
+        width: 49%;
+    }
+
+    .background-image-container {
+        height: 290px;
+    }
+
+    .listing-details {
+        padding: 12px;
+    }
+
+    .smilingAllProductDataMainMobile {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: wrap;
+        gap: 2px;
+        margin: 10px;
+    }
+
+    .smilingProductMain {
+        margin-inline: 0%;
+    }
+
+
+    .listing-card {
+        width: 100%;
+    }
+
+    .property-type {
+        width: 100%;
+        font-size: 0.875rem;
+        font-weight: 700;
+        height: 7vh;
+    }
+
+    .price {
+        font-size: 1.4rem;
+    }
+
+    .address {
+        font-size: 0.95rem;
+    }
+
+    .listing-features {
+        padding: 7px;
+        font-size: 13.5px;
+    }
+
+    .filterMobileDivcontainer {
+        display: flex;
+        border: 1px solid #d9d9d9;
+        border-radius: 5px;
+        overflow: hidden;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .bg-image {
+        margin: 10px 15px 10px 15px;
+    }
+
+    .select-button {
+        font-size: 12.5px;
+    }
+
+    .select-button {
+        font-size: 12.5px;
+    }
+
+    .custom-select {
+        width: 85px;
+    }
+
+    .select-dropdown {
+        margin-top: 6px;
+    }
+
+    .part {
+        padding: 5px;
+        display: flex;
+        align-items: center;
+    }
+
+    .firstfilteDiv {
+        border-right: 0.01rem solid #d9d9d9 !important;
+    }
+
+    .secondfilteDiv {
+        border-right: 0.01rem solid #d9d9d9 !important;
+    }
+
+    .part-content {
+        display: flex;
+        color: #7b7b7b;
+        font-size: 12.5px;
+        font-family: "PT Sans", sans-serif;
+        align-items: center;
+        justify-content: end !important;
+    }
+}
+
+.inputCheck:checked {
+    background-color: "#7f7d85";
+}
+
+@media screen and (min-width: 376px) and (max-width: 425px) {
+    .filterDivcontainer {
+        display: none !important;
+    }
+
+    .smilingProductSubMain {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .smilingWebProductListSideBar {
+        display: none !important;
+    }
+
+    .smilingAllProductDataMainMobile {
+        gap: 2px;
+    }
+
+    .smilingProductImageMain {
+        padding: 0px 2px 0px 2px;
+    }
+
+    .main-ProdcutListConatiner {
+        width: 49.6%;
+    }
+
+    .background-image-container {
+        height: 210px;
+    }
+
+    .listing-details {
+        padding: 8px;
+    }
+
+    .smilingAllProductDataMainMobile {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: wrap;
+        margin: 10px;
+    }
+
+    .smilingProductMain {
+        margin-inline: 0%;
+    }
+
+
+    .listing-card {
+        width: 100%;
+    }
+
+    .property-type {
+        width: 192px;
+        font-size: 0.675rem;
+        font-weight: 700;
+        height: 6vh;
+    }
+
+    .price {
+        font-size: .75rem;
+    }
+
+    .address {
+        font-size: 0.75rem;
+    }
+
+    .listing-features {
+        padding: 5px;
+        font-size: 10.5px;
+    }
+
+    .feature p {
+        margin: 0 0 2px 5px;
+    }
+
+    .filterMobileDivcontainer {
+        display: flex;
+        border: 1px solid #d9d9d9;
+        border-radius: 5px;
+        overflow: hidden;
+        width: 395px;
+    }
+
+    .bg-image {
+        margin: 10px 0px 10px 0px;
+    }
+
+    .select-button {
+        font-size: 12.5px;
+    }
+
+    .select-button {
+        font-size: 12.5px;
+    }
+
+    .custom-select {
+        width: 85px;
+    }
+
+    .select-dropdown {
+        margin-top: 6px;
+    }
+
+    .part {
+        padding: 5px;
+        display: flex;
+        align-items: center;
+    }
+
+    .firstfilteDiv {
+        border-right: 0.01rem solid #d9d9d9 !important;
+    }
+
+    .secondfilteDiv {
+        border-right: 0.01rem solid #d9d9d9 !important;
+    }
+
+    .part-content {
+        display: flex;
+        color: #7b7b7b;
+        font-size: 12.5px;
+        font-family: "PT Sans", sans-serif;
+        align-items: center;
+        justify-content: end !important;
+    }
+}
+
+@media screen and (max-width: 375px) {
+    .filterDivcontainer {
+        display: none !important;
+    }
+
+    .smilingProductSubMain {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .smilingWebProductListSideBar {
+        display: none !important;
+    }
+
+    .smilingAllProductDataMainMobile {
+        gap: 2px;
+    }
+
+    .cart-icon {
+        position: absolute;
+        top: 5px;
+        left: 8px;
+        width: 10px;
+    }
+
+    .smilingProductImageMain {
+        padding: 0px 2px 0px 8px;
+    }
+
+    .main-ProdcutListConatiner {
+        width: 49%;
+    }
+
+    .background-image-container {
+        height: 160px;
+    }
+
+    .listing-details {
+        padding: 8px;
+    }
+
+    .smilingAllProductDataMainMobile {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: wrap;
+        margin: 10px;
+    }
+
+    .smilingProductMain {
+        margin-inline: 0%;
+    }
+
+    .paddingTopMobileSet {
+        padding-top: 1px !important;
+        margin: 136px 0px 0px 0px !important;
+    }
+
+    .listing-card {
+        width: 100%;
+    }
+
+    .property-type {
+        width: 100%;
+        font-size: 0.575rem;
+        font-weight: 700;
+        height: 5vh;
+        overflow: hidden;
+    }
+
+    .price {
+        font-size: .75rem;
+    }
+
+    .address {
+        font-size: 0.75rem;
+    }
+
+    .listing-features {
+        padding: 5px;
+        font-size: 10.5px;
+    }
+
+    .feature-count {
+        font-weight: 700;
+        color: #1f1919;
+        opacity: .8;
+    }
+
+    .feature p {
+        margin: 0 0 2px 5px;
+    }
+
+    .filterMobileDivcontainer {
+        display: flex;
+        border: 1px solid #d9d9d9;
+        border-radius: 5px;
+        overflow: hidden;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .bg-image {
+        margin: 10px 0px 10px 0px;
+    }
+
+    .select-button {
+        font-size: 12.5px;
+    }
+
+    .select-button {
+        font-size: 12.5px;
+    }
+
+    .custom-select {
+        width: 85px;
+    }
+
+    .select-dropdown {
+        margin-top: 6px;
+    }
+
+    .part {
+        padding: 5px;
+        display: flex;
+        align-items: center;
+    }
+
+    .firstfilteDiv {
+        border-right: 0.01rem solid #d9d9d9 !important;
+    }
+
+    .secondfilteDiv {
+        border-right: 0.01rem solid #d9d9d9 !important;
+    }
+
+    .cart-icon {
+        position: absolute;
+        top: 5px;
+        left: 8px;
+        width: 10px;
+    }
+
+    .wishlist-icon {
+        position: absolute;
+        top: 5px;
+        right: 20px;
+        width: 10px;
+    }
+
+    .part-content {
+        display: flex;
+        color: #7b7b7b;
+        font-size: 12.5px;
+        font-family: "PT Sans", sans-serif;
+        align-items: center;
+        justify-content: end !important;
+    }
 }

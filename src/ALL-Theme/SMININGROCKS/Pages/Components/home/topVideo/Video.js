@@ -80,6 +80,7 @@
 import React, { useState, useRef } from "react";
 import "./Video.css";
 import { storImagePath } from "../../../../Utils/globalFunctions/GlobalFunction";
+import CountdownTimer from '../CountDownTimer/CountDownTimer'
 
 export default function Video() {
   const [loading, setLoading] = useState(false);
@@ -115,6 +116,7 @@ export default function Video() {
       >
         <source src={`${storImagePath()}/images/HomePage/MainBanner/videos/HomepageMainBannerVideo.mp4`} type="video/mp4" />
       </video>
+      <CountdownTimer/>
     </div>
   );
 }

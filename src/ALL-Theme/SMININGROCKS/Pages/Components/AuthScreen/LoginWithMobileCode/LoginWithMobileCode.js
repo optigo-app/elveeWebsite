@@ -71,7 +71,7 @@ export default function LoginWithMobileCode() {
                 p: encodedCombinedValue
             };
             const response = await CommonAPI(body);
-            console.log('sssssssss',response);
+            console.log('sssssssss', response);
             if (response.Data.rd[0].stat === 1) {
                 localStorage.setItem('LoginUser', 'true')
                 setIsLoginState('true')
@@ -117,61 +117,60 @@ export default function LoginWithMobileCode() {
     };
 
     return (
-        <div className='paddingTopMobileSet' style={{ backgroundColor: '#c0bbb1', paddingTop: '110px' }}>
+        <div className='paddingTopMobileSet' style={{ backgroundColor: 'rgba(66, 66, 66, 0.05)' }}>
             {isLoading && (
                 <div className="loader-overlay">
                     <CircularProgress className='loadingBarManage' />
                 </div>
             )}
-            <div style={{ backgroundColor: '#c0bbb1' }}>
-                <div className='smling-forgot-main'>
-                    <p style={{
-                        textAlign: 'center',
-                        paddingBlock: '60px',
-                        marginTop: '15px',
-                        fontSize: '40px',
-                        color: '#7d7f85',
-                        fontFamily: 'FreightDispProBook-Regular,Times New Roman,serif'
-                    }}
-                    className='AuthScreenMainTitle'
-                    >Login With Code</p>
-                    <p style={{
-                        textAlign: 'center',
-                        marginTop: '-80px',
-                        fontSize: '15px',
-                        color: '#7d7f85',
-                        fontFamily: 'FreightDispProBook-Regular,Times New Roman,serif'
-                    }}
-                    className='AuthScreenSubTitle'
-                    >Last step! To secure your account, enter the code we just sent to {mobileNo}.</p>
+            <div>
+                <div className='smling-forgot-main-Color'>
+                    <div className='smling-forgot-main'>
+                        <p style={{
+                            textAlign: 'center',
+                            paddingBlock: '60px',
+                            marginTop: '15px',
+                            fontSize: '25px',
+                            fontFamily: 'PT Sans, sans-serif'
+                        }}
+                            className='AuthScreenMainTitle'
+                        >Login With Code</p>
+                        <p style={{
+                            textAlign: 'center',
+                            marginTop: '-80px',
+                            fontSize: '15px',
+                            color: '#7d7f85',
+                            fontFamily: 'FreightDispProBook-Regular,Times New Roman,serif'
+                        }}
+                            className='AuthScreenSubTitle'
+                        >Last step! To secure your account, enter the code we just sent to {mobileNo}.</p>
 
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
-                        <TextField
-                            autoFocus
-                            id="outlined-basic"
-                            label="Enter Code"
-                            variant="outlined"
-                            className='labgrowRegister'
-                            style={{ margin: '15px' }}
-                            onKeyDown={(event) => {
-                                if (event.key === 'Enter') {
-                                    handleSubmit();
-                                }
-                            }}
-                            onChange={(e) => handleInputChange(e, setEnterOTP, 'mobileNo')}
-                            error={!!errors.otp}
-                            helperText={errors.otp}
-                        />
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
+                            <TextField
+                                autoFocus
+                                id="outlined-basic"
+                                label="Enter Code"
+                                variant="outlined"
+                                className='labgrowRegister'
+                                style={{ margin: '15px' }}
+                                onKeyDown={(event) => {
+                                    if (event.key === 'Enter') {
+                                        handleSubmit();
+                                    }
+                                }}
+                                onChange={(e) => handleInputChange(e, setEnterOTP, 'mobileNo')}
+                                error={!!errors.otp}
+                                helperText={errors.otp}
+                            />
 
-                        <button className='submitBtnForgot' onClick={handleSubmit}>Login</button>
-                        <p style={{ marginTop: '10px' }}>Didn't get the code ? {resendTimer === 0 ? <span style={{ fontWeight: 500, color: 'blue', textDecoration: 'underline', cursor: 'pointer' }} onClick={handleResendCode}>Resend Code</span> : <span>Resend in {Math.floor(resendTimer / 60).toString().padStart(2, '0')}:{(resendTimer % 60).toString().padStart(2, '0')}</span>}</p>
-                        <Button style={{marginTop: '10px' ,color: 'gray'}} onClick={() => navigation('/LoginOption')}>CANCEL</Button>
+                            <button className='submitBtnForgot' onClick={handleSubmit}>Login</button>
+                            <p style={{ marginTop: '10px' }}>Didn't get the code ? {resendTimer === 0 ? <span style={{ fontWeight: 500, color: 'blue', textDecoration: 'underline', cursor: 'pointer' }} onClick={handleResendCode}>Resend Code</span> : <span>Resend in {Math.floor(resendTimer / 60).toString().padStart(2, '0')}:{(resendTimer % 60).toString().padStart(2, '0')}</span>}</p>
+                            <Button style={{ marginTop: '10px', color: 'gray' }} onClick={() => navigation('/LoginOption')}>CANCEL</Button>
+                        </div>
+
                     </div>
-                    <Footer />
                 </div>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'center', paddingBlock: '30px' }}>
-                <p style={{ margin: '0px', fontWeight: 500, width: '100px', color: 'white', cursor: 'pointer' }} onClick={() => window.scrollTo(0, 0)}>BACK TO TOP</p>
+                <Footer />
             </div>
         </div>
     );

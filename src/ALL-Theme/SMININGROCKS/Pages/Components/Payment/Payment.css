@@ -31,14 +31,6 @@
     font-weight: 500;
     border-radius: 5px;
 }
-
-.paymentBtn:hover {
-    background-color: lightgray;
-    border: 1px solid lightgray;
-}
-
-
-
 .AddressTitle {
     font-size: 15px;
     margin: 0px;

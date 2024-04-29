@@ -121,7 +121,7 @@ export default function Payment() {
         }
     }
     return (
-        <div className='paddingTopMobileSet' style={{ backgroundColor: '#c0bbb1', paddingTop: '110px' }}>
+        <div className='paddingTopMobileSet'>
             {isLoading && (
                 <div className="loader-overlay">
                     <CircularProgress className='loadingBarManage' />
@@ -173,7 +173,7 @@ export default function Payment() {
                     <div className='smilingPaymentBtn'>
                         <button onClick={handlePayment} className='paymentBtn'>PAY ON ACCOUNT</button>
                     </div>
-                    
+
                     {/* <div style={{ display: 'flex', justifyContent: 'center',marginTop: '-100px' }}>
                         <img src='http://gstore.orail.co.in/assets/newfolder/images/account/blue-box.jpg' className='smilingPayentImg' />
                     </div> */}
@@ -226,17 +226,9 @@ export default function Payment() {
 
                         <p style={{ color: 'blue', textDecoration: 'underline', marginTop: '10px', textAlign: 'center' }} onClick={() => navigation('/Delivery')}>Cancel</p>
                     </div>
-
-                   
-                    {/* <div style={{ display: 'flex', justifyContent: 'center',marginTop: '-100px' }}>
-                        <img src='http://gstore.orail.co.in/assets/newfolder/images/account/blue-box.jpg' className='smilingPayentImg' />
-                    </div> */}
                 </div>
-                <Footer />
             </div>
-            <div style={{ display: 'flex', justifyContent: 'center', paddingBlock: '30px' }}>
-                <p style={{ margin: '0px', fontWeight: 500, width: '100px', color: 'white', cursor: 'pointer' }} onClick={() => window.scrollTo(0, 0)}>BACK TO TOP</p>
-            </div>
+            <Footer />
         </div>
     )
 }

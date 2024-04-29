@@ -91,7 +91,7 @@ export default function LoginWithEmail() {
     //     console.log("param",loginData);
 
     //     const filterData = currencyData?.filter((cd)=>cd?.Currencyid === loginData?.CurrencyCodeid)
-        
+
     //     console.log("currencyData",filterData);
 
     //     if(filterData.length && filterData){
@@ -113,7 +113,7 @@ export default function LoginWithEmail() {
     //     }
     // }  
 
-   
+
 
     const handleSubmit = async () => {
         if (!confirmPassword.trim()) {
@@ -204,82 +204,80 @@ export default function LoginWithEmail() {
         }
     }
     return (
-        <div className='paddingTopMobileSet' style={{ backgroundColor: '#c0bbb1', paddingTop: '110px' }}>
+        <div className='paddingTopMobileSet' style={{ backgroundColor: 'rgba(66, 66, 66, 0.05)' }}>
             <ToastContainer />
             {isLoading && (
                 <div className="loader-overlay">
                     <CircularProgress className='loadingBarManage' />
                 </div>
             )}
-            <div style={{ backgroundColor: '#c0bbb1' }}>
-                <div className='smling-forgot-main'>
-                    <p style={{
-                        textAlign: 'center',
-                        paddingBlock: '60px',
-                        marginTop: '15px',
-                        fontSize: '40px',
-                        color: '#7d7f85',
-                        fontFamily: 'FreightDispProBook-Regular,Times New Roman,serif'
-                    }}
-                        className='AuthScreenMainTitle'
-                    >Login With Password</p>
-                    <p style={{
-                        textAlign: 'center',
-                        marginTop: '-80px',
-                        fontSize: '15px',
-                        color: '#7d7f85',
-                        fontFamily: 'FreightDispProBook-Regular,Times New Roman,serif'
-                    }}
-                        className='AuthScreenSubTitle'
-                    >using {email}</p>
+            <div>
+                <div className='smling-forgot-main-Color'>
+                    <div className='smling-forgot-main'>
+                        <p style={{
+                            textAlign: 'center',
+                            paddingBlock: '60px',
+                            marginTop: '15px',
+                            fontSize: '25px',
+                            fontFamily: 'PT Sans, sans-serif'
+                        }}
+                            className='AuthScreenMainTitle'
+                        >Login With Password</p>
+                        <p style={{
+                            textAlign: 'center',
+                            marginTop: '-80px',
+                            fontSize: '15px',
+                            color: '#7d7f85',
+                            fontFamily: 'PT Sans, sans-serif'
+                        }}
+                            className='AuthScreenSubTitle'
+                        >using {email}</p>
 
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                        <TextField
-                            autoFocus
-                            id="outlined-confirm-password-input"
-                            label="Password"
-                            type={showConfirmPassword ? 'text' : 'password'}
-                            autoComplete="current-password"
-                            className='labgrowRegister'
-                            style={{ margin: '15px' }}
-                            value={confirmPassword}
-                            onChange={(e) => handleInputChange(e, setConfirmPassword, 'confirmPassword')}
-                            error={!!errors.confirmPassword}
-                            helperText={errors.confirmPassword}
-                            onKeyDown={(event) => {
-                                if (event.key === 'Enter') {
-                                    handleSubmit();
-                                }
-                            }}
-                            InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            aria-label="toggle password visibility"
-                                            onClick={() => handleTogglePasswordVisibility('confirmPassword')}
-                                            onMouseDown={handleMouseDownConfirmPassword}
-                                            edge="end"
-                                        >
-                                            {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
-                                        </IconButton>
-                                    </InputAdornment>
-                                ),
-                            }}
-                        />
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                            <TextField
+                                autoFocus
+                                id="outlined-confirm-password-input"
+                                label="Password"
+                                type={showConfirmPassword ? 'text' : 'password'}
+                                autoComplete="current-password"
+                                className='labgrowRegister'
+                                style={{ margin: '15px' }}
+                                value={confirmPassword}
+                                onChange={(e) => handleInputChange(e, setConfirmPassword, 'confirmPassword')}
+                                error={!!errors.confirmPassword}
+                                helperText={errors.confirmPassword}
+                                onKeyDown={(event) => {
+                                    if (event.key === 'Enter') {
+                                        handleSubmit();
+                                    }
+                                }}
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={() => handleTogglePasswordVisibility('confirmPassword')}
+                                                onMouseDown={handleMouseDownConfirmPassword}
+                                                edge="end"
+                                            >
+                                                {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
 
-                        <button className='submitBtnForgot' onClick={handleSubmit}>Login</button>
-                        <Button style={{ marginTop: '10px', color: 'gray' }} onClick={() => navigation('/LoginOption')}>CANCEL</Button>
+                            <button className='submitBtnForgot' onClick={handleSubmit}>Login</button>
+                            <Button style={{ marginTop: '10px', color: 'gray' }} onClick={() => navigation('/LoginOption')}>CANCEL</Button>
 
-                        <button type='submit' className='SmilingLoginCodeBtn' onClick={handleNavigation}>Login With a Code instead on email</button>
-                        <p style={{ textAlign: 'center' }}>Go passwordless! we'll send you an email.</p>
+                            <button type='submit' className='submitBtnForgot' onClick={handleNavigation}>Login With a Code instead on email</button>
+                            <p style={{ textAlign: 'center' }}>Go passwordless! we'll send you an email.</p>
 
-                        <p style={{ color: 'blue', cursor: 'pointer' }} onClick={handleForgotPassword}>Forgot Password ?</p>
+                            <p style={{ color: 'blue', cursor: 'pointer' }} onClick={handleForgotPassword}>Forgot Password ?</p>
+                        </div>
                     </div>
-                    <Footer />
                 </div>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'center', paddingBlock: '30px' }}>
-                <p style={{ margin: '0px', fontWeight: 500, width: '100px', color: 'white', cursor: 'pointer' }} onClick={() => window.scrollTo(0, 0)}>BACK TO TOP</p>
+                <Footer />
             </div>
         </div>
     );

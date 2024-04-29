@@ -23,46 +23,46 @@ export default function MyWishList() {
   const setCartCount = useSetRecoilState(CartListCounts);
   const setWishCount = useSetRecoilState(WishListCounts);
   const navigation = useNavigate();
-  const [currData,setCurrData] = useState()
+  const [currData, setCurrData] = useState()
 
-//   const handelCurrencyData = () =>{
-//     let currencyData = JSON.parse(localStorage.getItem('CURRENCYCOMBO'));
-//     let loginData = JSON.parse(localStorage.getItem('loginUserDetail'));
-//     console.log("param",loginData);
+  //   const handelCurrencyData = () =>{
+  //     let currencyData = JSON.parse(localStorage.getItem('CURRENCYCOMBO'));
+  //     let loginData = JSON.parse(localStorage.getItem('loginUserDetail'));
+  //     console.log("param",loginData);
 
-//     if(currencyData && loginData){
-//       const filterData = currencyData?.filter((cd)=>cd?.Currencyid === loginData?.CurrencyCodeid)[0]
-//       console.log("currencyData",filterData);
-//       if(filterData){
-//         setCurrData(filterData)
-//       }
-//       else{
-//         let DefaultObj = {
-//           "Currencyid": 42,
-//           "Currencycode": "INR",
-//           "Currencyname": "Rupees",
-//           "Currencysymbol": "₹",
-//           "CurrencyRate": 1.00000,
-//           "IsDefault": 1
-//       }
-//       const DefaultObjData = currencyData?.filter((cd)=>cd?.IsDefault == 1)
-//       if(DefaultObjData.length > 0){
-//         setCurrData(DefaultObjData[0])
-//       }else{
-//         setCurrData(DefaultObj);
-//       }
-//       }
-//     }
-// }  
+  //     if(currencyData && loginData){
+  //       const filterData = currencyData?.filter((cd)=>cd?.Currencyid === loginData?.CurrencyCodeid)[0]
+  //       console.log("currencyData",filterData);
+  //       if(filterData){
+  //         setCurrData(filterData)
+  //       }
+  //       else{
+  //         let DefaultObj = {
+  //           "Currencyid": 42,
+  //           "Currencycode": "INR",
+  //           "Currencyname": "Rupees",
+  //           "Currencysymbol": "₹",
+  //           "CurrencyRate": 1.00000,
+  //           "IsDefault": 1
+  //       }
+  //       const DefaultObjData = currencyData?.filter((cd)=>cd?.IsDefault == 1)
+  //       if(DefaultObjData.length > 0){
+  //         setCurrData(DefaultObjData[0])
+  //       }else{
+  //         setCurrData(DefaultObj);
+  //       }
+  //       }
+  //     }
+  // }  
 
-useEffect(()=>{
-  // handelCurrencyData();
-  let loginData = JSON.parse(localStorage.getItem('loginUserDetail'));
-  let obj = {"CurrencyRate":loginData?.CurrencyRate,"Currencysymbol":loginData?.Currencysymbol}
-  if(obj){
-    setCurrData(obj)
-  }
-},[])
+  useEffect(() => {
+    // handelCurrencyData();
+    let loginData = JSON.parse(localStorage.getItem('loginUserDetail'));
+    let obj = { "CurrencyRate": loginData?.CurrencyRate, "Currencysymbol": loginData?.Currencysymbol }
+    if (obj) {
+      setCurrData(obj)
+    }
+  }, [])
 
   const getCountFunc = async () => {
     await GetCount().then((res) => {
@@ -272,12 +272,7 @@ useEffect(()=>{
 
   return (
     <div
-      className="paddingTopMobileSet"
-      style={{
-        backgroundColor: "#c0bbb1",
-        paddingTop: "110px",
-      }}
-    >
+      className="paddingTopMobileSet">
       {isLoading && (
         <div className="loader-overlay">
           <CircularProgress className="loadingBarManage" />
@@ -311,116 +306,133 @@ useEffect(()=>{
           <div className="smiWishLsitBoxMain">
             {wishlistData?.length === 0
               ? !isLoading && (
-                  <div
+                <div
+                  style={{
+                    width: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <p
                     style={{
-                      width: "100%",
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "center",
-                      alignItems: "center",
+                      margin: "0px",
+                      fontSize: "20px",
+                      fontWeight: 500,
                     }}
                   >
-                    <p
-                      style={{
-                        margin: "0px",
-                        fontSize: "20px",
-                        fontWeight: 500,
-                      }}
-                    >
-                      No Data Available
-                    </p>
-                    <p>Please First Add To Wishlist Data</p>
-                    <button
-                      className="browseBtnMore"
-                      onClick={() => navigation("/productpage")}
-                    >
-                      BROWSE OUR COLLECTION
-                    </button>
-                  </div>
-                )
+                    No Data Available
+                  </p>
+                  <p>Please First Add To Wishlist Data</p>
+                  <button
+                    className="browseBtnMore"
+                    onClick={() => navigation("/productpage")}
+                  >
+                    BROWSE OUR COLLECTION
+                  </button>
+                </div>
+              )
               : wishlistData?.map((item) => (
-                  <div key={item.id} className="smiWishLsitBox">
-                    <div
+                <div key={item.id} className="smiWishLsitBox">
+                  <div
+                    style={{
+                      position: "absolute",
+                      right: "20px",
+                      top: "5px",
+                    }}
+                  >
+                    <IoClose
                       style={{
-                        position: "absolute",
-                        right: "20px",
-                        top: "5px",
+                        height: "30px",
+                        width: "30px",
+                        cursor: "pointer",
+                        color: "rgb(0 0 0 / 66%)",
                       }}
-                    >
-                      <IoClose
-                        style={{
-                          height: "30px",
-                          width: "30px",
-                          cursor: "pointer",
-                          color: "rgb(0 0 0 / 66%)",
-                        }}
-                        onClick={() => handleRemoveWichList(item)}
-                      />
-                    </div>
-                    <img
-                      src={`${imageURL}/${yKey}/${item.DefaultImageName}`}
-                      className="smiWishLsitBoxImge"
-                      style={{ cursor: "pointer" }}
-                      alt="Wishlist item"
-                      onClick={() => handelProductSubmit(item)}
-                      onError={(e) => {
-                        e.target.src = notFound;
-                      }}
+                      onClick={() => handleRemoveWichList(item)}
                     />
+                  </div>
+                  <img
+                    src={`${imageURL}/${yKey}/${item.DefaultImageName}`}
+                    className="smiWishLsitBoxImge"
+                    style={{ cursor: "pointer" }}
+                    alt="Wishlist item"
+                    onClick={() => handelProductSubmit(item)}
+                    onError={(e) => {
+                      e.target.src = notFound;
+                    }}
+                  />
+                  <p className="smiWishLsitBoxTitltLine">
+                    {item.TitleLine}
+                  </p>
 
+
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignContent: "center",
+                      marginInline: "2%",
+                    }}
+                  >
                     <p className="smiWishLsitBoxDesc1">{item.designno}</p>
+                    {isPriseShow == 1 && (
+                      <p className="smiWishLsitBoxDescPrice">
+                        {
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: decodeEntities(
+                                currData?.Currencysymbol
+                              ),
+                            }}
+                            style={{ fontFamily: "serif", marginTop: '2px' }}
+                          />
+                        }
+                        {item.TotalUnitCost}
+                      </p>
+                    )}
+                  </div>
+
+
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignContent: "center",
+                      marginInline: "2%",
+                      paddingBottom: "18%",
+                    }}
+                  >
                     <p className="smiWishLsitBoxDesc2">
-                      {item.mastermanagement_goldtypename} /
-                      {item.mastermanagement_goldcolorname} /
-                      {item.ActualGrossweight} <br />
-                      {isPriseShow == 1 && (
-                        <p style={{display:'flex',justifyContent:'center',alignItems:'center',textAlign:'center'}}>
-                          {
-                            <div
-                              dangerouslySetInnerHTML={{
-                                __html: decodeEntities(
-                                  currData?.Currencysymbol
-                                ),
-                              }}
-                              style={{ fontFamily: "serif",marginTop:'2px' }}
-                            />
-                          }
-                          {item.TotalUnitCost}
-                        </p>
-                      )}
+                      GWT: {item.ActualGrossweight}
                     </p>
-                    <p
+                    <p className="smiWishLsitBoxDesc2">
+                      DWT: {item.totaldiamondweight}
+                    </p>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      position: "absolute",
+                      bottom: "0px",
+                      width: "100%",
+                      justifyContent: "center",
+                      marginBlock: "15px",
+                    }}
+                  >
+                    <button
                       className="smiWishLsitBoxDesc3"
                       onClick={() => handleAddToCart(item.autocode)}
                     >
                       ADD TO CART +
-                    </p>
+                    </button>
                   </div>
-                ))}
+                </div>
+              ))}
           </div>
-          <Footer />
         </div>
       </div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          paddingBlock: "30px",
-        }}
-      >
-        <p
-          style={{
-            margin: "0px",
-            fontWeight: 500,
-            width: "100px",
-            color: "white",
-            cursor: "pointer",
-          }}
-          onClick={() => window.scrollTo(0, 0)}
-        >
-          BACK TO TOP
-        </p>
-      </div>
+      <Footer />
     </div>
   );
 }
