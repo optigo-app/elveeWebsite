@@ -8,7 +8,7 @@ import prodListData from "../../jsonFile/Productlist_4_95oztttesi0o50vr.json";
 import filterData from "../../jsonFile/M_4_95oztttesi0o50vr.json";
 import PriceData from "../../jsonFile/Productlist_4_95oztttesi0o50vr_8.json";
 // import PriceData from "../../jsonFile/testingFile/Productlist_4_95oztttesi0o50vr_8_Original.json";
-import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Checkbox, CircularProgress, Divider, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Slider } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Checkbox, CircularProgress, Divider, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Pagination, Slider } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
@@ -341,8 +341,8 @@ const ProductList = () => {
             storeInit?.IsDiamondCustomization === 1
               ?
               pda.A === product.autocode &&
-              pda.G === loginUserDetail?.cmboDiaQCid?.split(',')[0] &&
-              pda.I === loginUserDetail?.cmboDiaQCid?.split(',')[1]
+              pda.G == loginUserDetail?.cmboDiaQCid?.split(',')[0] &&
+              pda.I == loginUserDetail?.cmboDiaQCid?.split(',')[1]     
               :
               pda.A === product.autocode
 
@@ -390,7 +390,7 @@ const ProductList = () => {
           updMT = newPriceData?.D ?? ""
           updMC = newPriceData?.F ?? ""
         }
-        console.log("priceprod", product?.designno, price);
+        console.log("priceprod", product?.designno,metalrd,diard1,csrd2);
         return { ...product, price, markup, metalrd, diard1, csrd2, updNWT, updGWT, updDWT, updDPCS, updCWT, updCPCS, updMT, updMC }
       }));
 
@@ -2643,6 +2643,11 @@ const ProductList = () => {
                   </div>
                 } */}
               </div>
+              <div style={{display:'flex',width:'100%',justifyContent:'center',marginTop:'100px'}}>
+                <Pagination count={10} />
+              </div>
+              <SmilingRock />
+              <Footer />
             </div>
           </div>
         </div>
