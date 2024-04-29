@@ -37,7 +37,17 @@ export const getDesignPriceList = async (param) => {
     return finalData;
   };
   
-  let encodedFilter = {"DesignNo":"","FilterKey":`${param?.data.param1name}`,"FilterVal":`${param?.data.param1dataname}`,"Metalid":`${loginUserDetail?.MetalId}`,"DiaQCid":`${loginUserDetail?.cmboDiaQCid}`,"CsQCid":`${loginUserDetail?.cmboCSQCid}`}
+  let encodedFilter = {
+    "DesignNo":"",
+    "FilterKey":`${param?.data.param1name}`,
+    "FilterVal":`${param?.data.param1dataname}`,
+    "PageNo":"1",
+    "PageSize":`${storeInit?.PageSize}`,
+    "Metalid":`${loginUserDetail?.MetalId}`,
+    "DiaQCid":`${loginUserDetail?.cmboDiaQCid}`,
+    "CsQCid":`${loginUserDetail?.cmboCSQCid}`,
+    "IsFromDesDet":"0"
+  }
 
   const GetPriceReq = {
     "CurrencyRate": `${handelCurrencyData()?.CurrencyRate}`,

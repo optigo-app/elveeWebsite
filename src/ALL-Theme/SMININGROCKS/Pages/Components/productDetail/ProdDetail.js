@@ -47,8 +47,11 @@ const ProdDetail = () => {
 
   const [sizeOption, setSizeOption] = useState();
   const [diaQColOpt, setDiaQColOpt] = useRecoilState(diamondQualityColorG);
+  const [diaQColOptId, setDiaQColOptId] = useState();
   const [mtTypeOption, setmtTypeOption] = useRecoilState(metalTypeG);
+  const [mtTypeOptionId, setmtTypeOptionId] = useState(); 
   const [cSQopt, setCSQOpt] = useRecoilState(colorstoneQualityColorG);
+  const [cSQoptId, setCSQOptId] = useState();
   const [colorImageData, setColorImageData] = useState([]);
   const [isProductCuFlag, setIsProductCuFlag] = useState("");
   const [IsColorWiseImagesShow, setIsColorWiseImagesShow] = useState('')
@@ -167,8 +170,11 @@ const ProdDetail = () => {
     if(loginInfo?.MetalId !== 0){
       let metalType = MetalTypeData?.find(item => item?.Metalid == loginInfo?.MetalId)
       setmtTypeOption(metalType?.metaltype)
+      setmtTypeOptionId(metalType?.Metalid)
     }else{
       setmtTypeOption(MetalTypeData[0]?.metaltype)
+      setmtTypeOptionId(MetalTypeData[0]?.Metalid)
+
     }
 
     let diaQCVar = DimondQualityColor?.find(item => item.QualityId == loginInfo?.cmboDiaQCid?.split(',')[0] && item.ColorId == loginInfo?.cmboDiaQCid?.split(',')[1]);
@@ -176,22 +182,30 @@ const ProdDetail = () => {
       // let qualityColor = `${loginInfo?.cmboDiaQualityColor.split("#@#")[0]?.toUpperCase()}#${loginInfo?.cmboDiaQualityColor.split("#@#")[1]?.toUpperCase()}`
       let qualityColor = `${diaQCVar?.Quality}#${diaQCVar?.color}`
       setDiaQColOpt(qualityColor)
+      setDiaQColOptId([diaQCVar?.QualityId,diaQCVar?.ColorId])
     }   
     else {
-      if (colorData && colorData?.length) {
-        setDiaQColOpt(`${colorData[0]?.Quality}#${colorData[0]?.color}`)
+      if (DimondQualityColor && DimondQualityColor?.length) {
+        setDiaQColOpt(`${DimondQualityColor[0]?.Quality}#${DimondQualityColor[0]?.color}`)
+        setDiaQColOptId([DimondQualityColor[0]?.QualityId,DimondQualityColor[0]?.ColorId])
+
       }
     }
-    
+
     // let dqcc = ColorStoneQualityColor?.find((dqc) => `${dqc.Quality}-${dqc.color}` === csQualColor)
     
     if (loginInfo?.cmboCSQCid !== "0,0") {
       let csQCVar = ColorStoneQualityColor?.find(item => item?.QualityId === loginInfo?.cmboCSQCid?.split(',')[0] && item?.ColorId === loginInfo?.cmboCSQCid?.split(',')[1])
       let csQualColor = `${csQCVar?.QualityId}-${csQCVar?.ColorId}`
       setCSQOpt(csQualColor)
+      setCSQOptId([csQCVar?.QualityId,csQCVar?.ColorId])
+
     } else {
       let ref = `${ColorStoneQualityColor[0].Quality}-${ColorStoneQualityColor[0].color}`
+      let ref1 = [ColorStoneQualityColor[0].QualityId,ColorStoneQualityColor[0].ColorId]
       setCSQOpt(ref)
+      setCSQOptId(ref1)
+      
     }
 
     // let sizeDatafilter = sizeData?.filter((sd)=>sd?.IsDefaultSize === 1)
@@ -201,7 +215,7 @@ const ProdDetail = () => {
 
   }, [colorData, sizeData])
 
-  console.log("cSQopt",mtTypeOption,diaQColOpt,cSQopt);
+  console.log("info",mtTypeOption,diaQColOpt,cSQopt);
   
   // console.log("productData",sizeOption)
 
@@ -358,7 +372,7 @@ const ProdDetail = () => {
       storeInit?.IsMetalCustomization === 1
         ?
         ele?.A === srProductsData?.autocode &&
-        ele?.C === mtTypeOption
+        ele?.C === mtTypeOptionId
         :
         ele?.A === srProductsData?.autocode 
     );
@@ -376,8 +390,8 @@ const ProdDetail = () => {
       storeInit?.IsDiamondCustomization === 1
         ?
         ele.A === srProductsData?.autocode &&
-        ele.G === diaQColOpt?.split("#")[0] &&
-        ele.I === diaQColOpt?.split("#")[1]
+        ele.G === diaQColOptId[0] &&
+        ele.I === diaQColOptId[1]
         :
         ele.A === srProductsData?.autocode 
 
@@ -403,12 +417,10 @@ const ProdDetail = () => {
       storeInit?.IsCsCustomization === 1
         ?
         ele.A === srProductsData?.autocode &&
-        ele.B === srProductsData?.designno &&
-        ele.H === cSQopt?.split("_")[0] &&
-        ele.J === cSQopt?.split("_")[1]
+        ele.H === cSQoptId[0] &&
+        ele.J === cSQoptId[1]
         :
-        ele.A === srProductsData?.autocode &&
-        ele.B === srProductsData?.designno
+        ele.A === srProductsData?.autocode 
 
     );
 
@@ -430,7 +442,7 @@ const ProdDetail = () => {
     let gt = showPrice + showPrice1 + showPrice2;
     setGrandTotal(gt ?? 0);
 
-  }, [getPriceData, mtTypeOption, diaQColOpt, cSQopt])
+  }, [getPriceData,mtTypeOption,diaQColOpt,cSQopt,mtTypeOptionId,diaQColOptId,cSQoptId])
 
 
   useEffect(() => {
@@ -1626,11 +1638,11 @@ const ProdDetail = () => {
                         className='menuitemSelectoreMain'
                         defaultValue={mtTypeOption}
                         onChange={(e) => {
-                          setmtTypeOption(e.target.value)
+                          setmtTypeOptionId(e.target.value)
                         }}
                       >
                         {metalType.map((data, index) => (
-                          <option key={index} value={data.metalType}>
+                          <option key={index} value={data.Metalid}>
                             {data.metaltype}
                           </option>
                         ))}
