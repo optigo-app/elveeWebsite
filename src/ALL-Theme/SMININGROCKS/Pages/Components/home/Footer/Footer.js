@@ -4,11 +4,49 @@ import { useNavigate } from 'react-router-dom';
 import { IoLocationOutline } from "react-icons/io5";
 import { IoMdCall } from "react-icons/io";
 import { IoMdMail } from "react-icons/io";
+import axios from 'axios';
 
 export default function Footer() {
-
+    const [email, setEmail] = useState();
     const [selectedFooteVal, setSelectedVal] = useState(0);
     const navigation = useNavigate();
+
+    const handleEmailChange = (event) => {
+        setEmail(event.target.value);
+    };
+
+    const handleSubmitNewlater = async () => {
+        // const storeInit = JSON.parse(localStorage.getItem('storeInit'));
+        // const newslater = storeInit?.newsletter;
+        // if (newslater) {
+        //     const newsletterUrl = `${newslater}${email}`;
+        //     try {
+        //         const response = await axios.get(newsletterUrl);
+
+        //         if (!response) {
+        //             throw new Error('Network response was not ok');
+        //         }
+        //         console.log('Newsletter submitted successfully:', response)
+        //     } catch (error) {
+        //         console.error('Error submitting newsletter:', error);
+        //     }
+        // }
+
+        const myHeaders = new Headers();
+        myHeaders.append("Cookie", "X-Mapping-hciinbhf=840F5B4B8383FB1A16DB63D3A258224F");
+
+        const requestOptions = {
+            method: "GET",
+            headers: myHeaders,
+            redirect: "follow"
+        };
+
+        fetch("https://www.orail.co.in/demo/icontact/standard/Ajax/SendMailToSubscriber.aspx?officeid=0&groupid=0&emailid=Test12@gmail.com", requestOptions)
+            .then((response) => response.text())
+            .then((result) => console.log(result))
+            .catch((error) => console.error(error));
+    };
+
 
     return (
         <div style={{marginTop: '50px'}}>
@@ -16,8 +54,8 @@ export default function Footer() {
                 <div className='ElveFooter1'>
                     <p className='elveBox1Title'>Sign Up For Newslatter</p>
                     <div style={{ marginTop: '20px', display: 'flex' }}>
-                        <input type='text' placeholder='Enter Your Email' className='eleBox1InputBox' />
-                        <button className='elevBox1Btn'>Subscribe</button>
+                        <input type='text' placeholder='Enter Your Email' className='eleBox1InputBox' value={email} onChange={handleEmailChange} />
+                        <button className='elevBox1Btn' onClick={handleSubmitNewlater}>Subscribe</button>
                     </div>
                 </div>
                 <div className='ElveFooter2'>
@@ -44,8 +82,8 @@ export default function Footer() {
                     {
                         selectedFooteVal === 0 ?
                             <div>
-                                <p style={{ display: 'flex', fontFamily: 'PT Sans, sans-serif' , height: '70px'}}>
-                                    <IoLocationOutline style={{ width: '50px' , height: 'fit-content'}} />
+                                <p style={{ display: 'flex', fontFamily: 'PT Sans, sans-serif', height: '70px' }}>
+                                    <IoLocationOutline style={{ width: '50px', height: 'fit-content' }} />
                                     <span>Plot No. – M1 To M6, Gujarat Hira Bourse Gem & Jewellery Park, Pal-Hazira Road, Ichchhapore, Surat - 394510</span>
                                 </p>
                                 <p style={{ fontFamily: 'PT Sans, sans-serif' }}>
@@ -59,8 +97,8 @@ export default function Footer() {
                             </div>
                             :
                             <div>
-                                <p style={{ display: 'flex', fontFamily: 'PT Sans, sans-serif' , height: '70px'}}>
-                                    <IoLocationOutline style={{width: '22px' , height: '22px'}}/>
+                                <p style={{ display: 'flex', fontFamily: 'PT Sans, sans-serif', height: '70px' }}>
+                                    <IoLocationOutline style={{ width: '22px', height: '22px' }} />
                                     <span>1177 6th Avenue, Suite 5099, New York,NY 10036.</span>
                                 </p>
                                 <p style={{ fontFamily: 'PT Sans, sans-serif' }}>

@@ -1,42 +1,50 @@
-import React from 'react'
-import './Styles.css'
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import React, { useRef, useState } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+import { Pagination, Navigation } from 'swiper/modules';
 
-const images = [
-    "https://via.placeholder.com/800x400",
-    "https://via.placeholder.com/800x400",
-    "https://via.placeholder.com/800x400"
-  ];
 
-const OurCraftmanShip = () => {
-    const settings = {
-        dots: true,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        autoplay: true,
-        autoplaySpeed: 2000,
-      };
-    
-      return (
-        <>
-        <div className='' style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
-        <h5>Our CraftmenShip</h5>
-        </div>
-        <div style={{marginTop:'50px'}}>
-        <Slider {...settings}>
-          {images.map((imageUrl, index) => (
-            <div key={index}>
-              <img src={imageUrl} alt={`Slide ${index + 1}`} width='100%'/>
-            </div>
-          ))}
-        </Slider>
-        </div>
-        </>
-      );
-    }
+const sliderData = [
+  {
+    imageUrl: 'https://via.placeholder.com/600x400',
+  },
+  {
+    imageUrl: 'https://via.placeholder.com/600x400',
+  },
+    {
+    imageUrl: 'https://via.placeholder.com/600x400',
+  },
+    {
+    imageUrl: 'https://via.placeholder.com/600x400',
+  },
+    {
+    imageUrl: 'https://via.placeholder.com/600x400',
+  },
+    {
+    imageUrl: 'https://via.placeholder.com/600x400',
+  },
+  // Add more sliderData items as needed
+];
 
-export default OurCraftmanShip
+export default function App() {
+  return (
+    <>
+    <div>
+    <p className='mt-5 mb-4' style={{textAlign:'center', fontSize:'20px'}}>Our Craftmenship</p>
+    </div>
+      <Swiper
+        navigation={true}
+        modules={[Pagination, Navigation]}
+        className="mySwiper"
+      >
+      {sliderData.map((slide, index) => (
+          <SwiperSlide key={index}>
+            <img src={slide.imageUrl} alt={`Slide ${index}`} style={{width:'100%', height:'40vh', objectFit:'cover'}} />
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </>
+  );
+}

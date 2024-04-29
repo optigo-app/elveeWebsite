@@ -1,0 +1,39 @@
+.Timercontainer {
+    font-family: "PT Sans", sans-serif !important;
+    margin-top: -6px;
+    width: 100%;
+    background: rgb(205, 209, 217);
+    padding: 30px 40px 30px 40px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.part1,
+.part2 {
+    flex: 1;
+}
+
+.part1p1 {
+    font-size: 17px;
+    margin: 0px 0px 7px 0px !important;
+}
+
+.part1p2 {
+    font-size: 40px;
+    margin: 0px 0px 7px 0px !important;
+}
+
+.spanData {
+    padding-right: 20%;
+}
+
+.ptitle {
+    font-size: 50px;
+    font-weight: 600;
+    margin-bottom: 0;
+}
+
+.pcontent {
+    font-size: 16px;
+}
