@@ -167,11 +167,11 @@ const ProdDetail = () => {
     let DimondQualityColor = JSON.parse(localStorage.getItem("QualityColor"))
     let MetalTypeData = JSON.parse(localStorage.getItem("MetalTypeData"))
 
-    if(loginInfo?.MetalId !== 0){
+    if (loginInfo?.MetalId !== 0) {
       let metalType = MetalTypeData?.find(item => item?.Metalid == loginInfo?.MetalId)
       setmtTypeOption(metalType?.metaltype)
       setmtTypeOptionId(metalType?.Metalid)
-    }else{
+    } else {
       setmtTypeOption(MetalTypeData[0]?.metaltype)
       setmtTypeOptionId(MetalTypeData[0]?.Metalid)
 
@@ -192,8 +192,9 @@ const ProdDetail = () => {
       }
     }
 
+
     // let dqcc = ColorStoneQualityColor?.find((dqc) => `${dqc.Quality}-${dqc.color}` === csQualColor)
-    
+
     if (loginInfo?.cmboCSQCid !== "0,0") {
       let csQCVar = ColorStoneQualityColor?.find(item => item?.QualityId === loginInfo?.cmboCSQCid?.split(',')[0] && item?.ColorId === loginInfo?.cmboCSQCid?.split(',')[1])
       let csQualColor = `${csQCVar?.QualityId}-${csQCVar?.ColorId}`
@@ -374,7 +375,7 @@ const ProdDetail = () => {
         ele?.A === srProductsData?.autocode &&
         ele?.C === mtTypeOptionId
         :
-        ele?.A === srProductsData?.autocode 
+        ele?.A === srProductsData?.autocode
     );
 
     console.log("mtrdData2222", mtrd)
@@ -393,7 +394,7 @@ const ProdDetail = () => {
         ele.G === diaQColOptId[0] &&
         ele.I === diaQColOptId[1]
         :
-        ele.A === srProductsData?.autocode 
+        ele.A === srProductsData?.autocode
 
     )
 
@@ -1784,7 +1785,8 @@ const ProdDetail = () => {
                           </select>
                         )}
                       </div>
-                    )}
+                    )
+                  }
 
                   {(sizeData?.length !== 0 || (productData?.DefaultSize && productData.DefaultSize.length !== 0)) && (
                     <div
@@ -2166,7 +2168,7 @@ const ProdDetail = () => {
             </div>
           </div>
           {(designSetList.length !== 0 && showIcateDesign === 1) &&
-            <div className='smilingCompleteLookMainWeb' style={{ position: 'relative', marginInline: '10%', display: 'flex', alignItems: 'center', marginBottom: '7%', marginTop: '7%' }}>
+            <div className='smilingCompleteLookMainWeb' style={{ position: 'relative', marginInline: '10%',minHeight:'350px', display: 'flex', alignItems: 'center', marginBottom: '7%', marginTop: '7%' }}>
               <div className='similiarBrand' style={{ right: '0px', position: 'absolute', display: 'flex', alignItems: 'center', flexDirection: 'column', marginBottom: '100px', marginTop: !(productData?.OriginalImagePath) && '120px' }}>
                 <div style={{ marginBottom: '12px' }}>
                   <span style={{ fontFamily: 'FreightDisp Pro Medium', color: '#7d7f85', fontSize: '26px' }}>Complete The Look</span>
