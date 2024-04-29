@@ -406,12 +406,9 @@ export default function Delivery() {
         }
     };
 
-    console.log('addddddddd',addressData);
+    console.log('addddddddd', addressData);
     return (
-        <div className='paddingTopMobileSet' style={{
-            backgroundColor: '#c0bbb1',
-            paddingTop: '110px'
-        }}>
+        <div className='paddingTopMobileSet'>
             {isLoading && (
                 <div className="loader-overlay">
                     <CircularProgress className='loadingBarManage' />
@@ -559,33 +556,17 @@ export default function Delivery() {
             <div className='smilingDelivery'>
                 <div className='smilingOrderMain'>
                     <div className='smilingdeliverBox1'>
-                        <p style={{ fontSize: '30px', fontWeight: 500, color: 'gray' }}>Delivery</p>
-                        <p>Order Will be delivered to selected address</p>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <p style={{ fontSize: '30px', fontWeight: 500, color: 'gray', fontFamily: 'PT Sans, sans-serif' }}>Delivery</p>
+                            <button className='smilingAddToAddressBtn' onClick={handleOpen}>Add New Address</button>
+                        </div>
+                        <p style={{ fontFamily: 'PT Sans, sans-serif' }}>Order Will be delivered to selected address</p>
                         <div className='smilingDeliveyAddressMain' style={{ display: 'flex', flexWrap: 'wrap' }}>
                             {
                                 addressData?.map((item, index) => (
-                                    // rgb(245 244 244)   fbfbfb
-                                    <div key={item.id} className='AddressMain' style={{backgroundColor: item.isdefault === 1 && 'rgb(245 244 244)'}} onClick={() => handleDefaultSelection(item.id)}>
-                                        <div style={{ display: 'flex', height: '25px' , justifyContent: 'flex-end'}}>
-                                            {/* <input
-                                                type="radio"
-                                                checked={item.isdefault === 1}
-                                                onChange={() => handleDefaultSelection(item.id)}
-                                                style={{ color: 'red' }}
-                                            /> */}
-                                            {/* <span
-                                                style={{
-                                                    display: 'inline-block',
-                                                    width: '12px', 
-                                                    height: '12px', 
-                                                    borderRadius: '50%',
-                                                    marginTop: '7px',
-                                                    backgroundColor: item.isdefault === 1 ? '#7d7f85' : 'transparent', 
-                                                    border: '1px solid #999',
-                                                }}
-                                            /> */}
-                                            {item.isdefault === 1 && <p style={{ margin: '0px 0px 0px 5px' , backgroundColor: 'blue', fontWeight: 500,borderRadius:'5px', padding: '0px 10px 0px 10px', color: 'white' }}>Selected</p>}
-                                            {/* {item.isdefault !== 1 && <p style={{ margin: '0px 0px 0px 5px' , backgroundColor: 'blue', fontWeight: 500,borderRadius:'5px', padding: '0px 10px 0px 10px', color: 'white' }}>Click Select</p>} */}
+                                    <div key={item.id} className='AddressMain' style={{ backgroundColor: item.isdefault === 1 && 'rgb(245 244 244)' }} onClick={() => handleDefaultSelection(item.id)}>
+                                        <div style={{ display: 'flex', height: '25px', justifyContent: 'flex-end' }}>
+                                            {item.isdefault === 1 && <p style={{ margin: '0px 0px 0px 5px', backgroundColor: '#e1e1e1', fontWeight: 500, borderRadius: '5px', padding: '0px 10px 0px 10px' }}>Selected</p>}
                                         </div>
                                         <p className='addressData' style={{ margin: '0px 0px 5px 0px' }}>{item.shippingfirstname} {item.shippinglastname}</p>
                                         <p className='addressData'>{item.street}</p>
@@ -605,7 +586,6 @@ export default function Delivery() {
                             }
                         </div>
                         {!isLoading && <div className='smilingMobileDeliveryBtnMain'>
-                            <button className='smilingAddToAddressBtn' onClick={handleOpen}>ADD NEW ADDRESS</button>
                             <button style={{ marginInline: '20px' }} className='smilingAddToAddressBtn' onClick={handleContinue}>Continue</button>
                         </div>}
                     </div>
@@ -614,11 +594,8 @@ export default function Delivery() {
                         <img src='http://gstore.orail.co.in/assets/newfolder/images/account/blue-box.jpg' className='smilingDeliverImg' /> */}
                     {/* </div> */}
                 </div>
-                <Footer />
             </div>
-            <div style={{ display: 'flex', justifyContent: 'center', paddingBlock: '30px' }}>
-                <p style={{ margin: '0px', fontWeight: 500, width: '100px', color: 'white', cursor: 'pointer' }} onClick={() => window.scrollTo(0, 0)}>BACK TO TOP</p>
-            </div>
+            <Footer />
         </div>
     )
 }

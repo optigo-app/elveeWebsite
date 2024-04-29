@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Footer from "../home/Footer/Footer";
 import SmilingRock from "../home/smiling_Rock/SmilingRock";
 import "./product.css";
@@ -20,12 +20,16 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { CartListCounts, HeaderData, HeaderData2, WishListCounts, colorstoneQualityColorG, diamondQualityColorG, metalTypeG, newMenuData, newTestProdData, priceData, productDataNew, searchData } from "../../../../../Recoil/atom";
 import { GetCount } from "../../../Utils/API/GetCount";
 import notFound from "../../assets/image-not-found.png";
-import { Category } from "@mui/icons-material";
-import { toast } from "react-toastify";
-
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import { productListApiCall } from "../../../Utils/API/ProductListAPI";
+import FilterListIcon from '@mui/icons-material/FilterList';
+import SortIcon from '@mui/icons-material/Sort';
+import AppsIcon from '@mui/icons-material/Apps';
+import GridViewIcon from '@mui/icons-material/GridView';
+import { IoGrid } from "react-icons/io5";
+import { TfiLayoutGrid4Alt } from "react-icons/tfi";
+
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 function valuetext(value) {
   return `${value}°C`;
@@ -34,6 +38,7 @@ function valuetext(value) {
 const ProductList = () => {
 
   const ProductData2 = [];
+  const dropdownRef = useRef(null);
 
   const [isOpenDetail, setIsOpenDetail] = useState(false)
   const [ProductApiData, setProductApiData] = useState([])
@@ -107,7 +112,10 @@ const ProductList = () => {
   const [IsProdLoading, setIsProdLoading] = useState(false);
   const [currData, setCurrData] = useState()
   const [isFilterData, setIsFilterData] = useState(false)
-  const [rangeProData,setRangeProData]=useState([])
+  const [rangeProData, setRangeProData] = useState([])
+
+
+  const [selectedOptionData, setSelectedOptionData] = useState(null);
 
   // console.log("filterCount", newProData?.length, ProductApiData2?.length, filterChecked);
 
@@ -182,9 +190,9 @@ const ProductList = () => {
     }
   }, [cartData])
 
-  const WishListToCart = () =>{
+  const WishListToCart = () => {
     let findData = Object.keys(wishFlag).filter((wd) => Object.keys(cartFlag).find((cd) => wd === cd))
-    console.log("findData",findData)
+    console.log("findData", findData)
     if (findData) {
       wishFlag[findData] = false
       setWishFlag(wishFlag)
@@ -945,7 +953,7 @@ const ProductList = () => {
 
         const product = prod
 
-        console.log("prod",prod)
+        console.log("prod", prod)
 
         const finalJSON = {
           "stockweb_event": "",
@@ -1000,7 +1008,7 @@ const ProductList = () => {
           // "UnitCost": `${product?.price === "Not Available" ? 0 : product?.price}`,
           "UnitCost": `${product?.price ?? 0}`,
           // "UnitCostWithmarkup": (`${(product?.price === "Not Available" ? 0 : product?.price) + (product?.markup ?? 0)}`),
-          "UnitCostWithmarkup": (`${PriceWithMarkupFunction(product?.markup,product?.price,currData?.CurrencyRate)}`),
+          "UnitCostWithmarkup": (`${PriceWithMarkupFunction(product?.markup, product?.price, currData?.CurrencyRate)}`),
           "autocode": `${product?.autocode}`,
           "colorstonecolorname": `${product?.colorstonecolorname}`,
           "colorstonequality": `${product?.colorstonequality}`,
@@ -1414,33 +1422,33 @@ const ProductList = () => {
   // }, [])
 
   useEffect(() => {
-    const priceOnly = (newProData.length ? newProData :ProductApiData2)?.filter(item => item?.price !== 'Not Available')
-    ?.map(item => item.price != 0 && item.price)?.sort((a, b) => a - b);
-      
-      // ?.map(item => item.price != 0 && item.price != '' ? item.price + item?.UnitCost : item.UnitCost)
-      
+    const priceOnly = (newProData.length ? newProData : ProductApiData2)?.filter(item => item?.price !== 'Not Available')
+      ?.map(item => item.price != 0 && item.price)?.sort((a, b) => a - b);
+
+    // ?.map(item => item.price != 0 && item.price != '' ? item.price + item?.UnitCost : item.UnitCost)
+
     setMinPrice(priceOnly[0]);
     setMaxPrice(priceOnly[priceOnly?.length - 1]);
     setValue1([priceOnly[0], priceOnly[priceOnly?.length - 1]])
     // const netWtOnly = ProductApiData2?.map((item) => item?.netwt).sort((a, b) => a - b);
-    const netWtOnly = (newProData.length ? newProData :ProductApiData2)?.map((item) => item?.updNWT).sort((a, b) => a - b);
+    const netWtOnly = (newProData.length ? newProData : ProductApiData2)?.map((item) => item?.updNWT).sort((a, b) => a - b);
     setMinNetwt(netWtOnly[0]);
     setMaxNetwt(netWtOnly[netWtOnly?.length - 1]);
     setValue2([netWtOnly[0], netWtOnly[netWtOnly?.length - 1]])
 
     // const grossWtOnly = ProductApiData2?.map((item) => item?.Grossweight).sort((a, b) => a - b);
-    const grossWtOnly = (newProData.length ? newProData :ProductApiData2)?.map((item) => item?.updGWT).sort((a, b) => a - b);
+    const grossWtOnly = (newProData.length ? newProData : ProductApiData2)?.map((item) => item?.updGWT).sort((a, b) => a - b);
     setMinGrossWt(grossWtOnly[0]);
     setMaxGrossWtt(grossWtOnly[grossWtOnly?.length - 1]);
     setValue3([grossWtOnly[0], grossWtOnly[grossWtOnly?.length - 1]])
-    
+
     // const diamondWtOnly = ProductApiData2?.map((item) => item?.diamondweight).sort((a, b) => a - b);
-    const diamondWtOnly = (newProData.length ? newProData :ProductApiData2)?.map((item) => item?.updDWT).sort((a, b) => a - b);
+    const diamondWtOnly = (newProData.length ? newProData : ProductApiData2)?.map((item) => item?.updDWT).sort((a, b) => a - b);
     setMinDiamondWt(diamondWtOnly[0]);
     setMaxDiamondWt(diamondWtOnly[diamondWtOnly?.length - 1]);
     setValue4([diamondWtOnly[0], diamondWtOnly[diamondWtOnly?.length - 1]])
 
-  }, [ProductApiData2,newProData]);
+  }, [ProductApiData2, newProData]);
 
   const handlePriceChange = (event, newValue, activeThumb) => {
     setValue1(newValue);
@@ -1636,10 +1644,6 @@ const ProductList = () => {
                 sx={{
                   borderBottom: "1px solid #c7c8c9",
                   borderRadius: 0,
-                  marginLeft: "28px",
-                  "&.Mui-expanded": {
-                    marginLeft: "28px",
-                  },
                   "&.MuiPaper-root.MuiAccordion-root:last-of-type": {
                     borderBottomLeftRadius: "0px",
                     borderBottomRightRadius: "0px",
@@ -1662,13 +1666,7 @@ const ProductList = () => {
                     },
                   }}
                 >
-                  <span
-                    style={{
-                      fontFamily: "TT Commons, sans-serif",
-                      fontSize: "12px",
-                      opacity: "0.7",
-                    }}
-                  >
+                  <span className="filtercategoryLable">
                     {ele.label}
                   </span>
                 </AccordionSummary>
@@ -1760,6 +1758,7 @@ const ProductList = () => {
   const handleSortChange = (e) => {
     const selectedOption = e.target.value;
     setSelectedSortOption(selectedOption);
+    setSelectedOptionData(selectedOption);
     let sortedData = [...ProductApiData2];
 
     if (selectedOption === 'PRICE HIGH TO LOW') {
@@ -1791,15 +1790,56 @@ const ProductList = () => {
     if (pPrice <= 0) {
       return 0
     }
-    else if(pmu <=0){
+    else if (pmu <= 0) {
       return pPrice
     }
-    else{
-      let percentPMU = ((pmu/100) / curr)
-      return (Number(pPrice*(percentPMU ?? 0)) + Number(pPrice ?? 0))
+    else {
+      let percentPMU = ((pmu / 100) / curr)
+      return (Number(pPrice * (percentPMU ?? 0)) + Number(pPrice ?? 0))
     }
   }
 
+  const [isActive, setIsActive] = useState(false);
+
+  const [isShowfilter, setIsShowFilter] = useState(true);
+  const options = [
+    { label: 'Recommended' },
+    { label: 'New' },
+    { label: 'In stock' },
+    { label: 'PRICE LOW TO HIGH' },
+    { label: 'PRICE HIGH TO LOW' },
+  ];
+
+  const handleFilterShow = () => {
+    setIsShowFilter(!isShowfilter)
+  }
+
+
+  const toggleDropdown = () => {
+    setIsActive(!isActive);
+  };
+
+  const [show2ImagesView, setShow2ImageView] = useState(false);
+  const [show3ImagesView, setShow3ImageView] = useState(false);
+  const [show4ImagesView, setShow4ImageView] = useState(false);
+  const handle2ImageShow = () => {
+    setShow4ImageView(false)
+    setShow3ImageView(false)
+    setShow2ImageView(true)
+
+  }
+
+  const handle3ImageShow = () => {
+    setShow4ImageView(false)
+    setShow2ImageView(false)
+    setShow3ImageView(true)
+  }
+
+  const handle4ImageShow = () => {
+    setShow2ImageView(false)
+    setShow3ImageView(false)
+    setShow4ImageView(true)
+  }
 
 
   return (
@@ -1807,10 +1847,8 @@ const ProductList = () => {
 
       <div
         style={{
-          backgroundColor: "#c0bbb1",
           height: "100%",
           width: "100%",
-          // paddingBottom: "100px",
         }}
       >
         {(!IsProdLoading && <div className="loader-overlay">
@@ -1821,266 +1859,400 @@ const ProductList = () => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            paddingTop: '110px'
+            paddingTop: '30px',
+            marginInline: '13%'
           }}
           className='paddingTopMobileSet'
         >
-          <div className="smilingProductMain" id="smilingProductMain">
-            <div
-              className="smilingProductSubMain"
-              style={{ width: "100%", display: "flex" }}
-            >
+          <div style={{ width: '100%' }}>
+            <div class="bg-image">
+              <div class="overlay"></div>
+              <div class="text-container">
+                <h1>All</h1>
+              </div>
+            </div>
+            <div className="filterDivcontainer">
+              <div className="part" style={{ flex: '20%' }}>
+                <div className="part-content" onClick={handleFilterShow}>
+                  {isShowfilter ? "Hide Filter" : "Show Filter"}
+                  <FilterListIcon />
+                </div>
+              </div>
+              <div className="divider"></div>
+              <div className="part" style={{ flex: '20%' }}>
+                <div className="part-content">
+                  <div className={`custom-select ${isActive ? 'active' : ''}`}>
+                    <button
+                      ref={dropdownRef}
+                      className="select-button"
+                      onClick={toggleDropdown}
+                      aria-haspopup="listbox"
+                      aria-expanded={isActive}
+                    >
+                      <span className="selected-value">{selectedOptionData ? selectedOptionData : 'Featured'}
+                        <SortIcon />
+                      </span>
+                    </button>
+                    {isActive && (
+                      <ul className="select-dropdown">
+                        {options.map((option, index) => (
+                          <li key={index} role="option" onClick={() => handleSortChange(option)}>
+                            <label htmlFor={`option-${index}`}>{option.label}</label>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                </div>
+              </div>
+              <div className="divider"></div>
+              <div className="part" style={{ flex: '60%', justifyContent: 'end' }}>
+                <div className="part-content">
+                  <IoGrid style={{ height: '18px', width: '18px', opacity: 0.7, color: '#7b7b7b' }} onClick={() => handle2ImageShow()} />
+                  <AppsIcon style={{ height: '22px', width: '22px', opacity: 0.8, color: '#1f1919' }} onClick={() => handle3ImageShow()} />
+                  <TfiLayoutGrid4Alt style={{ height: '17px', width: '17px', opacity: 0.6 }} onClick={() => handle4ImageShow()} />
+                </div>
+              </div>
+            </div>
+            <div className="smilingProductMain" id="smilingProductMain">
               <div
-                style={{
-                  width: "20%",
-                  margin: "0px 100px 0px 0px",
-                  padding: "100px 0px 40px 50px",
-                }}
-                className="smilingWebProductListSideBar"
+                className="smilingProductSubMain"
+                style={{ width: "100%", display: "flex", position: "relative" }}
               >
-                <ul className="d-flex" style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <li className="finejwelery me-4" id="finejwelery" style={{ fontSize: '14px' }}>Filters{newProData.length > 0 ? ` (${newProData.length}/${ProductApiData2?.length}) ` : null}</li>
-                  <li className="finejwelery" id="finejwelery" 
-                  onClick={() =>handlePageReload()} 
-                  style={{ cursor: 'pointer', fontSize: '14px' }}>
-                    {
-                      (Object.values(filterChecked)).filter(fc => fc.checked !== false).filter(fc => fc.checked !== undefined).length ?
-                        "Clear All"
-                        :
-                        `Product: ${ProductApiData2?.length}`
-                    }
-                  </li>
-                </ul>
-                <div>
-                  {NewFilterData().map((ele, index) => (
-                    <>
-                      <Accordion
-                        elevation={0}
-                        sx={{
-                          borderBottom: "1px solid #c7c8c9",
-                          borderRadius: 0,
-                          marginLeft: "28px",
-                          "&.Mui-expanded": {
-                            marginLeft: "28px",
-                          },
-                          "&.MuiPaper-root.MuiAccordion-root:last-of-type": {
-                            borderBottomLeftRadius: "0px",
-                            borderBottomRightRadius: "0px",
-                          },
-                          "&.MuiPaper-root.MuiAccordion-root:before": {
-                            background: "none",
-                          },
-                        }}
-                      >
-                        <AccordionSummary
-                          expandIcon={<ExpandMoreIcon sx={{ width: "20px" }} />}
-                          aria-controls="panel1-content"
-                          id="panel1-header"
+                <div className="smilingWebProductListSideBar" style={{ transition: "1s ease", width: `19%`, left: `${isShowfilter ? "0" : "-500%"}` }}>
+                  <ul className="d-flex" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', padding: '0px 20px 0px 0px' }}>
+                    <li className="finejwelery me-4" id="finejwelery" style={{ fontSize: '14px' }}>Filters{newProData.length > 0 ? ` (${newProData.length}/${ProductApiData2?.length}) ` : null}</li>
+                    <li className="finejwelery" id="finejwelery"
+                      onClick={() => handlePageReload()}
+                      style={{ cursor: 'pointer', fontSize: '14px' }}>
+                      {
+                        (Object.values(filterChecked)).filter(fc => fc.checked !== false).filter(fc => fc.checked !== undefined).length ?
+                          "Clear All"
+                          :
+                          `Product: ${ProductApiData2?.length}`
+                      }
+                    </li>
+                  </ul>
+                  <div>
+                    {NewFilterData().map((ele, index) => (
+                      <>
+                        <Accordion
+                          elevation={0}
                           sx={{
-                            color: "#7f7d85",
+                            borderBottom: "1px solid #c7c8c9",
                             borderRadius: 0,
-
-                            "&.MuiAccordionSummary-root": {
-                              padding: 0,
+                            "&.MuiPaper-root.MuiAccordion-root:last-of-type": {
+                              borderBottomLeftRadius: "0px",
+                              borderBottomRightRadius: "0px",
+                            },
+                            "&.MuiPaper-root.MuiAccordion-root:before": {
+                              background: "none",
                             },
                           }}
                         >
-                          <span
-                            style={{
-                              fontFamily: "TT Commons, sans-serif",
-                              fontSize: "12px",
-                              opacity: "0.7",
+                          <AccordionSummary
+                            expandIcon={<ExpandMoreIcon sx={{ width: "20px" }} />}
+                            aria-controls="panel1-content"
+                            id="panel1-header"
+                            sx={{
+                              color: "#7f7d85",
+                              borderRadius: 0,
+
+                              "&.MuiAccordionSummary-root": {
+                                padding: 0,
+                              },
                             }}
                           >
-                            {ele.label}
-                          </span>
-                        </AccordionSummary>
-                        <AccordionDetails
-                          sx={{
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: "4px",
-                          }}
-                        >
-                          {ele.label === "PRICE" &&
-                            <div>
-                              <Slider
-                                className='netWtSecSlider'
-                                getAriaLabel={() => 'Minimum distance'}
-                                value={value1}
-                                min={minPrice}
-                                max={maxPrice}
-                                size="small"
-                                onChange={handlePriceChange}
-                                valueLabelDisplay="auto"
-                                getAriaValueText={valuetext}
-                                disableSwap
-                              />
-                              <div className="d-flex w-100 justify-content-between align-items-center mt-1">
-                                <input value={value1[0]} className="minmaxvalpl" disabled />
-                                <input value={value1[1]} className="minmaxvalpl" disabled />
-                              </div>
-                            </div>}
+                            <span className="filtercategoryLable">
+                              {ele.label}
+                            </span>
+                          </AccordionSummary>
+                          <AccordionDetails
+                            sx={{
+                              display: "flex",
+                              flexDirection: "column",
+                              gap: "4px",
+                            }}
+                          >
+                            {ele.label === "PRICE" &&
+                              <div>
+                                <Slider
+                                  className='netWtSecSlider'
+                                  getAriaLabel={() => 'Minimum distance'}
+                                  value={value1}
+                                  min={minPrice}
+                                  max={maxPrice}
+                                  size="small"
+                                  onChange={handlePriceChange}
+                                  valueLabelDisplay="auto"
+                                  getAriaValueText={valuetext}
+                                  disableSwap
+                                />
+                                <div className="d-flex w-100 justify-content-between align-items-center mt-1">
+                                  <input value={value1[0]} className="minmaxvalpl" disabled />
+                                  <input value={value1[1]} className="minmaxvalpl" disabled />
+                                </div>
+                              </div>}
 
-                          {ele.label === "NETWT" &&
-                            <div>
-                              <Slider
-                                className='netWtSecSlider'
-                                getAriaLabel={() => 'Minimum distance'}
-                                value={value2}
-                                min={minNetwt}
-                                max={maxNetwt}
-                                size="small"
-                                onChange={handleNetWtChange}
-                                valueLabelDisplay="auto"
-                                getAriaValueText={valuetext}
-                                disableSwap
-                              />
-                              <div className="d-flex w-100 justify-content-between align-items-center mt-1">
-                                <input value={value2[0]} className="minmaxvalpl" disabled />
-                                <input value={value2[1]} className="minmaxvalpl" disabled />
+                            {ele.label === "NETWT" &&
+                              <div>
+                                <Slider
+                                  className='netWtSecSlider'
+                                  getAriaLabel={() => 'Minimum distance'}
+                                  value={value2}
+                                  min={minNetwt}
+                                  max={maxNetwt}
+                                  size="small"
+                                  onChange={handleNetWtChange}
+                                  valueLabelDisplay="auto"
+                                  getAriaValueText={valuetext}
+                                  disableSwap
+                                />
+                                <div className="d-flex w-100 justify-content-between align-items-center mt-1">
+                                  <input value={value2[0]} className="minmaxvalpl" disabled />
+                                  <input value={value2[1]} className="minmaxvalpl" disabled />
+                                </div>
                               </div>
-                            </div>
-                          }
+                            }
 
-                          {ele.label === "GROSSWT" &&
-                            <div>
-                              <Slider
-                                className='netWtSecSlider'
-                                getAriaLabel={() => 'Minimum distance'}
-                                value={value3}
-                                min={minGrosswt}
-                                max={maxGrosswt}
-                                size="small"
-                                onChange={handlegrossWtChange}
-                                valueLabelDisplay="auto"
-                                getAriaValueText={valuetext}
-                                disableSwap
-                              />
-                              <div className="d-flex w-100 justify-content-between align-items-center mt-1">
-                                <input value={value3[0]} className="minmaxvalpl" disabled />
-                                <input value={value3[1]} className="minmaxvalpl" disabled />
+                            {ele.label === "GROSSWT" &&
+                              <div>
+                                <Slider
+                                  className='netWtSecSlider'
+                                  getAriaLabel={() => 'Minimum distance'}
+                                  value={value3}
+                                  min={minGrosswt}
+                                  max={maxGrosswt}
+                                  size="small"
+                                  onChange={handlegrossWtChange}
+                                  valueLabelDisplay="auto"
+                                  getAriaValueText={valuetext}
+                                  disableSwap
+                                />
+                                <div className="d-flex w-100 justify-content-between align-items-center mt-1">
+                                  <input value={value3[0]} className="minmaxvalpl" disabled />
+                                  <input value={value3[1]} className="minmaxvalpl" disabled />
+                                </div>
                               </div>
-                            </div>
-                          }
+                            }
 
-                          {ele.label === "DIAMONDWT" &&
-                            <div>
-                              <Slider
-                                className='netWtSecSlider'
-                                getAriaLabel={() => 'Minimum distance'}
-                                value={value4}
-                                min={minDiamondWt}
-                                max={maxDiamondWt}
-                                size="small"
-                                onChange={handleDiamondChange}
-                                valueLabelDisplay="auto"
-                                getAriaValueText={valuetext}
-                                disableSwap
-                              />
-                              <div className="d-flex w-100 justify-content-between align-items-center mt-1">
-                                <input value={value4[0]} className="minmaxvalpl" disabled />
-                                <input value={value4[1]} className="minmaxvalpl" disabled />
+                            {ele.label === "DIAMONDWT" &&
+                              <div>
+                                <Slider
+                                  className='netWtSecSlider'
+                                  getAriaLabel={() => 'Minimum distance'}
+                                  value={value4}
+                                  min={minDiamondWt}
+                                  max={maxDiamondWt}
+                                  size="small"
+                                  onChange={handleDiamondChange}
+                                  valueLabelDisplay="auto"
+                                  getAriaValueText={valuetext}
+                                  disableSwap
+                                />
+                                <div className="d-flex w-100 justify-content-between align-items-center mt-1">
+                                  <input value={value4[0]} className="minmaxvalpl" disabled />
+                                  <input value={value4[1]} className="minmaxvalpl" disabled />
+                                </div>
                               </div>
-                            </div>
-                          }
+                            }
 
-                          {ele.filterList.map((flist, i) => (
-                            <div
-                              style={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: "12px",
-                              }}
-                              key={i}
-                            >
-                              <Checkbox
-                                name={`checkbox${index + 1}${i + 1}`}
-                                checked={
-                                  filterChecked[`checkbox${index + 1}${i + 1}`]
-                                    ? filterChecked[`checkbox${index + 1}${i + 1}`]?.checked
-                                    : false
-                                }
+                            {ele.filterList.map((flist, i) => (
+                              <div
                                 style={{
-                                  color: "#7f7d85",
-                                  padding: 0,
-                                  width: "10px",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  gap: "12px",
                                 }}
-                                onClick={(e) =>
-                                  handleCheckboxChange(e, ele, flist)
-                                }
-                                size="small"
-                              />
-                              <small
-                                style={{
-                                  fontFamily: "TT Commons, sans-serif",
-                                  color: "#7f7d85",
-                                  textTransform: "lowercase",
-                                }}
+                                key={i}
                               >
-                                {flist}
-                              </small>
-                            </div>
-                          ))}
-                        </AccordionDetails>
-                      </Accordion>
-                    </>
-                  ))}
-                </div>
-              </div>
-              {/* for mobile */}
-              <div className="smilingMobileProductListSideBar">
-
-                <hr style={{ marginTop: "0px" }} />
-                <div style={{ display: "flex", marginInline: "15px" }}>
-                  <div style={{ width: "49%" }} onClick={toggleDrawerOverlay}>
-
-                    <Drawer
-                      anchor="bottom"
-                      open={isOpenDetail}
-                      onClose={toggleDetailDrawer}
-                    >
-                      {list("bottom")}
-                    </Drawer>
-
-                    <p
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        color: "#7d7f85",
-                        fontSize: "13px",
-                        fontWeight: 500,
-                        margin: "0px",
-                      }}
-                      // onClick={toggleDeatilList}
-                      onClick={toggleDetailDrawer}
-                    >
-                      FILTER<span>{isOpenDetail ? "-" : "+"}</span>
-                    </p>
-
+                                <Checkbox
+                                  name={`checkbox${index + 1}${i + 1}`}
+                                  checked={
+                                    filterChecked[`checkbox${index + 1}${i + 1}`]
+                                      ? filterChecked[`checkbox${index + 1}${i + 1}`]?.checked
+                                      : false
+                                  }
+                                  style={{
+                                    color: "#7f7d85",
+                                    padding: 0,
+                                    width: "10px",
+                                  }}
+                                  onClick={(e) =>
+                                    handleCheckboxChange(e, ele, flist)
+                                  }
+                                  size="small"
+                                />
+                                <small
+                                  style={{
+                                    fontFamily: "TT Commons, sans-serif",
+                                    color: "#7f7d85",
+                                    textTransform: "lowercase",
+                                  }}
+                                >
+                                  {flist}
+                                </small>
+                              </div>
+                            ))}
+                          </AccordionDetails>
+                        </Accordion>
+                      </>
+                    ))}
                   </div>
-                  <hr
+                </div>
+                {/* for mobile */}
+                <div className="smilingMobileProductListSideBar">
+                  <div className="filterListMobileData" style={{ display: "flex", marginInline: "15px" }}>
+                    <div style={{ width: "100%" }} onClick={toggleDrawerOverlay}>
+                      <Drawer
+                        anchor="left"
+                        open={isOpenDetail}
+                        onClose={toggleDetailDrawer}
+                      >
+                        {list("left")}
+                      </Drawer>
+                      <div className="filterMobileDivcontainer">
+                        <div className="part firstfilteDiv" style={{ flex: '20%' }}>
+                          <div className="part-content" onClick={toggleDetailDrawer}>
+                            Filter
+                            <FilterListIcon />
+                            
+                          </div>
+                        </div>
+                        <div className="part secondfilteDiv" style={{ flex: '20%' }}>
+                          <div className="part-content">
+                            <div className={`custom-select ${isActive ? 'active' : ''}`}>
+                              <button
+                                className="select-button"
+                                onClick={toggleDropdown}
+                                aria-haspopup="listbox"
+                                aria-expanded={isActive}
+                              >
+                                <span className="selected-value">{selectedOptionData ? selectedOptionData : 'Featured'}
+                                  <SortIcon />
+                                </span>
+                              </button>
+                              <ul className="select-dropdown">
+                                {options.map((option, index) => (
+                                  <li key={index} role="option" onClick={() => handleSortChange(option)}>
+                                    <label htmlFor={`option-${index}`}>{option.label}</label>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="part secondfilteDiv" style={{ flex: '20%' }}>
+                          <div className="part-content">
+                            <div className={`custom-select ${isActive ? 'active' : ''}`}>
+                              <button
+                                className="select-button"
+                                onClick={toggleDropdown}
+                                aria-haspopup="listbox"
+                                aria-expanded={isActive}
+                              >
+                                <span className="selected-value">{selectedOptionData ? selectedOptionData : 'Featured'}
+                                  <SortIcon />
+                                </span>
+                              </button>
+                              <ul className="select-dropdown">
+                                {options.map((option, index) => (
+                                  <li key={index} role="option" onClick={() => handleSortChange(option)}>
+                                    <label htmlFor={`option-${index}`}>{option.label}</label>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="part secondfilteDiv" style={{ flex: '20%' }}>
+                          <div className="part-content">
+                            <div className={`custom-select ${isActive ? 'active' : ''}`}>
+                              <button
+                                className="select-button"
+                                onClick={toggleDropdown}
+                                aria-haspopup="listbox"
+                                aria-expanded={isActive}
+                              >
+                                <span className="selected-value">{selectedOptionData ? selectedOptionData : 'Featured'}
+                                  <SortIcon />
+                                </span>
+                              </button>
+                              <ul className="select-dropdown">
+                                {options.map((option, index) => (
+                                  <li key={index} role="option" onClick={() => handleSortChange(option)}>
+                                    <label htmlFor={`option-${index}`}>{option.label}</label>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="part secondfilteDiv" style={{ flex: '20%' }}>
+                          <div className="part-content">
+                            <div className={`custom-select ${isActive ? 'active' : ''}`}>
+                              <button
+                                className="select-button"
+                                onClick={toggleDropdown}
+                                aria-haspopup="listbox"
+                                aria-expanded={isActive}
+                              >
+                                <span className="selected-value">{selectedOptionData ? selectedOptionData : 'Featured'}
+                                  <SortIcon />
+                                </span>
+                              </button>
+                              <ul className="select-dropdown">
+                                {options.map((option, index) => (
+                                  <li key={index} role="option" onClick={() => handleSortChange(option)}>
+                                    <label htmlFor={`option-${index}`}>{option.label}</label>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="part thirdfilteDiv" style={{ flex: '20%', justifyContent: 'end' }}>
+                          <div className="part-content">
+                            <GridViewIcon onClick={() => handle2ImageShow()} />
+                            <AppsIcon />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style={{
+                    // width: isShowfilter ? "80%" : "100%",
+                    width: isShowfilter ? "80%" : "100%",
+                    display: "flex",
+                    flexDirection: 'column',
+                    transition: "1s ease"
+                    // margin: "40px 0px 0px 0px",
+                  }}
+                  className="smilingProductImageMain"
+                  id="smilingProductImageMain"
+                >
+                  {/* <div
                     style={{
-                      border: "none",
-                      marginBottom: "0px",
-                      marginInline: "5px",
-                      borderLeft: "1px solid black",
-                      height: "50px",
-                      marginTop: "-16px",
-                    }}
-                  />
-                  <div
-                    style={{
-                      width: "49%",
+                      width: "100%",
                       display: "flex",
-                      marginTop: "-15px",
-                      alignItems: "center",
+                      justifyContent: "flex-end",
+                      marginBottom: '10px'
                     }}
+                    className="smilingFilterweb"
                   >
                     <select
                       style={{
-                        width: "100%",
-                        border: "none",
+                        width: "20%",
+                        height: '40px',
+                        border: '1px solid lightgray',
+                        borderRadius: '5px',
+                        paddingBottom: '10px',
                         outline: "none",
                         fontSize: "13px ",
                       }}
@@ -2093,260 +2265,270 @@ const ProductList = () => {
                       <option value="PRICE HIGH TO LOW">PRICE HIGH TO LOW</option>
                       <option value="PRICE LOW TO HIGH">PRICE LOW TO HIGH</option>
                     </select>
+                  </div> */}
+
+                  <div className={`smilingAllProductDataMainMobile
+                                    ${show2ImagesView ? "smilingAllProductDataMainMobileShow2Image" : ""}
+                                    ${show4ImagesView ? "smilingAllProductDataMainMobileShow4Image" : ""}`}>
+                    {/* RollOverImageName */}
+                    {/* {(newProData.length ? newProData : finalDataOfDisplaying())?.map((products, i) => ( */}
+                    {(rangeProData.length ? rangeProData : (newProData?.length ? newProData : ProductApiData2))?.map((products, i) => (
+                      <div className={`main-ProdcutListConatiner
+                      ${show2ImagesView ? "main-ProdcutListConatiner2ImageShow" : ""}
+                      ${show4ImagesView ? "main-ProdcutListConatiner4ImageShow" : ""}`}
+                      >
+                        <div className={`listing-card
+                          ${show2ImagesView ? "listing-cardShow2Image" : ""}
+                          ${show4ImagesView ? "listing-cardShow4Image" : ""}`} >
+                          <div className="listing-image">
+                            {products?.designno === "S24705E" && <p id="labelTag_0002388" className="instockP">IN STOCK</p>}
+                            {products?.designno === "S24705" && <p id="labelTag_0002388" className="instockP">IN STOCK</p>}
+                            {products?.designno === "MCJ2" && <p id="labelTag_0002388" className="instockP">IN STOCK</p>}
+
+                            <div>
+                              <img
+                                className="prod_img"
+                                src={
+                                  hoveredImageUrls[i] ? hoveredImageUrls[i] : updatedColorImage[i] ? updatedColorImage[i] :
+                                    (products?.MediumImagePath ?
+                                      (globImagePath + products?.MediumImagePath?.split(",")[0])
+                                      :
+                                      notFound)
+                                }
+                                onMouseEnter={() => handleHoverImageShow(products?.MediumImagePath?.split(",")[0], i, products?.RollOverImageName, globImagePath)}
+                                // onMouseEnter={() => handleHoverImageShow(products?.MediumImagePath?.split(",")[0], i, isColorWiseImageShow === 1 ? products?.ColorWiseRollOverImageName : products?.RollOverImageName, products?.imagepath)}
+                                onMouseLeave={() => handleMouseLeave(i)}
+                                style={{ objectFit: 'cover' }}
+                                alt="#"
+                                onError={(e) => {
+                                  e.target.src = notFound;
+                                }}
+                                onClick={() => handelProductSubmit(products)}
+                              />
+                              <div className="cart-icon">
+                                <Checkbox
+                                  icon={
+                                    <LocalMallOutlinedIcon
+                                      sx={{ fontSize: "22px", color: "#1f1919", opacity: '.7' }}
+                                    />
+                                  }
+                                  checkedIcon={
+                                    <LocalMallIcon
+                                      sx={{ fontSize: "22px", color: "#f0d85e" }}
+                                    />
+                                  }
+                                  disableRipple={true}
+                                  sx={{ padding: "5px" }}
+
+                                  checked={products?.checkFlag}
+                                  onChange={(e) => handelCartList(e, products)}
+                                />
+                              </div>
+                              <div className="wishlist-icon">
+                                <Checkbox
+                                  icon={
+                                    <FavoriteBorderIcon
+                                      sx={{ fontSize: "22px", color: "#1f1919", opacity: '.7' }}
+                                    />
+                                  }
+                                  checkedIcon={
+                                    <FavoriteIcon
+                                      sx={{ fontSize: "22px", color: "#e31b23" }}
+                                    />
+                                  }
+                                  disableRipple={true}
+                                  sx={{ padding: "5px" }}
+
+                                  checked={products?.wishCheck}
+                                  onChange={(e) => handelWishList(e, products)}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div className={show4ImagesView ? 'listing4-details' : "listing-details"} onClick={() => handelProductSubmit(products)}>
+                            <p className={show4ImagesView ? "productDetails property4-type" : "productDetails property-type"}>
+                              {products?.TitleLine}
+                            </p>
+                            <div>
+                              {/* {isPriceShow === 1 &&
+                                <p className={show4ImagesView ? "productDetails price4" : "productDetails price"}>{currencySym?.Currencysymbol}
+                                  {((products?.UnitCost ?? 0) + (products?.price ?? 0) + (products?.markup ?? 0)).toFixed(2)}</p>
+                              }
+                              <span className={show4ImagesView ? "productDesignDetails4" : "productDesignDetails"}>
+                                <p className="productDetails address">{products?.designno}</p>
+                                <Divider
+                                  className="dividerLine"
+                                  orientation="vertical"
+                                  variant="middle"
+                                  flexItem
+                                />
+                                <p className="productDetails address"> {isMetalTCShow === 1 && products?.MetalTypeName}-{products?.MetalColorName}{products?.MetalPurity}</p>
+                              </span> */}
+                            </div>
+                          </div>
+                          <div className={show4ImagesView ? "listing-features4" : "listing-features"}>
+                            <div>
+                              {ismetalWShow === 1 &&
+                                <div className={show4ImagesView ? "feature4" : 'feature'}>
+                                  <p>
+                                    <span className="feature-count">NWT : </span> {products?.updNWT}
+                                  </p>
+                                </div>
+                              }
+                              {isGrossWShow === 1 &&
+                                <div className={show4ImagesView ? "feature4" : 'feature'}>
+                                  <p>
+                                    <span className="feature-count">GWT : </span> {products?.updGWT}
+                                  </p>
+                                </div>
+                              }
+                            </div>
+                            {/* <div className="mobileDeatilDiv2" style={{ display: 'flex', justifyContent: 'center', height: '20px' }}>
+                              {((isDaaimongWShow || isDaaimongWShow) === 1 && (products?.diamondweight !== 0 || products?.diamondpcs !== 0)) && <div>
+                                <p style={{ margin: '0px', fontSize: '13px' }}>DWT : <span style={{ fontWeight: 600, marginRight: '10px' }}>{(isDaaimongWShow === 1 && products?.diamondweight !== 0) && products?.updDWT + '/'}  {(isDaaimonPShow === 1 && products?.diamondpcs !== 0) && products?.updDPCS}</span></p>
+                              </div>}
+
+                              {((isStoneWShow || isStonePShow) === 1 && (products?.totalcolorstoneweight !== 0 || products?.totalcolorstonepcs !== 0)) && <div>
+                                <p style={{ margin: '0px', fontSize: '13px' }}>CWT : <span style={{ fontWeight: 600, marginRight: '10px' }}>{(isStoneWShow === 1 && products?.totalcolorstoneweight !== 0) && products?.updCWT + '/'}  {(isStonePShow === 1 && products?.totalcolorstonepcs !== 0) && products?.updCPCS}</span></p>
+                              </div>}
+                            </div> */}
+
+                            <div>
+                              <div className={show4ImagesView ? "feature4" : 'feature'}>
+                                <p>
+                                  <span className="feature-count">{products?.designno}</span>
+                                </p>
+                              </div>
+                              <p style={{ display: 'flex' }}>
+                                {isMetalTCShow === 1 && <span>
+                                  {/* {products?.MetalTypeName} - */}
+                                  {products?.updMC} -
+                                  {products?.updMT} /
+                                </span>}
+
+                                {isPriceShow === 1 &&
+
+                                  <div className={show4ImagesView ? "feature4" : 'feature'}>
+                                    <p>
+                                      <span className="feature-count" style={{ display: 'flex' }}>
+                                        <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />
+                                        {PriceWithMarkupFunction(products?.markup, products?.price, currData?.CurrencyRate)?.toFixed(2)}</span>
+                                    </p>
+                                  </div>
+                                }
+
+                              </p>
+                            </div>
+                          </div>
+
+                          {/* <div style={{ position: "absolute", zIndex: 999999, top: 0, right: 0, display: 'flex' }}>
+                            <div>
+                              <Checkbox
+                                icon={
+                                  <StarBorderIcon
+                                    sx={{ fontSize: "22px", color: "#ffd200" }}
+                                  />
+                                }
+                                checkedIcon={
+                                  <StarIcon
+                                    sx={{ fontSize: "22px", color: "#ffd200" }}
+                                  />
+                                }
+                                disableRipple={true}
+                                sx={{ padding: "5px" }}
+
+                                // checked={wishFlag[products?.designno] ?? products?.wishCheck}
+                                checked={wishFlag[products?.designno] ?? products?.wishCheck}
+                                onChange={(e) => handelWishList(e, products)}
+                              />
+                            </div>
+                            <div>
+                              <Checkbox
+                                icon={
+                                  <LocalMallOutlinedIcon
+                                    sx={{ fontSize: "22px", color: "#ffd200" }}
+                                  />
+                                }
+                                checkedIcon={
+                                  <LocalMallIcon
+                                    sx={{ fontSize: "22px", color: "#ffd200" }}
+                                  />
+                                }
+                                disableRipple={true}
+                                sx={{ padding: "5px" }}
+
+                                // checked={cartFlag[products?.designno] ?? products?.checkFlag}
+                                checked={cartFlag[products?.designno] ?? products?.checkFlag}
+                                onChange={(e) => handelCartList(e, products)}
+                              // disabled={disablecartBtn}
+                              />
+                            </div>
+                          </div> */}
+                          {isColorWiseImageShow == 1 && (
+                            <div
+                              style={{
+                                display: "flex",
+                                gap: "8px",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                marginBottom: "12px",
+                              }}
+                            >
+                              <div
+                                style={{
+                                  width: "9px",
+                                  height: "9px",
+                                  backgroundColor: "#c8c8c8",
+                                  borderRadius: "50%",
+                                  cursor: 'pointer'
+                                }}
+                                onClick={() => handleColorSelection(products, i, 'White Gold')}
+                              ></div>
+                              <div
+                                style={{
+                                  width: "9px",
+                                  height: "9px",
+                                  backgroundColor: "#ffcfbc",
+                                  borderRadius: "50%",
+                                  cursor: 'pointer'
+                                }}
+                                onClick={(e) => handleColorSelection(products, i, 'Rose Gold')}
+                              ></div>
+                              <div
+                                style={{
+                                  width: "9px",
+                                  height: "9px",
+                                  backgroundColor: "#e0be77",
+                                  borderRadius: "50%",
+                                  cursor: 'pointer'
+                                }}
+                                onClick={(e) => handleColorSelection(products, i, 'Yellow Gold')}
+                              >
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
-              </div>
-              {!isFilterData ? <div
-                style={{
-                  width: "80%",
-                  display: "flex",
-                  flexDirection: 'column',
-                  // justifyContent: "center",
-                  alignItems: "center",
-                  margin: "40px 50px 0px 0px",
-                }}
-                className="smilingProductImageMain"
-                id="smilingProductImageMain"
-              >
-                <div
-                  style={{
-                    width: "100%",
+                {/* :
+                  <div style={{
+                    width: "80%",
                     display: "flex",
-                    justifyContent: "flex-end",
-                    marginBottom: '10px'
-                  }}
-                  className="smilingFilterweb"
-                >
-                  <select
-                    style={{
-                      width: "20%",
-                      height: '40px',
-                      border: '1px solid lightgray',
-                      borderRadius: '5px',
-                      paddingBottom: '10px',
-                      outline: "none",
-                      fontSize: "13px ",
-                    }}
-                    onChange={handleSortChange}
-                    value={selectedSortOption}
-                  >
-                    <option value="None">Recommended</option>
-                    <option value="None">New</option>
-                    <option value="None">In stock</option>
-                    <option value="PRICE HIGH TO LOW">PRICE HIGH TO LOW</option>
-                    <option value="PRICE LOW TO HIGH">PRICE LOW TO HIGH</option>
-                  </select>
-                </div>
-                <div
-                  style={{
-                    width: "100%",
-                    // border: "1px solid #e1e1e1",
-                    display: "flex",
-                    // justifyContent: "center",
+                    flexDirection: 'column',
+                    justifyContent: "center",
                     alignItems: "center",
-                    flexWrap: "wrap",
-                  }}
-                  className="smilingAllProductDataMainMobile"
-                >
-                  {/* RollOverImageName */}
-                  {/* {(newProData.length ? newProData : finalDataOfDisplaying())?.map((products, i) => ( */}
-                  {(rangeProData.length ? rangeProData : (newProData?.length ? newProData : ProductApiData2))?.map((products, i) => (
-                    <div
-                      style={{
-                        width: "33.33%",
-                        border: "1px solid #e1e1e1",
-                        textAlign: "center",
-                        color: "#7d7f85",
-                        position: "relative",
-                        zIndex: 0,
-                      }}
-                      className="smilingProductImageBox"
-                    >
-                      {products?.designno === "S24705E" && <p id="labelTag_0002388" className="instockP">IN STOCK</p>}
-                      {products?.designno === "S24705" && <p id="labelTag_0002388" className="instockP">IN STOCK</p>}
-                      {products?.designno === "MCJ2" && <p id="labelTag_0002388" className="instockP">IN STOCK</p>}
-
-                      <div onClick={() => handelProductSubmit(products)}>
-                        <img
-                          className="prod_img"
-                          src={
-                            hoveredImageUrls[i] ? hoveredImageUrls[i] : updatedColorImage[i] ? updatedColorImage[i] :
-                              (products?.MediumImagePath ?
-                                (globImagePath + products?.MediumImagePath?.split(",")[0])
-                                :
-                                notFound)
-                          }
-                          onMouseEnter={() => handleHoverImageShow(products?.MediumImagePath?.split(",")[0], i, products?.RollOverImageName, globImagePath)}
-                          // onMouseEnter={() => handleHoverImageShow(products?.MediumImagePath?.split(",")[0], i, isColorWiseImageShow === 1 ? products?.ColorWiseRollOverImageName : products?.RollOverImageName, products?.imagepath)}
-                          onMouseLeave={() => handleMouseLeave(i)}
-                          style={{ objectFit: 'cover' }}
-                          alt="#"
-                          onError={(e) => {
-                            e.target.src = notFound;
-                          }}
-                        />
-                      </div>
-                      <div className="productTitleLine" onClick={() => handelProductSubmit(products)}>
-                        <p
-                          className={products?.TitleLine?.length > 30 ? "smilingProductDeatilTitleMobile" : "smilingProductDeatilTitleMobilenotWidth"}
-                        >
-                          {products?.TitleLine}
-                        </p>
-                        <span style={{ fontWeight: 600, fontSize: "13px" }}>{`-${products?.designno}`} </span>
-                      </div>
-                      <div style={{}}>
-                        <div className="mobileDeatilDiv1" style={{ display: 'flex', justifyContent: 'center', height: '20px' }}>
-                          {ismetalWShow === 1 &&
-                            <div>
-                              <p style={{ margin: '0px', fontSize: '13px' }}>NWT : <span style={{ fontWeight: 600, marginRight: '15px' }}>{products?.updNWT}</span></p>
-                            </div>}
-                          {isGrossWShow === 1 && <div>
-                            <p style={{ margin: '0px', fontSize: '13px' }}>GWT : <span style={{ fontWeight: 600, marginRight: '10px' }}>{products?.updGWT}</span></p>
-                          </div>}
-                        </div>
-                        <div className="mobileDeatilDiv2" style={{ display: 'flex', justifyContent: 'center', height: '20px' }}>
-                          {((isDaaimongWShow || isDaaimongWShow) === 1 && (products?.diamondweight !== 0 || products?.diamondpcs !== 0)) && <div>
-                            <p style={{ margin: '0px', fontSize: '13px' }}>DWT : <span style={{ fontWeight: 600, marginRight: '10px' }}>{(isDaaimongWShow === 1 && products?.diamondweight !== 0) && products?.updDWT + '/'}  {(isDaaimonPShow === 1 && products?.diamondpcs !== 0) && products?.updDPCS}</span></p>
-                          </div>}
-
-                          {((isStoneWShow || isStonePShow) === 1 && (products?.totalcolorstoneweight !== 0 || products?.totalcolorstonepcs !== 0)) && <div>
-                            <p style={{ margin: '0px', fontSize: '13px' }}>CWT : <span style={{ fontWeight: 600, marginRight: '10px' }}>{(isStoneWShow === 1 && products?.totalcolorstoneweight !== 0) && products?.updCWT + '/'}  {(isStonePShow === 1 && products?.totalcolorstonepcs !== 0) && products?.updCPCS}</span></p>
-                          </div>}
-                        </div>
-
-                        <div>
-                          <p style={{ fontSize: "14px", fontWeight: 'bold', display: 'flex', justifyContent: 'center' }}>
-                            {isMetalTCShow === 1 && <span>
-                              {/* {products?.MetalTypeName} - */}
-                              {products?.updMC} -
-                              {products?.updMT} /
-                            </span>}
-                            {isPriceShow === 1 &&
-                              <span style={{ display: 'flex' }}>
-                                {/* {currencySym?.Currencysymbol} */}
-                                {/* {currData[0]?.Currencysymbol.split(";").filter((cs)=>cs !== ' ').map((sym,index)=>{(
-                                  <div
-                                  key={index}    
-                                  dangerouslySetInnerHTML={{ __html: sym }}
-                                />
-                                )})} */}
-                                <div dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />
-                                {PriceWithMarkupFunction(products?.markup, products?.price, currData?.CurrencyRate)?.toFixed(2)}
-                              </span>
-                            }
-                          </p>
-                        </div>
-                      </div>
-
-                      <div style={{ position: "absolute", zIndex: 999999, top: 0, right: 0, display: 'flex' }}>
-                        <div>
-                          <Checkbox
-                            icon={
-                              <StarBorderIcon
-                                sx={{ fontSize: "22px", color: "#ffd200" }}
-                              />
-                            }
-                            checkedIcon={
-                              <StarIcon
-                                sx={{ fontSize: "22px", color: "#ffd200" }}
-                              />
-                            }
-                            disableRipple={true}
-                            sx={{ padding: "5px" }}
-
-                            // checked={wishFlag[products?.designno] ?? products?.wishCheck}
-                            checked={wishFlag[products?.designno] ?? products?.wishCheck}
-                            onChange={(e) => handelWishList(e, products)}
-                          />
-                        </div>
-                        <div>
-                          <Checkbox
-                            icon={
-                              <LocalMallOutlinedIcon
-                                sx={{ fontSize: "22px", color: "#ffd200" }}
-                              />
-                            }
-                            checkedIcon={
-                              <LocalMallIcon
-                                sx={{ fontSize: "22px", color: "#ffd200" }}
-                              />
-                            }
-                            disableRipple={true}
-                            sx={{ padding: "5px" }}
-
-                            // checked={cartFlag[products?.designno] ?? products?.checkFlag}
-                            checked={cartFlag[products?.designno] ?? products?.checkFlag}
-                            onChange={(e) => handelCartList(e, products)}
-                          // disabled={disablecartBtn}
-                          />
-                        </div>
-                      </div>
-                      {isColorWiseImageShow == 1 && (
-                        <div
-                          style={{
-                            display: "flex",
-                            gap: "8px",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            marginBottom: "12px",
-                          }}
-                        >
-                          <div
-                            style={{
-                              width: "9px",
-                              height: "9px",
-                              backgroundColor: "#c8c8c8",
-                              borderRadius: "50%",
-                              cursor: 'pointer'
-                            }}
-                            onClick={() => handleColorSelection(products, i, 'White Gold')}
-                          ></div>
-                          <div
-                            style={{
-                              width: "9px",
-                              height: "9px",
-                              backgroundColor: "#ffcfbc",
-                              borderRadius: "50%",
-                              cursor: 'pointer'
-                            }}
-                            onClick={(e) => handleColorSelection(products, i, 'Rose Gold')}
-                          ></div>
-                          <div
-                            style={{
-                              width: "9px",
-                              height: "9px",
-                              backgroundColor: "#e0be77",
-                              borderRadius: "50%",
-                              cursor: 'pointer'
-                            }}
-                            onClick={(e) => handleColorSelection(products, i, 'Yellow Gold')}
-                          >
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
+                    margin: "40px 50px 0px 0px"
+                  }}>
+                    <span style={{ fontWeight: 'bold', textTransform: 'capitalize', fontSize: '30px', marginTop: '-130px' }}>Data Not Available!!!</span>
+                  </div>
+                } */}
               </div>
-                :
-                <div style={{
-                  width: "80%",
-                  display: "flex",
-                  flexDirection: 'column',
-                  justifyContent: "center",
-                  alignItems: "center",
-                  margin: "40px 50px 0px 0px"
-                }}>
-                  <span style={{ fontWeight: 'bold', textTransform: 'capitalize', fontSize: '30px', marginTop: '-130px' }}>Data Not Available!!!</span>
-                </div>
-              }
+              <SmilingRock />
+              <Footer />
             </div>
-            <SmilingRock />
-            <Footer />
           </div>
-        </div>
-        <div style={{ display: 'flex', justifyContent: 'center', paddingBlock: '30px' }}>
-          <p style={{ margin: '0px', fontWeight: 500, width: '100px', color: 'white', cursor: 'pointer' }} onClick={() => window.scrollTo(0, 0)}>BACK TO TOP</p>
         </div>
       </div>
 

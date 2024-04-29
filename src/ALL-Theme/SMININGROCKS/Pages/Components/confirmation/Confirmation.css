@@ -27,8 +27,3 @@
     font-weight: 500;
     border-radius: 5px;
 }
-
-.contiShopiBtn:hover{
-    background-color: lightgray;
-    border: 1px solid lightgray;
-}

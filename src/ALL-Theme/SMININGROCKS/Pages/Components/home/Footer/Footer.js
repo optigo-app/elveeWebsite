@@ -49,7 +49,7 @@ export default function Footer() {
 
 
     return (
-        <div>
+        <div style={{marginTop: '50px'}}>
             <div className='ElveFooterMain'>
                 <div className='ElveFooter1'>
                     <p className='elveBox1Title'>Sign Up For Newslatter</p>
