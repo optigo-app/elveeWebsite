@@ -8,7 +8,7 @@ import prodListData from "../../jsonFile/Productlist_4_95oztttesi0o50vr.json";
 import filterData from "../../jsonFile/M_4_95oztttesi0o50vr.json";
 import PriceData from "../../jsonFile/Productlist_4_95oztttesi0o50vr_8.json";
 // import PriceData from "../../jsonFile/testingFile/Productlist_4_95oztttesi0o50vr_8_Original.json";
-import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Checkbox, CircularProgress, Divider, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Slider } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Checkbox, CircularProgress, Divider, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Pagination, Slider } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
@@ -113,7 +113,17 @@ const ProductList = () => {
   const [currData, setCurrData] = useState()
   const [isFilterData, setIsFilterData] = useState(false)
   const [rangeProData, setRangeProData] = useState([])
+  const [isMetalCutoMizeFlag, setIsMetalCutoMizeFlag] = useState('');
+  const [mtTypeOption, setmtTypeOption] = useRecoilState(metalTypeG);
+  const [metalType, setMetalType] = useState([]);
 
+  const [isDaimondCstoFlag, setIsDaimondCstoFlag] = useState('');
+  const [diaQColOpt, setDiaQColOpt] = useRecoilState(diamondQualityColorG);
+  const [colorData, setColorData] = useState([]);
+  const [cSQopt, setCSQOpt] = useRecoilState(colorstoneQualityColorG);
+
+  const [isCColrStoneCustFlag, setIsCColrStoneCustFlag] = useState('');
+  const [DaimondQualityColor, setDaimondQualityColor] = useState([]);
 
   const [selectedOptionData, setSelectedOptionData] = useState(null);
 
@@ -150,9 +160,78 @@ const ProductList = () => {
   //     }
   // }  
 
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsActive(false);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
+
   useEffect(() => {
     // handelCurrencyData();
+
+    const storedDataAll = localStorage.getItem('storeInit');
+    const data = JSON.parse(storedDataAll);
+    setIsMetalCutoMizeFlag(data.IsMetalCustomization);
+
+    setIsDaimondCstoFlag(data.IsDiamondCustomization);
+    setIsCColrStoneCustFlag(data.IsCsCustomization);
+
+    const storedData2 = JSON.parse(localStorage.getItem('MetalTypeData'));
+    if (storedData2) {
+      setMetalType(storedData2);
+    }
+
+    const storedData1 = JSON.parse(localStorage.getItem('ColorStoneQualityColor'));
+    if (storedData1) {
+      setDaimondQualityColor(storedData1);
+    }
+
+
+    const storedData = JSON.parse(localStorage.getItem('QualityColor'));
+    if (storedData) {
+      setColorData(storedData);
+    }
     let loginData = JSON.parse(localStorage.getItem('loginUserDetail'));
+    let MetalTypeData = JSON.parse(localStorage.getItem("MetalTypeData"))
+    let DimondQualityColor = JSON.parse(localStorage.getItem("QualityColor"))
+    let ColorStoneQualityColor = JSON.parse(localStorage.getItem("ColorStoneQualityColor"))
+
+    if (loginData?.MetalId !== 0) {
+      let metalType = MetalTypeData?.find(item => item?.Metalid == loginData?.MetalId)
+      setmtTypeOption(metalType?.metaltype)
+    } else {
+      setmtTypeOption(MetalTypeData[0]?.metaltype)
+    }
+
+    let diaQCVar = DimondQualityColor?.find(item => item.QualityId == loginData?.cmboDiaQCid?.split(',')[0] && item.ColorId == loginData?.cmboDiaQCid?.split(',')[1]);
+    if (loginData?.cmboDiaQCid !== "0,0") {
+      let qualityColor = `${diaQCVar?.Quality}#${diaQCVar?.color}`
+      setDiaQColOpt(qualityColor)
+    }
+    else {
+      if (colorData && colorData?.length) {
+        setDiaQColOpt(`${colorData[0]?.Quality}#${colorData[0]?.color}`)
+      }
+    }
+
+    if (loginData?.cmboCSQCid !== "0,0") {
+      let csQCVar = ColorStoneQualityColor?.find(item => item?.QualityId === loginData?.cmboCSQCid?.split(',')[0] && item?.ColorId === loginData?.cmboCSQCid?.split(',')[1])
+      let csQualColor = `${csQCVar?.QualityId}-${csQCVar?.ColorId}`
+      setCSQOpt(csQualColor)
+    } else {
+      let ref = `${ColorStoneQualityColor[0].Quality}-${ColorStoneQualityColor[0].color}`
+      setCSQOpt(ref)
+    }
+
     let obj = { "CurrencyRate": loginData?.CurrencyRate, "Currencysymbol": loginData?.Currencysymbol }
     if (obj) {
       setCurrData(obj)
@@ -251,11 +330,9 @@ const ProductList = () => {
             storeInit?.IsMetalCustomization === 1
               ?
               pda.A === product.autocode &&
-              pda.B === product.designno &&
-              pda.D === loginUserDetail?.cmboMetalType
+              pda.C === loginUserDetail?.MetalId
               :
-              pda.A === product.autocode &&
-              pda.B === product.designno
+              pda.A === product.autocode
         );
 
         const newPriceData1 = priceDataApi?.rd1?.filter(
@@ -264,12 +341,10 @@ const ProductList = () => {
             storeInit?.IsDiamondCustomization === 1
               ?
               pda.A === product.autocode &&
-              pda.B === product.designno &&
-              pda.H === loginUserDetail?.cmboDiaQualityColor?.split('#@#')[0] &&
-              pda.J === loginUserDetail?.cmboDiaQualityColor?.split('#@#')[1]
+              pda.G == loginUserDetail?.cmboDiaQCid?.split(',')[0] &&
+              pda.I == loginUserDetail?.cmboDiaQCid?.split(',')[1]     
               :
-              pda.A === product.autocode &&
-              pda.B === product.designno
+              pda.A === product.autocode
 
         ).reduce((acc, obj) => acc + obj.S, 0)
 
@@ -279,12 +354,10 @@ const ProductList = () => {
             storeInit?.IsCsCustomization === 1
               ?
               pda.A === product.autocode &&
-              pda.B === product.designno &&
-              pda.H === loginUserDetail?.cmboCSQualityColor?.split('#@#')[0].toUpperCase() &&
-              pda.J === loginUserDetail?.cmboCSQualityColor?.split('#@#')[1].toUpperCase()
+              pda.H === loginUserDetail?.cmboCSQCid?.split(',')[0] &&
+              pda.J === loginUserDetail?.cmboCSQCid?.split(',')[1]
               :
-              pda.A === product.autocode &&
-              pda.B === product.designno
+              pda.A === product.autocode
 
         ).reduce((acc, obj) => acc + obj.S, 0)
 
@@ -317,7 +390,7 @@ const ProductList = () => {
           updMT = newPriceData?.D ?? ""
           updMC = newPriceData?.F ?? ""
         }
-        console.log("priceprod", product?.designno, price);
+        console.log("priceprod", product?.designno,metalrd,diard1,csrd2);
         return { ...product, price, markup, metalrd, diard1, csrd2, updNWT, updGWT, updDWT, updDPCS, updCWT, updCPCS, updMT, updMC }
       }));
 
@@ -764,7 +837,38 @@ const ProductList = () => {
   //   return newFilter;
   // }
 
-  let NewFilterData = () => {
+  // let NewFilterData = () => {
+
+  //   const newFilter = [];
+
+  //   let categoryFilter = JSON.parse(localStorage.getItem("CategoryFilter"))
+  //   let ProductTypeFilter = JSON.parse(localStorage.getItem("ProductTypeFilter"))
+  //   let GenderFilter = JSON.parse(localStorage.getItem("GenderFilter"))
+  //   let CollectionFilter = JSON.parse(localStorage.getItem("CollectionFilter"))
+
+  //   if (categoryFilter) {
+  //     newFilter.push({ label: "CATEGORY", filterList: categoryFilter.map((res) => { return res?.CategoryName }), listType: 'CategoryName' })
+  //   }
+  //   if (ProductTypeFilter) {
+  //     newFilter.push({ label: "PRODUCT TYPE", filterList: ProductTypeFilter.map((res) => { return res?.ProducttypeName }), listType: 'ProducttypeName' })
+  //   }
+  //   if (GenderFilter) {
+  //     newFilter.push({ label: "GENDER", filterList: GenderFilter.map((res) => { return res?.GenderName }), listType: 'GenderName' })
+  //   }
+  //   if (CollectionFilter) {
+  //     newFilter.push({ label: "COLLECTION", filterList: CollectionFilter.map((res) => { return res?.CollectionName }), listType: 'CollectionName' })
+  //   }
+
+  //   newFilter.push({ label: "PRICE", filterList: [] });
+  //   newFilter.push({ label: "NETWT", filterList: [] });
+  //   newFilter.push({ label: "GROSSWT", filterList: [] });
+  //   newFilter.push({ label: "DIAMONDWT", filterList: [] });
+
+  //   return newFilter
+
+  // }
+
+  let NewFilterData1 = () => {
 
     const newFilter = [];
 
@@ -774,16 +878,16 @@ const ProductList = () => {
     let CollectionFilter = JSON.parse(localStorage.getItem("CollectionFilter"))
 
     if (categoryFilter) {
-      newFilter.push({ label: "CATEGORY", filterList: categoryFilter.map((res) => { return res?.CategoryName }), listType: 'CategoryName' })
+      newFilter.push({ label: "CATEGORY", filterList: categoryFilter.map((res) => { return { "label": res?.CategoryName, "id": res?.Categoryid } }), listType: 'Categoryid' })
     }
     if (ProductTypeFilter) {
-      newFilter.push({ label: "PRODUCT TYPE", filterList: ProductTypeFilter.map((res) => { return res?.ProducttypeName }), listType: 'ProducttypeName' })
+      newFilter.push({ label: "PRODUCT TYPE", filterList: ProductTypeFilter.map((res) => { return { "label": res?.ProducttypeName, "id": res?.Producttypeid } }), listType: 'Producttypeid' })
     }
     if (GenderFilter) {
-      newFilter.push({ label: "GENDER", filterList: GenderFilter.map((res) => { return res?.GenderName }), listType: 'GenderName' })
+      newFilter.push({ label: "GENDER", filterList: GenderFilter.map((res) => { return { "label": res?.GenderName, "id": res?.Genderid } }), listType: 'Genderid' })
     }
     if (CollectionFilter) {
-      newFilter.push({ label: "COLLECTION", filterList: CollectionFilter.map((res) => { return res?.CollectionName }), listType: 'CollectionName' })
+      newFilter.push({ label: "COLLECTION", filterList: CollectionFilter.map((res) => { return { "label": res?.CollectionName, "id": res?.Collectionid } }), listType: 'Collectionid' })
     }
 
     newFilter.push({ label: "PRICE", filterList: [] });
@@ -795,7 +899,7 @@ const ProductList = () => {
 
   }
 
-  // console.log("NewFilterData()",NewFilterData())
+  // console.log("NewFilterData()",NewFilterData1())
 
   const handleCheckboxChange = (e, ele, flist) => {
     const { name, checked, value } = e.target;
@@ -859,9 +963,6 @@ const ProductList = () => {
           acc[filter.type].push(filter);
           return acc;
         }, {});
-
-        // console.log("filtersByType",Object.values(filtersByType).every)
-
 
         // return Object.values(filtersByType).every(filters => {
         //     return filters.some(filter => product[filter.type] === filter.value);
@@ -1473,7 +1574,7 @@ const ProductList = () => {
   const filterDatasfunc = (priceRange, netWtRange, grossWtRange, diamondWtRange) => {
 
     const filteredData = (newProData.length ? newProData : ProductApiData2)?.filter((item) => {
-      const priceInRange = item?.price >= (priceRange[0]) && item?.price <= (priceRange[1]);
+      const priceInRange = item?.price >= priceRange[0] && item?.price <= priceRange[1];
       const netWtInRange = item.netwt >= netWtRange[0] && item.netwt <= netWtRange[1];
       const grossWtInRange = item.Grossweight >= grossWtRange[0] && item.Grossweight <= grossWtRange[1];
       const diamondWtInRange = item.diamondweight >= diamondWtRange[0] && item.diamondweight <= diamondWtRange[1];
@@ -1505,18 +1606,16 @@ const ProductList = () => {
   const [hoveredImageUrls, setHoveredImageUrls] = useState({});
 
   const handleHoverImageShow = (url, index, rollPath, imagepath) => {
-    // isColorWiseImageShow
-
-    let updatedFilename = rollPath.replace(/\s/g, '_');
-    let newPath = url.replace(/\/([^/]+)$/, '/' + updatedFilename);
-    let path = imagepath + newPath;
-
+    // let updatedFilename = rollPath?.replace(/\s/g, '_');
+    // let newPath = url.replace(/\/([^/]+)$/, '/' + updatedFilename);
+    let path = imagepath + url;
+    console.log('urlllll',url);
+    console.log('pathhhhhhhhhhhhhhhh',path);
     if (rollPath.length !== 0) {
       setHoveredImageUrls(prevHoveredImageUrls => {
         return { ...prevHoveredImageUrls, [index]: path };
       });
     }
-
   };
 
   const handleMouseLeave = (index) => {
@@ -1637,7 +1736,7 @@ const ProductList = () => {
 
       {isOpenDetail &&
         <div>
-          {NewFilterData().map((ele, index) => (
+          {NewFilterData1().map((ele, index) => (
             <>
               <Accordion
                 elevation={0}
@@ -1725,7 +1824,7 @@ const ProductList = () => {
                           width: "10px",
                         }}
                         onClick={(e) =>
-                          handleCheckboxChange(e, ele, flist)
+                          handleCheckboxChange(e, ele, flist.id)
                         }
                         size="small"
                       />
@@ -1736,7 +1835,7 @@ const ProductList = () => {
                           textTransform: "lowercase",
                         }}
                       >
-                        {flist}
+                        {flist.label}
                       </small>
                     </div>
                   ))}
@@ -1755,18 +1854,20 @@ const ProductList = () => {
   //   setProductApiData2(data);
   // }, []);
 
-  const handleSortChange = (e) => {
-    const selectedOption = e.target.value;
-    setSelectedSortOption(selectedOption);
-    setSelectedOptionData(selectedOption);
+
+  const handleSortChange = (option) => {
+    const selectedOption = option?.label;
+    setSelectedOptionData(option?.label);
+    setIsActive(false);
+    setSelectedSortOption(option?.label);
     let sortedData = [...ProductApiData2];
 
     if (selectedOption === 'PRICE HIGH TO LOW') {
-      sortedData.sort((a, b) => ((b?.price ?? 0) + (b?.markup ?? 0)) - ((a?.price ?? 0) + (a?.markup ?? 0)));
+      sortedData.sort((a, b) => ((b?.UnitCost ?? 0) + (b?.price ?? 0) + (b?.markup ?? 0)) - ((a?.UnitCost ?? 0) + (a?.price ?? 0) + (a?.markup ?? 0)));
     } else if (selectedOption === 'PRICE LOW TO HIGH') {
-      sortedData.sort((a, b) => ((a?.price ?? 0) + (a?.markup ?? 0)) - ((b?.price ?? 0) + (b?.markup ?? 0)));
+      sortedData.sort((a, b) => ((a?.UnitCost ?? 0) + (a?.price ?? 0) + (a?.markup ?? 0)) - ((b?.UnitCost ?? 0) + (b?.price ?? 0) + (b?.markup ?? 0)));
     } else {
-      setNewProData(ProductApiData2)
+      setNewProData(ProductApiData2);
     }
     setNewProData(sortedData);
   };
@@ -1862,7 +1963,7 @@ const ProductList = () => {
             paddingTop: '30px',
             marginInline: '13%'
           }}
-          className='paddingTopMobileSet'
+          className='paddingTopMobileSet mainProduct'
         >
           <div style={{ width: '100%' }}>
             <div class="bg-image">
@@ -1906,6 +2007,93 @@ const ProductList = () => {
                 </div>
               </div>
               <div className="divider"></div>
+
+              <div className="part" style={{ flex: '20%' }}>
+                {isMetalCutoMizeFlag == 1 && <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    width: '95%',
+                    gap: '5px'
+                  }}
+                >
+                  <select
+                    className='menuitemSelectoreMain'
+                    defaultValue={mtTypeOption}
+                    onChange={(e) => {
+                      setmtTypeOption(e.target.value)
+                    }}
+                  >
+                    {metalType.map((data, index) => (
+                      <option key={index} value={data.metalType}>
+                        {data.metaltype}
+                      </option>
+                    ))}
+                  </select>
+                </div>}
+              </div>
+              {isMetalCutoMizeFlag == 1 && <div className="divider"></div>}
+              {((isDaimondCstoFlag == 1) && (productData?.diamondweight !== 0 || productData?.diamondpcs !== 0)) &&
+                <div className="part" style={{ flex: '20%' }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      width: '95%',
+                      paddingTop: '10px',
+                      marginBottom: '15px',
+                      gap: '5px',
+                    }}
+                  >
+                    <select
+                      className='menuitemSelectoreMain'
+                      defaultValue={diaQColOpt}
+                      onChange={(e) => setDiaQColOpt(e.target.value)}
+                    >
+                      {colorData?.map((colorItem) => (
+                        <option key={colorItem.ColorId} value={`${colorItem.Quality}#${colorItem.color}`}>
+                          {`${colorItem.Quality}#${colorItem.color}`}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              }
+              {((isDaimondCstoFlag == 1) && (productData?.diamondweight !== 0 || productData?.diamondpcs !== 0)) &&
+                <div className="divider"></div>}
+
+              {isCColrStoneCustFlag === 1 &&
+                <div className="part" style={{ flex: '20%' }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      width: '95%',
+                      paddingTop: '10px',
+                      gap: '5px',
+                      borderTop: '1px solid rgba(66, 66, 66, 0.2)'
+
+                    }}
+                  >
+                    <select
+                      className='menuitemSelectoreMain'
+                      onChange={(e) => setCSQOpt(e.target.value)}
+                      defaultValue={cSQopt}
+                    >
+                      {DaimondQualityColor.map((data, index) => (
+                        <option
+                          key={index}
+                          value={`${data.Quality}_${data.color}`}
+                        >
+                          {`${data.Quality}_${data.color}`}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              }
+              {isCColrStoneCustFlag === 1 &&
+                <div className="divider"></div>}
               <div className="part" style={{ flex: '60%', justifyContent: 'end' }}>
                 <div className="part-content">
                   <IoGrid style={{ height: '18px', width: '18px', opacity: 0.7, color: '#7b7b7b' }} onClick={() => handle2ImageShow()} />
@@ -1934,7 +2122,7 @@ const ProductList = () => {
                     </li>
                   </ul>
                   <div>
-                    {NewFilterData().map((ele, index) => (
+                    {NewFilterData1().map((ele, index) => (
                       <>
                         <Accordion
                           elevation={0}
@@ -2062,10 +2250,21 @@ const ProductList = () => {
                                 style={{
                                   display: "flex",
                                   alignItems: "center",
+                                  justifyContent:'space-between',
                                   gap: "12px",
                                 }}
                                 key={i}
                               >
+
+                                <small
+                                  style={{
+                                    fontFamily: "TT Commons, sans-serif",
+                                    color: "#7f7d85",
+                                    textTransform: "lowercase",
+                                  }}
+                                >
+                                  {flist.label}
+                                </small>
                                 <Checkbox
                                   name={`checkbox${index + 1}${i + 1}`}
                                   checked={
@@ -2079,19 +2278,10 @@ const ProductList = () => {
                                     width: "10px",
                                   }}
                                   onClick={(e) =>
-                                    handleCheckboxChange(e, ele, flist)
+                                    handleCheckboxChange(e, ele, flist.id)
                                   }
                                   size="small"
                                 />
-                                <small
-                                  style={{
-                                    fontFamily: "TT Commons, sans-serif",
-                                    color: "#7f7d85",
-                                    textTransform: "lowercase",
-                                  }}
-                                >
-                                  {flist}
-                                </small>
                               </div>
                             ))}
                           </AccordionDetails>
@@ -2116,7 +2306,7 @@ const ProductList = () => {
                           <div className="part-content" onClick={toggleDetailDrawer}>
                             Filter
                             <FilterListIcon />
-                            
+
                           </div>
                         </div>
                         <div className="part secondfilteDiv" style={{ flex: '20%' }}>
@@ -2143,79 +2333,7 @@ const ProductList = () => {
                           </div>
                         </div>
 
-                        <div className="part secondfilteDiv" style={{ flex: '20%' }}>
-                          <div className="part-content">
-                            <div className={`custom-select ${isActive ? 'active' : ''}`}>
-                              <button
-                                className="select-button"
-                                onClick={toggleDropdown}
-                                aria-haspopup="listbox"
-                                aria-expanded={isActive}
-                              >
-                                <span className="selected-value">{selectedOptionData ? selectedOptionData : 'Featured'}
-                                  <SortIcon />
-                                </span>
-                              </button>
-                              <ul className="select-dropdown">
-                                {options.map((option, index) => (
-                                  <li key={index} role="option" onClick={() => handleSortChange(option)}>
-                                    <label htmlFor={`option-${index}`}>{option.label}</label>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="part secondfilteDiv" style={{ flex: '20%' }}>
-                          <div className="part-content">
-                            <div className={`custom-select ${isActive ? 'active' : ''}`}>
-                              <button
-                                className="select-button"
-                                onClick={toggleDropdown}
-                                aria-haspopup="listbox"
-                                aria-expanded={isActive}
-                              >
-                                <span className="selected-value">{selectedOptionData ? selectedOptionData : 'Featured'}
-                                  <SortIcon />
-                                </span>
-                              </button>
-                              <ul className="select-dropdown">
-                                {options.map((option, index) => (
-                                  <li key={index} role="option" onClick={() => handleSortChange(option)}>
-                                    <label htmlFor={`option-${index}`}>{option.label}</label>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="part secondfilteDiv" style={{ flex: '20%' }}>
-                          <div className="part-content">
-                            <div className={`custom-select ${isActive ? 'active' : ''}`}>
-                              <button
-                                className="select-button"
-                                onClick={toggleDropdown}
-                                aria-haspopup="listbox"
-                                aria-expanded={isActive}
-                              >
-                                <span className="selected-value">{selectedOptionData ? selectedOptionData : 'Featured'}
-                                  <SortIcon />
-                                </span>
-                              </button>
-                              <ul className="select-dropdown">
-                                {options.map((option, index) => (
-                                  <li key={index} role="option" onClick={() => handleSortChange(option)}>
-                                    <label htmlFor={`option-${index}`}>{option.label}</label>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="part thirdfilteDiv" style={{ flex: '20%', justifyContent: 'end' }}>
+                        <div className="part thirdfilteDiv" style={{ flex: '60%', justifyContent: 'end' }}>
                           <div className="part-content">
                             <GridViewIcon onClick={() => handle2ImageShow()} />
                             <AppsIcon />
@@ -2525,13 +2643,16 @@ const ProductList = () => {
                   </div>
                 } */}
               </div>
+              <div style={{display:'flex',width:'100%',justifyContent:'center',marginTop:'100px'}}>
+                <Pagination count={10} />
+              </div>
               <SmilingRock />
               <Footer />
             </div>
           </div>
         </div>
       </div>
-
+      <Footer />
     </div >
   );
 };

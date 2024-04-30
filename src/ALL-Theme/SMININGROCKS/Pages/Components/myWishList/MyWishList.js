@@ -432,7 +432,9 @@ export default function MyWishList() {
           </div>
         </div>
       </div>
-      <Footer />
+      <div style={{position: wishlistData?.length === 0 && 'absolute', bottom: '0px', width: '100%'}}>
+        <Footer />
+      </div>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import { CommonAPI } from "./CommonAPI"
 
-export const productListApiCall = async() =>{
+export const productListApiCall = async(param) =>{
 
     const keyMapping = {
         "0": "id",
@@ -78,7 +78,10 @@ export const productListApiCall = async() =>{
         "72": "similarband",
         "73": "DefaultSize",
         "74": "imagepath",
-        "75": "ProducttypeName"
+        "75": "ProducttypeName",
+        "76": "ImageName",
+        "77": "VideoName",
+        "78": "DesignFolderName"
       };
 
     let pdList=[];
@@ -86,9 +89,21 @@ export const productListApiCall = async() =>{
     let storeinit = JSON.parse(localStorage.getItem("storeInit"))
     let loginInfo = JSON.parse(localStorage.getItem("loginUserDetail"))
     let userEmail = localStorage.getItem("userEmailForPdList")
-    console.log("userEmail",userEmail);
 
-    const data = {"PackageId":`${loginInfo?.PackageId}`,"autocode":"","FrontEnd_RegNo":`${storeinit?.FrontEnd_RegNo}`,"Customerid":`${loginInfo?.id}`}
+
+    let encodedFilter = {
+      "FilterKey":`${param?.data.param1name}`,
+      "DesignNo":"",
+      "FilterVal":`${param?.data.param1dataname}`,
+      "PageNo":"1",
+      "PageSize":`${storeinit?.PageSize}`}
+
+    const data = {
+      "PackageId":`${loginInfo?.PackageId}`,
+      "autocode":"","FrontEnd_RegNo":`${storeinit?.FrontEnd_RegNo}`,
+      "Customerid":`${loginInfo?.id}`,
+      "Filter":btoa(JSON.stringify(encodedFilter)),
+    }
 
     let encData =  btoa(JSON.stringify(data))
 

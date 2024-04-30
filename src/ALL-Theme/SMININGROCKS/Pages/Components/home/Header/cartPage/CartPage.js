@@ -1144,7 +1144,6 @@ export default function CartPage() {
     <>
       <div
         className="paddingTopMobileSet"
-        style={{ backgroundColor: "#c0bbb1", paddingTop: "110px" }}
       >
         {isLoading && (
           <div className="loader-overlay">
@@ -1178,7 +1177,7 @@ export default function CartPage() {
                     List View
                   </button>
                   <button
-                    className={`smiTopAddAllBtn ${value === 1 ? "active" : ""}`}
+                    className={`smiTopClearBtn ${value === 1 ? "active" : ""}`}
                     onClick={() => handleChange(1)}
                   >
                     Image View
@@ -1190,7 +1189,7 @@ export default function CartPage() {
                     CLEAR ALL
                   </button>
                   <button
-                    className={`smiTopAddAllBtn ${value === 3 ? "active" : ""}`}
+                    className={`smiTopClearBtn ${value === 3 ? "active" : ""}`}
                     onClick={() => navigation("/productpage")}
                   >
                     Show ProductList
@@ -1209,12 +1208,12 @@ export default function CartPage() {
                   style={{
                     display: "flex",
                     justifyContent: "flex-end",
-                    margin: "-50px 25px 0px 20px",
+                    margin: "-50px 70px 0px 20px",
                     paddingBottom: "50px",
                   }}
                 >
                   <button
-                    className="placeOrderCartPageBtn"
+                    className="smiTopClearBtn"
                     onClick={(event) => {
                       navigation("/Delivery");
                     }}
@@ -2042,13 +2041,13 @@ export default function CartPage() {
                   <Container className="d-flex justify-content-center">
                     <Row>
                       {cartListData.map((item, index) => (
-                        <Col key={item.id} lg={item.length == 2 ? 6 : 3} md={item.length == 2 ? 6 : 3} sm={6} xs={12} style={{marginBottom:'10px'}}>
+                        <Col key={item.id} lg={item.length == 2 ? 6 : 3} md={item.length == 2 ? 6 : 3} sm={6} xs={12} style={{ marginBottom: '10px' }}>
                           <Card>
                             <div className="smiling-cartBoxMainImageViews">
                               <div className="smilingCartMobileMain" style={{ display: "flex", position: 'relative' }}>
                                 <p className="ImageViewdesignNo" style={{ position: 'absolute' }}>{item.designno}</p>
                                 <Card.Img
-                                 src={item.DefaultImageName != '' ? `${imageURL}/${yKey}/${item.DefaultImageName}` : noFoundImage}
+                                  src={item.DefaultImageName != '' ? `${imageURL}/${yKey}/${item.DefaultImageName}` : noFoundImage}
                                   className="smiling-cartPageBoxImgView"
                                   onError={(e) => {
                                     e.target.src = noFoundImage;
@@ -2132,28 +2131,8 @@ export default function CartPage() {
               }
             </div>
           </CustomTabPanel>
-          <Footer />
         </div>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            paddingBlock: "30px",
-          }}
-        >
-          <p
-            style={{
-              margin: "0px",
-              fontWeight: 500,
-              width: "100px",
-              color: "white",
-              cursor: "pointer",
-            }}
-            onClick={() => window.scrollTo(0, 0)}
-          >
-            BACK TO TOP
-          </p>
-        </div>
+        <Footer />
       </div>
       <Dialog
         onClose={() => setDialogOpen(false)}

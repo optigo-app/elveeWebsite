@@ -46,11 +46,11 @@ export default function LoginWithEmail() {
     }
 
 
-    let pdDataCalling = async () => {
-        await productListApiCall().then((res) => {
-            setPdData(res)
-        })
-    }
+    // let pdDataCalling = async () => {
+    //     await productListApiCall().then((res) => {
+    //         setPdData(res)
+    //     })
+    // }
 
     let designDataCall = async () => {
         await DesignSet().then((res) => {
@@ -144,11 +144,11 @@ export default function LoginWithEmail() {
                 setIsLoginState('true')
                 localStorage.setItem('LoginUser', 'true')
                 localStorage.setItem('loginUserDetail', JSON.stringify(response.Data.rd[0]));
-                navigation('/');
-                pdDataCalling()
+                // pdDataCalling()
                 designDataCall()
                 getCountFunc()
-                getDesignPriceList()
+                navigation('/');
+                // getDesignPriceList()
                 // handelCurrencyData()
                 // getAllProdData()
                 // window.location.reload(); 

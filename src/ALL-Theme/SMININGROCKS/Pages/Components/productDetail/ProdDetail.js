@@ -47,8 +47,11 @@ const ProdDetail = () => {
 
   const [sizeOption, setSizeOption] = useState();
   const [diaQColOpt, setDiaQColOpt] = useRecoilState(diamondQualityColorG);
+  const [diaQColOptId, setDiaQColOptId] = useState();
   const [mtTypeOption, setmtTypeOption] = useRecoilState(metalTypeG);
+  const [mtTypeOptionId, setmtTypeOptionId] = useState(); 
   const [cSQopt, setCSQOpt] = useRecoilState(colorstoneQualityColorG);
+  const [cSQoptId, setCSQOptId] = useState();
   const [colorImageData, setColorImageData] = useState([]);
   const [isProductCuFlag, setIsProductCuFlag] = useState("");
   const [IsColorWiseImagesShow, setIsColorWiseImagesShow] = useState('')
@@ -161,29 +164,49 @@ const ProdDetail = () => {
 
     let loginInfo = JSON.parse(localStorage.getItem("loginUserDetail"))
     let ColorStoneQualityColor = JSON.parse(localStorage.getItem("ColorStoneQualityColor"))
-    setmtTypeOption(loginInfo?.cmboMetalType)
+    let DimondQualityColor = JSON.parse(localStorage.getItem("QualityColor"))
+    let MetalTypeData = JSON.parse(localStorage.getItem("MetalTypeData"))
 
-    console.log("checkData", loginInfo?.cmboDiaQualityColor !== "");
+    if (loginInfo?.MetalId !== 0) {
+      let metalType = MetalTypeData?.find(item => item?.Metalid == loginInfo?.MetalId)
+      setmtTypeOption(metalType?.metaltype)
+      setmtTypeOptionId(metalType?.Metalid)
+    } else {
+      setmtTypeOption(MetalTypeData[0]?.metaltype)
+      setmtTypeOptionId(MetalTypeData[0]?.Metalid)
 
-    if (loginInfo?.cmboDiaQualityColor !== "") {
-      let qualityColor = `${loginInfo?.cmboDiaQualityColor.split("#@#")[0]?.toUpperCase()}#${loginInfo?.cmboDiaQualityColor.split("#@#")[1]?.toUpperCase()}`
-      setDiaQColOpt(qualityColor)
     }
+
+    let diaQCVar = DimondQualityColor?.find(item => item.QualityId == loginInfo?.cmboDiaQCid?.split(',')[0] && item.ColorId == loginInfo?.cmboDiaQCid?.split(',')[1]);
+    if (loginInfo?.cmboDiaQCid !== "0,0") {
+      // let qualityColor = `${loginInfo?.cmboDiaQualityColor.split("#@#")[0]?.toUpperCase()}#${loginInfo?.cmboDiaQualityColor.split("#@#")[1]?.toUpperCase()}`
+      let qualityColor = `${diaQCVar?.Quality}#${diaQCVar?.color}`
+      setDiaQColOpt(qualityColor)
+      setDiaQColOptId([diaQCVar?.QualityId,diaQCVar?.ColorId])
+    }   
     else {
-      if (colorData && colorData?.length) {
-        setDiaQColOpt(`${colorData[0]?.Quality}#${colorData[0]?.color}`)
+      if (DimondQualityColor && DimondQualityColor?.length) {
+        setDiaQColOpt(`${DimondQualityColor[0]?.Quality}#${DimondQualityColor[0]?.color}`)
+        setDiaQColOptId([DimondQualityColor[0]?.QualityId,DimondQualityColor[0]?.ColorId])
+
       }
     }
 
-    let csQualColor = `${loginInfo?.cmboCSQualityColor.split("#@#")[0]?.toUpperCase()}-${loginInfo?.cmboCSQualityColor.split("#@#")[1]?.toUpperCase()}`
 
-    let dqcc = ColorStoneQualityColor?.find((dqc) => `${dqc.Quality}-${dqc.color}` === csQualColor)
+    // let dqcc = ColorStoneQualityColor?.find((dqc) => `${dqc.Quality}-${dqc.color}` === csQualColor)
 
-    if (dqcc) {
+    if (loginInfo?.cmboCSQCid !== "0,0") {
+      let csQCVar = ColorStoneQualityColor?.find(item => item?.QualityId === loginInfo?.cmboCSQCid?.split(',')[0] && item?.ColorId === loginInfo?.cmboCSQCid?.split(',')[1])
+      let csQualColor = `${csQCVar?.QualityId}-${csQCVar?.ColorId}`
       setCSQOpt(csQualColor)
+      setCSQOptId([csQCVar?.QualityId,csQCVar?.ColorId])
+
     } else {
       let ref = `${ColorStoneQualityColor[0].Quality}-${ColorStoneQualityColor[0].color}`
+      let ref1 = [ColorStoneQualityColor[0].QualityId,ColorStoneQualityColor[0].ColorId]
       setCSQOpt(ref)
+      setCSQOptId(ref1)
+      
     }
 
     // let sizeDatafilter = sizeData?.filter((sd)=>sd?.IsDefaultSize === 1)
@@ -193,8 +216,8 @@ const ProdDetail = () => {
 
   }, [colorData, sizeData])
 
-  // console.log("cSQopt",cSQopt);
-
+  console.log("info",mtTypeOption,diaQColOpt,cSQopt);
+  
   // console.log("productData",sizeOption)
 
   // useEffect(()=>{
@@ -350,11 +373,9 @@ const ProdDetail = () => {
       storeInit?.IsMetalCustomization === 1
         ?
         ele?.A === srProductsData?.autocode &&
-        ele?.B === srProductsData?.designno &&
-        ele?.D === mtTypeOption
+        ele?.C === mtTypeOptionId
         :
-        ele?.A === srProductsData?.autocode &&
-        ele?.B === srProductsData?.designno
+        ele?.A === srProductsData?.autocode
     );
 
     console.log("mtrdData2222", mtrd)
@@ -370,12 +391,10 @@ const ProdDetail = () => {
       storeInit?.IsDiamondCustomization === 1
         ?
         ele.A === srProductsData?.autocode &&
-        ele.B === srProductsData?.designno &&
-        ele.H === diaQColOpt?.split("#")[0] &&
-        ele.J === diaQColOpt?.split("#")[1]
+        ele.G === diaQColOptId[0] &&
+        ele.I === diaQColOptId[1]
         :
-        ele.A === srProductsData?.autocode &&
-        ele.B === srProductsData?.designno
+        ele.A === srProductsData?.autocode
 
     )
 
@@ -399,12 +418,10 @@ const ProdDetail = () => {
       storeInit?.IsCsCustomization === 1
         ?
         ele.A === srProductsData?.autocode &&
-        ele.B === srProductsData?.designno &&
-        ele.H === cSQopt?.split("_")[0] &&
-        ele.J === cSQopt?.split("_")[1]
+        ele.H === cSQoptId[0] &&
+        ele.J === cSQoptId[1]
         :
-        ele.A === srProductsData?.autocode &&
-        ele.B === srProductsData?.designno
+        ele.A === srProductsData?.autocode 
 
     );
 
@@ -426,7 +443,7 @@ const ProdDetail = () => {
     let gt = showPrice + showPrice1 + showPrice2;
     setGrandTotal(gt ?? 0);
 
-  }, [getPriceData, mtTypeOption, diaQColOpt, cSQopt])
+  }, [getPriceData,mtTypeOption,diaQColOpt,cSQopt,mtTypeOptionId,diaQColOptId,cSQoptId])
 
 
   useEffect(() => {
@@ -1518,7 +1535,7 @@ const ProdDetail = () => {
                     >
                       Metal Purity :
                       <span style={{ fontWeight: 'bold', letterSpacing: '2px' }}>
-                        {mtTypeOption ? mtTypeOption.split(" ")[1] : productData?.MetalPurity}
+                        {mtTypeOption ? mtTypeOption?.split(" ")[1] : productData?.MetalPurity}
                       </span>
                     </span>
                     <sapn
@@ -1622,11 +1639,11 @@ const ProdDetail = () => {
                         className='menuitemSelectoreMain'
                         defaultValue={mtTypeOption}
                         onChange={(e) => {
-                          setmtTypeOption(e.target.value)
+                          setmtTypeOptionId(e.target.value)
                         }}
                       >
                         {metalType.map((data, index) => (
-                          <option key={index} value={data.metalType}>
+                          <option key={index} value={data.Metalid}>
                             {data.metaltype}
                           </option>
                         ))}
@@ -1768,7 +1785,8 @@ const ProdDetail = () => {
                           </select>
                         )}
                       </div>
-                    )}
+                    )
+                  }
 
                   {(sizeData?.length !== 0 || (productData?.DefaultSize && productData.DefaultSize.length !== 0)) && (
                     <div
@@ -2150,7 +2168,7 @@ const ProdDetail = () => {
             </div>
           </div>
           {(designSetList.length !== 0 && showIcateDesign === 1) &&
-            <div className='smilingCompleteLookMainWeb' style={{ position: 'relative', marginInline: '10%', display: 'flex', alignItems: 'center', marginBottom: '7%', marginTop: '7%' }}>
+            <div className='smilingCompleteLookMainWeb' style={{ position: 'relative', marginInline: '10%', minHeight: '350px', display: 'flex', alignItems: 'center', marginBottom: '7%', marginTop: '7%' }}>
               <div className='similiarBrand' style={{ right: '0px', position: 'absolute', display: 'flex', alignItems: 'center', flexDirection: 'column', marginBottom: '100px', marginTop: !(productData?.OriginalImagePath) && '120px' }}>
                 <div style={{ marginBottom: '12px' }}>
                   <span style={{ fontFamily: 'FreightDisp Pro Medium', color: '#7d7f85', fontSize: '26px' }}>Complete The Look</span>
@@ -2249,9 +2267,156 @@ const ProdDetail = () => {
               >
                 Tell Me More
               </p>
-              <ul className="srAccul">
+              <div style={{ width: '60%' }} className='tellmeMoreMain'>
+                <div className='tellmeMoreMainMobileDiv'>
+                  <ul style={{
+                    margin: '0px 0px 3px 0px'
+                  }}>
+                    <li style={{ fontWeight: 600 }}>Daimond Detail(19/0.50ct)</li>
+                  </ul>
+                  <ul style={{
+                    display: 'flex',
+                    textDecoration: 'none',
+                    listStyle: 'none',
+                    margin: '0px 0px 3px 0px'
+                  }}>
+                    <li className='proDeatilList1 one'>Shape</li>
+                    <li className='proDeatilList2 one'>Clarity</li>
+                    <li className='proDeatilList3 one'>Color</li>
+                    <li className='proDeatilList4 one'>Pcs/Wt</li>
+                  </ul>
+                  <ul style={{
+                    display: 'flex',
+                    textDecoration: 'none',
+                    listStyle: 'none',
+                    margin: '0px 0px 3px 0px'
+                  }}>
+                    <li className='proDeatilList1'>Round</li>
+                    <li className='proDeatilList2'>VS</li>
+                    <li className='proDeatilList3'>GH</li>
+                    <li className='proDeatilList4'>15/0.250 Ct</li>
+                  </ul>
+                  <ul style={{
+                    display: 'flex',
+                    textDecoration: 'none',
+                    listStyle: 'none',
+                  }}>
+                    <li className='proDeatilList1'>Marqise</li>
+                    <li className='proDeatilList2'>VS</li>
+                    <li className='proDeatilList3'>GH</li>
+                    <li className='proDeatilList4'>4/0.350 ct</li>
+                  </ul>
+                </div>
+
+                <div className='tellmeMoreMainMobileDiv'>
+                  <ul style={{
+                    margin: '0px 0px 3px 0px'
+                  }}>
+                    <li style={{ fontWeight: 600 }}>Color Stone Detail(21/1.299ct)</li>
+                  </ul>
+                  <ul style={{
+                    display: 'flex',
+                    textDecoration: 'none',
+                    listStyle: 'none',
+                    margin: '0px 0px 3px 0px'
+                  }}>
+                    <li className='proDeatilList1 one'>Shape</li>
+                    <li className='proDeatilList2 one'>Quality</li>
+                    <li className='proDeatilList3 one'>Color</li>
+                    <li className='proDeatilList4 one'>Pcs/Wt</li>
+                  </ul>
+                  <ul style={{
+                    display: 'flex',
+                    textDecoration: 'none',
+                    listStyle: 'none',
+                    margin: '0px 0px 3px 0px'
+                  }}>
+                    <li className='proDeatilList1'>Round</li>
+                    <li className='proDeatilList2'>Natural Sapphinre</li>
+                    <li className='proDeatilList3'>Blue</li>
+                    <li className='proDeatilList4'>10/0.527 Ct</li>
+                  </ul>
+                  <ul style={{
+                    display: 'flex',
+                    textDecoration: 'none',
+                    listStyle: 'none',
+                    margin: '0px 0px 3px 0px'
+                  }}>
+                    <li className='proDeatilList1'>Round</li>
+                    <li className='proDeatilList2'>Synteic Ruby</li>
+                    <li className='proDeatilList3'>Red</li>
+                    <li className='proDeatilList4'>4/0.350 ct</li>
+                  </ul>
+                  <ul style={{
+                    display: 'flex',
+                    textDecoration: 'none',
+                    listStyle: 'none',
+                    margin: '0px 0px 3px 0px'
+                  }}>
+                    <li className='proDeatilList1'>Custom</li>
+                    <li className='proDeatilList2'>Synteic Ruby</li>
+                    <li className='proDeatilList3'>Red</li>
+                    <li className='proDeatilList4'>4/0.350 ct</li>
+                  </ul>
+                </div>
+
+                <div className='tellmeMoreMainMobileDiv'>
+                  <ul style={{
+                    margin: '0px 0px 3px 0px'
+                  }}>
+                    <li style={{ fontWeight: 600 }}>Misc. Detail(21/1.022ct)</li>
+                  </ul>
+                  <ul style={{
+                    display: 'flex',
+                    textDecoration: 'none',
+                    listStyle: 'none',
+                    margin: '0px 0px 3px 0px'
+                  }}>
+                    <li className='proDeatilList1 one'>Shape</li>
+                    <li className='proDeatilList2 one'>Quality</li>
+                    <li className='proDeatilList3 one'>Color</li>
+                    <li className='proDeatilList4 one'>Pcs/Wt</li>
+                  </ul>
+                  <ul style={{
+                    display: 'flex',
+                    textDecoration: 'none',
+                    listStyle: 'none',
+                    margin: '0px 0px 3px 0px'
+                  }}>
+                    <li className='proDeatilList1'>Square</li>
+                    <li className='proDeatilList2'>Natural Sapphinre</li>
+                    <li className='proDeatilList3'>Blue</li>
+                    <li className='proDeatilList4'>10/0.527 Ct</li>
+                  </ul>
+                  <ul style={{
+                    display: 'flex',
+                    textDecoration: 'none',
+                    listStyle: 'none',
+                    margin: '0px 0px 3px 0px'
+                  }}>
+                    <li className='proDeatilList1'>Round</li>
+                    <li className='proDeatilList2'>Synteic Ruby</li>
+                    <li className='proDeatilList3'>Red</li>
+                    <li className='proDeatilList4'>4/0.350 ct</li>
+                  </ul>
+                  <ul style={{
+                    display: 'flex',
+                    textDecoration: 'none',
+                    listStyle: 'none',
+                    margin: '0px 0px 3px 0px'
+                  }}>
+                    <li className='proDeatilList1'>Custom</li>
+                    <li className='proDeatilList2'>Synteic Ruby</li>
+                    <li className='proDeatilList3'>Red</li>
+                    <li className='proDeatilList4'>4/0.350 ct</li>
+                  </ul>
+                </div>
+              </div>
+              <ul
+                className="srAccul"
+              >
                 <li
-                  className="tellmoreli"
+                  // className="tellmoreli"
                   onClick={() => {
                     setAccNo("");
                     setAccNo("1");
@@ -2259,12 +2424,12 @@ const ProdDetail = () => {
                   }}
                   style={{ userSelect: "none" }}
                 >
-                  <span className="tellmorep">
+                  {/* <span className="tellmorep">
                     PRODUCT DETAILS
                     <span style={{ fontSize: "24px" }}>
                       {acc && accNo === "1" ? "-" : "+"}
                     </span>
-                  </span>
+                  </span> */}
                   {/* <div style={{display:acc && accNo === '1' ? 'block':'none',userSelect:'none',transition:'0.5s'}}> */}
                   <div
                     className={`my-list-fineJewe ${acc && accNo === "1" ? "openAcc" : ""}`}
