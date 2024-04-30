@@ -53,7 +53,7 @@ export default function Footer() {
             <div className='ElveFooterMain'>
                 <div className='ElveFooter1'>
                     <p className='elveBox1Title'>Sign Up For Newslatter</p>
-                    <div style={{ marginTop: '20px', display: 'flex' }}>
+                    <div className='ElveFooter1Input' style={{ marginTop: '20px', display: 'flex' }}>
                         <input type='text' placeholder='Enter Your Email' className='eleBox1InputBox' value={email} onChange={handleEmailChange} />
                         <button className='elevBox1Btn' onClick={handleSubmitNewlater}>Subscribe</button>
                     </div>
@@ -82,7 +82,7 @@ export default function Footer() {
                     {
                         selectedFooteVal === 0 ?
                             <div>
-                                <p style={{ display: 'flex', fontFamily: 'PT Sans, sans-serif', height: '70px' }}>
+                                <p className='footerOfficeDesc' style={{ display: 'flex', fontFamily: 'PT Sans, sans-serif', height: '70px' }}>
                                     <IoLocationOutline style={{ width: '50px', height: 'fit-content' }} />
                                     <span>Plot No. – M1 To M6, Gujarat Hira Bourse Gem & Jewellery Park, Pal-Hazira Road, Ichchhapore, Surat - 394510</span>
                                 </p>
@@ -97,7 +97,7 @@ export default function Footer() {
                             </div>
                             :
                             <div>
-                                <p style={{ display: 'flex', fontFamily: 'PT Sans, sans-serif', height: '70px' }}>
+                                <p  className='footerOfficeDesc' style={{ display: 'flex', fontFamily: 'PT Sans, sans-serif', height: '70px' }}>
                                     <IoLocationOutline style={{ width: '22px', height: '22px' }} />
                                     <span>1177 6th Avenue, Suite 5099, New York,NY 10036.</span>
                                 </p>

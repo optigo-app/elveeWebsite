@@ -2168,7 +2168,7 @@ const ProdDetail = () => {
             </div>
           </div>
           {(designSetList.length !== 0 && showIcateDesign === 1) &&
-            <div className='smilingCompleteLookMainWeb' style={{ position: 'relative', marginInline: '10%',minHeight:'350px', display: 'flex', alignItems: 'center', marginBottom: '7%', marginTop: '7%' }}>
+            <div className='smilingCompleteLookMainWeb' style={{ position: 'relative', marginInline: '10%', minHeight: '350px', display: 'flex', alignItems: 'center', marginBottom: '7%', marginTop: '7%' }}>
               <div className='similiarBrand' style={{ right: '0px', position: 'absolute', display: 'flex', alignItems: 'center', flexDirection: 'column', marginBottom: '100px', marginTop: !(productData?.OriginalImagePath) && '120px' }}>
                 <div style={{ marginBottom: '12px' }}>
                   <span style={{ fontFamily: 'FreightDisp Pro Medium', color: '#7d7f85', fontSize: '26px' }}>Complete The Look</span>
@@ -2267,9 +2267,156 @@ const ProdDetail = () => {
               >
                 Tell Me More
               </p>
-              <ul className="srAccul">
+              <div style={{ width: '60%' }} className='tellmeMoreMain'>
+                <div className='tellmeMoreMainMobileDiv'>
+                  <ul style={{
+                    margin: '0px 0px 3px 0px'
+                  }}>
+                    <li style={{ fontWeight: 600 }}>Daimond Detail(19/0.50ct)</li>
+                  </ul>
+                  <ul style={{
+                    display: 'flex',
+                    textDecoration: 'none',
+                    listStyle: 'none',
+                    margin: '0px 0px 3px 0px'
+                  }}>
+                    <li className='proDeatilList1 one'>Shape</li>
+                    <li className='proDeatilList2 one'>Clarity</li>
+                    <li className='proDeatilList3 one'>Color</li>
+                    <li className='proDeatilList4 one'>Pcs/Wt</li>
+                  </ul>
+                  <ul style={{
+                    display: 'flex',
+                    textDecoration: 'none',
+                    listStyle: 'none',
+                    margin: '0px 0px 3px 0px'
+                  }}>
+                    <li className='proDeatilList1'>Round</li>
+                    <li className='proDeatilList2'>VS</li>
+                    <li className='proDeatilList3'>GH</li>
+                    <li className='proDeatilList4'>15/0.250 Ct</li>
+                  </ul>
+                  <ul style={{
+                    display: 'flex',
+                    textDecoration: 'none',
+                    listStyle: 'none',
+                  }}>
+                    <li className='proDeatilList1'>Marqise</li>
+                    <li className='proDeatilList2'>VS</li>
+                    <li className='proDeatilList3'>GH</li>
+                    <li className='proDeatilList4'>4/0.350 ct</li>
+                  </ul>
+                </div>
+
+                <div className='tellmeMoreMainMobileDiv'>
+                  <ul style={{
+                    margin: '0px 0px 3px 0px'
+                  }}>
+                    <li style={{ fontWeight: 600 }}>Color Stone Detail(21/1.299ct)</li>
+                  </ul>
+                  <ul style={{
+                    display: 'flex',
+                    textDecoration: 'none',
+                    listStyle: 'none',
+                    margin: '0px 0px 3px 0px'
+                  }}>
+                    <li className='proDeatilList1 one'>Shape</li>
+                    <li className='proDeatilList2 one'>Quality</li>
+                    <li className='proDeatilList3 one'>Color</li>
+                    <li className='proDeatilList4 one'>Pcs/Wt</li>
+                  </ul>
+                  <ul style={{
+                    display: 'flex',
+                    textDecoration: 'none',
+                    listStyle: 'none',
+                    margin: '0px 0px 3px 0px'
+                  }}>
+                    <li className='proDeatilList1'>Round</li>
+                    <li className='proDeatilList2'>Natural Sapphinre</li>
+                    <li className='proDeatilList3'>Blue</li>
+                    <li className='proDeatilList4'>10/0.527 Ct</li>
+                  </ul>
+                  <ul style={{
+                    display: 'flex',
+                    textDecoration: 'none',
+                    listStyle: 'none',
+                    margin: '0px 0px 3px 0px'
+                  }}>
+                    <li className='proDeatilList1'>Round</li>
+                    <li className='proDeatilList2'>Synteic Ruby</li>
+                    <li className='proDeatilList3'>Red</li>
+                    <li className='proDeatilList4'>4/0.350 ct</li>
+                  </ul>
+                  <ul style={{
+                    display: 'flex',
+                    textDecoration: 'none',
+                    listStyle: 'none',
+                    margin: '0px 0px 3px 0px'
+                  }}>
+                    <li className='proDeatilList1'>Custom</li>
+                    <li className='proDeatilList2'>Synteic Ruby</li>
+                    <li className='proDeatilList3'>Red</li>
+                    <li className='proDeatilList4'>4/0.350 ct</li>
+                  </ul>
+                </div>
+
+                <div className='tellmeMoreMainMobileDiv'>
+                  <ul style={{
+                    margin: '0px 0px 3px 0px'
+                  }}>
+                    <li style={{ fontWeight: 600 }}>Misc. Detail(21/1.022ct)</li>
+                  </ul>
+                  <ul style={{
+                    display: 'flex',
+                    textDecoration: 'none',
+                    listStyle: 'none',
+                    margin: '0px 0px 3px 0px'
+                  }}>
+                    <li className='proDeatilList1 one'>Shape</li>
+                    <li className='proDeatilList2 one'>Quality</li>
+                    <li className='proDeatilList3 one'>Color</li>
+                    <li className='proDeatilList4 one'>Pcs/Wt</li>
+                  </ul>
+                  <ul style={{
+                    display: 'flex',
+                    textDecoration: 'none',
+                    listStyle: 'none',
+                    margin: '0px 0px 3px 0px'
+                  }}>
+                    <li className='proDeatilList1'>Square</li>
+                    <li className='proDeatilList2'>Natural Sapphinre</li>
+                    <li className='proDeatilList3'>Blue</li>
+                    <li className='proDeatilList4'>10/0.527 Ct</li>
+                  </ul>
+                  <ul style={{
+                    display: 'flex',
+                    textDecoration: 'none',
+                    listStyle: 'none',
+                    margin: '0px 0px 3px 0px'
+                  }}>
+                    <li className='proDeatilList1'>Round</li>
+                    <li className='proDeatilList2'>Synteic Ruby</li>
+                    <li className='proDeatilList3'>Red</li>
+                    <li className='proDeatilList4'>4/0.350 ct</li>
+                  </ul>
+                  <ul style={{
+                    display: 'flex',
+                    textDecoration: 'none',
+                    listStyle: 'none',
+                    margin: '0px 0px 3px 0px'
+                  }}>
+                    <li className='proDeatilList1'>Custom</li>
+                    <li className='proDeatilList2'>Synteic Ruby</li>
+                    <li className='proDeatilList3'>Red</li>
+                    <li className='proDeatilList4'>4/0.350 ct</li>
+                  </ul>
+                </div>
+              </div>
+              <ul
+                className="srAccul"
+              >
                 <li
-                  className="tellmoreli"
+                  // className="tellmoreli"
                   onClick={() => {
                     setAccNo("");
                     setAccNo("1");
@@ -2277,12 +2424,12 @@ const ProdDetail = () => {
                   }}
                   style={{ userSelect: "none" }}
                 >
-                  <span className="tellmorep">
+                  {/* <span className="tellmorep">
                     PRODUCT DETAILS
                     <span style={{ fontSize: "24px" }}>
                       {acc && accNo === "1" ? "-" : "+"}
                     </span>
-                  </span>
+                  </span> */}
                   {/* <div style={{display:acc && accNo === '1' ? 'block':'none',userSelect:'none',transition:'0.5s'}}> */}
                   <div
                     className={`my-list-fineJewe ${acc && accNo === "1" ? "openAcc" : ""}`}
