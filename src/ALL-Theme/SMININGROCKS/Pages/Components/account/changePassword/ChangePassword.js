@@ -239,7 +239,7 @@ export default function ChangePassword() {
                     }}
                 />
 
-                <button className='createBtnRegister' onClick={handleSubmit}>Forgot Password</button>
+                <button className='ForgotPassBtn' onClick={handleSubmit}>Forgot Password</button>
             </div>
         </div>
     )
