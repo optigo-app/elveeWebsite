@@ -7,6 +7,8 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    color: rgba(29, 50, 88, 0.8) !important;
+    font-size: 22px;
 }
 
 .part1,
@@ -37,3 +39,119 @@
 .pcontent {
     font-size: 16px;
 }
+
+@media (min-width: 721px) and (max-width: 768px) {
+    .Timercontainer{
+        padding: 30px 20px 30px 20px;
+    }
+    .part1p1 {
+        font-size: 12px;
+        margin: 0px 0px 7px 0px !important;
+    }
+    
+    .part1p2 {
+        font-size: 20px;
+        margin: 0px 0px 7px 0px !important;
+    }
+    .spanData {
+        padding-right: 50px;
+    }
+  }
+  @media (min-width: 600px) and (max-width: 720px) {
+    .Timercontainer{
+        padding: 30px 20px 30px 20px;
+    }
+    .part1p1 {
+        font-size: 10px;
+        margin: 0px 0px 7px 0px !important;
+    }
+    
+    .part1p2 {
+        font-size: 18px;
+        margin: 0px 0px 7px 0px !important;
+    }
+    .spanData {
+        padding-right: 30px;
+    }
+  }
+
+  @media (min-width: 445px) and (max-width: 599px) {
+    .Timercontainer{
+        padding: 30px 20px 30px 20px;
+    }
+    .part1{
+        flex: 1;
+    }
+    .part2{
+        flex: 2;
+    }
+    .ptitle{
+        font-size: 30px; 
+        text-align: center;
+    }
+    .part1p1 {
+        font-size: 9px;
+        margin: 0px 0px 7px 0px !important;
+    }
+    
+    .part1p2 {
+        font-size: 14px;
+        margin: 0px 0px 7px 0px !important;
+    }
+    .spanData {
+        padding-right: 30px;
+    }
+  }
+
+  @media (min-width: 346px) and (max-width: 444px) {
+    .Timercontainer{
+        padding: 30px 10px 30px 10px;
+    }
+    .part1{
+        flex: 1;
+    }
+    .part2{
+        flex: 2;
+    }
+    .ptitle{
+        font-size: 20px; 
+        text-align: center;
+    }
+    .part1p1 {
+        font-size: 9px;
+        margin: 0px 0px 7px 0px !important;
+    }
+    
+    .part1p2 {
+        font-size: 14px;
+        margin: 0px 0px 7px 0px !important;
+    }
+    .spanData {
+        padding-right: 20px;
+    }
+    .featherImg{
+        display: none;
+    }
+  }
+
+  @media (max-width: 345px) {
+    .part1p1 {
+        font-size: 13px;
+        margin: 0px 0px 7px 0px !important;
+    }
+    
+    .part1p2 {
+        font-size: 24px;
+        margin: 0px 0px 7px 0px !important;
+    }
+    .Timercontainer{
+        display: block;
+    }
+    .part2{
+        align-items: center;
+        text-align: center;
+    }
+    .featherImg{
+        display: none;
+    }
+  }

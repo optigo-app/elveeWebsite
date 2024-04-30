@@ -30,13 +30,22 @@ const sliderData = [
   {
     imageUrl: storImagePath() + "/images/HomePage/Gallery/GalleryImg07.jpg",
   },
+  {
+    imageUrl: storImagePath() + "/images/HomePage/Gallery/GalleryImg08.jpg",
+  },
+  {
+    imageUrl: storImagePath() + "/images/HomePage/Gallery/GalleryImg09.jpg",
+  },
+  {
+    imageUrl: storImagePath() + "/images/HomePage/Gallery/GalleryImg10.jpg",
+  },
 ];
 
 export default function App() {
   return (
     <div className='mainSocialMediaConatiner'>
       <div>
-        <p className='mt-5 mb-4' style={{ textAlign: 'center', fontSize: '20px' }}>GALLARY</p>
+        <p className='galeryComponents'>Gallery</p>
       </div>
       <Swiper
         slidesPerView={1}

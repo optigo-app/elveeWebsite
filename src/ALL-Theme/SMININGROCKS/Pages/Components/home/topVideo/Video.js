@@ -58,7 +58,7 @@
 //           style={{ height: "auto", width: "100%" }}
 //         />
 //       ) : (
-      
+
 //       )} */}
 //         <video
 //           ref={videoRef}
@@ -77,24 +77,33 @@
 //   );
 // }
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./Video.css";
 import { storImagePath } from "../../../../Utils/globalFunctions/GlobalFunction";
 import CountdownTimer from '../CountDownTimer/CountDownTimer'
 
 export default function Video() {
   const [loading, setLoading] = useState(false);
+  const [isLoginStatus, setIsloginStatus] = useState();
   const [videoStarted, setVideoStarted] = useState(false);
   const videoRef = useRef(null);
+
+
+  useEffect(() => {
+    const loginStatus = localStorage.getItem('LoginUser');
+    if (loginStatus) {
+      setIsloginStatus(loginStatus)
+    }
+  }, [])
 
   const handleVideoLoad = () => {
     setLoading(false);
     // Unmute the video once it's loaded
-  setTimeout(() => {
-   
-  }, 0);
+    setTimeout(() => {
 
-  videoRef.current.controls = false;
+    }, 0);
+
+    videoRef.current.controls = false;
   };
 
   const handleVideoPlay = () => {
@@ -103,20 +112,28 @@ export default function Video() {
 
   return (
     <div>
-      <video
-        ref={videoRef}
-        width="500"
-        autoPlay
-        muted
-        controls={!videoStarted} // Show controls only if the video hasn't started playing
-        loop
-        style={{ height: "auto", width: "100%" }}
-        onLoadedData={handleVideoLoad}
-        onPlay={handleVideoPlay}
-      >
-        <source src={`${storImagePath()}/images/HomePage/MainBanner/videos/HomepageMainBannerVideo.mp4`} type="video/mp4" />
-      </video>
-      <CountdownTimer/>
+      {isLoginStatus == 'false' ? (
+        <>
+          <video
+            ref={videoRef}
+            autoPlay
+            muted
+            controls={!videoStarted}
+            loop
+            style={{ height: "auto", width: "100%" }}
+            onLoadedData={handleVideoLoad}
+            onPlay={handleVideoPlay}
+          >
+            <source src={`${storImagePath()}/images/HomePage/MainBanner/videos/HomepageMainBannerVideo.mp4`} type="video/mp4" />
+          </video>
+          <CountdownTimer />
+        </>
+      ) :
+        <>
+          <img src={`${storImagePath()}/images/HomePage/MainBanner/image/HomepageMainBannerVideo.png`} style={{width:'100%'}}/>
+          <CountdownTimer />
+        </>
+      }
     </div>
   );
 }

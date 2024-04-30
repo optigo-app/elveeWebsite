@@ -81,6 +81,9 @@
 .gorGiftMain {
     display: flex;
     margin-inline: 12%;
+    color: rgba(29, 50, 88, 0.8)!important;
+    text-align: center;
+    font-size: 22px;
 }
 
 .gorGiftBox1 {

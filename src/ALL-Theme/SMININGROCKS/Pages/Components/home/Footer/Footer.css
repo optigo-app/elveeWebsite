@@ -1,4 +1,5 @@
 .ElveFooterMain{
+    color: rgba(29, 50, 88, 0.8) !important;
     display: flex;
     border-top: 1px solid black;
     padding-bottom: 20px;
