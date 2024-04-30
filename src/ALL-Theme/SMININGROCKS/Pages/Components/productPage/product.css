@@ -234,7 +234,6 @@
     } */
 
     .prod_img {
-        margin-top: 30px !important;
         min-height: 200px !important;
         height: 200px !important;
     }
@@ -274,7 +273,7 @@
     }
 
     .prod_img {
-        width: 80% !important;
+        width: 100% !important;
     }
 
 }
@@ -501,7 +500,14 @@
     line-height: 1.5;
     filter: contrast(10.4);
     color: #424242;
-  }
+}
+
+@media screen and (max-width: 1400px) {
+
+    .paddingTopMobileSet.mainProduct{
+        margin-inline: 1%!important;
+    }
+}
 
 @media screen and (min-width: 776px) and (max-width: 1439px) {
     .filterDivcontainer {
@@ -640,10 +646,6 @@
         display: none !important;
     }
 
-    .smilingProductImageMain {
-        padding: 0px 0px 0px 17px;
-    }
-
     .main-ProdcutListConatiner {
         width: 49%;
     }
@@ -652,16 +654,12 @@
         height: 290px;
     }
 
-    .listing-details {
-        padding: 12px;
-    }
-
     .smilingAllProductDataMainMobile {
         display: flex !important;
         flex-direction: row !important;
         flex-wrap: wrap;
         gap: 2px;
-        margin: 10px;
+        margin: 5px;
     }
 
     .smilingProductMain {
@@ -704,7 +702,7 @@
     }
 
     .bg-image {
-        margin: 10px 15px 10px 15px;
+        margin: 10px 0px 10px 0px;
     }
 
     .select-button {
@@ -903,7 +901,7 @@
     }
 
     .smilingProductImageMain {
-        padding: 0px 2px 0px 8px;
+        padding: 10px 2px 0px 8px;
     }
 
     .main-ProdcutListConatiner {
@@ -922,17 +920,17 @@
         display: flex !important;
         flex-direction: row !important;
         flex-wrap: wrap;
-        margin: 10px;
+        margin: 0px;
     }
 
     .smilingProductMain {
         margin-inline: 0%;
     }
 
-    .paddingTopMobileSet {
+    /* .paddingTopMobileSet {
         padding-top: 1px !important;
         margin: 136px 0px 0px 0px !important;
-    }
+    } */
 
     .listing-card {
         width: 100%;
@@ -980,7 +978,7 @@
     }
 
     .bg-image {
-        margin: 10px 0px 10px 0px;
+        margin: 0px 0px 10px 0px;
     }
 
     .select-button {

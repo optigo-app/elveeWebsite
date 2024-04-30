@@ -15,7 +15,7 @@ const PromoComponent1 = () => {
                     <img src={`${storImagePath()}/images/HomePage/Promo/Banner/PromoBanner1.jpg`} className='promo-daimondBox2-image' onClick={() => navigation('/productpage')}/>
                 </div>
                 <div className='promo-daimondBox1'>
-                    <p style={{  fontSize: '25px', color: '#7d7f85', fontFamily: 'FreightDispProMedium-Regular,Times New Roman,serif' }}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                    <p style={{  fontSize: '22px', color: 'rgba(29, 50, 88, 0.8)' }}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
                 </div>
             </div>
         </div>

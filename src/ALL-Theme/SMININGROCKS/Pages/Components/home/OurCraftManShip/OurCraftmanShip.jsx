@@ -1,38 +1,30 @@
 import React, { useRef, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import './Styles.css'
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { Pagination, Navigation } from 'swiper/modules';
+import { storImagePath } from '../../../../Utils/globalFunctions/GlobalFunction';
 
 
 const sliderData = [
   {
-    imageUrl: 'https://via.placeholder.com/600x400',
+    imageUrl: storImagePath() + "/images/HomePage/Craftmenship/craftingImg01.jpg",
   },
   {
-    imageUrl: 'https://via.placeholder.com/600x400',
+    imageUrl: storImagePath() + "/images/HomePage/Craftmenship/craftingImg02.jpg",
   },
-    {
-    imageUrl: 'https://via.placeholder.com/600x400',
+  {
+    imageUrl: storImagePath() + "/images/HomePage/Craftmenship/craftingImg03.jpg",
   },
-    {
-    imageUrl: 'https://via.placeholder.com/600x400',
-  },
-    {
-    imageUrl: 'https://via.placeholder.com/600x400',
-  },
-    {
-    imageUrl: 'https://via.placeholder.com/600x400',
-  },
-  // Add more sliderData items as needed
 ];
 
 export default function App() {
   return (
     <>
     <div>
-    <p className='mt-5 mb-4' style={{textAlign:'center', fontSize:'20px'}}>Our Craftmenship</p>
+    <p className='craftmenship'>Our Craftmenship</p>
     </div>
       <Swiper
         navigation={true}

@@ -6,37 +6,31 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 
 import { Pagination } from 'swiper/modules';
+import { storImagePath } from '../../../../Utils/globalFunctions/GlobalFunction';
 
 const sliderData = [
   {
-    imageUrl: 'https://via.placeholder.com/600x400',
+    imageUrl: storImagePath() + "/images/HomePage/SocialMedia/socialMedia1.jpg",
   },
   {
-    imageUrl: 'https://via.placeholder.com/600x400',
+    imageUrl: storImagePath() + "/images/HomePage/SocialMedia/socialMedia2.jpg",
   },
   {
-    imageUrl: 'https://via.placeholder.com/600x400',
+    imageUrl: storImagePath() + "/images/HomePage/SocialMedia/socialMedia3.jpg",
   },
   {
-    imageUrl: 'https://via.placeholder.com/600x400',
+    imageUrl: storImagePath() + "/images/HomePage/SocialMedia/socialMedia4.jpg",
   },
   {
-    imageUrl: 'https://via.placeholder.com/600x400',
+    imageUrl: storImagePath() + "/images/HomePage/SocialMedia/socialMedia5.jpg",
   },
-  {
-    imageUrl: 'https://via.placeholder.com/600x400',
-  },
-  {
-    imageUrl: 'https://via.placeholder.com/600x400',
-  },
-  // Add more sliderData items as needed
 ];
 
 export default function SocialMedia() {
   return (
     <div className='mainSocialMediaConatiner'>
       <div>
-        <p className='mt-5 mb-4' style={{ textAlign: 'center', fontSize: '20px' }}>Social Media</p>
+        <p className='socialmediaptag'>Social Media</p>
       </div>
       <Swiper
         slidesPerView={1}

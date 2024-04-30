@@ -1,6 +1,7 @@
 .homeMain{
     /* margin-inline: 6%; */
     background-color: white;
+    font-family: "PT Sans", sans-serif !important;
 }
 .smining-header{
     height: 110px;
