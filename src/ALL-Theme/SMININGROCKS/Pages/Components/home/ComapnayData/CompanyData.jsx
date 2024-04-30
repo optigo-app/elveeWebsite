@@ -3,7 +3,7 @@ import './Styles.css';
 
 function CompanyBanner() {
   return (
-    <div className="mt-5 mb-4 company-banner">
+    <div className="mt-5 company-banner">
       <div className="banner-stats">
         <div className="stat">
           <div>

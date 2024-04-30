@@ -43,7 +43,7 @@ export default function Home() {
 
       const header = {
         Authorization: 'Bearer optigo_json_api',
-        domain:  (window.location.hostname === 'localhost' || window.location.hostname === 'zen') ? 'astore.orail.co.in' : window.location.hostname,
+        domain: (window.location.hostname === 'localhost' || window.location.hostname === 'zen') ? 'astore.orail.co.in' : window.location.hostname,
         version: 'V4',
         sp: "1"
         // domain: 'zen',
@@ -69,7 +69,7 @@ export default function Home() {
           localStorage.setItem('myAccountFlags', JSON.stringify(response.data.Data.rd1));
         }
       } catch (error) {
-        console.error('Error:', error );
+        console.error('Error:', error);
       }
     }
 
@@ -222,7 +222,7 @@ export default function Home() {
         }
 
         await CommonAPI(body).then((res) => {
-          if(res?.Data.rd){
+          if (res?.Data.rd) {
             localStorage.setItem("CURRENCYCOMBO", JSON.stringify(res?.Data.rd))
           }
           // console.log("res",res)
@@ -277,39 +277,53 @@ export default function Home() {
     storImagePath();
 
   }, []);
+  const [isLoginStatus, setIsloginStatus] = useState();
+  useEffect(() => {
+    const loginStatus = localStorage.getItem('LoginUser');
+    if (loginStatus) {
+      setIsloginStatus(loginStatus)
+    }
+  }, [])
 
 
-  
-
-//  let domainName =  `((window.location.hostname === 'localhost' || window.location.hostname === 'zen') ? 'astore.orail.co.in' : window.location.hostname)/ufcc/image/`
+  //  let domainName =  `((window.location.hostname === 'localhost' || window.location.hostname === 'zen') ? 'astore.orail.co.in' : window.location.hostname)/ufcc/image/`
 
 
-  
+
 
   return (
-    <div className='paddingTopMobileSet' style={{ backgroundColor: 'white',paddingTop:'0px' }}>
+    <div className='paddingTopMobileSet' style={{ backgroundColor: 'white', paddingTop: '0px' }}>
       <div className='homeMain'>
-        <Video />
-        {/* <SmilingRock /> */}
-        <PromoComponent1/>
-        <BrandsComponent/>
-        <PromoComponent2/>
-        <FestiveFinds />
-        <OurCraftmanShip/>
-        <GallerySlider/>
-        <CompanyData/>
-        <AffiliationData/>
-        <SocialMedia/>
-        {/* <DaimondEveyone /> */}
-        {/* <ShopByCategory /> */}
-        {/* <SmilingBrides /> */}
-        {/* <FeaturedCollection /> */}
-        <div style={{ marginTop: '60px' }}>
-          {/* <SustainAbility /> */}
-        </div>
-        {/* <ShopifySection /> */}
-        {/* <ShopOurInstagram /> */}
-        <Footer />
+        {isLoginStatus == 'true' ? (
+          <>
+            <Video />
+            <Footer />
+          </>
+        ) :
+          <>
+            <Video />
+            {/* <SmilingRock /> */}
+            <PromoComponent1 />
+            <BrandsComponent />
+            <PromoComponent2 />
+            <FestiveFinds />
+            <OurCraftmanShip />
+            <GallerySlider />
+            <CompanyData />
+            <AffiliationData />
+            <SocialMedia />
+            {/* <DaimondEveyone /> */}
+            {/* <ShopByCategory /> */}
+            {/* <SmilingBrides /> */}
+            {/* <FeaturedCollection /> */}
+            <div style={{ marginTop: '60px' }}>
+              {/* <SustainAbility /> */}
+            </div>
+            {/* <ShopifySection /> */}
+            {/* <ShopOurInstagram /> */}
+            <Footer />
+          </>
+        }
       </div>
       <div>
         <p style={{

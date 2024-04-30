@@ -8,10 +8,10 @@ const PromoComponent1 = () => {
         <div className='mt-5'>
             <div className='promo-daimondBoxMain'>
                 <div className='promo-daimondBox1'>
-                    <p style={{  fontSize: '25px', color: '#7d7f85', fontFamily: 'FreightDispProMedium-Regular,Times New Roman,serif' }}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                    <p style={{  fontSize: '22px', color: 'rgba(29, 50, 88, 0.8)' }}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
                 </div>
                 <div className='promo-daimondBox2'>
-                    <img src={`${storImagePath()}/images/HomePage/Promo/Banner/PromoBanner2.png`} className='promo-daimondBox2-image' />
+                    <img src={`${storImagePath()}/images/HomePage/Promo/Banner/PromoBanner2.jpg`} className='promo-daimondBox2-image' />
                 </div>
             </div>
         </div>

@@ -22,9 +22,13 @@ import { productListApiCall } from "../../../../Utils/API/ProductListAPI";
 import { getDesignPriceList } from "../../../../Utils/API/PriceDataApi";
 import { FaPowerOff } from "react-icons/fa";
 import { IoPersonOutline } from "react-icons/io5";
+import { GoHeart } from "react-icons/go";
+import { HiOutlineShoppingBag } from "react-icons/hi2";
+import { IoSearch } from "react-icons/io5";
 
 export default function Header() {
   const navigation = useNavigate();
+  const dropdownRef = useRef(null);
   const [inputValue, setInputValue] = useState(1);
   const [serachsShowOverlay, setSerachShowOverlay] = useState(false);
   const [drawerShowOverlay, setDrawerShowOverlay] = useState(false);
@@ -407,6 +411,10 @@ export default function Header() {
     setMenu2Index(null)
   };
 
+  const handleOpenMenu = () => {
+    setIsDropdownOpen(!isDropdownOpen)
+  }
+
   const [openCart, setOpenCart] = useState(false);
   const toggleCartDrawer = (isOpen) => (event) => {
     if (isB2bFlag === 1) {
@@ -473,6 +481,21 @@ export default function Header() {
     navigation('/')
     window.location.reload();
   }
+
+  // close menu header when click outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
 
   return (
     <>
@@ -584,7 +607,7 @@ export default function Header() {
                 >
                   <Tooltip title="WishList">
                     <li style={{ listStyle: 'none' }} onClick={() => navigation("/myWishList")}>
-                      <PiStarThin
+                      {/* <PiStarThin
                         style={{
                           height: "25px",
                           cursor: "pointer",
@@ -592,20 +615,22 @@ export default function Header() {
                           color: "white",
                         }}
                         className="mobileViewSmilingTop1Icone"
-                      />
+                      /> */}
+                      <GoHeart fontSize='25px' className="mobileViewSmilingTop1Icone" />
                     </li>
                   </Tooltip>
                 </Badge>
 
                 <li onClick={toggleOverlay} style={{ listStyle: 'none', width: '40px', textAlign: 'center' }}>
-                  <IoSearchOutline
+                  {/* <IoSearchOutline
                     style={{
                       height: "20px", cursor: "pointer", width: "20px",
                       color: "white",
                       marginRight: '9px'
                     }}
                     className="mobileViewSmilingTop2Icone"
-                  />
+                  /> */}
+                  <IoSearch fontSize='25px' />
                 </li>
 
                 <Badge
@@ -637,9 +662,10 @@ export default function Header() {
                         className="mobileViewSmilingTop3Icone"
 
                       /> */}
-                      <ShoppingCartOutlinedIcon
+                      {/* <ShoppingCartOutlinedIcon
                         sx={{ height: '30px', width: '30px' }}
-                      />
+                      /> */}
+                      <HiOutlineShoppingBag fontSize='25px' />
                     </li>
                   </Tooltip>
                 </Badge>
@@ -816,7 +842,7 @@ export default function Header() {
                 alignItems: "center",
               }}
             >
-              <ul className="nav-ul-shop" style={{ listStyle: "none", padding: 0, marginTop: '24px' }}>
+              <ul className="nav-ul-shop" style={{ listStyle: "none", padding: 0 }}>
                 <li
                   className="nav-li-smining"
                   style={{ cursor: "pointer" }}
@@ -827,9 +853,9 @@ export default function Header() {
                 <li
                   className="nav-li-smining"
                   style={{ cursor: "pointer" }}
-                  onClick={() => navigation("/products")}
+                  onClick={() => navigation("/productpage")}
                 >
-                  Products
+                  Product
                 </li>
                 <li
                   className="nav-li-smining"
@@ -838,7 +864,7 @@ export default function Header() {
                 >
                   Our Craftsmanship
                 </li>
-                <a href="/" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '-15px' }}>
+                <a href="/" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '-25px' }}>
                   <img src={titleImg} alt="Title" className="logoImage1" />
                 </a>
                 <li
@@ -869,26 +895,17 @@ export default function Header() {
               style={{
                 width: "10%",
                 display: "flex",
+                justifyContent: 'center'
               }}
             >
-              <ul className="nav-ul-shop" style={{ marginTop: '24px' }}>
-                {islogin === "true" ? (
-                  <li
-                    className="nav-li-smining"
-                    style={{ cursor: "pointer" }}
-                    onClick={() => navigation("/account")}
-                  >
-                    {ACCOUNT}
-                  </li>
-                ) : (
-                  <li
-                    className="nav-li-smining"
-                    style={{ cursor: "pointer" }}
-                    onClick={() => navigation('/LoginOption')}
-                  >
-                    Log In
-                  </li>
-                )}
+              <ul className="nav-ul-shop">
+                <li
+                  className="nav-li-smining"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => navigation('/LoginOption')}
+                >
+                  Log In
+                </li>
               </ul>
             </div>
           </div>
@@ -901,25 +918,24 @@ export default function Header() {
                 alignItems: "center",
               }}
             >
-              <a href="/" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '-20px' }}>
+              <a href="/" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '-25px' }}>
                 <img src={titleImg} alt="Title" className="logoImage1" />
               </a>
-              <ul className="nav-ul-shop" style={{ listStyle: "none", padding: 0, marginTop: '24px' }}>
+              <ul className="nav-ul-shop" style={{ listStyle: "none", padding: 0 }}>
                 <li
                   className="nav-li-smining"
                   style={{ cursor: "pointer" }}
-                  // onClick={() => navigation("/ourBrands")}
-                   onMouseEnter={handleDropdownOpen}
-                  onMouseLeave={handleDropdownClose}
+                  onClick={() => handleOpenMenu()}
+                  ref={dropdownRef}
                 >
                   Our Brands
                 </li>
                 <li
                   className="nav-li-smining"
                   style={{ cursor: "pointer" }}
-                  onClick={() => navigation("/products")}
+                  onClick={() => navigation("/productpage")}
                 >
-                  Products
+                  Product
                 </li>
                 <li
                   className="nav-li-smining"
@@ -963,9 +979,10 @@ export default function Header() {
               <ul className="nav-ul-shop" style={{ marginTop: '24px' }}>
                 <>
                   <li onClick={toggleOverlay} style={{}}>
-                    <IoSearchOutline
+                    {/* <IoSearchOutline
                       style={{ height: "20px", cursor: "pointer", width: "20px" }}
-                    />
+                    /> */}
+                    <IoSearch fontSize='25px' />
                   </li>
                   <Badge
                     badgeContent={getWishListCount}
@@ -975,13 +992,14 @@ export default function Header() {
                   >
                     <Tooltip title="WishList">
                       <li onClick={() => navigation("/myWishList")}>
-                        <PiStarThin
+                        {/* <PiStarThin
                           style={{
                             height: "20px",
                             cursor: "pointer",
                             width: "20px",
                           }}
-                        />
+                        /> */}
+                        <GoHeart fontSize='25px' />
                       </li>
                     </Tooltip>
                   </Badge>
@@ -999,33 +1017,32 @@ export default function Header() {
                           marginTop: "0px",
                         }}
                       >
-                        <ShoppingCartOutlinedIcon
+                        {/* <ShoppingCartOutlinedIcon
                           sx={{ height: '30px', width: '30px' }}
-                        />
+                        /> */}
+                        <HiOutlineShoppingBag fontSize='25px' />
                       </li>
                     </Tooltip>
                   </Badge></>
                 <li
                   className="nav-li-smining"
-                  style={{ cursor: "pointer", textDecoration:'none' }}
+                  style={{ cursor: "pointer", textDecoration: 'none' }}
                   onClick={() => navigation("/account")}
                 >
-                 <IoPersonOutline fontSize='20px' />
+                  <IoPersonOutline fontSize='25px' />
                 </li>
                 <li
                   className="nav-li-smining"
                   style={{ cursor: "pointer" }}
                   onClick={handleLogout}
                 >
-                 <FaPowerOff style={{fontSize:'20px'}}/>
+                  <FaPowerOff style={{ fontSize: '25px' }} />
                 </li>
               </ul>
             </div>
           </div>
         }
         <div
-          onMouseEnter={handleDropdownOpen}
-          onMouseLeave={handleDropdownClose}
           className={`shop-dropdown ${isDropdownOpen ? "open" : ""} ${isHeaderFixed ? "fixed" : ""
             }`}
         >
@@ -1034,75 +1051,20 @@ export default function Header() {
               display: "flex",
               padding: "50px",
               color: "#7d7f85",
-              backgroundColor: "white",
+              // backgroundColor: "rgba(255, 255, 255, 0.8)",
               // flexDirection: "column",
               gap: "50px",
               justifyContent: 'space-between'
             }}
-            onMouseEnter={handleDropdownOpen}
-            onMouseLeave={handleDropdownClose}
+            className="menuDropdownData"
           >
-
-            {/* <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              {finalData?.map((fd, i) => (
-                <span
-                  className="level0Menu"
-                  onMouseEnter={() => setMenu1Index(i)}
-                  onClick={() => handelMenu0()}
-                >
-                  {fd?.menuname}
-                </span>
-              ))}
-            </div>
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '12px',
-                paddingLeft: '20px'
-              }}
-            >
-              {
-                // finalData?.map((fd) => (
-                finalData?.map((fd) => fd?.param1)[menu1Index]?.map((fd1, i) => (
-                  <span className="level0Menu"
-                    onClick={() => {
-                      handelmenu1({ label1: fd1?.param1name, value1: fd1?.param1dataname })
-                      setMenu1Data({ label1: fd1?.param1name, value1: fd1?.param1dataname })
-                    }}
-                    onMouseEnter={() => {
-                      setMenu2Index(i)
-                      setMenu1Data({ label1: fd1?.param1name, value1: fd1?.param1dataname })
-                    }}>{fd1?.param1dataname}</span>
-                ))
-                //  ))
-              }
-            </div>
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '12px',
-                paddingLeft: '20px'
-              }}
-            >
-              {finalData[menu1Index]?.param1?.map((fd) => fd)[menu2Index]?.param2?.map((fd1) => (
-                <span className="level2Menu"
-                  onClick={() => {
-                    setMenu2Data({ label1: menu1Data?.label1, value1: menu1Data?.value1, label2: fd1?.param2name, value2: fd1?.param2dataname })
-                    handelmenu2({ label1: menu1Data?.label1, value1: menu1Data?.value1, label2: fd1?.param2name, value2: fd1?.param2dataname })
-
-                  }}>{fd1?.param2dataname}</span>
-              ))}
-            </div>  */}
-
             <div style={{ display: 'flex', flexDirection: 'row', gap: '50px' }}>
               <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <span style={{ fontSize: '13px', fontFamily: 'TT Commons, sans-serif', letterSpacing: 1, fontWeight: 600 }}>FINE JEWELRY</span>
+                <span style={{ fontSize: '15px', fontFamily: '"PT Sans", sans-serif', letterSpacing: 1, fontWeight: 600 }}>FINE JEWELRY</span>
                 <span style={{ display: 'flex', flexDirection: 'column', marginTop: '12px', gap: '5px' }}>
                   {
                     menul0data?.map((md) => (
-                      <span style={{ fontSize: '12.5px', fontFamily: 'TT Commons, sans-serif', letterSpacing: 0.4, cursor: 'pointer' }}
+                      <span style={{ fontSize: '14.5px', fontFamily: '"PT Sans", sans-serif', letterSpacing: 0.4, cursor: 'pointer' }}
                         onClick={() => handelNewMenuData({ "label": "param0", "data": md })}
                       >
                         {capitalizeText(md?.menuname)}
@@ -1113,11 +1075,11 @@ export default function Header() {
               </div>
               <div>
                 <div style={{ display: 'flex', flexDirection: 'column', borderLeft: '1px solid #e1e1e1', paddingLeft: '30px' }}>
-                  <span style={{ fontSize: '13px', fontFamily: 'TT Commons, sans-serif', letterSpacing: 1, fontWeight: 600 }}>COLLECTIONS</span>
+                  <span style={{ fontSize: '15px', fontFamily: '"PT Sans", sans-serif', letterSpacing: 1, fontWeight: 600 }}>COLLECTIONS</span>
                   <span style={{ display: 'flex', flexDirection: 'column', marginTop: '12px', gap: '5px', height: '350px' }}>
                     {
                       menul1data?.map((md) => (
-                        <span style={{ fontSize: '12.5px', fontFamily: 'TT Commons, sans-serif', letterSpacing: 0.4, cursor: 'pointer' }}
+                        <span style={{ fontSize: '14.5px', fontFamily: '"PT Sans", sans-serif', letterSpacing: 0.4, cursor: 'pointer' }}
                           onClick={() => handelNewMenuData({ "label": "param1", "data": md })}
                         >
                           {capitalizeText(md?.param1dataname)}
@@ -1129,11 +1091,11 @@ export default function Header() {
               </div>
               <div>
                 <div style={{ display: 'flex', flexDirection: 'column', borderLeft: '1px solid #e1e1e1', paddingLeft: '30px', width: '130%' }}>
-                  <span style={{ fontSize: '13px', fontFamily: 'TT Commons, sans-serif', letterSpacing: 1, fontWeight: 600 }}>BOUTIQUE</span>
+                  <span style={{ fontSize: '15px', fontFamily: 'TT Commons, sans-serif', letterSpacing: 1, fontWeight: 600 }}>BOUTIQUE</span>
                   <span style={{ display: 'flex', flexDirection: 'column', marginTop: '12px', gap: '5px', height: '350px', flexWrap: 'wrap' }}>
                     {
                       menul2data?.map((md) => (
-                        <span style={{ fontSize: '12.5px', fontFamily: 'TT Commons, sans-serif', letterSpacing: 0.4, cursor: 'pointer' }}
+                        <span style={{ fontSize: '14.5px', fontFamily: 'TT Commons, sans-serif', letterSpacing: 0.4, cursor: 'pointer' }}
                           onClick={() => handelNewMenuData({ "label": "param2", "data": md })}
                         >
                           {capitalizeText(md?.param2dataname)}
@@ -1223,7 +1185,7 @@ export default function Header() {
                 >
                   <Tooltip title="WishList">
                     <li style={{ listStyle: 'none' }} onClick={() => navigation("/myWishList")}>
-                      <PiStarThin
+                      {/* <PiStarThin
                         style={{
                           height: "25px",
                           cursor: "pointer",
@@ -1231,19 +1193,21 @@ export default function Header() {
                           color: "white",
                         }}
                         className="mobileViewSmilingTop1Icone"
-                      />
+                      /> */}
+                      <GoHeart fontSize='25px' className="mobileViewSmilingTop1Icone" />
                     </li>
                   </Tooltip>
                 </Badge>
 
                 <li onClick={toggleOverlay} style={{ listStyle: 'none', width: '40px', textAlign: 'center', marginInline: '10px' }}>
-                  <IoSearchOutline
+                  {/* <IoSearchOutline
                     style={{
                       height: "20px", cursor: "pointer", width: "20px",
                       color: "white",
                     }}
                     className="mobileViewSmilingTop2Icone"
-                  />
+                  /> */}
+                  <IoSearch fontSize='25px' className="mobileViewSmilingTop2Icone" />
                 </li>
 
 
@@ -1264,9 +1228,10 @@ export default function Header() {
                         marginTop: "0px",
                       }}
                     >
-                      <ShoppingCartOutlinedIcon
+                      {/* <ShoppingCartOutlinedIcon
                         sx={{ height: '30px', width: '30px', color: "white" }}
-                      />
+                      /> */}
+                      <HiOutlineShoppingBag fontSize='25px' />
                     </li>
                   </Tooltip>
                 </Badge>

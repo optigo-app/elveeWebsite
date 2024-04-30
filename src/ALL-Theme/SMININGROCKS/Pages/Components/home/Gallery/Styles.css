@@ -21,3 +21,24 @@
     height: 100%;
     object-fit: cover;
   }
+  .galeryComponents{
+    color: rgba(29, 50, 88, 0.8) !important;
+    text-align: center;
+    font-size: 22px;
+  }
+  .socialmediaptag{
+    color: rgba(29, 50, 88, 0.8) !important;
+    text-align: center;
+    font-size: 22px;
+    text-transform: capitalize;
+    line-height: 2px;
+    margin: 50px 0px 50px 0px !important;
+  }
+  .galeryComponents{
+    color: rgba(29, 50, 88, 0.8) !important;
+    text-align: center;
+    font-size: 22px;
+    text-transform: capitalize;
+    line-height: 2px;
+    margin: 50px 0px 50px 0px !important;
+  }
