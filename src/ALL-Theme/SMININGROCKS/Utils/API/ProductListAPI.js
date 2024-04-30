@@ -89,10 +89,14 @@ export const productListApiCall = async(param) =>{
     let storeinit = JSON.parse(localStorage.getItem("storeInit"))
     let loginInfo = JSON.parse(localStorage.getItem("loginUserDetail"))
     let userEmail = localStorage.getItem("userEmailForPdList")
-    console.log("userEmail",userEmail);
 
 
-    let encodedFilter = {"FilterKey":`${param?.data.param1name}`,"DesignNo":"","FilterVal":`${param?.data.param1dataname}`}
+    let encodedFilter = {
+      "FilterKey":`${param?.data.param1name}`,
+      "DesignNo":"",
+      "FilterVal":`${param?.data.param1dataname}`,
+      "PageNo":"1",
+      "PageSize":`${storeinit?.PageSize}`}
 
     const data = {
       "PackageId":`${loginInfo?.PackageId}`,
