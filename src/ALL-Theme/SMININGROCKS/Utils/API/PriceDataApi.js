@@ -1,6 +1,6 @@
 import { CommonAPI } from "./CommonAPI";
 
-export const getDesignPriceList = async (param) => {
+export const getDesignPriceList = async (param,page=1) => {
 
   // console.log("datadesprice",data);
 
@@ -41,7 +41,7 @@ export const getDesignPriceList = async (param) => {
     "DesignNo":"",
     "FilterKey":`${param?.data.param1name}`,
     "FilterVal":`${param?.data.param1dataname}`,
-    "PageNo":"1",
+    "PageNo":`${page}`,
     "PageSize":`${storeInit?.PageSize}`,
     "Metalid":`${loginUserDetail?.MetalId}`,
     "DiaQCid":`${loginUserDetail?.cmboDiaQCid}`,

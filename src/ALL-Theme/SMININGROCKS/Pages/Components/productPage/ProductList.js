@@ -30,6 +30,7 @@ import { TfiLayoutGrid4Alt } from "react-icons/tfi";
 
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import { getDesignPriceList } from "../../../Utils/API/PriceDataApi";
 
 function valuetext(value) {
   return `${value}°C`;
@@ -91,6 +92,7 @@ const ProductList = () => {
   const dqcName = useRecoilValue(diamondQualityColorG)
   const csqcName = useRecoilValue(colorstoneQualityColorG)
   const [pdData, setPdData] = useRecoilState(productDataNew)
+  const [dataPriceApiCallFlag,setDataPriceApiCallFlag] = useState(false)
 
   // console.log(mtName, dqcName, csqcName);
   //RANGE FILTERS
@@ -126,6 +128,8 @@ const ProductList = () => {
   const [DaimondQualityColor, setDaimondQualityColor] = useState([]);
 
   const [selectedOptionData, setSelectedOptionData] = useState(null);
+  const [prodPageSize,setProdPageSize] = useState(0)
+  const [prodCount,setProdCount] = useState(0)
 
   // console.log("filterCount", newProData?.length, ProductApiData2?.length, filterChecked);
 
@@ -285,7 +289,10 @@ const ProductList = () => {
 
   useEffect(() => {
     const storeInit = JSON.parse(localStorage.getItem('storeInit'))
+    if(storeInit) {
     setGlobImagepath(storeInit?.DesignImageFol)
+    setProdPageSize(storeInit?.PageSize)
+    }
   }, [])
 
   useEffect(() => {
@@ -305,9 +312,23 @@ const ProductList = () => {
     }, 100);
   }, [getSearchData]);
 
+  const getProductData = () =>{
+    const data = JSON.parse(localStorage.getItem("allproductlist"));
+    const prodCount = JSON.parse(localStorage.getItem("allproductcount"));
+    if(data) setProductApiData2(data)
+    if(prodCount) setProdCount(prodCount)
+  }
+
+  const getProdPriceData = () =>{
+    const data = JSON.parse(localStorage.getItem("getPriceData"));
+    setpriceDataApi(data)
+  }
+
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("allproductlist"));
-    setProductApiData2(data)
+    const prodCount = JSON.parse(localStorage.getItem("allproductcount"));
+    if(data) setProductApiData2(data)
+    if(prodCount) setProdCount(prodCount)
   }, [])
 
   useEffect(() => {
@@ -315,8 +336,7 @@ const ProductList = () => {
     setpriceDataApi(data)
   }, [])
 
-  //   const loginUserDetail = JSON.parse(localStorage.getItem('loginUserDetail'));
-  // console.log("loginUserDetail?.cmboDiaQualityColor",loginUserDetail?.cmboDiaQualityColor);
+  //   const loginUserDetail = JSON.parse(localStorage.getItem('loginUserDetail'));  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -1943,6 +1963,32 @@ const ProductList = () => {
   }
 
 
+  const handlePageChange = async(event,value) =>{
+    let param = JSON.parse(localStorage.getItem("menuparams"))
+
+     await productListApiCall(param,value).then((res)=>{
+      if(res) return res
+      return res
+    }).then(async(res)=>{
+      if(res) {
+        await getDesignPriceList(param,value)
+        return res
+      }
+    }).then((res)=>{
+      if(res){
+        setDataPriceApiCallFlag(true)
+        getProdPriceData()
+        getProductData()
+        window.scroll(0,0)
+      } 
+      else {
+        setDataPriceApiCallFlag(false)
+      }
+    })
+
+    console.log("value",value,param);
+  }
+
   return (
     <div id="top">
 
@@ -2644,10 +2690,10 @@ const ProductList = () => {
                 } */}
               </div>
               <div style={{display:'flex',width:'100%',justifyContent:'center',marginTop:'100px'}}>
-                <Pagination count={10} />
+                <Pagination count={Math.ceil(prodCount/prodPageSize)} onChange={handlePageChange} />
               </div>
               <SmilingRock />
-              <Footer />
+              {/* <Footer /> */}
             </div>
           </div>
         </div>

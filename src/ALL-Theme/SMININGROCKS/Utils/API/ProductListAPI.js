@@ -1,6 +1,6 @@
 import { CommonAPI } from "./CommonAPI"
 
-export const productListApiCall = async(param) =>{
+export const productListApiCall = async(param,page=1) =>{
 
     const keyMapping = {
         "0": "id",
@@ -95,7 +95,7 @@ export const productListApiCall = async(param) =>{
       "FilterKey":`${param?.data.param1name}`,
       "DesignNo":"",
       "FilterVal":`${param?.data.param1dataname}`,
-      "PageNo":"1",
+      "PageNo":`${page}`,
       "PageSize":`${storeinit?.PageSize}`}
 
     const data = {
@@ -118,9 +118,10 @@ export const productListApiCall = async(param) =>{
     let GenderFilter;
     let CollectionFilter;
 
-
+    let prodCount;
     await CommonAPI(body).then((res) => {
         let pdData = res?.Data.rd;
+        prodCount = res?.Data?.rd1[0]?.designcount
         pdData?.forEach(p => {
             const mergedItem = {};
             for (let key in p) {
@@ -136,8 +137,11 @@ export const productListApiCall = async(param) =>{
         CollectionFilter = res?.Data.rd2
         // console.log("pdList",pdList);
     });
+
+    console.log("prodCount",prodCount);
     
     localStorage.setItem("allproductlist", JSON.stringify(pdList));
+    localStorage.setItem("allproductcount", JSON.stringify(prodCount));
     localStorage.setItem("CategoryFilter",JSON.stringify(CategoryFilter));
     localStorage.setItem("ProductTypeFilter",JSON.stringify(ProductTypeFilter));
     localStorage.setItem("GenderFilter",JSON.stringify(GenderFilter));
