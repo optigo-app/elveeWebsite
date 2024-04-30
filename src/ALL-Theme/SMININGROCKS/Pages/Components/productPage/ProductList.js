@@ -1963,7 +1963,7 @@ const ProductList = () => {
             paddingTop: '30px',
             marginInline: '13%'
           }}
-          className='paddingTopMobileSet'
+          className='paddingTopMobileSet mainProduct'
         >
           <div style={{ width: '100%' }}>
             <div class="bg-image">

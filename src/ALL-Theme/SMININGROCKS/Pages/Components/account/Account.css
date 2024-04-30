@@ -133,6 +133,11 @@
     margin-inline: 5%;
 
     }
+
+    .smilingAccountLogout{
+        position: relative;
+        left: 130px;
+    }
 }
 @media screen and (min-width: 1050px) {
     .smlingAccountTabMobileView{

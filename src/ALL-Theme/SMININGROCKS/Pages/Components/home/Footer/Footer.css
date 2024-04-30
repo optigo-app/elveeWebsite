@@ -1,22 +1,25 @@
-.ElveFooterMain{
+.ElveFooterMain {
     display: flex;
     border-top: 1px solid black;
     padding-bottom: 20px;
     padding-top: 20px;
 
 }
-.ElveFooter1{
+
+.ElveFooter1 {
     width: 40%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     padding-left: 100px;
 }
-.elveBox1Title{
+
+.elveBox1Title {
     font-size: 30px;
     font-weight: 500;
 }
-.eleBox1InputBox{
+
+.eleBox1InputBox {
     height: 40px;
     width: 40%;
     border: none;
@@ -24,7 +27,8 @@
     border-bottom: 1px solid black;
     outline: none;
 }
-.elevBox1Btn{
+
+.elevBox1Btn {
     height: 40px;
     width: 160px;
     border: 1px solid black;
@@ -33,30 +37,95 @@
     font-size: 25px;
 
 }
-.ElveFooter2{
-    width: 20%;
-}
-.ElveFooter3{
-    width: 20%;
-}
-.ElveFooter4{
+
+.ElveFooter2 {
     width: 20%;
 }
 
-.ElevFooterBoxTitle{
+.ElveFooter3 {
+    width: 20%;
+}
+
+.ElveFooter4 {
+    width: 20%;
+}
+
+.ElevFooterBoxTitle {
     font-size: 30px;
     font-weight: bold;
     font-family: 'PT Sans', sans-serif;
 }
-.ElveFooterDesc{
+
+.ElveFooterDesc {
     font-size: 19px;
     font-family: 'PT Sans', sans-serif;
     cursor: pointer;
 }
 
-.ElevBox4Title{
+.ElevBox4Title {
     font-size: 17px;
     font-weight: bold;
     font-family: 'PT Sans', sans-serif;
     cursor: pointer;
+}
+
+@media screen and (max-width:1500px) {
+
+    .ElevFooterBoxTitle {
+        font-size: 20px;
+    }
+
+    .ElveFooterDesc {
+        font-size: 13px;
+    }
+
+    .elveBox1Title {
+        font-size: 20px;
+    }
+
+    .footerOfficeDesc {
+        font-size: 13px;
+        height: auto;
+    }
+}
+
+@media screen and (max-width: 960px) {
+
+    .ElveFooterMain {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .ElveFooter1Input {
+        display: flex;
+        justify-content: center;
+    }
+
+    .ElveFooter1 {
+        padding: 0px;
+        display: flex;
+        align-items: center;
+        width: 100%;
+    }
+
+    .ElveFooter2 {
+        width: 100%;
+        margin-top: 10px;
+        padding-inline: 15px;
+    }
+
+
+    .ElveFooter3 {
+        width: 100%;
+        margin-top: 10px;
+        padding-inline: 15px;
+    }
+
+
+    .ElveFooter4 {
+        width: 100%;
+        margin-top: 10px;
+        padding-inline: 15px;
+    }
+
 }
