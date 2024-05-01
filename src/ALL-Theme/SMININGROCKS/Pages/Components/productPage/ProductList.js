@@ -30,6 +30,8 @@ import { TfiLayoutGrid4Alt } from "react-icons/tfi";
 
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import { getDesignPriceList } from "../../../Utils/API/PriceDataApi";
+import { findCsQcId, findDiaQcId, findMetalColor, findMetalType, findMetalTypeId } from "../../../Utils/globalFunctions/GlobalFunction";
 
 function valuetext(value) {
   return `${value}°C`;
@@ -91,6 +93,7 @@ const ProductList = () => {
   const dqcName = useRecoilValue(diamondQualityColorG)
   const csqcName = useRecoilValue(colorstoneQualityColorG)
   const [pdData, setPdData] = useRecoilState(productDataNew)
+  const [dataPriceApiCallFlag,setDataPriceApiCallFlag] = useState(false)
 
   // console.log(mtName, dqcName, csqcName);
   //RANGE FILTERS
@@ -126,8 +129,12 @@ const ProductList = () => {
   const [DaimondQualityColor, setDaimondQualityColor] = useState([]);
 
   const [selectedOptionData, setSelectedOptionData] = useState(null);
+  const [prodPageSize,setProdPageSize] = useState(0)
+  const [prodCount,setProdCount] = useState(0)
+  const [storeInitData,setStoreInitData] = useState({})
+  const [currentPage,setCurrentPage] = useState(1)
 
-  // console.log("filterCount", newProData?.length, ProductApiData2?.length, filterChecked);
+  console.log("mttypeoption", mtTypeOption,diaQColOpt,cSQopt);
 
 
   //   const handelCurrencyData = () =>{
@@ -285,7 +292,11 @@ const ProductList = () => {
 
   useEffect(() => {
     const storeInit = JSON.parse(localStorage.getItem('storeInit'))
+    if(storeInit) {
     setGlobImagepath(storeInit?.DesignImageFol)
+    setProdPageSize(storeInit?.PageSize)
+    setStoreInitData(storeInit)
+    }
   }, [])
 
   useEffect(() => {
@@ -305,9 +316,23 @@ const ProductList = () => {
     }, 100);
   }, [getSearchData]);
 
+  const getProductData = () =>{
+    const data = JSON.parse(localStorage.getItem("allproductlist"));
+    const prodCount = JSON.parse(localStorage.getItem("allproductcount"));
+    if(data) setProductApiData2(data)
+    if(prodCount) setProdCount(prodCount)
+  }
+
+  const getProdPriceData = () =>{
+    const data = JSON.parse(localStorage.getItem("getPriceData"));
+    setpriceDataApi(data)
+  }
+
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("allproductlist"));
-    setProductApiData2(data)
+    const prodCount = JSON.parse(localStorage.getItem("allproductcount"));
+    if(data) setProductApiData2(data)
+    if(prodCount) setProdCount(prodCount)
   }, [])
 
   useEffect(() => {
@@ -315,8 +340,7 @@ const ProductList = () => {
     setpriceDataApi(data)
   }, [])
 
-  //   const loginUserDetail = JSON.parse(localStorage.getItem('loginUserDetail'));
-  // console.log("loginUserDetail?.cmboDiaQualityColor",loginUserDetail?.cmboDiaQualityColor);
+  //   const loginUserDetail = JSON.parse(localStorage.getItem('loginUserDetail'));  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -334,6 +358,8 @@ const ProductList = () => {
               :
               pda.A === product.autocode
         );
+
+        console.log("newPriceData",newPriceData)
 
         const newPriceData1 = priceDataApi?.rd1?.filter(
           (pda) =>
@@ -387,8 +413,8 @@ const ProductList = () => {
           updDPCS = newPriceData?.J ?? 0
           updCWT = newPriceData?.M ?? 0
           updCPCS = newPriceData?.L ?? 0
-          updMT = newPriceData?.D ?? ""
-          updMC = newPriceData?.F ?? ""
+          updMT = findMetalType(newPriceData?.C ?? product?.MetalTypeid)[0]?.metaltype ?? ""
+          updMC = findMetalColor(product?.MetalColorid)[0]?.metalcolorname ?? ""
         }
         console.log("priceprod", product?.designno,metalrd,diard1,csrd2);
         return { ...product, price, markup, metalrd, diard1, csrd2, updNWT, updGWT, updDWT, updDPCS, updCWT, updCPCS, updMT, updMC }
@@ -399,8 +425,10 @@ const ProductList = () => {
       setProductApiData2(updatedData);
     };
 
+    console.log("calling");
     fetchData();
-  }, [priceDataApi]);
+  }, [priceDataApi,mtTypeOption]);
+
 
   const toggleDeatilList = () => {
     setIsOpenDetail(!isOpenDetail)
@@ -1605,18 +1633,20 @@ const ProductList = () => {
 
   const [hoveredImageUrls, setHoveredImageUrls] = useState({});
 
-  const handleHoverImageShow = (url, index, rollPath, imagepath) => {
+  const handleHoverImageShow = (index,designimgfol,dfoldername,imgSize,roleoverImage) => {
     // let updatedFilename = rollPath?.replace(/\s/g, '_');
     // let newPath = url.replace(/\/([^/]+)$/, '/' + updatedFilename);
-    let path = imagepath + url;
-    console.log('urlllll',url);
-    console.log('pathhhhhhhhhhhhhhhh',path);
-    if (rollPath.length !== 0) {
+    
+    let path = `${designimgfol}${dfoldername}/${imgSize}/${roleoverImage}`
+    
+    if (roleoverImage.length !== 0) {
       setHoveredImageUrls(prevHoveredImageUrls => {
         return { ...prevHoveredImageUrls, [index]: path };
       });
     }
   };
+
+  console.log("prod_img",hoveredImageUrls);
 
   const handleMouseLeave = (index) => {
     setHoveredImageUrls(prevState => {
@@ -1654,9 +1684,10 @@ const ProductList = () => {
     }
 
     if (data.IsColorWiseImages === 1) {
-      const matchingData = colorWiseImageData.filter(imageDataItem => (
-        productAutoCode === imageDataItem.autocode && productColorName === imageDataItem.colorname
-      ));
+      const matchingData = colorWiseImageData?.filter(imageDataItem => (
+        productAutoCode == imageDataItem.autocode && productColorName == imageDataItem.colorname
+        ));
+        console.log("matchingData",matchingData,productAutoCode,productColorName)
 
       const checkAvailabilityPromises = matchingData.map(async (imageDataItem) => {
         const imagePath = uploadPath + '/' + data.ukey + convertPath(imageDataItem.imagepath);
@@ -1942,6 +1973,47 @@ const ProductList = () => {
     setShow4ImageView(true)
   }
 
+  const ShortcutComboFunc = async() =>{
+    // mtTypeOption,diaQColOpt,cSQopt
+    let metalTypeId = findMetalTypeId(mtTypeOption)?.Metalid ?? "0,0"
+    let DiaQCid = findDiaQcId(diaQColOpt)?.QualityId ?? "0,0"
+    let CsQcid = findCsQcId(cSQopt)?.QualityId ?? "0,0"
+
+    let obj={metalTypeId,DiaQCid,CsQcid}
+
+    let param = JSON.parse(localStorage.getItem("menuparams"))
+    await getDesignPriceList(param,currentPage,obj).then(res =>{
+      getProdPriceData()
+    })
+  }
+
+
+  const handlePageChange = async(event,value) =>{
+    let param = JSON.parse(localStorage.getItem("menuparams"))
+    setCurrentPage(value)
+
+     await productListApiCall(param,value).then((res)=>{
+      if(res) return res
+      return res
+    }).then(async(res)=>{
+      if(res) {
+        await getDesignPriceList(param,value)
+        return res
+      }
+    }).then((res)=>{
+      if(res){
+        setDataPriceApiCallFlag(true)
+        getProdPriceData()
+        getProductData()
+        window.scroll(0,0)
+      } 
+      else {
+        setDataPriceApiCallFlag(false)
+      }
+    })
+
+    console.log("value",value,param);
+  }
 
   return (
     <div id="top">
@@ -2402,18 +2474,26 @@ const ProductList = () => {
                             {products?.designno === "S24705E" && <p id="labelTag_0002388" className="instockP">IN STOCK</p>}
                             {products?.designno === "S24705" && <p id="labelTag_0002388" className="instockP">IN STOCK</p>}
                             {products?.designno === "MCJ2" && <p id="labelTag_0002388" className="instockP">IN STOCK</p>}
-
+                              {/* {console.log("imagePath", `${storeInitData?.DesignImageFol}${products?.DesignFolderName}/${storeInitData?.ImgMe}/${products?.DefaultImageName}`)} */}
                             <div>
                               <img
                                 className="prod_img"
                                 src={
                                   hoveredImageUrls[i] ? hoveredImageUrls[i] : updatedColorImage[i] ? updatedColorImage[i] :
-                                    (products?.MediumImagePath ?
-                                      (globImagePath + products?.MediumImagePath?.split(",")[0])
+                                    (storeInitData ?
+                                      `${storeInitData?.DesignImageFol}${products?.DesignFolderName}/${storeInitData?.ImgMe}/${products?.DefaultImageName}`
                                       :
                                       notFound)
                                 }
-                                onMouseEnter={() => handleHoverImageShow(products?.MediumImagePath?.split(",")[0], i, products?.RollOverImageName, globImagePath)}
+                                // src={
+                                //   hoveredImageUrls[i] ? hoveredImageUrls[i] : updatedColorImage[i] ? updatedColorImage[i] :
+                                //     (products?.MediumImagePath ?
+                                //       (globImagePath + products?.MediumImagePath?.split(",")[0])
+                                //       :
+                                //       notFound)
+                                // }
+                                onMouseEnter={() => handleHoverImageShow(i,storeInitData?.DesignImageFol, products?.DesignFolderName,storeInitData?.ImgMe,products?.RollOverImageName)}
+                                // onMouseEnter={() => handleHoverImageShow(products?.MediumImagePath?.split(",")[0], i, products?.RollOverImageName, globImagePath)}
                                 // onMouseEnter={() => handleHoverImageShow(products?.MediumImagePath?.split(",")[0], i, isColorWiseImageShow === 1 ? products?.ColorWiseRollOverImageName : products?.RollOverImageName, products?.imagepath)}
                                 onMouseLeave={() => handleMouseLeave(i)}
                                 style={{ objectFit: 'cover' }}
@@ -2600,7 +2680,7 @@ const ProductList = () => {
                                   borderRadius: "50%",
                                   cursor: 'pointer'
                                 }}
-                                onClick={() => handleColorSelection(products, i, 'White Gold')}
+                                onClick={() => handleColorSelection(products, i,'WHITE GOLD')}
                               ></div>
                               <div
                                 style={{
@@ -2610,7 +2690,7 @@ const ProductList = () => {
                                   borderRadius: "50%",
                                   cursor: 'pointer'
                                 }}
-                                onClick={(e) => handleColorSelection(products, i, 'Rose Gold')}
+                                onClick={(e) => handleColorSelection(products, i,'ROSE GOLD')}
                               ></div>
                               <div
                                 style={{
@@ -2620,7 +2700,7 @@ const ProductList = () => {
                                   borderRadius: "50%",
                                   cursor: 'pointer'
                                 }}
-                                onClick={(e) => handleColorSelection(products, i, 'Yellow Gold')}
+                                onClick={(e) => handleColorSelection(products, i,'YELLOW GOLD')}
                               >
                               </div>
                             </div>
@@ -2644,10 +2724,10 @@ const ProductList = () => {
                 } */}
               </div>
               <div style={{display:'flex',width:'100%',justifyContent:'center',marginTop:'100px'}}>
-                <Pagination count={10} />
+                <Pagination count={Math.ceil(prodCount/prodPageSize)} onChange={handlePageChange} />
               </div>
               <SmilingRock />
-              <Footer />
+              {/* <Footer /> */}
             </div>
           </div>
         </div>
