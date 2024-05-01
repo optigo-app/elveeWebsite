@@ -93,12 +93,16 @@
 }
 
 .smilingDeleveryformSaveBtn{
-    height: 35px;
+    /* height: 35px; */
     width: 100px;
     border: none;
-    background-color: lightgray;
-    font-weight: 500;
+    background: #f6efe6;
+    color: rgba(31, 25, 25, 0.7);
+    font-family: "PT Sans", sans-serif !important;
+    font-weight: 600;
+    opacity: .8;
     margin-inline: 5px;
+    padding: 6px 10px 6px 10px;
     border-radius: 5px;
 }
 .smilingDeleveryformSaveBtn:hover{
@@ -107,11 +111,15 @@
 }
 
 .smilingDeleveryformCansleBtn{
-    height: 35px;
+    /* height: 35px; */
     width: 100px;
     border: none;
-    background-color: lightgray;
-    font-weight: 500;
+    background: #f6efe6;
+    color: rgba(31, 25, 25, 0.7);
+    opacity: .8;
+    font-family: "PT Sans", sans-serif !important;
+    font-weight: 600;
+    padding: 6px 10px 6px 10px;
     border-radius: 5px;
 }
 .smilingDeleveryformCansleBtn:hover{

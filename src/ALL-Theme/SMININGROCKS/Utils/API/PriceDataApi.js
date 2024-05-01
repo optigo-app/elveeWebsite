@@ -1,8 +1,8 @@
 import { CommonAPI } from "./CommonAPI";
 
-export const getDesignPriceList = async (param) => {
+export const getDesignPriceList = async (param,page=1,obj) => {
 
-  // console.log("datadesprice",data);
+  console.log("obj",obj);
 
   const storeInit = JSON.parse(localStorage.getItem("storeInit"))
   const currencyCombo = JSON.parse(localStorage.getItem("CURRENCYCOMBO"))
@@ -41,7 +41,7 @@ export const getDesignPriceList = async (param) => {
     "DesignNo":"",
     "FilterKey":`${param?.data.param1name}`,
     "FilterVal":`${param?.data.param1dataname}`,
-    "PageNo":"1",
+    "PageNo":`${page}`,
     "PageSize":`${storeInit?.PageSize}`,
     "Metalid":`${loginUserDetail?.MetalId}`,
     "DiaQCid":`${loginUserDetail?.cmboDiaQCid}`,
@@ -72,9 +72,14 @@ export const getDesignPriceList = async (param) => {
     "p": encodedCombinedValue
   }
 
+  let finalData;
+
   await CommonAPI(body).then((res) => {
     localStorage.setItem("getPriceData", JSON.stringify(res?.Data))
     //   setpriceDataApi(res?.Data)
+    finalData = res?.Data 
   })
+
+  return finalData
 
 }

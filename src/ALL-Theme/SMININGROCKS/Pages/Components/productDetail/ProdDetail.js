@@ -573,7 +573,7 @@ const ProdDetail = () => {
     const data = JSON.parse(storedDataAll);
     if (data?.IsColorWiseImages === 1) {
       const selectedColor = color;
-      setSelectedColor(selectedColor);
+      setSelectedColor(selectedColor);  
       const filteredData = colorImageData?.filter(item => item?.colorname.toLowerCase() === selectedColor?.toLowerCase());
 
       if (filteredData?.length > 0) {
@@ -1544,7 +1544,7 @@ const ProdDetail = () => {
                         color: "rgb(66, 66, 66)",
                       }}
                     >
-                      Metal Color : <span style={{ fontWeight: 'bold', letterSpacing: '2px' }}>{selectedColor ? selectedColor : mtrdData?.F}</span>
+                      Metal Color : <span style={{ fontWeight: 'bold', letterSpacing: '2px' }}>{selectedColor ? selectedColor : productData?.updMC}</span>
                     </sapn>
                     <sapn
                       style={{
