@@ -1,0 +1,74 @@
+body{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    /* font-family: 'San Francisco', sans-serif; */
+}
+.bannercs{
+    object-fit: cover;
+    min-height: 780px;
+    max-height: 780px;
+    width: 100%;
+}
+.centerall_cs{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.cstitle{
+    height: 30px;
+    font-size: 20px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: rgb(75 71 71);
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+.cs_content{
+    margin: 0 auto;
+    padding-left: 3%;
+    padding-right: 3%;
+    font-size: 18px;
+    line-height: 20px;
+    color: #424141;
+    word-wrap: break-word;
+}
+.cs_section{
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    margin: 0 auto;
+    padding-left: 6rem;
+    padding-right: 6rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+.cs_section_img{
+    border: 0.5px solid #e8e8e8;
+    min-height: 300px;
+    max-height: 300px;
+}
+.cs_section_box{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.cs_section_box_title{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    word-wrap: break-word;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-size: 22px;
+    font-weight: bold;
+    padding-left: 2px;
+    padding-bottom: 10px;
+}
+.cs_section_box_title_2{
+    width: 50%;
+    color: #5a5757;
+    font-size: 19px;
+    line-height: 20px;
+}

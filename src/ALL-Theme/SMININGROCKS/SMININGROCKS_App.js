@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { Route, Routes, useLocation, useNavigate, redirect } from 'react-router-dom'
 import Home from './Pages/Components/home'
 import Impact from './Pages/Components/Impact'
-import AboutUs from './Pages/Components/aboutUs/AboutUs'
+import AboutUs from './Pages/Static Page/aboutUs/AboutUs'
 import LabGroDiamonds from './Pages/Components/LabGroDiamonds/LabGroDiamonds'
 import Register from './Pages/Components/AuthScreen/Registretion/Register'
 import ForgotPass from './Pages/Components/AuthScreen/forgotPass/ForgotPass'
@@ -44,6 +44,10 @@ import CartPage from './Pages/Components/home/Header/cartPage/CartPage'
 import CurrentVersion from "./Pages/Components/ProjectVersion/CurrentVersion"
 // import OrderHistory from './Pages/Components/account/accountOrderHistory/OrderHistory';
 import { ToastContainer } from 'react-toastify';
+import CustomerService from './Pages/Static Page/CutomerService/CustomerServices'
+import Customize from './Pages/Static Page/Customize/Customize'
+import History from './Pages/Static Page/History/HistoryPage'
+import TermsAndConditions from './Pages/Static Page/Terms&Condition/TermsCondition'
 
 export default function SMININGROCKS_App() {
 
@@ -111,6 +115,10 @@ export default function SMININGROCKS_App() {
                     <Route path="/Confirmation" element={<Confirmation />} />
                     <Route path="/LoginOption" element={<LoginOption />} />
                     <Route path="/CartPage" element={<CartPage />} />
+                    <Route path="/customerServices" element={<CustomerService />} />
+                    <Route path="/customize" element={<Customize/>} />
+                    <Route path="/history" element={<History/>} />
+                    <Route path="/term&condition" element={<TermsAndConditions/>} />
                     <Route path="/CurrentVersion" element={<CurrentVersion />} />
                 </Routes>
             </div>

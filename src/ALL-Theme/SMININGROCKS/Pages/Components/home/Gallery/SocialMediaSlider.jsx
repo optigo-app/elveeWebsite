@@ -28,7 +28,7 @@ const sliderData = [
 
 export default function SocialMedia() {
   return (
-    <div className='mainSocialMediaConatiner'>
+    <div id='mainSocialMediaConatinerID' className='mainSocialMediaConatiner'>
       <div>
         <p className='socialmediaptag'>Social Media</p>
       </div>

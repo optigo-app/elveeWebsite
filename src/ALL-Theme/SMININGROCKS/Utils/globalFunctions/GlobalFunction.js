@@ -196,4 +196,9 @@ export function storImagePath(){
     // return `${storeinit?.UploadLogicalPath}/${storeinit?.ukey}/${storeinit?.ufcc}`
     return 'https://cdnfs.optigoapps.com/content-global3/elveesterKGYLM5CREI9H2XBNT/elveester'
 }
+
+export function ScrollToView(param){
+    const element = document.getElementById(param);
+    element.scrollIntoView({behavior:'smooth', block:'center', inline:'nearest'})
+}
   

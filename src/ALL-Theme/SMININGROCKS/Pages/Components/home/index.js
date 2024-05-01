@@ -29,8 +29,11 @@ import CompanyData from './ComapnayData/CompanyData';
 import CountdownTimer from './CountDownTimer/CountDownTimer';
 import AffiliationData from './PromoComponent/BrandsComponent/AffiliationData';
 import SocialMedia from './Gallery/SocialMediaSlider';
+import { useRecoilValue } from 'recoil';
+import { loginState } from '../../../../../Recoil/atom';
 
 export default function Home() {
+  const islogin = useRecoilValue(loginState);
 
   const location = useLocation();
 
@@ -258,6 +261,7 @@ export default function Home() {
         if (response?.Data?.rd) {
           let data = JSON.stringify(response?.Data?.rd)
           localStorage.setItem('colorDataImages', data)
+          console.log('colorDataImages', data);
         }
 
       }
@@ -279,13 +283,12 @@ export default function Home() {
   }, []);
   const [isLoginStatus, setIsloginStatus] = useState();
   useEffect(() => {
-    const loginStatus = localStorage.getItem('LoginUser');
-    if (loginStatus) {
-      setIsloginStatus(loginStatus)
+    if (islogin) {
+      setIsloginStatus(islogin)
     }
   }, [])
 
-
+console.log('islogin',islogin);
   //  let domainName =  `((window.location.hostname === 'localhost' || window.location.hostname === 'zen') ? 'astore.orail.co.in' : window.location.hostname)/ufcc/image/`
 
 
@@ -294,7 +297,7 @@ export default function Home() {
   return (
     <div className='paddingTopMobileSet' style={{ backgroundColor: 'white', paddingTop: '0px' }}>
       <div className='homeMain'>
-        {isLoginStatus == 'true' ? (
+        {islogin == 'true' ? (
           <>
             <Video />
             <Footer />

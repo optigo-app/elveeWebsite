@@ -1657,6 +1657,7 @@ const ProductList = () => {
       const matchingData = colorWiseImageData.filter(imageDataItem => (
         productAutoCode === imageDataItem.autocode && productColorName === imageDataItem.colorname
       ));
+      console.log('matchingData',colorWiseImageData);
 
       const checkAvailabilityPromises = matchingData.map(async (imageDataItem) => {
         const imagePath = uploadPath + '/' + data.ukey + convertPath(imageDataItem.imagepath);
@@ -1671,6 +1672,7 @@ const ProductList = () => {
       if (availableImage) {
         const formedImgData = { [index]: availableImage.imagePath };
         setUpdateColorImage(formedImgData);
+        console.log('formedImgData',formedImgData)
         return availableImage;
       } else {
         console.log('No available image found');
