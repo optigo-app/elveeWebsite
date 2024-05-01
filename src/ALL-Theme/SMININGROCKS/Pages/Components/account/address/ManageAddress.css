@@ -1,12 +1,13 @@
 .muiSmilingRocksBtnManage{
-    border: 1px solid #7d7f85 !important;
+    /* border: 1px solid #7d7f85 !important; */
+    font-family: "PT Sans", sans-serif !important;
+    font-size: 13.5px !important;
+    font-weight: 600 !important;
+    opacity: .8 !important;
     margin-left: auto !important;
     display: block !important;
-}
-
-.muiSmilingRocksBtnManage:hover, .muiSmilingRocksBtnManageEdit:hover{
-    background: #fff !important;
-    color: #7d7f85;
+    background: #f6efe6 !important;
+    color: rgba(31, 25, 25, 0.7) !important;
 }
 
 .manageAddressBlock{
@@ -17,7 +18,19 @@
 }
 
 .muiSmilingRocksBtnManageEdit{
-    border: 1px solid #7d7f85 !important;
+    /* border: 1px solid #7d7f85 !important; */
+    font-family: "PT Sans", sans-serif !important;
+    font-size: 13.5px !important;
+    font-weight: 700 !important;
+    opacity: .8 !important;
+    padding: 7px 20px 7px 20px !important;
+    background: rgb(246,239,230) !important;
+    color: rgba(31, 25, 25, 0.7) !important;
+}
+.muiSmilingRocksBtnManage:hover, .muiSmilingRocksBtnManageEdit:hover{
+    background: #fff !important;
+    color: #1f1919;
+    opacity: .8;
 }
 
 .addressMainSec{

@@ -438,15 +438,17 @@ const ManageAddress = () => {
 
     return (
         <div>
-            {/* <p style={{
+         <p style={{
                 textAlign: 'center',
                 padding: "15px 15px",
                 marginTop: '30px',
                 fontSize: '20px',
-                background: '#7d7f85',
-                color: "#fff",
-                fontWeight: "500",
-            }} className='savedAddress'>Saved Addresses</p> */}
+                background: '#f6efe6',
+                color: "rgba(31, 25, 25, 0.7)",
+                fontFamily:"PT Sans, sans-serif",
+                fontWeight: "700",
+                opacity:'.8'
+            }} className='savedAddress'>Saved Addresses</p>
             <Box sx={{ paddingLeft: "15px" }}>
                 <Button className='muiSmilingRocksBtnManage savedAddressManageBtn' variant="contained" sx={{ background: "#7d7f85", padding: "6px 15px", textAlign: "end", fontSize: "0.9rem", marginBottom: "10px", marginTop: '18px', borderRadius: "0" }} onClick={handleOpen}>ADD NEW ADDRESS</Button></Box>
             {/* <Button className='smilingAcoountAddNewBtn' sx={{marginLeft: "auto"}} >ADD NEW ADDRESS</Button> */}
@@ -487,8 +489,8 @@ const ManageAddress = () => {
                                             />
                                             <Typography>Default</Typography>
                                         </Box>
-
-                                        <Box sx={{ borderTop: "1px solid #dee2e6 !important", display: "flex", flexWrap: "wrap", paddingTop: "20px", position: 'absolute', bottom: 0, left: "15px", width: "calc( 100% - 30px)", }}>
+                                        
+                                        <Box className="addresDetailsTg addresDetailsBtn" sx={{ borderTop: "1px solid rgba(0, 0, 0, 0.04) !important", display: "flex", flexWrap: "wrap", paddingTop: "20px", position: 'absolute', bottom: 0, left: "15px", width: "calc( 100% - 30px)", }}>
                                             <Button className='muiSmilingRocksBtnManageEdit' variant="contained"
                                                 sx={{
                                                     background: "#7d7f85", maxHeight: "30px", minWidth: "max-content",
@@ -515,14 +517,14 @@ const ManageAddress = () => {
             <Dialog
                 open={openDelete}
             >
-                <div className='smilingDeliverDelerePopu'>
-                    <p style={{ fontSize: '20px', fontWeight: 500 }}>ARE YOU SURE TO DELETE ?</p>
-
+              <div className='smilingDeliverDelerePopu'>
+                    <p className='addresDetailsTg'  style={{ fontSize: '20px', fontWeight: 400 }}>ARE YOU SURE TO DELETE ?</p>
                     <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '40px' }}>
                         <button onClick={handleDeleteAddress} style={{
                             height: '35px',
                             width: '100px',
-                            backgroundColor: 'lightgray',
+                            backgroundColor: '#f6efe6',
+                            color:'rgba(31, 25, 25, 0.7)',
                             fontWeight: 500,
                             border: 'none',
                             outline: 'none',
@@ -531,7 +533,8 @@ const ManageAddress = () => {
                         <button onClick={() => setOpenDelete(false)} style={{
                             height: '35px',
                             width: '100px',
-                            backgroundColor: 'lightgray',
+                            backgroundColor: '#f6efe6',
+                            color:'rgba(31, 25, 25, 0.7)',
                             fontWeight: 500,
                             border: 'none',
                             outline: 'none',
