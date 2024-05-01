@@ -81,8 +81,11 @@ import React, { useState, useRef, useEffect } from "react";
 import "./Video.css";
 import { storImagePath } from "../../../../Utils/globalFunctions/GlobalFunction";
 import CountdownTimer from '../CountDownTimer/CountDownTimer'
+import { useRecoilValue } from "recoil";
+import { loginState } from "../../../../../../Recoil/atom";
 
 export default function Video() {
+  const islogin = useRecoilValue(loginState);
   const [loading, setLoading] = useState(false);
   const [isLoginStatus, setIsloginStatus] = useState();
   const [videoStarted, setVideoStarted] = useState(false);
@@ -90,9 +93,8 @@ export default function Video() {
 
 
   useEffect(() => {
-    const loginStatus = localStorage.getItem('LoginUser');
-    if (loginStatus) {
-      setIsloginStatus(loginStatus)
+    if (islogin) {
+      setIsloginStatus(islogin)
     }
   }, [])
 
@@ -112,7 +114,7 @@ export default function Video() {
 
   return (
     <div>
-      {isLoginStatus == 'false' ? (
+      {islogin == 'false' ? (
         <>
           <video
             ref={videoRef}

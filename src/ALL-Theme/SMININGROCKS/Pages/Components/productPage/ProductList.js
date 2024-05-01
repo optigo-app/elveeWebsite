@@ -1702,6 +1702,7 @@ const ProductList = () => {
       if (availableImage) {
         const formedImgData = { [index]: availableImage.imagePath };
         setUpdateColorImage(formedImgData);
+        console.log('formedImgData',formedImgData)
         return availableImage;
       } else {
         console.log('No available image found');

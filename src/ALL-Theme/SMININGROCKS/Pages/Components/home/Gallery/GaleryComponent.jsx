@@ -43,7 +43,7 @@ const sliderData = [
 
 export default function App() {
   return (
-    <div className='mainSocialMediaConatiner'>
+    <div id='mainGalleryConatinerID' className='mainSocialMediaConatiner'>
       <div>
         <p className='galeryComponents'>Gallery</p>
       </div>

@@ -4,7 +4,7 @@ import { storImagePath } from '../../../../../Utils/globalFunctions/GlobalFuncti
 
 const BrandsComponent = () => {
     return (
-        <div>
+        <div id='brandsComponentID'>
             <p className='brandsCompoents'>introducing our exclusive brands</p>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <img src={`${storImagePath()}/images/HomePage/BrandsLogoImg/BrandsLogo01.png`} style={{ width: '10%', objectFit: 'cover', marginRight: '90px' }} />

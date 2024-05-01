@@ -1,0 +1,106 @@
+body{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+.mainbannerabus{
+    object-fit: cover;
+    min-height: 750px;
+    max-height: 750px;
+    width: 100%;
+}   
+
+.aboutustitle{
+    height: 30px;
+    font-size: 20px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: rgb(75 71 71);
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.aboutustabtitle{
+    height: 30px;
+    font-size: 20px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: rgb(112, 108, 108);
+    cursor: pointer;
+    margin-bottom: 1rem;
+}
+
+.centerall{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.aboutuscontent{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 1rem;
+    padding-left: 2rem;
+    padding-right: 2rem;   
+}
+.tabpart{
+    width: 50%;
+}
+.imgpart{
+    width: 50%;
+}
+.tabpart_tabs{
+    display: flex;
+    justify-content: space-around;
+}
+.aboutustabinfo{
+    padding: 5px;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    font-size: 18px;
+    color: rgb(76, 74, 74);
+    word-wrap: break-word;
+    line-height: 22px;
+}
+.visitimgau{
+    width: 100%;
+    object-fit: cover;
+    min-height: 450px;
+    max-height: 450px;
+    border-radius: 8px;
+}
+.aboutuscompany{
+    width: 100%;
+    display: flex;
+    min-height: 120px;
+    background-color: rgb(183 188 201);
+}
+.aboutuscompany_w_1{
+    width: 32%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.aboutuscompany_w_1_info{
+    padding-bottom: 15px;
+    font-size: 20px;
+    font-weight: 500;
+}
+.aboutuscompany_w{
+    width: 17%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    font-size: 20px;
+    border-right: 1px solid #989898;
+}
+.aboutustabinfo .active{
+    border-bottom: 2px solid #989898;
+    border-radius: 2px;
+}
+.active{
+    color: rgba(29, 50, 88, 0.8);
+    text-decoration: underline;
+}

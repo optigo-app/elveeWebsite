@@ -22,7 +22,7 @@ const sliderData = [
 
 export default function App() {
   return (
-    <>
+    <div id='craftmenshipId'>
     <div>
     <p className='craftmenship'>Our Craftmenship</p>
     </div>
@@ -37,6 +37,6 @@ export default function App() {
           </SwiperSlide>
         ))}
       </Swiper>
-    </>
+    </div>
   );
 }

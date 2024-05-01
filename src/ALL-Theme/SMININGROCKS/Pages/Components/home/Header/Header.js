@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import './Header.css'
 import Tooltip from '@mui/material/Tooltip';
-import { Badge, Dialog, Divider, Drawer, SwipeableDrawer, TextField } from "@mui/material";
+import { Badge, Dialog, Divider, Drawer, SwipeableDrawer, Tabs, TextField } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import { PiStarThin } from "react-icons/pi";
 import { IoSearchOutline } from "react-icons/io5";
@@ -17,7 +17,7 @@ import Cart from "./Cart";
 // import titleImg from "../../../assets/title/sonasons.png"
 import titleImg from "../../../assets/Logo1.png";
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import { storImagePath } from "../../../../Utils/globalFunctions/GlobalFunction";
+import { ScrollToView, storImagePath } from "../../../../Utils/globalFunctions/GlobalFunction";
 import { productListApiCall } from "../../../../Utils/API/ProductListAPI";
 import { getDesignPriceList } from "../../../../Utils/API/PriceDataApi";
 import { FaPowerOff } from "react-icons/fa";
@@ -25,6 +25,7 @@ import { IoPersonOutline } from "react-icons/io5";
 import { GoHeart } from "react-icons/go";
 import { HiOutlineShoppingBag } from "react-icons/hi2";
 import { IoSearch } from "react-icons/io5";
+import Tab from '@mui/material/Tab';
 
 export default function Header() {
   const navigation = useNavigate();
@@ -41,6 +42,7 @@ export default function Header() {
   const [menu2Index, setMenu2Index] = useState(null);
   const [menu1Data, setMenu1Data] = useState()
   const [menu2Data, setMenu2Data] = useState()
+  const [menuData, setMenuData] = useState([]);
 
   const getCartListCount = useRecoilValue(CartListCounts)
   const getWishListCount = useRecoilValue(WishListCounts)
@@ -121,20 +123,20 @@ export default function Header() {
     setMenul2data(tempMenu2data)
   };
 
-  const handelNewMenuData = async(param) => {
+  const handelNewMenuData = async (param) => {
     setNewMenuData(param)
     setIsDropdownOpen(false)
     setDrawerShowOverlay(false)
     setDrawerShowOverlay(false)
-    localStorage.setItem("menuparams",JSON.stringify(param))
-    await productListApiCall(param).then((res)=>{
-      if(res){
-        console.log("res",res);
+    localStorage.setItem("menuparams", JSON.stringify(param))
+    await productListApiCall(param).then((res) => {
+      if (res) {
+        console.log("res", res);
         localStorage.setItem("allproductlist", JSON.stringify(res))
       }
     })
     await getDesignPriceList(param)
-    navigation("/productpage",{state:{menuFlag:true}})
+    navigation("/productpage", { state: { menuFlag: true } })
   }
 
 
@@ -143,24 +145,24 @@ export default function Header() {
   }, []);
 
 
-  const handelmenu1 = (param) => {
-    localStorage.setItem('productDataShow', 'true');
-    setIsDropdownOpen(false)
-    navigation("/productpage")
-    setHeaderData(param)
-  }
+  // const handelmenu1 = (param) => {
+  //   localStorage.setItem('productDataShow', 'true');
+  //   setIsDropdownOpen(false)
+  //   navigation("/productpage")
+  //   setHeaderData(param)
+  // }
 
-  const handelMenu0 = () => {
-    setIsDropdownOpen(false)
-    navigation("/productpage")
-  }
+  // const handelMenu0 = () => {
+  //   setIsDropdownOpen(false)
+  //   navigation("/productpage")
+  // }
 
 
-  const handelmenu2 = (param) => {
-    setIsDropdownOpen(false)
-    navigation("/productpage")
-    setHeaderData2(param)
-  }
+  // const handelmenu2 = (param) => {
+  //   setIsDropdownOpen(false)
+  //   navigation("/productpage")
+  //   setHeaderData2(param)
+  // }
 
   // const transformData = (data) => {
 
@@ -310,6 +312,7 @@ export default function Header() {
 
     setFinalData(transformedData);
   };
+  console.log('finalData---', finalData);
 
 
   const [islogin, setislogin] = useRecoilState(loginState);
@@ -347,9 +350,11 @@ export default function Header() {
     }
 
     await CommonAPI(body).then((res) => {
-      // console.log("getmenuData",res?.Data?.rd)
+      console.log("getmenuData", res?.Data?.rd)
+      setMenuData(res?.Data?.rd)
       transformData(res?.Data?.rd)
       separateData(res?.Data?.rd)
+
     })
     // }
   }
@@ -400,20 +405,20 @@ export default function Header() {
     };
   }, []);
 
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const handleDropdownOpen = () => {
-    setIsDropdownOpen(true);
-  };
+  // const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  // const handleDropdownOpen = () => {
+  //   setIsDropdownOpen(true);
+  // };
 
-  const handleDropdownClose = () => {
-    setIsDropdownOpen(false);
-    setMenu1Index(null)
-    setMenu2Index(null)
-  };
+  // const handleDropdownClose = () => {
+  //   setIsDropdownOpen(false);
+  //   setMenu1Index(null)
+  //   setMenu2Index(null)
+  // };
 
-  const handleOpenMenu = () => {
-    setIsDropdownOpen(!isDropdownOpen)
-  }
+  // const handleOpenMenu = () => {
+  //   setIsDropdownOpen(!isDropdownOpen)
+  // }
 
   const [openCart, setOpenCart] = useState(false);
   const toggleCartDrawer = (isOpen) => (event) => {
@@ -483,10 +488,14 @@ export default function Header() {
   }
 
   // close menu header when click outside
+  // this code for Menu data
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [selectedData, setSelectedData] = useState([]);
+  const [expandedMenu, setExpandedMenu] = useState(null);
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsDropdownOpen(false);
+        setExpandedMenu(null);
       }
     };
 
@@ -496,6 +505,85 @@ export default function Header() {
       document.removeEventListener('click', handleClickOutside);
     };
   }, []);
+
+  // const handleMenuClick = (index) => {
+  //   if (expandedMenu === index) {
+  //     setExpandedMenu(null);
+  //   } else {
+  //     setExpandedMenu(index);
+  //     // Load data for the selected menu item
+  //     setSelectedData(menuItems[index]?.param1 || []);
+  //   }
+  // };
+
+  const handleMenuClick = (index) => {
+    console.log('index', index);
+    if (expandedMenu === index) {
+      setExpandedMenu(null);
+    } else {
+      setExpandedMenu(index);
+      setSelectedData(menuItems[index]?.param1 || []);
+    }
+  };
+
+  // const handleMenuClick = (index) => {
+  //   console.log('index--', index);
+  //   console.log("index--", index);
+  //   console.log("This function is Calling");
+  //   setSelectedData(menuItems[index]?.param1 || []);
+  //   setExpandedMenu(index);
+  // };
+
+
+  // const handleMenuClick = (item, index) => {
+  //   console.log("index--", index);
+  //   console.log("This function is Calling");
+  //   setIsDropdownOpen(!isDropdownOpen)
+  //   setSelectedData(menuItems[index]?.param1 || []);
+  // }
+  console.log('exapndmenu--', expandedMenu);
+  const [menuItems, setMenuItems] = useState([]);
+  useEffect(() => {
+    const uniqueMenuIds = [...new Set(menuData?.map(item => item?.menuid))];
+
+    const uniqueMenuItems = uniqueMenuIds.map(menuid => {
+      const item = menuData?.find(data => data?.menuid === menuid);
+      const param1DataIds = [...new Set(menuData?.filter(data => data?.menuid === menuid)?.map(item => item?.param1dataid))];
+
+      const param1Items = param1DataIds.map(param1dataid => {
+        const param1Item = menuData?.find(data => data?.menuid === menuid && data?.param1dataid === param1dataid);
+        const param2Items = menuData?.filter(data => data?.menuid === menuid && data?.param1dataid === param1dataid)?.map(item => ({
+          param2dataid: item?.param2dataid,
+          param2dataname: item?.param2dataname,
+          param2id: item?.param2id,
+          param2name: item?.param2name
+        }));
+        return {
+          menuname: param1Item?.menuname,
+          param1dataid: param1Item?.param1dataid,
+          param1dataname: param1Item?.param1dataname,
+          param1id: param1Item?.param1id,
+          param1name: param1Item?.param1name,
+          param2: param2Items
+        };
+      });
+
+      return {
+        menuid: item?.menuid,
+        menuname: item?.menuname,
+        param0dataid: item?.param0dataid,
+        param0dataname: item?.param0dataname,
+        param0id: item?.param0id,
+        param0name: item?.param0name,
+        param1: param1Items
+      };
+    });
+
+    setMenuItems(uniqueMenuItems);
+  }, [menuData]);
+
+  console.log('menuItems', menuItems);
+  console.log('isdroopem--', selectedData);
 
   return (
     <>
@@ -846,7 +934,7 @@ export default function Header() {
                 <li
                   className="nav-li-smining"
                   style={{ cursor: "pointer" }}
-                  onClick={() => navigation("/ourBrands")}
+                  onClick={() => ScrollToView('brandsComponentID')}
                 >
                   Our Brands
                 </li>
@@ -860,7 +948,7 @@ export default function Header() {
                 <li
                   className="nav-li-smining"
                   style={{ cursor: "pointer" }}
-                  onClick={() => navigation("/ourCraftmanship")}
+                  onClick={() => ScrollToView('craftmenshipId')}
                 >
                   Our Craftsmanship
                 </li>
@@ -870,14 +958,14 @@ export default function Header() {
                 <li
                   className="nav-li-smining"
                   style={{ cursor: "pointer" }}
-                  onClick={() => navigation("/gallery")}
+                  onClick={() => ScrollToView('mainGalleryConatinerID')}
                 >
                   Gallery
                 </li>
                 <li
                   className="nav-li-smining"
                   style={{ cursor: "pointer" }}
-                  onClick={() => navigation("/socialMedia")}
+                  onClick={() => ScrollToView('mainSocialMediaConatinerID')}
                 >
                   Social Media
                 </li>
@@ -922,49 +1010,32 @@ export default function Header() {
                 <img src={titleImg} alt="Title" className="logoImage1" />
               </a>
               <ul className="nav-ul-shop" style={{ listStyle: "none", padding: 0 }}>
-                <li
-                  className="nav-li-smining"
-                  style={{ cursor: "pointer" }}
-                  onClick={() => handleOpenMenu()}
+
+                {/* {menuItems?.map((item, index) => {
+                  return (
+                    <li
+                      key={index}
+                      className="nav-li-smining"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => handleOpenMenu(item, index)}
+                      ref={dropdownRef}
+                    >
+                      {item?.menuname}
+                    </li>
+                  );
+                })} */}
+                <Tabs
+                  value={expandedMenu}
                   ref={dropdownRef}
+                  onChange={(event, newValue) => handleMenuClick(newValue)}
+                  variant="scrollable"
+                  scrollButtons="auto"
                 >
-                  Our Brands
-                </li>
-                <li
-                  className="nav-li-smining"
-                  style={{ cursor: "pointer" }}
-                  onClick={() => navigation("/productpage")}
-                >
-                  Product
-                </li>
-                <li
-                  className="nav-li-smining"
-                  style={{ cursor: "pointer" }}
-                  onClick={() => navigation("/ourCraftmanship")}
-                >
-                  Our Craftsmanship
-                </li>
-                <li
-                  className="nav-li-smining"
-                  style={{ cursor: "pointer" }}
-                  onClick={() => navigation("/gallery")}
-                >
-                  Gallery
-                </li>
-                <li
-                  className="nav-li-smining"
-                  style={{ cursor: "pointer" }}
-                  onClick={() => navigation("/socialMedia")}
-                >
-                  Social Media
-                </li>
-                <li
-                  className="nav-li-smining"
-                  style={{ cursor: "pointer" }}
-                  onClick={() => navigation("/contact")}
-                >
-                  Contact
-                </li>
+                  {menuItems.map((item, index) => (
+                    <Tab key={index} label={item.menuname} />
+                  ))}
+                </Tabs>
+
               </ul>
             </div>
 
@@ -1043,7 +1114,7 @@ export default function Header() {
           </div>
         }
         <div
-          className={`shop-dropdown ${isDropdownOpen ? "open" : ""} ${isHeaderFixed ? "fixed" : ""
+          className={`shop-dropdown ${expandedMenu !== null ? "open" : ""} ${isHeaderFixed ? "fixed" : ""
             }`}
         >
           <div
@@ -1058,22 +1129,22 @@ export default function Header() {
             }}
             className="menuDropdownData"
           >
-            <div style={{ display: 'flex', flexDirection: 'row', gap: '50px' }}>
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <span style={{ fontSize: '15px', fontFamily: '"PT Sans", sans-serif', letterSpacing: 1, fontWeight: 600 }}>FINE JEWELRY</span>
-                <span style={{ display: 'flex', flexDirection: 'column', marginTop: '12px', gap: '5px' }}>
-                  {
-                    menul0data?.map((md) => (
-                      <span style={{ fontSize: '14.5px', fontFamily: '"PT Sans", sans-serif', letterSpacing: 0.4, cursor: 'pointer' }}
-                        onClick={() => handelNewMenuData({ "label": "param0", "data": md })}
-                      >
-                        {capitalizeText(md?.menuname)}
-                      </span>
-                    ))
-                  }
-                </span>
+            <div style={{}}>
+              {/* Render selectedData outside the menuItems loop */}
+              <div style={{ width: '100%', display: 'flex', gap: '60px', textTransform: 'uppercase' }}>
+                {selectedData.map((param1Item, param1Index) => (
+                  <div key={param1Index}>
+                    <span className="level1MenuData" key={param1Index} style={{ fontSize: '15px', marginBottom: '10px', fontFamily: '"PT Sans", sans-serif', textAlign: 'start', letterSpacing: 1, fontWeight: 600 }}>{param1Item?.param1dataname}</span>
+                    {param1Item?.param2?.map((param2Item, param2Index) => (
+                      <p key={param2Index} style={{ fontSize: '13.5px', margin: '6px 0px 6px 0px', fontFamily: '"PT Sans", sans-serif', letterSpacing: 0.4, textAlign: 'start', cursor: 'pointer', textTransform: 'capitalize' }}>
+                        {param2Item?.param2dataname}
+                      </p>
+                    ))}
+                  </div>
+                ))}
               </div>
-              <div>
+
+              {/* <div>
                 <div style={{ display: 'flex', flexDirection: 'column', borderLeft: '1px solid #e1e1e1', paddingLeft: '30px' }}>
                   <span style={{ fontSize: '15px', fontFamily: '"PT Sans", sans-serif', letterSpacing: 1, fontWeight: 600 }}>COLLECTIONS</span>
                   <span style={{ display: 'flex', flexDirection: 'column', marginTop: '12px', gap: '5px', height: '350px' }}>
@@ -1104,7 +1175,7 @@ export default function Header() {
                     }
                   </span>
                 </div>
-              </div>
+              </div> */}
             </div>
 
             <div style={{ display: 'flex', gap: '15px' }}>
@@ -1114,7 +1185,7 @@ export default function Header() {
 
           </div>
         </div>
-      </div>
+      </div >
 
       <div
         style={{
