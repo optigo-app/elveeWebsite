@@ -18,6 +18,8 @@ import NavigateNextRoundedIcon from '@mui/icons-material/NavigateNextRounded';
 import { useNavigate } from 'react-router-dom'
 import playVidoe from '../../assets/paly.png'
 import { IoIosPlayCircle } from "react-icons/io";
+import { getDesignPriceList } from '../../../Utils/API/PriceDataApi'
+import { FullProInfoAPI } from '../../../Utils/API/FullProInfoAPI'
 
 const ProdDetail = () => {
 
@@ -49,7 +51,7 @@ const ProdDetail = () => {
   const [diaQColOpt, setDiaQColOpt] = useRecoilState(diamondQualityColorG);
   const [diaQColOptId, setDiaQColOptId] = useState();
   const [mtTypeOption, setmtTypeOption] = useRecoilState(metalTypeG);
-  const [mtTypeOptionId, setmtTypeOptionId] = useState(); 
+  const [mtTypeOptionId, setmtTypeOptionId] = useState();
   const [cSQopt, setCSQOpt] = useRecoilState(colorstoneQualityColorG);
   const [cSQoptId, setCSQOptId] = useState();
   const [colorImageData, setColorImageData] = useState([]);
@@ -90,8 +92,9 @@ const ProdDetail = () => {
   const [uploadLogicPath, setUploadLogicPath] = useState('');
   const [uKey, setUkey] = useState('');
   const [currData, setCurrData] = useState()
+  const [fullProdData, setFullProdData] = useState();
 
-  console.log("sizeData", sizeData);
+  console.log("fullProdData", fullProdData);
 
   //   const handelCurrencyData = () =>{
   //     let currencyData = JSON.parse(localStorage.getItem('CURRENCYCOMBO'));
@@ -123,6 +126,24 @@ const ProdDetail = () => {
   //     }
   // }  
 
+  const getProdFullInfo = () => {
+    let fullProdInfo = JSON.parse(localStorage.getItem('fullProdInfo'))
+    if (fullProdInfo) {
+      setFullProdData(fullProdInfo)
+    }
+  }
+
+  const setProdFullInfo = async () => {
+    let srProductsData = JSON.parse(localStorage.getItem('srProductsData'))
+    await FullProInfoAPI(srProductsData?.designno).then(res => {
+      if (res) {
+        getProdFullInfo();
+      }
+    })
+  }
+  useEffect(() => {
+    setProdFullInfo();
+  }, [])
   useEffect(() => {
     // handelCurrencyData();
     let loginData = JSON.parse(localStorage.getItem('loginUserDetail'));
@@ -182,12 +203,12 @@ const ProdDetail = () => {
       // let qualityColor = `${loginInfo?.cmboDiaQualityColor.split("#@#")[0]?.toUpperCase()}#${loginInfo?.cmboDiaQualityColor.split("#@#")[1]?.toUpperCase()}`
       let qualityColor = `${diaQCVar?.Quality}#${diaQCVar?.color}`
       setDiaQColOpt(qualityColor)
-      setDiaQColOptId([diaQCVar?.QualityId,diaQCVar?.ColorId])
-    }   
+      setDiaQColOptId([diaQCVar?.QualityId, diaQCVar?.ColorId])
+    }
     else {
       if (DimondQualityColor && DimondQualityColor?.length) {
         setDiaQColOpt(`${DimondQualityColor[0]?.Quality}#${DimondQualityColor[0]?.color}`)
-        setDiaQColOptId([DimondQualityColor[0]?.QualityId,DimondQualityColor[0]?.ColorId])
+        setDiaQColOptId([DimondQualityColor[0]?.QualityId, DimondQualityColor[0]?.ColorId])
 
       }
     }
@@ -199,14 +220,14 @@ const ProdDetail = () => {
       let csQCVar = ColorStoneQualityColor?.find(item => item?.QualityId === loginInfo?.cmboCSQCid?.split(',')[0] && item?.ColorId === loginInfo?.cmboCSQCid?.split(',')[1])
       let csQualColor = `${csQCVar?.QualityId}-${csQCVar?.ColorId}`
       setCSQOpt(csQualColor)
-      setCSQOptId([csQCVar?.QualityId,csQCVar?.ColorId])
+      setCSQOptId([csQCVar?.QualityId, csQCVar?.ColorId])
 
     } else {
       let ref = `${ColorStoneQualityColor[0].Quality}-${ColorStoneQualityColor[0].color}`
-      let ref1 = [ColorStoneQualityColor[0].QualityId,ColorStoneQualityColor[0].ColorId]
+      let ref1 = [ColorStoneQualityColor[0].QualityId, ColorStoneQualityColor[0].ColorId]
       setCSQOpt(ref)
       setCSQOptId(ref1)
-      
+
     }
 
     // let sizeDatafilter = sizeData?.filter((sd)=>sd?.IsDefaultSize === 1)
@@ -216,8 +237,8 @@ const ProdDetail = () => {
 
   }, [colorData, sizeData])
 
-  console.log("info",mtTypeOption,diaQColOpt,cSQopt);
-  
+  console.log("info", mtTypeOption, diaQColOpt, cSQopt);
+
   // console.log("productData",sizeOption)
 
   // useEffect(()=>{
@@ -421,7 +442,7 @@ const ProdDetail = () => {
         ele.H === cSQoptId[0] &&
         ele.J === cSQoptId[1]
         :
-        ele.A === srProductsData?.autocode 
+        ele.A === srProductsData?.autocode
 
     );
 
@@ -443,7 +464,7 @@ const ProdDetail = () => {
     let gt = showPrice + showPrice1 + showPrice2;
     setGrandTotal(gt ?? 0);
 
-  }, [getPriceData,mtTypeOption,diaQColOpt,cSQopt,mtTypeOptionId,diaQColOptId,cSQoptId])
+  }, [getPriceData, mtTypeOption, diaQColOpt, cSQopt, mtTypeOptionId, diaQColOptId, cSQoptId])
 
 
   useEffect(() => {
@@ -573,7 +594,7 @@ const ProdDetail = () => {
     const data = JSON.parse(storedDataAll);
     if (data?.IsColorWiseImages === 1) {
       const selectedColor = color;
-      setSelectedColor(selectedColor);  
+      setSelectedColor(selectedColor);
       const filteredData = colorImageData?.filter(item => item?.colorname.toLowerCase() === selectedColor?.toLowerCase());
 
       if (filteredData?.length > 0) {
@@ -2268,149 +2289,89 @@ const ProdDetail = () => {
                 Tell Me More
               </p>
               <div style={{ width: '60%' }} className='tellmeMoreMain'>
-                <div className='tellmeMoreMainMobileDiv'>
-                  <ul style={{
-                    margin: '0px 0px 3px 0px'
-                  }}>
-                    <li style={{ fontWeight: 600 }}>Daimond Detail(19/0.50ct)</li>
-                  </ul>
-                  <ul style={{
-                    display: 'flex',
-                    textDecoration: 'none',
-                    listStyle: 'none',
-                    margin: '0px 0px 3px 0px'
-                  }}>
-                    <li className='proDeatilList1 one'>Shape</li>
-                    <li className='proDeatilList2 one'>Clarity</li>
-                    <li className='proDeatilList3 one'>Color</li>
-                    <li className='proDeatilList4 one'>Pcs/Wt</li>
-                  </ul>
-                  <ul style={{
-                    display: 'flex',
-                    textDecoration: 'none',
-                    listStyle: 'none',
-                    margin: '0px 0px 3px 0px'
-                  }}>
-                    <li className='proDeatilList1'>Round</li>
-                    <li className='proDeatilList2'>VS</li>
-                    <li className='proDeatilList3'>GH</li>
-                    <li className='proDeatilList4'>15/0.250 Ct</li>
-                  </ul>
-                  <ul style={{
-                    display: 'flex',
-                    textDecoration: 'none',
-                    listStyle: 'none',
-                  }}>
-                    <li className='proDeatilList1'>Marqise</li>
-                    <li className='proDeatilList2'>VS</li>
-                    <li className='proDeatilList3'>GH</li>
-                    <li className='proDeatilList4'>4/0.350 ct</li>
-                  </ul>
-                </div>
 
+                {fullProdData?.rd1?.length !== 0 &&
+                  <div className='tellmeMoreMainMobileDiv'>
+                    <ul style={{
+                      margin: '0px 0px 3px 0px'
+                    }}>
+                      <li style={{ fontWeight: 600 }}>Daimond Detail(19/0.50ct)</li>
+                    </ul>
+                    {
+                      fullProdData?.rd1?.map((data) => (
+                        <ul style={{
+                          display: 'flex',
+                          textDecoration: 'none',
+                          listStyle: 'none',
+                          margin: '0px 0px 3px 0px'
+                        }}>
+                          <li className='proDeatilList1'>{data?.F}</li>
+                          <li className='proDeatilList2'>{data?.H}</li>
+                          <li className='proDeatilList3'>{data?.J}</li>
+                          <li className='proDeatilList4'>{data.M}/{data?.N}</li>
+                        </ul>
+                      ))
+                    }
+                  </div>
+                }
+
+                {/* {fullProdData?.rd2?.map((dataa) => (dataa?.D === "COLOR STONE" && ( */}
                 <div className='tellmeMoreMainMobileDiv'>
                   <ul style={{
                     margin: '0px 0px 3px 0px'
                   }}>
                     <li style={{ fontWeight: 600 }}>Color Stone Detail(21/1.299ct)</li>
                   </ul>
-                  <ul style={{
-                    display: 'flex',
-                    textDecoration: 'none',
-                    listStyle: 'none',
-                    margin: '0px 0px 3px 0px'
-                  }}>
-                    <li className='proDeatilList1 one'>Shape</li>
-                    <li className='proDeatilList2 one'>Quality</li>
-                    <li className='proDeatilList3 one'>Color</li>
-                    <li className='proDeatilList4 one'>Pcs/Wt</li>
-                  </ul>
-                  <ul style={{
-                    display: 'flex',
-                    textDecoration: 'none',
-                    listStyle: 'none',
-                    margin: '0px 0px 3px 0px'
-                  }}>
-                    <li className='proDeatilList1'>Round</li>
-                    <li className='proDeatilList2'>Natural Sapphinre</li>
-                    <li className='proDeatilList3'>Blue</li>
-                    <li className='proDeatilList4'>10/0.527 Ct</li>
-                  </ul>
-                  <ul style={{
-                    display: 'flex',
-                    textDecoration: 'none',
-                    listStyle: 'none',
-                    margin: '0px 0px 3px 0px'
-                  }}>
-                    <li className='proDeatilList1'>Round</li>
-                    <li className='proDeatilList2'>Synteic Ruby</li>
-                    <li className='proDeatilList3'>Red</li>
-                    <li className='proDeatilList4'>4/0.350 ct</li>
-                  </ul>
-                  <ul style={{
-                    display: 'flex',
-                    textDecoration: 'none',
-                    listStyle: 'none',
-                    margin: '0px 0px 3px 0px'
-                  }}>
-                    <li className='proDeatilList1'>Custom</li>
-                    <li className='proDeatilList2'>Synteic Ruby</li>
-                    <li className='proDeatilList3'>Red</li>
-                    <li className='proDeatilList4'>4/0.350 ct</li>
-                  </ul>
+                  {
+                    fullProdData?.rd2?.map((data) => (
+                      data?.D === "COLOR STONE" && (
+                        <ul style={{
+                          display: 'flex',
+                          textDecoration: 'none',
+                          listStyle: 'none',
+                          margin: '0px 0px 3px 0px'
+                        }}>
+                          <li className='proDeatilList1'>{data?.F}</li>
+                          <li className='proDeatilList2'>{data?.H}</li>
+                          <li className='proDeatilList3'>{data?.J}</li>
+                          <li className='proDeatilList4'>{data.M}/{data?.N}</li>
+                        </ul>
+                      )
+                    ))
+                  }
                 </div>
+                {/* )
+                ))
+                } */}
 
-                <div className='tellmeMoreMainMobileDiv'>
-                  <ul style={{
-                    margin: '0px 0px 3px 0px'
-                  }}>
-                    <li style={{ fontWeight: 600 }}>Misc. Detail(21/1.022ct)</li>
-                  </ul>
-                  <ul style={{
-                    display: 'flex',
-                    textDecoration: 'none',
-                    listStyle: 'none',
-                    margin: '0px 0px 3px 0px'
-                  }}>
-                    <li className='proDeatilList1 one'>Shape</li>
-                    <li className='proDeatilList2 one'>Quality</li>
-                    <li className='proDeatilList3 one'>Color</li>
-                    <li className='proDeatilList4 one'>Pcs/Wt</li>
-                  </ul>
-                  <ul style={{
-                    display: 'flex',
-                    textDecoration: 'none',
-                    listStyle: 'none',
-                    margin: '0px 0px 3px 0px'
-                  }}>
-                    <li className='proDeatilList1'>Square</li>
-                    <li className='proDeatilList2'>Natural Sapphinre</li>
-                    <li className='proDeatilList3'>Blue</li>
-                    <li className='proDeatilList4'>10/0.527 Ct</li>
-                  </ul>
-                  <ul style={{
-                    display: 'flex',
-                    textDecoration: 'none',
-                    listStyle: 'none',
-                    margin: '0px 0px 3px 0px'
-                  }}>
-                    <li className='proDeatilList1'>Round</li>
-                    <li className='proDeatilList2'>Synteic Ruby</li>
-                    <li className='proDeatilList3'>Red</li>
-                    <li className='proDeatilList4'>4/0.350 ct</li>
-                  </ul>
-                  <ul style={{
-                    display: 'flex',
-                    textDecoration: 'none',
-                    listStyle: 'none',
-                    margin: '0px 0px 3px 0px'
-                  }}>
-                    <li className='proDeatilList1'>Custom</li>
-                    <li className='proDeatilList2'>Synteic Ruby</li>
-                    <li className='proDeatilList3'>Red</li>
-                    <li className='proDeatilList4'>4/0.350 ct</li>
-                  </ul>
-                </div>
+                {/* {fullProdData?.rd2?.map((dataa) => (dataa?.D === "MIS vbC" && ( */}
+                  <div className='tellmeMoreMainMobileDiv'>
+                    <ul style={{
+                      margin: '0px 0px 3px 0px'
+                    }}>
+                      <li style={{ fontWeight: 600 }}>Misc. Detail(21/1.022ct)</li>
+                    </ul>
+                    {
+                      fullProdData?.rd2?.map((data) => (
+                        data?.D === "MISC" && (
+                          <ul style={{
+                            display: 'flex',
+                            textDecoration: 'none',
+                            listStyle: 'none',
+                            margin: '0px 0px 3px 0px'
+                          }}>
+                            <li className='proDeatilList1'>{data?.F}</li>
+                            <li className='proDeatilList2'>{data?.H}</li>
+                            <li className='proDeatilList3'>{data?.J}</li>
+                            <li className='proDeatilList4'>{data.M}/{data?.N}</li>
+                          </ul>
+                        )
+                      ))
+                    }
+                  </div>
+                {/* )
+                ))
+                } */}
               </div>
               <ul
                 className="srAccul"
