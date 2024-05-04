@@ -1,6 +1,6 @@
 import { CommonAPI } from "./CommonAPI";
 
-export const getDesignPriceList = async (param,page=1,obj,prodInfo) => {
+export const FullProInfoAPI = async (prodInfo) => {
 
   console.log("prodInfo",prodInfo);
 
@@ -9,55 +9,22 @@ export const getDesignPriceList = async (param,page=1,obj,prodInfo) => {
   const loginUserDetail = JSON.parse(localStorage.getItem("loginUserDetail"));
   const UserEmail = localStorage.getItem("registerEmail")
 
-  const handelCurrencyData = () => {
-    const currencyData = JSON.parse(localStorage.getItem('CURRENCYCOMBO'));
-    const loginData = JSON.parse(localStorage.getItem('loginUserDetail'));
   
-    let finalData;
-  
-    if (currencyData && loginData) {
-      if (Array.isArray(currencyData)) {
-        finalData = currencyData.find(cd => cd.Currencyid === loginData.CurrencyCodeid);
-      } else {
-        finalData = currencyData;
-      }
-    }
-  
-    if (!finalData) {
-      finalData = {
-        Currencyid: 42,
-        Currencycode: 'INR',
-        Currencyname: 'Rupees',
-        Currencysymbol: '₹',
-        CurrencyRate: 1.00000,
-        IsDefault: 1
-      };
-    }
-  
-    return finalData;
-  };
   
   let encodedFilter = {
-    "DesignNo":"",
-    // "FilterKey":`${param?.FilterKey}`,
-    "FilterKey":'',
-    "FilterVal":'',
-    // "FilterVal":`${param?.FilterVal}`,
-    "FilterVal":`${param?.FilterVal}`,
-    "FilterKey1":`${param?.FilterKey1}`,
-    "FilterVal1":`${param?.FilterVal1}`,
-    "FilterKey2":`${param?.FilterKey2}`,
-    "FilterVal2":`${param?.FilterVal2}`,
-    "PageNo":`${page}`,
-    "PageSize":`${storeInit?.PageSize}`,
-    "Metalid":`${loginUserDetail?.MetalId}`,
-    "DiaQCid":`${loginUserDetail?.cmboDiaQCid}`,
-    "CsQCid":`${loginUserDetail?.cmboCSQCid}`,
-    "IsFromDesDet":"0"
+    "DesignNo":`${prodInfo}`,
+    "FilterKey":"",
+    "FilterVal":"",
+    "PageNo":"",
+    "PageSize":"",
+    "Metalid":"",
+    "DiaQCid":"",
+    "CsQCid":"",
+    "IsFromDesDet":"1"
   }
 
   const GetPriceReq = {
-    "CurrencyRate": `${handelCurrencyData()?.CurrencyRate}`,
+    "CurrencyRate": `${loginUserDetail?.CurrencyRate}`,
     "FrontEnd_RegNo": `${storeInit?.FrontEnd_RegNo}`,
     "Customerid": `${loginUserDetail?.id}`,
     "Laboursetid": `${loginUserDetail?.pricemanagement_laboursetid}`,
@@ -75,17 +42,19 @@ export const getDesignPriceList = async (param,page=1,obj,prodInfo) => {
 
   let body = {
     "con": `{\"id\":\"Store\",\"mode\":\"getdesignpricelist\",\"appuserid\":\"${UserEmail}\"}`,
-    "f": "onloadFirstTime (getdesignpricelist)",
+    "f": "onloadFirstTimeDetailPage (fullProdInfo)",
     "p": encodedCombinedValue
   }
 
   let finalData;
 
   await CommonAPI(body).then((res) => {
-    localStorage.setItem("getPriceData", JSON.stringify(res?.Data))
+    localStorage.setItem("fullProdInfo", JSON.stringify(res?.Data))
     //   setpriceDataApi(res?.Data)
     finalData = res?.Data 
   })
+
+  console.log('finaldataa',finalData);
 
   return finalData
 
