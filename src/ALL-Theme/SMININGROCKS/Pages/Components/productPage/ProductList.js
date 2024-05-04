@@ -1615,8 +1615,8 @@ const ProductList = () => {
 
   const handlePageReload = () => {
     // setRangeProData([])
-    setFilterChecked({})
-    setNewProData(ProductApiData2);
+    // setFilterChecked({})
+    // setNewProData(ProductApiData2);  
     setMinPrice(0)
     setMaxPrice(maxPrice)
     setValue1([minPrice, maxPrice])
@@ -1684,9 +1684,10 @@ const ProductList = () => {
     }
 
     if (data.IsColorWiseImages === 1) {
-      const matchingData = colorWiseImageData?.filter(imageDataItem => (
-        productAutoCode == imageDataItem.autocode && productColorName == imageDataItem.colorname
-        ));
+      const matchingData = colorWiseImageData.filter(imageDataItem => (
+        productAutoCode === imageDataItem.autocode && 
+        productColorName.toLowerCase() === imageDataItem.colorname.toLowerCase()
+      )); 
         console.log("matchingData",matchingData,productAutoCode,productColorName)
 
       const checkAvailabilityPromises = matchingData.map(async (imageDataItem) => {

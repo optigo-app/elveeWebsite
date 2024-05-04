@@ -61,11 +61,28 @@
 
 }
 
-@media screen and (max-width: 600px) {
+@media (min-width: 426px) and (max-width: 768px) {
     .promo-daimondBox2-image {
         height: 290px;
     }
     .promo-daimondBox2 {
         height: auto;
+    }
+    .promo-daimondBox1 p{
+        margin-top: 10px;
+        font-size: 16px !important;
+    }
+}
+
+@media screen and (max-width: 425px) {
+    .promo-daimondBox2-image {
+        height: 290px;
+    }
+    .promo-daimondBox2 {
+        height: auto;
+    }
+    .promo-daimondBox1 p{
+        margin-top: 10px;
+        font-size: 16px !important;
     }
 }

@@ -765,7 +765,7 @@ export default function CartPage() {
     const prodData = JSON.parse(localStorage.getItem("allproductlist"))
     let isCartData = cartSelectData ? cartSelectData : cartListData[0]
 
-    const finalProdData = prodData.filter(
+    const finalProdData = prodData?.filter(
       (pd) =>
         pd?.designno === isCartData?.designno &&
         pd?.autocode === isCartData?.autocode
