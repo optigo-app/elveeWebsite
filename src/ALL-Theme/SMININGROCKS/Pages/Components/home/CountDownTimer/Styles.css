@@ -151,7 +151,10 @@
         align-items: center;
         text-align: center;
     }
-    .featherImg{
+    .Logo{
         display: none;
+    }
+    .lastspanData{
+        padding-right: 0px;
     }
   }

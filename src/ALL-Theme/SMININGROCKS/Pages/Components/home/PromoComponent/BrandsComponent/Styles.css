@@ -1,3 +1,8 @@
+.mainAffiliDiv{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .brandsCompoents{
     color: rgba(29, 50, 88, 0.8) !important;
     text-align: center;
@@ -13,4 +18,56 @@
     text-transform: capitalize;
     line-height: 2px;
     margin: 50px 0px 50px 0px !important;
+}
+
+
+@media (min-width: 446px) and (max-width: 768px) {
+    .brandsComponentClass{
+        width: 100%;
+        overflow: auto;
+    }
+    .AffiliationClassComponents{
+        width: 100%;
+        overflow: auto;
+    }
+    .AffiliationComponents{
+        margin: 50px 0px 20px 0px !important
+    }
+    .mainAffiliDiv{
+        display: block !important;
+        text-align: center;
+    }
+    .affilitionImg{
+        width: 17% !important;
+        margin-right: 20px !important;
+    }
+    .brandsCompoents{
+        font-size: 16px;
+    }
+}
+
+
+@media (max-width: 445px) {
+    .brandsComponentClass{
+        width: 100%;
+        overflow: auto;
+    }
+    .AffiliationClassComponents{
+        width: 100%;
+        overflow: auto;
+    }
+    .AffiliationComponents{
+        margin: 50px 0px 20px 0px !important
+    }
+    .mainAffiliDiv{
+        display: block !important;
+        text-align: center;
+    }
+    .affilitionImg{
+        width: 25% !important;
+        margin-right: 20px !important;
+    }
+    .brandsCompoents{
+        font-size: 16px;
+    }
 }

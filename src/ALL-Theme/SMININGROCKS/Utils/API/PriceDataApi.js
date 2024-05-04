@@ -39,8 +39,15 @@ export const getDesignPriceList = async (param,page=1,obj,prodInfo) => {
   
   let encodedFilter = {
     "DesignNo":"",
-    "FilterKey":`${param?.data.param1name}`,
-    "FilterVal":`${param?.data.param1dataname}`,
+    // "FilterKey":`${param?.FilterKey}`,
+    "FilterKey":'',
+    "FilterVal":'',
+    // "FilterVal":`${param?.FilterVal}`,
+    "FilterVal":`${param?.FilterVal}`,
+    "FilterKey1":`${param?.FilterKey1}`,
+    "FilterVal1":`${param?.FilterVal1}`,
+    "FilterKey2":`${param?.FilterKey2}`,
+    "FilterVal2":`${param?.FilterVal2}`,
     "PageNo":`${page}`,
     "PageSize":`${storeInit?.PageSize}`,
     "Metalid":`${loginUserDetail?.MetalId}`,
