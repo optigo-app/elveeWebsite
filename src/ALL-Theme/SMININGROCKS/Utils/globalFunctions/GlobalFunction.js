@@ -203,33 +203,38 @@ export function findMetalType(paramId) {
     return item
 }
 
-export function findMetalTypeId(param) {
-    let metalTypeArr = JSON.parse(localStorage.getItem("MetalTypeData"))
-    let item = metalTypeArr.filter(item => item?.metaltype === param)
-    return item
-}
-
 export function findMetalColor(paramId) {
     let metalColorArr = JSON.parse(localStorage.getItem("MetalColorData"))
     let item = metalColorArr.filter(item => item?.id === paramId)
     return item
 }
   
+export function findMetalTypeId(param) {
+    let metalTypeArr = JSON.parse(localStorage.getItem("MetalTypeData"))
+    let item = metalTypeArr.filter(item => item?.metaltype === param)
+    console.log("param",item);
+    return item
+}
+
 export function findDiaQcId(param){
+
     let diaQCArr = JSON.parse(localStorage.getItem("QualityColor"))
     let quality = param.split("#")[0]
     let color = param.split("#")[1]
     
     let item = diaQCArr?.filter(ele => ele?.Quality == quality && ele?.color == color)
+    console.log("param",item);
     return item
  }
 
 export function findCsQcId(param){
+
     let CsQCArr = JSON.parse(localStorage.getItem("ColorStoneQualityColor"))
     let quality = param.split("-")[0]
     let color = param.split("-")[1]
 
     let item = CsQCArr?.filter(ele => ele?.Quality == quality && ele?.color == color)
+    console.log("param",item);
     return item
     
 }

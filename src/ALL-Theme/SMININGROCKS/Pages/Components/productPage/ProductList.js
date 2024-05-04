@@ -46,7 +46,7 @@ const ProductList = () => {
   const [ProductApiData, setProductApiData] = useState([])
   const [ProductApiData2, setProductApiData2] = useState([])
   const [drawerShowOverlay, setDrawerShowOverlay] = useState(false)
-  const [filterChecked, setFilterChecked] = useState({})
+  const [filterChecked, setFilterChecked] = useState({})  
   const [wishFlag, setWishFlag] = useState({})
   const [cartFlag, setCartFlag] = useState(false)
   const [cartData, setCartData] = useState([])
@@ -342,50 +342,105 @@ const ProductList = () => {
 
   //   const loginUserDetail = JSON.parse(localStorage.getItem('loginUserDetail'));  
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const data = JSON.parse(localStorage.getItem("allproductlist"));
+  //     const loginUserDetail = JSON.parse(localStorage.getItem('loginUserDetail'));
+  //     const storeInit = JSON.parse(localStorage.getItem('storeInit'));
+
+  //     const updatedData = await Promise?.all(data?.map(async (product) => {
+  //       const newPriceData = priceDataApi?.rd?.find(
+  //         (pda) => storeInit?.IsMetalCustomization === 1 ? pda.A === product.autocode 
+  //             // &&
+  //             // pda.C === (findMetalTypeId(mtTypeOption)[0]?.Metalid)            
+  //             :
+  //             pda.A === product.autocode
+  //       );
+
+  //       console.log("newPriceData",newPriceData,findMetalTypeId(mtTypeOption)[0]?.Metalid)
+
+  //       const newPriceData1 = priceDataApi?.rd1?.filter(
+  //         (pda) =>
+
+  //           storeInit?.IsDiamondCustomization === 1
+  //             ?
+  //             pda.A === product.autocode &&
+  //             pda.G == loginUserDetail?.cmboDiaQCid?.split(',')[0] &&
+  //             pda.I == loginUserDetail?.cmboDiaQCid?.split(',')[1]     
+  //             :
+  //             pda.A === product.autocode
+
+  //       ).reduce((acc, obj) => acc + obj.S, 0)
+
+  //       const newPriceData2 = priceDataApi?.rd2?.filter(
+  //         (pda) =>
+
+  //           storeInit?.IsCsCustomization === 1
+  //             ?
+  //             pda.A === product.autocode &&
+  //             pda.H === loginUserDetail?.cmboCSQCid?.split(',')[0] &&
+  //             pda.J === loginUserDetail?.cmboCSQCid?.split(',')[1]
+  //             :
+  //             pda.A === product.autocode
+
+  //       ).reduce((acc, obj) => acc + obj.S, 0)
+
+  //       let price = 0;
+  //       let markup = 0;
+  //       let metalrd = 0;
+  //       let diard1 = 0;
+  //       let csrd2 = 0;
+  //       let updNWT = 0;
+  //       let updGWT = 0;
+  //       let updDWT = 0;
+  //       let updDPCS = 0;
+  //       let updCWT = 0;
+  //       let updCPCS = 0;
+  //       let updMT = "";
+  //       let updMC = "";
+
+  //       if (newPriceData || newPriceData1 || newPriceData2) {
+  //         price = (((newPriceData?.V ?? 0) / currData?.CurrencyRate ?? 0) + (newPriceData?.W ?? 0) + (newPriceData?.X ?? 0)) + (newPriceData1 ?? 0) + (newPriceData2 ?? 0);
+  //         metalrd = (((newPriceData?.V ?? 0) / currData?.CurrencyRate ?? 0) + (newPriceData?.W ?? 0) + (newPriceData?.X ?? 0))
+  //         diard1 = newPriceData1 ?? 0
+  //         csrd2 = newPriceData2 ?? 0
+  //         markup = newPriceData?.AB
+  //         updNWT = newPriceData?.I ?? 0
+  //         updGWT = newPriceData?.N ?? 0
+  //         updDWT = newPriceData?.K ?? 0
+  //         updDPCS = newPriceData?.J ?? 0
+  //         updCWT = newPriceData?.M ?? 0
+  //         updCPCS = newPriceData?.L ?? 0
+  //         updMT = findMetalType(newPriceData?.C ?? product?.MetalTypeid)[0]?.metaltype ?? ""
+  //         updMC = findMetalColor(product?.MetalColorid)[0]?.metalcolorname ?? ""
+  //       }
+  //       console.log("priceprod", product?.designno,metalrd,diard1,csrd2);
+  //       return { ...product, price, markup, metalrd, diard1, csrd2, updNWT, updGWT, updDWT, updDPCS, updCWT, updCPCS, updMT, updMC }
+  //     }));
+
+
+  //     localStorage.setItem("allproductlist", JSON.stringify(updatedData));
+  //     setProductApiData2(updatedData);
+  //   };
+
+  //   console.log("calling");
+  //   fetchData();
+  // }, [priceDataApi,mtTypeOption]);
+
   useEffect(() => {
     const fetchData = async () => {
       const data = JSON.parse(localStorage.getItem("allproductlist"));
-      const loginUserDetail = JSON.parse(localStorage.getItem('loginUserDetail'));
-      const storeInit = JSON.parse(localStorage.getItem('storeInit'));
+      // const loginUserDetail = JSON.parse(localStorage.getItem('loginUserDetail'));
+      // const storeInit = JSON.parse(localStorage.getItem('storeInit'));
+
+      console.log("priceDataApi",priceDataApi);
 
       const updatedData = await Promise?.all(data?.map(async (product) => {
-        const newPriceData = priceDataApi?.rd?.find(
-          (pda) =>
-            storeInit?.IsMetalCustomization === 1
-              ?
-              pda.A === product.autocode &&
-              pda.C === loginUserDetail?.MetalId
-              :
-              pda.A === product.autocode
-        );
+        const newPriceData = priceDataApi?.rd?.find((pda) => pda.A === product.autocode)
 
-        console.log("newPriceData", newPriceData)
+        const newPriceData1 = priceDataApi?.rd1?.filter((pda) => pda.A === product.autocode ).reduce((acc, obj) => acc + obj.S, 0)
 
-        const newPriceData1 = priceDataApi?.rd1?.filter(
-          (pda) =>
-
-            storeInit?.IsDiamondCustomization === 1
-              ?
-              pda.A === product.autocode &&
-              pda.G == loginUserDetail?.cmboDiaQCid?.split(',')[0] &&
-              pda.I == loginUserDetail?.cmboDiaQCid?.split(',')[1]
-              :
-              pda.A === product.autocode
-
-        ).reduce((acc, obj) => acc + obj.S, 0)
-
-        const newPriceData2 = priceDataApi?.rd2?.filter(
-          (pda) =>
-
-            storeInit?.IsCsCustomization === 1
-              ?
-              pda.A === product.autocode &&
-              pda.H === loginUserDetail?.cmboCSQCid?.split(',')[0] &&
-              pda.J === loginUserDetail?.cmboCSQCid?.split(',')[1]
-              :
-              pda.A === product.autocode
-
-        ).reduce((acc, obj) => acc + obj.S, 0)
+        const newPriceData2 = priceDataApi?.rd2?.filter((pda) => pda.A === product.autocode ).reduce((acc, obj) => acc + obj.S, 0)
 
         let price = 0;
         let markup = 0;
@@ -419,7 +474,6 @@ const ProductList = () => {
         console.log("priceprod", product?.designno, metalrd, diard1, csrd2);
         return { ...product, price, markup, metalrd, diard1, csrd2, updNWT, updGWT, updDWT, updDPCS, updCWT, updCPCS, updMT, updMC }
       }));
-
 
       localStorage.setItem("allproductlist", JSON.stringify(updatedData));
       setProductApiData2(updatedData);
@@ -904,6 +958,10 @@ const ProductList = () => {
     let ProductTypeFilter = JSON.parse(localStorage.getItem("ProductTypeFilter"))
     let GenderFilter = JSON.parse(localStorage.getItem("GenderFilter"))
     let CollectionFilter = JSON.parse(localStorage.getItem("CollectionFilter"))
+    let BrandFilter = JSON.parse(localStorage.getItem("BrandFilter"))
+    let OcassionFilter = JSON.parse(localStorage.getItem("OcassionFilter"))
+    let ThemeFilter = JSON.parse(localStorage.getItem("ThemeFilter"))
+    let SubCategoryFilter = JSON.parse(localStorage.getItem("SubCategoryFilter"))
 
     if (categoryFilter) {
       newFilter.push({ label: "CATEGORY", filterList: categoryFilter.map((res) => { return { "label": res?.CategoryName, "id": res?.Categoryid } }), listType: 'Categoryid' })
@@ -917,11 +975,23 @@ const ProductList = () => {
     if (CollectionFilter) {
       newFilter.push({ label: "COLLECTION", filterList: CollectionFilter.map((res) => { return { "label": res?.CollectionName, "id": res?.Collectionid } }), listType: 'Collectionid' })
     }
-
-    newFilter.push({ label: "PRICE", filterList: [] });
-    newFilter.push({ label: "NETWT", filterList: [] });
-    newFilter.push({ label: "GROSSWT", filterList: [] });
-    newFilter.push({ label: "DIAMONDWT", filterList: [] });
+    if (BrandFilter) {
+      newFilter.push({ label: "BRAND", filterList: BrandFilter.map((res) => { return { "label": res?.BrandName, "id": res?.Brandid } }), listType: 'Brandid' })
+    }
+    if (OcassionFilter) {
+      newFilter.push({ label: "OCASSION", filterList: OcassionFilter.map((res) => { return { "label": res?.OcassionName, "id": res?.Ocassionid } }), listType: 'Ocassionid' })
+    }
+    if (ThemeFilter) {
+      newFilter.push({ label: "THEME", filterList: ThemeFilter.map((res) => { return { "label": res?.ThemeName, "id": res?.Themeid } }), listType: 'Themeid' })
+    }
+    if (SubCategoryFilter) {
+      newFilter.push({ label: "SUBCATEGORY", filterList: SubCategoryFilter.map((res) => { return { "label": res?.SubCategoryName, "id": res?.SubCategoryid } }), listType: 'SubCategoryid' })
+    }
+    
+    // newFilter.push({ label: "PRICE", filterList: [] });
+    // newFilter.push({ label: "NETWT", filterList: [] });
+    // newFilter.push({ label: "GROSSWT", filterList: [] });
+    // newFilter.push({ label: "DIAMONDWT", filterList: [] });
 
     return newFilter
 
@@ -943,7 +1013,6 @@ const ProductList = () => {
 
     let FilterCheckedLength = (Object.values(filterChecked)).filter(fc => fc.checked !== false).filter(fc => fc.checked !== undefined)
 
-    console.log("isFilterData", FilterCheckedLength?.length, newProData?.length)
     setTimeout(() => {
       if (FilterCheckedLength?.length > 0 && newProData?.length === 0) {
         setIsFilterData(true)
@@ -980,8 +1049,9 @@ const ProductList = () => {
 
   useEffect(() => {
     let filteredData = ProductApiData2;
-
+    
     const activeFilters = Object.values(filterChecked).filter(ele => ele.checked);
+    console.log("filterChecked",activeFilters)
 
     if (activeFilters.length > 0) {
       filteredData = filteredData.filter(product => {
@@ -1975,31 +2045,44 @@ const ProductList = () => {
     setShow4ImageView(true)
   }
 
-  const ShortcutComboFunc = async () => {
-    // mtTypeOption,diaQColOpt,cSQopt
-    let metalTypeId = findMetalTypeId(mtTypeOption)?.Metalid ?? "0,0"
-    let DiaQCid = findDiaQcId(diaQColOpt)?.QualityId ?? "0,0"
-    let CsQcid = findCsQcId(cSQopt)?.QualityId ?? "0,0"
+  const ShortcutComboFunc = async() =>{
+    let metalTypeId = findMetalTypeId(mtTypeOption)[0]?.Metalid
+    let DiaQCid = [findDiaQcId(diaQColOpt)[0]?.QualityId,findDiaQcId(diaQColOpt)[0]?.ColorId] 
+    let CsQcid = [findCsQcId(cSQopt)[0]?.QualityId,findCsQcId(cSQopt)[0]?.ColorId]
 
-    let obj = { metalTypeId, DiaQCid, CsQcid }
+    let obj={mt:metalTypeId,dqc:DiaQCid,csqc:CsQcid}
+    console.log("obj",obj);
 
     let param = JSON.parse(localStorage.getItem("menuparams"))
-    await getDesignPriceList(param, currentPage, obj).then(res => {
-      getProdPriceData()
+    await getDesignPriceList(param,currentPage,obj).then(res =>{
+      if(res){
+        getProdPriceData()
+      }
     })
+
   }
+
+  useEffect(()=>{
+    ShortcutComboFunc()
+  },[mtTypeOption,diaQColOpt,cSQopt])
 
 
   const handlePageChange = async (event, value) => {
     let param = JSON.parse(localStorage.getItem("menuparams"))
     setCurrentPage(value)
 
-    await productListApiCall(param, value).then((res) => {
-      if (res) return res
+    let metalTypeId = findMetalTypeId(mtTypeOption)[0]?.Metalid
+    let DiaQCid = [findDiaQcId(diaQColOpt)[0]?.QualityId,findDiaQcId(diaQColOpt)[0]?.ColorId] 
+    let CsQcid = [findCsQcId(cSQopt)[0]?.QualityId,findCsQcId(cSQopt)[0]?.ColorId]
+
+    let obj={mt:metalTypeId,dqc:DiaQCid,csqc:CsQcid}
+
+     await productListApiCall(param,value).then((res)=>{
+      if(res) return res
       return res
-    }).then(async (res) => {
-      if (res) {
-        await getDesignPriceList(param, value)
+    }).then(async(res)=>{
+      if(res) {
+        await getDesignPriceList(param,value,obj)
         return res
       }
     }).then((res) => {
@@ -2236,7 +2319,7 @@ const ProductList = () => {
                               gap: "4px",
                             }}
                           >
-                            {ele.label === "PRICE" &&
+                            {/* {ele.label === "PRICE" &&
                               <div>
                                 <Slider
                                   className='netWtSecSlider'
@@ -2317,7 +2400,7 @@ const ProductList = () => {
                                   <input value={value4[1]} className="minmaxvalpl" disabled />
                                 </div>
                               </div>
-                            }
+                            } */}
 
                             {ele.filterList.map((flist, i) => (
                               <div
