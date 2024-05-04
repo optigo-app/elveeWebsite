@@ -93,7 +93,7 @@ const ProductList = () => {
   const dqcName = useRecoilValue(diamondQualityColorG)
   const csqcName = useRecoilValue(colorstoneQualityColorG)
   const [pdData, setPdData] = useRecoilState(productDataNew)
-  const [dataPriceApiCallFlag,setDataPriceApiCallFlag] = useState(false)
+  const [dataPriceApiCallFlag, setDataPriceApiCallFlag] = useState(false)
 
   // console.log(mtName, dqcName, csqcName);
   //RANGE FILTERS
@@ -129,12 +129,12 @@ const ProductList = () => {
   const [DaimondQualityColor, setDaimondQualityColor] = useState([]);
 
   const [selectedOptionData, setSelectedOptionData] = useState(null);
-  const [prodPageSize,setProdPageSize] = useState(0)
-  const [prodCount,setProdCount] = useState(0)
-  const [storeInitData,setStoreInitData] = useState({})
-  const [currentPage,setCurrentPage] = useState(1)
+  const [prodPageSize, setProdPageSize] = useState(0)
+  const [prodCount, setProdCount] = useState(0)
+  const [storeInitData, setStoreInitData] = useState({})
+  const [currentPage, setCurrentPage] = useState(1)
 
-  console.log("mttypeoption", mtTypeOption,diaQColOpt,cSQopt);
+  console.log("mttypeoption", mtTypeOption, diaQColOpt, cSQopt);
 
 
   //   const handelCurrencyData = () =>{
@@ -292,10 +292,10 @@ const ProductList = () => {
 
   useEffect(() => {
     const storeInit = JSON.parse(localStorage.getItem('storeInit'))
-    if(storeInit) {
-    setGlobImagepath(storeInit?.DesignImageFol)
-    setProdPageSize(storeInit?.PageSize)
-    setStoreInitData(storeInit)
+    if (storeInit) {
+      setGlobImagepath(storeInit?.DesignImageFol)
+      setProdPageSize(storeInit?.PageSize)
+      setStoreInitData(storeInit)
     }
   }, [])
 
@@ -316,14 +316,14 @@ const ProductList = () => {
     }, 100);
   }, [getSearchData]);
 
-  const getProductData = () =>{
+  const getProductData = () => {
     const data = JSON.parse(localStorage.getItem("allproductlist"));
     const prodCount = JSON.parse(localStorage.getItem("allproductcount"));
-    if(data) setProductApiData2(data)
-    if(prodCount) setProdCount(prodCount)
+    if (data) setProductApiData2(data)
+    if (prodCount) setProdCount(prodCount)
   }
 
-  const getProdPriceData = () =>{
+  const getProdPriceData = () => {
     const data = JSON.parse(localStorage.getItem("getPriceData"));
     setpriceDataApi(data)
   }
@@ -331,8 +331,8 @@ const ProductList = () => {
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("allproductlist"));
     const prodCount = JSON.parse(localStorage.getItem("allproductcount"));
-    if(data) setProductApiData2(data)
-    if(prodCount) setProdCount(prodCount)
+    if (data) setProductApiData2(data)
+    if (prodCount) setProdCount(prodCount)
   }, [])
 
   useEffect(() => {
@@ -471,7 +471,7 @@ const ProductList = () => {
           updMT = findMetalType(newPriceData?.C ?? product?.MetalTypeid)[0]?.metaltype ?? ""
           updMC = findMetalColor(product?.MetalColorid)[0]?.metalcolorname ?? ""
         }
-        console.log("priceprod", product?.designno,metalrd,diard1,csrd2);
+        console.log("priceprod", product?.designno, metalrd, diard1, csrd2);
         return { ...product, price, markup, metalrd, diard1, csrd2, updNWT, updGWT, updDWT, updDPCS, updCWT, updCPCS, updMT, updMC }
       }));
 
@@ -481,7 +481,7 @@ const ProductList = () => {
 
     console.log("calling");
     fetchData();
-  }, [priceDataApi,mtTypeOption]);
+  }, [priceDataApi, mtTypeOption]);
 
 
   const toggleDeatilList = () => {
@@ -1049,7 +1049,6 @@ const ProductList = () => {
 
   useEffect(() => {
     let filteredData = ProductApiData2;
-
     
     const activeFilters = Object.values(filterChecked).filter(ele => ele.checked);
     console.log("filterChecked",activeFilters)
@@ -1686,8 +1685,8 @@ const ProductList = () => {
 
   const handlePageReload = () => {
     // setRangeProData([])
-    setFilterChecked({})
-    setNewProData(ProductApiData2);
+    // setFilterChecked({})
+    // setNewProData(ProductApiData2);  
     setMinPrice(0)
     setMaxPrice(maxPrice)
     setValue1([minPrice, maxPrice])
@@ -1704,12 +1703,12 @@ const ProductList = () => {
 
   const [hoveredImageUrls, setHoveredImageUrls] = useState({});
 
-  const handleHoverImageShow = (index,designimgfol,dfoldername,imgSize,roleoverImage) => {
+  const handleHoverImageShow = (index, designimgfol, dfoldername, imgSize, roleoverImage) => {
     // let updatedFilename = rollPath?.replace(/\s/g, '_');
     // let newPath = url.replace(/\/([^/]+)$/, '/' + updatedFilename);
-    
+
     let path = `${designimgfol}${dfoldername}/${imgSize}/${roleoverImage}`
-    
+
     if (roleoverImage.length !== 0) {
       setHoveredImageUrls(prevHoveredImageUrls => {
         return { ...prevHoveredImageUrls, [index]: path };
@@ -1717,7 +1716,7 @@ const ProductList = () => {
     }
   };
 
-  console.log("prod_img",hoveredImageUrls);
+  console.log("prod_img", hoveredImageUrls);
 
   const handleMouseLeave = (index) => {
     setHoveredImageUrls(prevState => {
@@ -1755,9 +1754,10 @@ const ProductList = () => {
     }
 
     if (data.IsColorWiseImages === 1) {
-      const matchingData = colorWiseImageData?.filter(imageDataItem => (
-        productAutoCode == imageDataItem.autocode && productColorName == imageDataItem.colorname
-        ));
+      const matchingData = colorWiseImageData.filter(imageDataItem => (
+        productAutoCode === imageDataItem.autocode && 
+        productColorName.toLowerCase() === imageDataItem.colorname.toLowerCase()
+      )); 
         console.log("matchingData",matchingData,productAutoCode,productColorName)
 
       const checkAvailabilityPromises = matchingData.map(async (imageDataItem) => {
@@ -1773,6 +1773,7 @@ const ProductList = () => {
       if (availableImage) {
         const formedImgData = { [index]: availableImage.imagePath };
         setUpdateColorImage(formedImgData);
+        console.log('formedImgData',formedImgData)
         return availableImage;
       } else {
         console.log('No available image found');
@@ -2066,7 +2067,7 @@ const ProductList = () => {
   },[mtTypeOption,diaQColOpt,cSQopt])
 
 
-  const handlePageChange = async(event,value) =>{
+  const handlePageChange = async (event, value) => {
     let param = JSON.parse(localStorage.getItem("menuparams"))
     setCurrentPage(value)
 
@@ -2084,19 +2085,19 @@ const ProductList = () => {
         await getDesignPriceList(param,value,obj)
         return res
       }
-    }).then((res)=>{
-      if(res){
+    }).then((res) => {
+      if (res) {
         setDataPriceApiCallFlag(true)
         getProdPriceData()
         getProductData()
-        window.scroll(0,0)
-      } 
+        window.scroll(0, 0)
+      }
       else {
         setDataPriceApiCallFlag(false)
       }
     })
 
-    console.log("value",value,param);
+    console.log("value", value, param);
   }
 
   return (
@@ -2406,7 +2407,7 @@ const ProductList = () => {
                                 style={{
                                   display: "flex",
                                   alignItems: "center",
-                                  justifyContent:'space-between',
+                                  justifyContent: 'space-between',
                                   gap: "12px",
                                 }}
                                 key={i}
@@ -2558,7 +2559,7 @@ const ProductList = () => {
                             {products?.designno === "S24705E" && <p id="labelTag_0002388" className="instockP">IN STOCK</p>}
                             {products?.designno === "S24705" && <p id="labelTag_0002388" className="instockP">IN STOCK</p>}
                             {products?.designno === "MCJ2" && <p id="labelTag_0002388" className="instockP">IN STOCK</p>}
-                              {/* {console.log("imagePath", `${storeInitData?.DesignImageFol}${products?.DesignFolderName}/${storeInitData?.ImgMe}/${products?.DefaultImageName}`)} */}
+                            {/* {console.log("imagePath", `${storeInitData?.DesignImageFol}${products?.DesignFolderName}/${storeInitData?.ImgMe}/${products?.DefaultImageName}`)} */}
                             <div>
                               <img
                                 className="prod_img"
@@ -2576,7 +2577,7 @@ const ProductList = () => {
                                 //       :
                                 //       notFound)
                                 // }
-                                onMouseEnter={() => handleHoverImageShow(i,storeInitData?.DesignImageFol, products?.DesignFolderName,storeInitData?.ImgMe,products?.RollOverImageName)}
+                                onMouseEnter={() => handleHoverImageShow(i, storeInitData?.DesignImageFol, products?.DesignFolderName, storeInitData?.ImgMe, products?.RollOverImageName)}
                                 // onMouseEnter={() => handleHoverImageShow(products?.MediumImagePath?.split(",")[0], i, products?.RollOverImageName, globImagePath)}
                                 // onMouseEnter={() => handleHoverImageShow(products?.MediumImagePath?.split(",")[0], i, isColorWiseImageShow === 1 ? products?.ColorWiseRollOverImageName : products?.RollOverImageName, products?.imagepath)}
                                 onMouseLeave={() => handleMouseLeave(i)}
@@ -2653,14 +2654,14 @@ const ProductList = () => {
                               {ismetalWShow === 1 &&
                                 <div className={show4ImagesView ? "feature4" : 'feature'}>
                                   <p>
-                                    <span className="feature-count">NWT : </span> {products?.updNWT}
+                                    <span className="feature-count">NWT : </span> {parseFloat(products?.updNWT).toFixed(2)}
                                   </p>
                                 </div>
                               }
                               {isGrossWShow === 1 &&
                                 <div className={show4ImagesView ? "feature4" : 'feature'}>
-                                  <p>
-                                    <span className="feature-count">GWT : </span> {products?.updGWT}
+                                  <p style={{ margin: '0px 0px 0px 8px' }}>
+                                    <span className="feature-count">GWT : </span> {parseFloat(products?.updGWT).toFixed(2)}
                                   </p>
                                 </div>
                               }
@@ -2681,15 +2682,13 @@ const ProductList = () => {
                                   <span className="feature-count">{products?.designno}</span>
                                 </p>
                               </div>
-                              <p style={{ display: 'flex' }}>
-                                {isMetalTCShow === 1 && <span>
-                                  {/* {products?.MetalTypeName} - */}
+                              <p style={{ display: 'flex', margin: '0px' }}>
+                                {/* {products?.MetalTypeName} - */}
+                                {/* {isMetalTCShow === 1 && <span>
                                   {products?.updMC} -
                                   {products?.updMT} /
-                                </span>}
-
+                                </span>} */}
                                 {isPriceShow === 1 &&
-
                                   <div className={show4ImagesView ? "feature4" : 'feature'}>
                                     <p>
                                       <span className="feature-count" style={{ display: 'flex' }}>
@@ -2702,7 +2701,14 @@ const ProductList = () => {
                               </p>
                             </div>
                           </div>
-
+                          <div>
+                            <p className="property-type" style={{margin: '0px 0px 10px 8px'}}>
+                              {isMetalTCShow === 1 && <span>
+                                {products?.updMC} -
+                                {products?.updMT}
+                              </span>}
+                            </p>
+                          </div>
                           {/* <div style={{ position: "absolute", zIndex: 999999, top: 0, right: 0, display: 'flex' }}>
                             <div>
                               <Checkbox
@@ -2764,7 +2770,7 @@ const ProductList = () => {
                                   borderRadius: "50%",
                                   cursor: 'pointer'
                                 }}
-                                onClick={() => handleColorSelection(products, i,'WHITE GOLD')}
+                                onClick={() => handleColorSelection(products, i, 'WHITE GOLD')}
                               ></div>
                               <div
                                 style={{
@@ -2774,7 +2780,7 @@ const ProductList = () => {
                                   borderRadius: "50%",
                                   cursor: 'pointer'
                                 }}
-                                onClick={(e) => handleColorSelection(products, i,'ROSE GOLD')}
+                                onClick={(e) => handleColorSelection(products, i, 'ROSE GOLD')}
                               ></div>
                               <div
                                 style={{
@@ -2784,7 +2790,7 @@ const ProductList = () => {
                                   borderRadius: "50%",
                                   cursor: 'pointer'
                                 }}
-                                onClick={(e) => handleColorSelection(products, i,'YELLOW GOLD')}
+                                onClick={(e) => handleColorSelection(products, i, 'YELLOW GOLD')}
                               >
                               </div>
                             </div>
@@ -2807,8 +2813,8 @@ const ProductList = () => {
                   </div>
                 } */}
               </div>
-              <div style={{display:'flex',width:'100%',justifyContent:'center',marginTop:'100px'}}>
-                <Pagination count={Math.ceil(prodCount/prodPageSize)} onChange={handlePageChange} />
+              <div style={{ display: 'flex', width: '100%', justifyContent: 'center', marginTop: '100px' }}>
+                <Pagination count={Math.ceil(prodCount / prodPageSize)} onChange={handlePageChange} />
               </div>
               <SmilingRock />
               {/* <Footer /> */}

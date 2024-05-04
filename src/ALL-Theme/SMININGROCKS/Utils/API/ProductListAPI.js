@@ -89,12 +89,18 @@ export const productListApiCall = async(param,page=1) =>{
     let storeinit = JSON.parse(localStorage.getItem("storeInit"))
     let loginInfo = JSON.parse(localStorage.getItem("loginUserDetail"))
     let userEmail = localStorage.getItem("userEmailForPdList")
-
+      console.log('props---', param);
 
     let encodedFilter = {
-      "FilterKey":`${param?.data.param1name}`,
+      // "FilterKey":`${param?.FilterKey}`,
+      "FilterKey":'',
       "DesignNo":"",
-      "FilterVal":`${param?.data.param1dataname}`,
+      // "FilterVal":`${param?.FilterVal}`,
+      "FilterVal":'',
+      "FilterKey1":`${param?.FilterKey1}`,
+      "FilterVal1":`${param?.FilterVal1}`,
+      "FilterKey2":`${param?.FilterKey2}`,
+      "FilterVal2":`${param?.FilterVal2}`,
       "PageNo":`${page}`,
       "PageSize":`${storeinit?.PageSize}`}
 
@@ -104,8 +110,8 @@ export const productListApiCall = async(param,page=1) =>{
       "Customerid":`${loginInfo?.id}`,
       "Filter":btoa(JSON.stringify(encodedFilter)),
     }
-
     let encData =  btoa(JSON.stringify(data))
+    console.log('encodedFilter',encodedFilter);
 
     let body = {
       "con":`{\"id\":\"\",\"mode\":\"GETPRODUCTLIST\",\"appuserid\":\"${userEmail}\"}`,

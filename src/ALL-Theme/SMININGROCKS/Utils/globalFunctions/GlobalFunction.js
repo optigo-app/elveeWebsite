@@ -238,3 +238,9 @@ export function findCsQcId(param){
     return item
     
 }
+
+export function ScrollToView(param){
+    const element = document.getElementById(param);
+    element.scrollIntoView({behavior:'smooth', block:'center', inline:'nearest'})
+}
+  

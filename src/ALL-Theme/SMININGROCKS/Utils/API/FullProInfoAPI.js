@@ -1,36 +1,26 @@
 import { CommonAPI } from "./CommonAPI";
 
-export const getDesignPriceList = async (param,page=1,obj,prodInfo) => {
+export const FullProInfoAPI = async (prodInfo) => {
 
-  
+  console.log("prodInfo",prodInfo);
 
   const storeInit = JSON.parse(localStorage.getItem("storeInit"))
+  const currencyCombo = JSON.parse(localStorage.getItem("CURRENCYCOMBO"))
   const loginUserDetail = JSON.parse(localStorage.getItem("loginUserDetail"));
   const UserEmail = localStorage.getItem("registerEmail")
 
-  let mtid = `${obj?.mt}` ?? loginUserDetail?.MetalId
-  let diaqcId = obj?.dqc?.length ? `${obj?.dqc[0]},${obj?.dqc[1]}` :loginUserDetail?.cmboDiaQCid
-  let csqcId = obj?.csqc?.length ? `${obj?.csqc[0]},${obj?.csqc[1]}` :loginUserDetail?.cmboCSQCid
-
-  // console.log("log",obj?.dqc[0]);
+  
   
   let encodedFilter = {
-    "DesignNo":"",
-    // "FilterKey":`${param?.FilterKey}`,
-    "FilterKey":'',
-    "FilterVal":'',
-    // "FilterVal":`${param?.FilterVal}`,
-    "FilterVal":`${param?.FilterVal}`,
-    "FilterKey1":`${param?.FilterKey1}`,
-    "FilterVal1":`${param?.FilterVal1}`,
-    "FilterKey2":`${param?.FilterKey2}`,
-    "FilterVal2":`${param?.FilterVal2}`,
-    "PageNo":`${page}`,
-    "PageSize":`${storeInit?.PageSize}`,
-    "Metalid":`${mtid}`,
-    "DiaQCid":`${diaqcId}`,
-    "CsQCid":`${csqcId}`,
-    "IsFromDesDet":"0"
+    "DesignNo":`${prodInfo}`,
+    "FilterKey":"",
+    "FilterVal":"",
+    "PageNo":"",
+    "PageSize":"",
+    "Metalid":"",
+    "DiaQCid":"",
+    "CsQCid":"",
+    "IsFromDesDet":"1"
   }
 
   const GetPriceReq = {
@@ -52,17 +42,19 @@ export const getDesignPriceList = async (param,page=1,obj,prodInfo) => {
 
   let body = {
     "con": `{\"id\":\"Store\",\"mode\":\"getdesignpricelist\",\"appuserid\":\"${UserEmail}\"}`,
-    "f": "onloadFirstTime (getdesignpricelist)",
+    "f": "onloadFirstTimeDetailPage (fullProdInfo)",
     "p": encodedCombinedValue
   }
 
   let finalData;
 
   await CommonAPI(body).then((res) => {
-    localStorage.setItem("getPriceData", JSON.stringify(res?.Data))
+    localStorage.setItem("fullProdInfo", JSON.stringify(res?.Data))
     //   setpriceDataApi(res?.Data)
     finalData = res?.Data 
   })
+
+  console.log('finaldataa',finalData);
 
   return finalData
 

@@ -16,40 +16,24 @@ export default function Footer() {
     };
 
     const handleSubmitNewlater = async () => {
-        // const storeInit = JSON.parse(localStorage.getItem('storeInit'));
-        // const newslater = storeInit?.newsletter;
-        // if (newslater) {
-        //     const newsletterUrl = `${newslater}${email}`;
-        //     try {
-        //         const response = await axios.get(newsletterUrl);
+        const storeInit = JSON.parse(localStorage.getItem('storeInit'));
+        const newslater = storeInit?.newslatter;
+        console.log('newsletter', newslater);
+        if (newslater) {
+            const newsletterUrl = `${newslater}${email}`;
+            fetch(newsletterUrl)
+                .then((response) => response.text())
+                .then((result) => console.log(result))
+                .catch((error) => console.error(error));
+        }
 
-        //         if (!response) {
-        //             throw new Error('Network response was not ok');
-        //         }
-        //         console.log('Newsletter submitted successfully:', response)
-        //     } catch (error) {
-        //         console.error('Error submitting newsletter:', error);
-        //     }
-        // }
-
-        const myHeaders = new Headers();
-        myHeaders.append("Cookie", "X-Mapping-hciinbhf=840F5B4B8383FB1A16DB63D3A258224F");
-
-        const requestOptions = {
-            method: "GET",
-            headers: myHeaders,
-            redirect: "follow"
-        };
-
-        fetch("https://www.orail.co.in/demo/icontact/standard/Ajax/SendMailToSubscriber.aspx?officeid=0&groupid=0&emailid=Test12@gmail.com", requestOptions)
-            .then((response) => response.text())
-            .then((result) => console.log(result))
-            .catch((error) => console.error(error));
     };
-
+    const handleNavigte = (navigateUrl) => {
+        navigation(navigateUrl)
+    }
 
     return (
-        <div style={{marginTop: '50px'}}>
+        <div>
             <div className='ElveFooterMain'>
                 <div className='ElveFooter1'>
                     <p className='elveBox1Title'>Sign Up For Newslatter</p>
@@ -60,18 +44,18 @@ export default function Footer() {
                 </div>
                 <div className='ElveFooter2'>
                     <p className='ElevFooterBoxTitle'>Our Company</p>
-                    <p className='ElveFooterDesc'>About Us</p>
-                    <p className='ElveFooterDesc'>Careers</p>
-                    <p className='ElveFooterDesc'>History</p>
-                    <p className='ElveFooterDesc'>Contact Us</p>
-                    <p className='ElveFooterDesc'>Terms and Conditions</p>
+                    <p className='ElveFooterDesc' onClick={() => handleNavigte('/aboutUs')}>About Us</p>
+                    <p className='ElveFooterDesc' onClick={() => handleNavigte('/careers')}>Careers</p>
+                    <p className='ElveFooterDesc' onClick={() => handleNavigte('/history')}>History</p>
+                    <p className='ElveFooterDesc' onClick={() => handleNavigte('/contactUs')}>Contact Us</p>
+                    <p className='ElveFooterDesc' onClick={() => handleNavigte('/term&condition')}>Terms and Conditions</p>
                 </div>
                 <div className='ElveFooter3'>
-                    <p className='ElevFooterBoxTitle'>Customer Care</p>
-                    <p className='ElveFooterDesc'>Customer Services</p>
-                    <p className='ElveFooterDesc'>Book an Appoinment</p>
-                    <p className='ElveFooterDesc'>Customize</p>
-                    <p className='ElveFooterDesc'>FAQ</p>
+                    <p className='ElevFooterBoxTitle' onClick={() => handleNavigte('/customerCare')}>Customer Care</p>
+                    <p className='ElveFooterDesc' onClick={() => handleNavigte('/customerServices')}>Customer Services</p>
+                    <p className='ElveFooterDesc' onClick={() => handleNavigte('/book-appointment')}>Book an Appoinment</p>
+                    <p className='ElveFooterDesc' onClick={() => handleNavigte('/customize')}>Customize</p>
+                    <p className='ElveFooterDesc' onClick={() => handleNavigte('/faq')}>FAQ</p>
                 </div>
                 <div className='ElveFooter4'>
                     <p className='ElevFooterBoxTitle'>Office</p>
@@ -97,7 +81,7 @@ export default function Footer() {
                             </div>
                             :
                             <div>
-                                <p  className='footerOfficeDesc' style={{ display: 'flex', fontFamily: 'PT Sans, sans-serif', height: '70px' }}>
+                                <p className='footerOfficeDesc' style={{ display: 'flex', fontFamily: 'PT Sans, sans-serif', height: '70px' }}>
                                     <IoLocationOutline style={{ width: '22px', height: '22px' }} />
                                     <span>1177 6th Avenue, Suite 5099, New York,NY 10036.</span>
                                 </p>

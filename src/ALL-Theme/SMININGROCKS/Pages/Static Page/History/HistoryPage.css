@@ -1,0 +1,92 @@
+body{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+.mainbanner_h{
+    object-fit: cover;
+    min-height: 750px;
+    max-height: 750px;
+    width: 100%;
+}
+
+.historytitle{
+    height: 30px;
+    font-size: 20px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: rgb(75 71 71);
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+.centerall_h{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.history_content{
+    margin: 0 auto;
+    padding-left: 3%;
+    padding-right: 3%;
+    font-size: 18px;
+    line-height: 20px;
+    color: #424141;
+    word-wrap: break-word;
+}
+.history_journey{
+    width: 100%;
+    margin-top: 5rem;
+    display: flex;
+    margin-bottom: 1rem;
+}
+
+.history_journey_1{
+    width: 50%;
+    padding-left: 12px;
+    padding-right: 12px;
+}
+.history_journey_2{
+    width: 50%;
+    margin: 0 auto;
+}
+.h_ownerimg{
+    width: 100%;
+    object-fit: contain;
+    min-height: 680px;
+    max-height: 680px;
+    border-radius: 8px;
+}
+.hbox1{
+    display: flex;
+    width: 100%;
+}
+.hbox1_1{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.hbox1_2{
+    width: 50%;
+    border-left: 3px solid brown;
+    padding-left: 1rem;
+    min-height: 80px;
+    display: flex;
+    align-items: start;
+    flex-direction: column;
+    justify-content: center;
+}
+.hbox1_2_info{
+    font-size: 18px;
+    font-weight: bold;
+}
+.hbox1_2_info_content{
+    font-size: 18px;
+    font-weight: bold;
+    color: #989898;
+}
+.end_h{
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 1rem;
+}

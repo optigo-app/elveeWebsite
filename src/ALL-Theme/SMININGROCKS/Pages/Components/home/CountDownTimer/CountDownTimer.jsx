@@ -50,7 +50,7 @@ const TwoPartDiv = () => {
                     <p className='ptitle'>{countdown.hours}</p>
                     <p className='pcontent'>Hours</p>
                 </span>
-                <span className='spanData'>
+                <span className='spanData lastspanData'>
                     <p className='ptitle'>{countdown.minutes}</p>
                     <p className='pcontent'>Minutes</p>
                 </span>
