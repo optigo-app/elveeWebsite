@@ -2,40 +2,17 @@ import { CommonAPI } from "./CommonAPI";
 
 export const getDesignPriceList = async (param,page=1,obj) => {
 
-  console.log("obj",obj);
+  
 
   const storeInit = JSON.parse(localStorage.getItem("storeInit"))
-  const currencyCombo = JSON.parse(localStorage.getItem("CURRENCYCOMBO"))
   const loginUserDetail = JSON.parse(localStorage.getItem("loginUserDetail"));
   const UserEmail = localStorage.getItem("registerEmail")
 
-  const handelCurrencyData = () => {
-    const currencyData = JSON.parse(localStorage.getItem('CURRENCYCOMBO'));
-    const loginData = JSON.parse(localStorage.getItem('loginUserDetail'));
-  
-    let finalData;
-  
-    if (currencyData && loginData) {
-      if (Array.isArray(currencyData)) {
-        finalData = currencyData.find(cd => cd.Currencyid === loginData.CurrencyCodeid);
-      } else {
-        finalData = currencyData;
-      }
-    }
-  
-    if (!finalData) {
-      finalData = {
-        Currencyid: 42,
-        Currencycode: 'INR',
-        Currencyname: 'Rupees',
-        Currencysymbol: '₹',
-        CurrencyRate: 1.00000,
-        IsDefault: 1
-      };
-    }
-  
-    return finalData;
-  };
+  let mtid = `${obj?.mt}` ?? loginUserDetail?.MetalId
+  let diaqcId = obj?.dqc?.length ? `${obj?.dqc[0]},${obj?.dqc[1]}` :loginUserDetail?.cmboDiaQCid
+  let csqcId = obj?.csqc?.length ? `${obj?.csqc[0]},${obj?.csqc[1]}` :loginUserDetail?.cmboCSQCid
+
+  // console.log("log",obj?.dqc[0]);
   
   let encodedFilter = {
     "DesignNo":"",
@@ -43,14 +20,14 @@ export const getDesignPriceList = async (param,page=1,obj) => {
     "FilterVal":`${param?.data.param1dataname}`,
     "PageNo":`${page}`,
     "PageSize":`${storeInit?.PageSize}`,
-    "Metalid":`${loginUserDetail?.MetalId}`,
-    "DiaQCid":`${loginUserDetail?.cmboDiaQCid}`,
-    "CsQCid":`${loginUserDetail?.cmboCSQCid}`,
+    "Metalid":`${mtid}`,
+    "DiaQCid":`${diaqcId}`,
+    "CsQCid":`${csqcId}`,
     "IsFromDesDet":"0"
   }
 
   const GetPriceReq = {
-    "CurrencyRate": `${handelCurrencyData()?.CurrencyRate}`,
+    "CurrencyRate": `${loginUserDetail?.CurrencyRate}`,
     "FrontEnd_RegNo": `${storeInit?.FrontEnd_RegNo}`,
     "Customerid": `${loginUserDetail?.id}`,
     "Laboursetid": `${loginUserDetail?.pricemanagement_laboursetid}`,

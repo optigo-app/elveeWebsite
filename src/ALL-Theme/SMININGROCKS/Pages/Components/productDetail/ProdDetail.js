@@ -91,7 +91,11 @@ const ProdDetail = () => {
   const [uKey, setUkey] = useState('');
   const [currData, setCurrData] = useState()
 
+  const [storeInitData,setStoreInitData] = useState({})
+
   console.log("sizeData", sizeData);
+
+
 
   //   const handelCurrencyData = () =>{
   //     let currencyData = JSON.parse(localStorage.getItem('CURRENCYCOMBO'));
@@ -1362,8 +1366,18 @@ const ProdDetail = () => {
 
   console.log("daimondFilterData", daimondFilterData)
   console.log("updatedColorImage", updatedColorImage)
-  console.log("updatedColorImage", updatedColorImage.length)
+  console.log("updatedColorImage", updatedColorImage[0])
   console.log("productData?.ThumbImagePath", productData?.ThumbImagePath)
+
+
+  useEffect(() => {
+    const storeInit = JSON.parse(localStorage.getItem('storeInit'))
+    if(storeInit) {
+    // setGlobImagepath(storeInit?.DesignImageFol)
+    // setProdPageSize(storeInit?.PageSize)
+    setStoreInitData(storeInit)
+    }
+  }, [])
 
   return (
     <div
