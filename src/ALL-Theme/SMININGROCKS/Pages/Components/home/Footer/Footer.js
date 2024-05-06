@@ -45,17 +45,17 @@ export default function Footer() {
                 <div className='ElveFooter2'>
                     <p className='ElevFooterBoxTitle'>Our Company</p>
                     <p className='ElveFooterDesc' onClick={() => handleNavigte('/aboutUs')}>About Us</p>
-                    <p className='ElveFooterDesc' onClick={() => handleNavigte('/careers')}>Careers</p>
+                    <p className='ElveFooterDesc'>Careers</p>
                     <p className='ElveFooterDesc' onClick={() => handleNavigte('/history')}>History</p>
-                    <p className='ElveFooterDesc' onClick={() => handleNavigte('/contactUs')}>Contact Us</p>
+                    <p className='ElveFooterDesc'>Contact Us</p>
                     <p className='ElveFooterDesc' onClick={() => handleNavigte('/term&condition')}>Terms and Conditions</p>
                 </div>
                 <div className='ElveFooter3'>
                     <p className='ElevFooterBoxTitle' onClick={() => handleNavigte('/customerCare')}>Customer Care</p>
                     <p className='ElveFooterDesc' onClick={() => handleNavigte('/customerServices')}>Customer Services</p>
-                    <p className='ElveFooterDesc' onClick={() => handleNavigte('/book-appointment')}>Book an Appoinment</p>
+                    <p className='ElveFooterDesc'>Book an Appoinment</p>
                     <p className='ElveFooterDesc' onClick={() => handleNavigte('/customize')}>Customize</p>
-                    <p className='ElveFooterDesc' onClick={() => handleNavigte('/faq')}>FAQ</p>
+                    <p className='ElveFooterDesc'>FAQ</p>
                 </div>
                 <div className='ElveFooter4'>
                     <p className='ElevFooterBoxTitle'>Office</p>

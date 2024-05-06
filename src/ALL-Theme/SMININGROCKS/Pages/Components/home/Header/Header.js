@@ -524,19 +524,23 @@ export default function Header() {
       const { param1, ...menuData } = { ...param1Item, param2Item };
       menuDataWithoutParam1 = menuData;
     } else if (param1Item?.param1dataname) {
-      const { param2, ...menuData } = { ...param1Item, param2Item };
+      const { param2, ...menuData } = { ...param1Item, ...param2Item };
       menuData.param0dataid = param1Item.param0dataid;
       menuDataWithoutParam1 = menuData;
     }
+    console.log('menuDataWithoutParam1', menuDataWithoutParam1);
 
     let finalData = {
-      FilterKey: leval0Data?.param0name ?? "",
-      FilterVal: leval0Data?.param0dataname ?? "",
+      FilterKey: (leval0Data && leval0Data.param0name) || (menuDataWithoutParam1 && menuDataWithoutParam1.param0name) || "",
+      FilterVal: (leval0Data && leval0Data.param0dataname) || (menuDataWithoutParam1 && menuDataWithoutParam1.param0dataname) || "",
       FilterKey1: menuDataWithoutParam1?.param1name ?? "",
       FilterVal1: menuDataWithoutParam1?.param1dataname ?? "",
-      FilterKey2: menuDataWithoutParam1?.param2Item?.param2name ?? "",
-      FilterVal2: menuDataWithoutParam1?.param2Item?.param2dataname ?? ""
+      FilterKey2: menuDataWithoutParam1?.param2name ?? "",
+      FilterVal2: menuDataWithoutParam1?.param2dataname ?? ""
     }
+
+    console.log('finalData', finalData);
+
     if (finalData) {
       await productListApiCall(finalData).then((res) => {
         if (res) {
@@ -546,6 +550,10 @@ export default function Header() {
       })
       await getDesignPriceList(finalData)
       navigation("/productpage", { state: { menuFlag: true } })
+      setTimeout(() =>{
+        setDrawerOpen(false);
+        handleMouseLeave();
+      },100)
     }
 
     console.log('menuData', finalData);
@@ -620,36 +628,45 @@ export default function Header() {
   const [selectedSubSubMenu, setSelectedSubSubMenu] = useState(null);
   const [finalMenuData, setFinalMenuData] = useState();
 
-  const handleLoginMenuClick = (menuName, menuItem) => {
-    console.log('MenuItemDtata--', menuItem);
+  const handleLoginMenuClick = (menuName, menuItem,iconclicked) => {
+    if(iconclicked == 'iconclicked'){
+      setDrawerOpen(true);
+      setSelectedMenu(prevMenu => (prevMenu === menuName ? null : menuName));
+      setSelectedSubMenu(null);
+      setSelectedSubSubMenu(null);
+      return;
+    }
     const { param1, ...menuItemWithoutParam1 } = menuItem;
     setFinalMenuData(menuItemWithoutParam1);
-
-    setDrawerOpen(true);
-    setSelectedMenu(prevMenu => (prevMenu === menuName ? null : menuName));
-    setSelectedSubMenu(null);
-    setSelectedSubSubMenu(null);
+    handleMenuClick(menuItemWithoutParam1)
+    console.log('MenuItemDtata--',menuItemWithoutParam1);
   };
   console.log('FinalMenuData--', finalMenuData);
 
-  const handleSubMenuClick = (menuItem, subMenuName, subMenuItem) => {
+  const handleSubMenuClick = (menuItem, subMenuName, subMenuItem , iconclicked) => {
+    if(iconclicked == 'iconclicked'){
+    setSelectedSubMenu(prevSubMenu => (prevSubMenu === subMenuName ? null : subMenuName));
+    setSelectedSubSubMenu(null);
+    return;
+    }
     console.log('menuItem--', menuItem);
     console.log('subMenuItem--', subMenuItem);
     const { param1, ...menuItemWithoutParam1 } = menuItem;
     const { param2, ...subMenuItemWithoutParam2 } = subMenuItem;
-    setFinalMenuData({...menuItemWithoutParam1, ...subMenuItemWithoutParam2});
-    setSelectedSubMenu(prevSubMenu => (prevSubMenu === subMenuName ? null : subMenuName));
-    setSelectedSubSubMenu(null);
-};
+    setFinalMenuData({ ...menuItemWithoutParam1, ...subMenuItemWithoutParam2 });
+    handleMenuClick({ ...menuItemWithoutParam1, ...subMenuItemWithoutParam2 });
+  };
 
   const handleSubSubMenuClick = (menuItem, subMenuItem, subSubMenuName, subSubMenuItem) => {
     console.log('subSubMenuItem--', subSubMenuItem);
     const { param1, ...menuItemWithoutParam1 } = menuItem;
     const { param2, ...subMenuItemWithoutParam2 } = subMenuItem;
-    setFinalMenuData({...menuItemWithoutParam1, ...subMenuItemWithoutParam2, ...subSubMenuItem});
+    setFinalMenuData({ ...menuItemWithoutParam1, ...subMenuItemWithoutParam2, ...subSubMenuItem });
+    handleMenuClick({ ...menuItemWithoutParam1, ...subMenuItemWithoutParam2, ...subSubMenuItem })
     setSelectedSubSubMenu(prev2ndSubMenu => (prev2ndSubMenu === subSubMenuName ? null : subSubMenuName));
     setSelectedSubSubMenu(subSubMenuName);
   };
+
 
   const containerStyle = {
     marginRight: '0px'
@@ -759,24 +776,24 @@ export default function Header() {
               <List>
                 {menuItems.map(menuItem => (
                   <div key={menuItem.menuid}>
-                    <ListItem onClick={() => handleLoginMenuClick(menuItem.menuname, menuItem)}>
+                    <ListItem onClick={() => handleLoginMenuClick(menuItem.menuname, menuItem)} >
                       <ListItemText primary={menuItem.menuname} className="muilistMenutext" />
                       {selectedMenu === menuItem.menuname ? (
-                        <RemoveIcon sx={{ color: '#7D7F85' }} onClick={(e) => { e.stopPropagation(); handleLoginMenuClick(menuItem.menuname, menuItem) }} />
+                        <RemoveIcon sx={{ color: '#7D7F85' }} onClick={(e) => { e.stopPropagation(); handleLoginMenuClick(menuItem.menuname, null, "iconclicked"); }}/>
                       ) : (
-                        <AddIcon sx={{ color: '#7D7F85' }} onClick={(e) => { e.stopPropagation(); handleLoginMenuClick(menuItem.menuname, menuItem) }} />
+                        <AddIcon sx={{ color: '#7D7F85' }} onClick={(e) => { e.stopPropagation(); handleLoginMenuClick(menuItem.menuname, null, "iconclicked") }} />
                       )}
                     </ListItem>
                     {selectedMenu === menuItem.menuname && (
                       <List>
                         {menuItem.param1.map(subMenuItem => (
                           <div key={subMenuItem.param1dataid}>
-                            <ListItem onClick={() => handleSubMenuClick( menuItem, subMenuItem.param1dataname, subMenuItem)} className="muilistSubMenutext" style={{ paddingLeft: '60px' }}>
+                            <ListItem onClick={() => handleSubMenuClick(menuItem, subMenuItem.param1dataname, subMenuItem)} className="muilistSubMenutext" style={{ paddingLeft: '60px' }}>
                               <ListItemText primary={subMenuItem.param1dataname} />
                               {selectedSubMenu === subMenuItem.param1dataname ? (
-                                <RemoveIcon sx={{ color: '#7D7F85' }} onClick={(e) => { e.stopPropagation(); handleSubMenuClick(subMenuItem.param1dataname, subMenuItem) }} />
+                                <RemoveIcon sx={{ color: '#7D7F85' }} onClick={(e) => { e.stopPropagation(); handleSubMenuClick(null, subMenuItem.param1dataname, null,"iconclicked") }} />
                               ) : (
-                                <AddIcon sx={{ color: '#7D7F85' }} onClick={(e) => { e.stopPropagation(); handleSubMenuClick(subMenuItem.param1dataname, subMenuItem) }} />
+                                <AddIcon sx={{ color: '#7D7F85' }} onClick={(e) => { e.stopPropagation(); handleSubMenuClick(null, subMenuItem.param1dataname, null,"iconclicked") }} />
                               )}
                             </ListItem>
                             {selectedSubMenu === subMenuItem.param1dataname && (
@@ -1040,7 +1057,7 @@ export default function Header() {
                 <div style={{ width: '100%', display: 'flex', gap: '60px', textTransform: 'uppercase' }}>
                   {selectedData?.param1?.map((param1Item, param1Index) => (
                     <div key={param1Index}>
-                      <span onClick={() => handleMenuClick(param1Item)} className="level1MenuData" key={param1Index} style={{ fontSize: '15px', marginBottom: '10px', fontFamily: '"PT Sans", sans-serif', textAlign: 'start', letterSpacing: 1, fontWeight: 600 }} > {param1Item?.param1dataname}</span>
+                      <span onClick={() => handleMenuClick(param1Item)} className="level1MenuData" key={param1Index} style={{ fontSize: '15px', marginBottom: '10px', fontFamily: '"PT Sans", sans-serif', textAlign: 'start', letterSpacing: 1, fontWeight: 600, cursor:'pointer' }} > {param1Item?.param1dataname}</span>
                       {param1Item?.param2?.map((param2Item, param2Index) => (
                         <p key={param2Index} onClick={() => handleMenuClick(param1Item, param2Item)} style={{ fontSize: '13.5px', margin: '6px 0px 6px 0px', fontFamily: '"PT Sans", sans-serif', letterSpacing: 0.4, textAlign: 'start', cursor: 'pointer', textTransform: 'capitalize' }}>
                           {param2Item?.param2dataname}

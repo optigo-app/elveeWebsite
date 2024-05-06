@@ -8,7 +8,7 @@ function CustomerService() {
     <div>
       <div>
         {/* Main Banner */}
-        <img src={`${storImagePath()}/images/HomePage/MainBanner/image/HomepageMainBannerVideo.png`} className="bannercs" alt="#banner" />
+        <img src={`${storImagePath()}/images/HomePage/CustomerService/CustomerServiceMainBanner1Img.jpg`} className="bannercs" alt="#banner" />
       </div>
       <div>
         {/* Title */}
@@ -22,7 +22,7 @@ function CustomerService() {
       <div className="cs_section">
         {/* Engraving Service */}
         <div className="cs_section_box">
-          <div><img src={`${storImagePath()}/images/HomePage/MainBanner/image/HomepageMainBannerVideo.png`} alt="#engrave" className="cs_section_img" /></div>
+          <div><img src={`${storImagePath()}/images/HomePage/CustomerService/CustomerServicesSubnBanner1Img.jpg`} alt="#engrave" className="cs_section_img" /></div>
           <div className="cs_section_box_title">Engraving Service</div>
           <div className="cs_section_box_title_2">Crafting memories that last a lifetime with our precision engraving service. Personalize your moments with intricate details and heartfelt 
             messages. Elevate your cherished possessions with a touch of uniqueness. Unleash the art of engraving – where every mark tells a story.
@@ -30,7 +30,7 @@ function CustomerService() {
         </div>
         {/* Cleaning and Polishing */}
         <div className="cs_section_box">
-          <div><img src={`${storImagePath()}/images/HomePage/MainBanner/image/HomepageMainBannerVideo.png`} alt="#engrave" className="cs_section_img" /></div>
+          <div><img src={`${storImagePath()}/images/HomePage/CustomerService/CustomerServicesSubnBanner2Img.jpg`} alt="#engrave" className="cs_section_img" /></div>
           <div className="cs_section_box_title">Cleaning and Polishing</div>
           <div className="cs_section_box_title_2">Elevate your surroundings with our exceptional cleaning and services. Impeccable cleanliness, efficient solutions, and a commitment to 
             excellence define our work. Experience a space that radiates freshness and order, tailored just for you. Discover the difference of our 
@@ -39,7 +39,7 @@ function CustomerService() {
         </div>
         {/* Repair Service */}
         <div className="cs_section_box">
-          <div><img src={`${storImagePath()}/images/HomePage/MainBanner/image/HomepageMainBannerVideo.png`} alt="#engrave" className="cs_section_img" /></div>
+          <div><img src={`${storImagePath()}/images/HomePage/CustomerService/CustomerServicesSubnBanner3Img.jpg`} alt="#engrave" className="cs_section_img" /></div>
           <div className="cs_section_box_title">Repair Service</div>
           <div className="cs_section_box_title_2">Your jewel is a precious creation and proper care in its use and handling will preserve its shine over time. If you see any signs of damage, 
             you should refrain from wearing it until you have had it examined at our display office. We will take care of your jewel and broken parts may be repaired 

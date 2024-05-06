@@ -5,10 +5,12 @@ import {
   Box,
   CardActions,
   CardContent,
+  CardMedia,
   CircularProgress,
   Dialog,
   Divider,
   Drawer,
+  Grid,
   Tab,
   Tabs,
   Typography,
@@ -1345,7 +1347,7 @@ export default function CartPage() {
                                               color: "#7d7f85",
                                             }}
                                           >
-                                            METAL TYPE:
+                                            METAL TYPE :
                                           </label>
                                           <select
                                             style={{
@@ -1386,7 +1388,7 @@ export default function CartPage() {
                                               color: "#7d7f85",
                                             }}
                                           >
-                                            METAL COLOR:
+                                            METAL COLOR :
                                           </label>
                                           <select
                                             style={{
@@ -1427,7 +1429,7 @@ export default function CartPage() {
                                               color: "#7d7f85",
                                             }}
                                           >
-                                            DAIMOND :
+                                            DIAMOND :
                                           </label>
                                           <select
                                             style={{
@@ -1471,7 +1473,7 @@ export default function CartPage() {
                                                 marginTop: "10px",
                                               }}
                                             >
-                                              COLOR STONE:
+                                              COLOR STONE :
                                             </label>
                                             <select
                                               style={{
@@ -1517,7 +1519,7 @@ export default function CartPage() {
                                                 color: "#7d7f85",
                                               }}
                                             >
-                                              SIZE:
+                                              SIZE :
                                             </label>
                                             <select
                                               style={{
@@ -2034,32 +2036,30 @@ export default function CartPage() {
                 <div
                   style={{
                     display: "flex",
-                    flexWrap: "wrap",
-                    justifyContent: cartListData?.length > 5 && "center",
+                    justifyContent: "center",
+                    padding: '0px 20px 0px 20px'
                   }}
                 >
-                  <Container className="d-flex justify-content-center">
-                    <Row>
-                      {cartListData.map((item, index) => (
-                        <Col key={item.id} lg={item.length == 2 ? 6 : 3} md={item.length == 2 ? 6 : 3} sm={6} xs={12} style={{ marginBottom: '10px' }}>
-                          <Card>
-                            <div className="smiling-cartBoxMainImageViews">
-                              <div className="smilingCartMobileMain" style={{ display: "flex", position: 'relative' }}>
-                                <p className="ImageViewdesignNo" style={{ position: 'absolute' }}>{item.designno}</p>
-                                <Card.Img
-                                  src={item.DefaultImageName != '' ? `${imageURL}/${yKey}/${item.DefaultImageName}` : noFoundImage}
-                                  className="smiling-cartPageBoxImgView"
-                                  onError={(e) => {
-                                    e.target.src = noFoundImage;
-                                  }}
-                                />
-                              </div>
-                            </div>
-                          </Card>
-                        </Col>
-                      ))}
-                    </Row>
-                  </Container>
+                  <Grid container spacing={2}>
+                    {cartListData.map((item, index) => (
+                      <Grid item xs={12} sm={6} md={3} key={index}>
+                        <Card>
+                          <CardContent>
+                            <Typography variant="body1" component="p" className="ImageViewdesignNo" style={{ position: 'absolute' }}>
+                              {item.designno}
+                            </Typography>
+                            <CardMedia
+                              component="img"
+                              src={item.DefaultImageName !== '' ? `${imageURL}/${yKey}/${item.DefaultImageName}` : noFoundImage}
+                              onError={(e) => {
+                                e.target.src = noFoundImage;
+                              }}
+                            />
+                          </CardContent>
+                        </Card>
+                      </Grid>
+                    ))}
+                  </Grid>
                 </div>
               )}
               {cartListData.length > 0 &&
