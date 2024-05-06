@@ -236,6 +236,69 @@ export function findCsQcId(param){
     let item = CsQCArr?.filter(ele => ele?.Quality == quality && ele?.color == color)
     console.log("param",item);
     return item
+}
+
+export function findValueFromId(param1,param2) {
+
+    let output;
+
+    let categoryFilter = JSON.parse(localStorage.getItem("CategoryFilter"))
+    let ProductTypeFilter = JSON.parse(localStorage.getItem("ProductTypeFilter"))
+    let GenderFilter = JSON.parse(localStorage.getItem("GenderFilter"))
+    let CollectionFilter = JSON.parse(localStorage.getItem("CollectionFilter"))
+    let BrandFilter = JSON.parse(localStorage.getItem("BrandFilter"))
+    let OcassionFilter = JSON.parse(localStorage.getItem("OcassionFilter"))
+    let ThemeFilter = JSON.parse(localStorage.getItem("ThemeFilter"))
+    let SubCategoryFilter = JSON.parse(localStorage.getItem("SubCategoryFilter"))
+
+    if(param1 === "cate"){
+        let data = categoryFilter?.filter(item => item?.Categoryid == param2)
+        console.log("cate",data);
+        output = data[0]
+        return output;
+    }
+    if(param1 === "brand"){
+        let data = BrandFilter?.filter(item => item?.Brandid == param2)
+        console.log("brand",data);
+        output = data[0]
+        return output;
+    }
+    if(param1 === "prodtype"){
+        let data = ProductTypeFilter?.filter(item => item?.Producttypeid == param2)
+        console.log("prodtype",data);
+        output = data[0]
+        return output;
+    }
+    if(param1 === "collect"){
+        let data = CollectionFilter?.filter(item => item?.Collectionid == param2)
+        console.log("collect",data);
+        output = data[0]
+        return output;
+    }
+    if(param1 === "theme"){
+        let data = ThemeFilter?.filter(item => item?.Themeid == param2)
+        console.log("theme",data);
+        output = data[0]
+        return output;
+    }
+    if(param1 === "gender"){
+        let data = GenderFilter?.filter(item => item?.Genderid == param2)
+        console.log("gender",data);
+        output = data[0]
+        return output;
+    }
+    if(param1 === "subcate"){
+        let data = SubCategoryFilter?.filter(item => item?.SubCategoryid == param2)
+        console.log("subcate",data);
+        output = data[0]
+        return output;
+    }
+    if(param1 === "ocass"){
+        let data = OcassionFilter?.filter(item => item?.Ocassionid == param2)
+        console.log("ocass",data);
+        output = data[0]
+        return output;
+    }
     
 }
 

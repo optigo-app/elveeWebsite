@@ -1,6 +1,6 @@
 import { CommonAPI } from "./CommonAPI";
 
-export const getDesignPriceList = async (param,page=1,obj,prodInfo) => {
+export const getDesignPriceList = async (param,page=1,obj) => {
 
   
 
@@ -17,10 +17,9 @@ export const getDesignPriceList = async (param,page=1,obj,prodInfo) => {
   let encodedFilter = {
     "DesignNo":"",
     // "FilterKey":`${param?.FilterKey}`,
+    // "FilterVal":`${param?.FilterVal}`,
     "FilterKey":'',
     "FilterVal":'',
-    // "FilterVal":`${param?.FilterVal}`,
-    "FilterVal":`${param?.FilterVal}`,
     "FilterKey1":`${param?.FilterKey1}`,
     "FilterVal1":`${param?.FilterVal1}`,
     "FilterKey2":`${param?.FilterKey2}`,

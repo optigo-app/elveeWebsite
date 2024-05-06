@@ -31,7 +31,7 @@ import { TfiLayoutGrid4Alt } from "react-icons/tfi";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { getDesignPriceList } from "../../../Utils/API/PriceDataApi";
-import { findCsQcId, findDiaQcId, findMetalColor, findMetalType, findMetalTypeId } from "../../../Utils/globalFunctions/GlobalFunction";
+import { findCsQcId, findDiaQcId, findMetalColor, findMetalType, findMetalTypeId, findValueFromId } from "../../../Utils/globalFunctions/GlobalFunction";
 
 function valuetext(value) {
   return `${value}°C`;
@@ -69,7 +69,6 @@ const ProductList = () => {
   const getnewMenuData = useRecoilValue(newMenuData)
   const getAllProdData = useRecoilValue(newTestProdData);
 
-  // console.log("getnewMenuData",getnewMenuData)  
   // console.log("getHeaderData2",getHeaderData2)
 
   const [minPrice, setMinPrice] = useState(null);
@@ -340,93 +339,7 @@ const ProductList = () => {
     setpriceDataApi(data)
   }, [])
 
-  //   const loginUserDetail = JSON.parse(localStorage.getItem('loginUserDetail'));  
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const data = JSON.parse(localStorage.getItem("allproductlist"));
-  //     const loginUserDetail = JSON.parse(localStorage.getItem('loginUserDetail'));
-  //     const storeInit = JSON.parse(localStorage.getItem('storeInit'));
-
-  //     const updatedData = await Promise?.all(data?.map(async (product) => {
-  //       const newPriceData = priceDataApi?.rd?.find(
-  //         (pda) => storeInit?.IsMetalCustomization === 1 ? pda.A === product.autocode 
-  //             // &&
-  //             // pda.C === (findMetalTypeId(mtTypeOption)[0]?.Metalid)            
-  //             :
-  //             pda.A === product.autocode
-  //       );
-
-  //       console.log("newPriceData",newPriceData,findMetalTypeId(mtTypeOption)[0]?.Metalid)
-
-  //       const newPriceData1 = priceDataApi?.rd1?.filter(
-  //         (pda) =>
-
-  //           storeInit?.IsDiamondCustomization === 1
-  //             ?
-  //             pda.A === product.autocode &&
-  //             pda.G == loginUserDetail?.cmboDiaQCid?.split(',')[0] &&
-  //             pda.I == loginUserDetail?.cmboDiaQCid?.split(',')[1]     
-  //             :
-  //             pda.A === product.autocode
-
-  //       ).reduce((acc, obj) => acc + obj.S, 0)
-
-  //       const newPriceData2 = priceDataApi?.rd2?.filter(
-  //         (pda) =>
-
-  //           storeInit?.IsCsCustomization === 1
-  //             ?
-  //             pda.A === product.autocode &&
-  //             pda.H === loginUserDetail?.cmboCSQCid?.split(',')[0] &&
-  //             pda.J === loginUserDetail?.cmboCSQCid?.split(',')[1]
-  //             :
-  //             pda.A === product.autocode
-
-  //       ).reduce((acc, obj) => acc + obj.S, 0)
-
-  //       let price = 0;
-  //       let markup = 0;
-  //       let metalrd = 0;
-  //       let diard1 = 0;
-  //       let csrd2 = 0;
-  //       let updNWT = 0;
-  //       let updGWT = 0;
-  //       let updDWT = 0;
-  //       let updDPCS = 0;
-  //       let updCWT = 0;
-  //       let updCPCS = 0;
-  //       let updMT = "";
-  //       let updMC = "";
-
-  //       if (newPriceData || newPriceData1 || newPriceData2) {
-  //         price = (((newPriceData?.V ?? 0) / currData?.CurrencyRate ?? 0) + (newPriceData?.W ?? 0) + (newPriceData?.X ?? 0)) + (newPriceData1 ?? 0) + (newPriceData2 ?? 0);
-  //         metalrd = (((newPriceData?.V ?? 0) / currData?.CurrencyRate ?? 0) + (newPriceData?.W ?? 0) + (newPriceData?.X ?? 0))
-  //         diard1 = newPriceData1 ?? 0
-  //         csrd2 = newPriceData2 ?? 0
-  //         markup = newPriceData?.AB
-  //         updNWT = newPriceData?.I ?? 0
-  //         updGWT = newPriceData?.N ?? 0
-  //         updDWT = newPriceData?.K ?? 0
-  //         updDPCS = newPriceData?.J ?? 0
-  //         updCWT = newPriceData?.M ?? 0
-  //         updCPCS = newPriceData?.L ?? 0
-  //         updMT = findMetalType(newPriceData?.C ?? product?.MetalTypeid)[0]?.metaltype ?? ""
-  //         updMC = findMetalColor(product?.MetalColorid)[0]?.metalcolorname ?? ""
-  //       }
-  //       console.log("priceprod", product?.designno,metalrd,diard1,csrd2);
-  //       return { ...product, price, markup, metalrd, diard1, csrd2, updNWT, updGWT, updDWT, updDPCS, updCWT, updCPCS, updMT, updMC }
-  //     }));
-
-
-  //     localStorage.setItem("allproductlist", JSON.stringify(updatedData));
-  //     setProductApiData2(updatedData);
-  //   };
-
-  //   console.log("calling");
-  //   fetchData();
-  // }, [priceDataApi,mtTypeOption]);
-
+ 
   useEffect(() => {
     const fetchData = async () => {
       const data = JSON.parse(localStorage.getItem("allproductlist"));
@@ -436,11 +349,11 @@ const ProductList = () => {
       console.log("priceDataApi",priceDataApi);
 
       const updatedData = await Promise?.all(data?.map(async (product) => {
-        const newPriceData = priceDataApi?.rd?.find((pda) => pda.A === product.autocode)
+        const newPriceData = priceDataApi?.rd?.find((pda) => pda.A == product.autocode)
 
-        const newPriceData1 = priceDataApi?.rd1?.filter((pda) => pda.A === product.autocode ).reduce((acc, obj) => acc + obj.S, 0)
+        const newPriceData1 = priceDataApi?.rd1?.filter((pda) => pda.A == product.autocode ).reduce((acc, obj) => acc + obj.S, 0)
 
-        const newPriceData2 = priceDataApi?.rd2?.filter((pda) => pda.A === product.autocode ).reduce((acc, obj) => acc + obj.S, 0)
+        const newPriceData2 = priceDataApi?.rd2?.filter((pda) => pda.A == product.autocode ).reduce((acc, obj) => acc + obj.S, 0)
 
         let price = 0;
         let markup = 0;
@@ -455,6 +368,16 @@ const ProductList = () => {
         let updCPCS = 0;
         let updMT = "";
         let updMC = "";
+        let diaQ = "";
+        let diaQid = "";
+        let diaC = "";
+        let diaCid = "";
+        let csQ = "";
+        let csQid = "";
+        let csC = "";
+        let csCid = "";
+        
+
 
         if (newPriceData || newPriceData1 || newPriceData2) {
           price = (((newPriceData?.V ?? 0) / currData?.CurrencyRate ?? 0) + (newPriceData?.W ?? 0) + (newPriceData?.X ?? 0)) + (newPriceData1 ?? 0) + (newPriceData2 ?? 0);
@@ -470,9 +393,21 @@ const ProductList = () => {
           updCPCS = newPriceData?.L ?? 0
           updMT = findMetalType(newPriceData?.C ?? product?.MetalTypeid)[0]?.metaltype ?? ""
           updMC = findMetalColor(product?.MetalColorid)[0]?.metalcolorname ?? ""
+          diaQ = ""
+          diaQid = ""
+          diaC = ""
+          diaCid = ""
+          csQ = ""
+          csQid = ""
+          csC = ""
+          csCid = ""
         }
         console.log("priceprod", product?.designno, metalrd, diard1, csrd2);
-        return { ...product, price, markup, metalrd, diard1, csrd2, updNWT, updGWT, updDWT, updDPCS, updCWT, updCPCS, updMT, updMC }
+        return { ...product, price, markup, metalrd, diard1, csrd2, updNWT, updGWT, 
+          updDWT, updDPCS, updCWT, updCPCS, updMT, updMC, 
+          diaQ, diaQid,
+          diaC, diaCid, csQ, csQid, csC,csCid
+        }
       }));
 
       localStorage.setItem("allproductlist", JSON.stringify(updatedData));
@@ -813,7 +748,7 @@ const ProductList = () => {
   //     localStorage.setItem("allproductlist",JSON?.stringify(product))
   //     setProductApiData2(product)
 
-  useEffect(() => {
+  // useEffect(() => {
     // let newWishCheckData = (ProductApiData2)?.map((pd) => {
 
     //   let newWish = WishData?.find((cd) => pd.designno === cd.DesignNo && pd.autocode === cd.autocode)
@@ -834,43 +769,43 @@ const ProductList = () => {
     //   localStorage.setItem("allproductlist",JSON.stringify(newWishCheckData))
     // }
 
-    let newWishCheckData = (ProductApiData2 || []).map((pd) => {
-      const newWish = WishData?.find((cd) => pd.designno === cd.DesignNo && pd.autocode === cd.autocode);
-      let wishCheck = !!newWish;
-      return { ...pd, wishCheck };
-    });
+  //   let newWishCheckData = (ProductApiData2 || []).map((pd) => {
+  //     const newWish = WishData?.find((cd) => pd.designno === cd.DesignNo && pd.autocode === cd.autocode);
+  //     let wishCheck = !!newWish;
+  //     return { ...pd, wishCheck };
+  //   });
 
-    try {
-      localStorage.setItem("allproductlist", JSON.stringify(newWishCheckData));
-      if (JSON.stringify(newWishCheckData) !== JSON.stringify(ProductApiData2)) {
-        setProductApiData2(newWishCheckData);
-      }
-    } catch (error) {
-      console.error("Error storing data in localStorage:", error);
-    }
-  }, [WishData, ProductApiData2])
+  //   try {
+  //     localStorage.setItem("allproductlist", JSON.stringify(newWishCheckData));
+  //     if (JSON.stringify(newWishCheckData) !== JSON.stringify(ProductApiData2)) {
+  //       setProductApiData2(newWishCheckData);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error storing data in localStorage:", error);
+  //   }
+  // }, [WishData, ProductApiData2])
 
-  let cartlistUpdate = async () => {
-    let newCartCheckData = (ProductApiData2)?.map((pd) => {
+  // let cartlistUpdate = async () => {
+  //   let newCartCheckData = (ProductApiData2)?.map((pd) => {
 
-      let newWish = cartData?.find((cd) => pd.designno === cd.DesignNo && pd.autocode === cd.autocode)
+  //     let newWish = cartData?.find((cd) => pd.designno === cd.DesignNo && pd.autocode === cd.autocode)
 
 
-      let checkFlag = false
-      if (newWish) {
-        checkFlag = true
-      } else {
-        checkFlag = false
-      }
-      return { ...pd, checkFlag }
-    })
-    if (newCartCheckData) {
-      setProductApiData2(newCartCheckData)
-      localStorage.setItem("allproductlist", JSON.stringify(newCartCheckData))
-    }
-  }
+  //     let checkFlag = false
+  //     if (newWish) {
+  //       checkFlag = true
+  //     } else {
+  //       checkFlag = false
+  //     }
+  //     return { ...pd, checkFlag }
+  //   })
+  //   if (newCartCheckData) {
+  //     setProductApiData2(newCartCheckData)
+  //     localStorage.setItem("allproductlist", JSON.stringify(newCartCheckData))
+  //   }
+  // }
 
-  useEffect(() => {
+  // useEffect(() => {
     // let newCartCheckData = (ProductApiData2 || []).map((pd) => {
     //   const newWish = cartData?.find((cd) => pd.designno === cd.DesignNo && pd.autocode === cd.autocode);
     //   let checkFlag = !!newWish;
@@ -885,8 +820,8 @@ const ProductList = () => {
     // } catch (error) {
     //   console.error("Error storing data in localStorage:", error);
     // }
-    cartlistUpdate()
-  }, [cartData])
+    // cartlistUpdate()
+  // }, [cartData])
 
 
   const handelProductSubmit = (product) => {
@@ -1047,44 +982,103 @@ const ProductList = () => {
 
   // }, [filterChecked])
 
-  useEffect(() => {
-    let filteredData = ProductApiData2;
-    
+  let filterFunction = async() =>{
+    let param = JSON.parse(localStorage.getItem("menuparams"))
     const activeFilters = Object.values(filterChecked).filter(ele => ele.checked);
-    console.log("filterChecked",activeFilters)
+    
+    const output = {};
 
-    if (activeFilters.length > 0) {
-      filteredData = filteredData.filter(product => {
-        // Group filters by type
-        const filtersByType = activeFilters.reduce((acc, filter) => {
-          acc[filter.type] = acc[filter.type] || [];
-          acc[filter.type].push(filter);
-          return acc;
-        }, {});
+    activeFilters.forEach(item => {
+      if (!output[item.type]) {
+        output[item.type] = '';
+    }
+    output[item.type] += `${item.value}, `;
+    });
 
-        // return Object.values(filtersByType).every(filters => {
-        //     return filters.some(filter => product[filter.type] === filter.value);
-        // });
-
-        return Object.values(filtersByType).every(filters => {
-          const filterResults = filters.map(filter => product[filter.type] === filter.value);
-          return filterResults.some(result => result);
-        });
-      });
+    for (const key in output) {
+      output[key] = output[key].slice(0, -2);
     }
 
-    // let FilterCheckedLength = (Object.values(filterChecked)).filter(fc=> fc.checked !== false).filter(fc=> fc.checked !== undefined)
-    let FilterCheckedLength = (Object.values(filterChecked)).filter(fc => fc.checked === true)
+    console.log("activeFilters",output)
 
-    if (FilterCheckedLength.length === 0) {
-      setNewProData([])
-      setRangeProData([])
-      setSelectedSortOption('Recommended')
-    } else {
-      setNewProData(filteredData);
-    }
+    await productListApiCall(param,currentPage,output).then(res =>{
+           if(res){
+            getProductData()
+           }
+    })
+  }
+
+  useEffect(() => {
+    // let filteredData = ProductApiData2;
+    filterFunction();
+
+  //   {
+  //     "checked": true,
+  //     "value": 22,
+  //     "type": "Brandid"
+  // }
+
+    // if (activeFilters.length > 0) {
+    //   filteredData = filteredData.filter(product => {
+    //     // Group filters by type
+    //     const filtersByType = activeFilters.reduce((acc, filter) => {
+    //       acc[filter.type] = acc[filter.type] || [];
+    //       acc[filter.type].push(filter);
+    //       return acc;
+    //     }, {});
+
+    //     // return Object.values(filtersByType).every(filters => {
+    //     //     return filters.some(filter => product[filter.type] === filter.value);
+    //     // });
+
+    //     return Object.values(filtersByType).every(filters => {
+    //       const filterResults = filters.map(filter => product[filter.type] === filter.value);
+    //       return filterResults.some(result => result);
+    //     });
+    //   });
+    // }
+
+    // // let FilterCheckedLength = (Object.values(filterChecked)).filter(fc=> fc.checked !== false).filter(fc=> fc.checked !== undefined)
+    // let FilterCheckedLength = (Object.values(filterChecked)).filter(fc => fc.checked === true)
+
+    // if (FilterCheckedLength.length === 0) {
+    //   setNewProData([])
+    //   setRangeProData([])
+    //   setSelectedSortOption('Recommended')
+    // } else {
+    //   setNewProData(filteredData);
+    // }
 
   }, [filterChecked]);
+
+  useEffect(() =>{
+    // let productList =  JSON.parse(localStorage.getItem('allproductlist'))
+  
+    ProductApiData2.forEach(item =>{
+      let prodData = cartData.find(ele => ele.autocode == item?.autocode)
+
+      if(prodData){
+        item.checkFlag = true
+      }else{
+        item.checkFlag = false
+      }
+
+    })
+    localStorage.setItem("allproductlist",JSON.stringify(ProductApiData2))
+  },[cartData,ProductApiData2])
+
+  useEffect(() =>{
+    ProductApiData2.forEach(item =>{
+      let prodData = WishData.find(ele => ele.autocode == item?.autocode)
+
+      if(prodData){
+        item.wishCheck = true
+      }else{
+        item.wishCheck = false
+      }
+    })
+    localStorage.setItem("allproductlist",JSON.stringify(ProductApiData2))
+  },[WishData,ProductApiData2])
 
 
   const getCartAndWishListData = async () => {
@@ -1152,8 +1146,6 @@ const ProductList = () => {
 
         const product = prod
 
-        console.log("prod", prod)
-
         const finalJSON = {
           "stockweb_event": "",
           "Mastermanagement_CategorySize": "",
@@ -1161,29 +1153,29 @@ const ProductList = () => {
           "stockno": "",
           "is_show_stock_website": "0",
           "cmboDiaQualityColor": `${JSON.parse(localStorage.getItem("loginUserDetail"))?.cmboDiaQualityColor ?? ""}`,
-          "cmboMetalType": `${JSON.parse(localStorage.getItem("loginUserDetail"))?.cmboMetalType ?? ""}`,
-          "AdditionalValWt": Number(`${product?.AdditionalValWt}`),
-          "BrandName": `${product?.BrandName ?? ""}`,
-          "Brandid": 5,
-          "CategoryName": `${product?.CategoryName}`,
+          "cmboMetalType": `${product?.updMT}`,
+          "AdditionalValWt": Number(`${product?.AdditionalValWt ?? 0}`),
+          "BrandName": `${findValueFromId("brand",product?.Brandid)?.BrandName}`,
+          "Brandid": Number(`${product?.Brandid}`),
+          "CategoryName": `${findValueFromId("cate",product?.Categoryid)?.CategoryName}`,
           "Categoryid": Number(`${product?.Categoryid}`),
           "CenterStoneId": Number(`${product?.CenterStoneId}`),
           "CenterStonePieces": Number(`${product?.updCPCS}`),
-          "CollectionName": `${product?.CollectionName}`,
+          "CollectionName": `${findValueFromId("collect",product?.Collectionid)?.CollectionName}`,
           "Collectionid": Number(`${product?.Collectionid}`),
           "ColorWiseRollOverImageName": `${product?.ColorWiseRollOverImageName}`,
           "DefaultImageName": `${product?.DefaultImageName}`,
           "DisplayOrder": Number(`${product?.DisplayOrder}`),
           "FrontEnd_OrderCnt": Number(`${product?.FrontEnd_OrderCnt}`),
-          "GenderName": `${product?.GenderName}`,
+          "GenderName": `${findValueFromId("gender",product?.Genderid)?.GenderName}`,
           "Genderid": Number(`${product?.Genderid}`),
           "Grossweight": Number(`${product?.updGWT}`),
           "InReadyStockCnt": Number(`${product?.InReadyStockCnt}`),
           "IsBestSeller": Number(`${product?.IsBestSeller}`),
           "IsColorWiseImageExists": `${product?.ColorWiseRollOverImageName?.length > 0 ? 1 : 0}`,
           "IsInReadyStock": Number(`${product?.IsInReadyStock}`),
-          "IsNewArrival": `${product?.IsNewArrival}`,
-          "IsRollOverColorWiseImageExists": `${product?.IsRollOverColorWiseImageExists?.length > 0 ? 1 : 0}`,
+          "IsNewArrival": Number(`${product?.IsNewArrival}`),
+          "IsRollOverColorWiseImageExists": Number(`${product?.IsRollOverColorWiseImageExists?.length > 0 ? 1 : 0}`),
           "IsTrending": Number(`${product?.IsTrending}`),
           "MasterManagement_labid": Number(`${product?.MasterManagement_labid}`),
           "MasterManagement_labname": "",
@@ -1191,23 +1183,23 @@ const ProductList = () => {
           "MetalColorid": Number(`${product?.MetalColorid}`),
           "MetalPurity": `${product?.updMT?.split(" ")[1] ?? '18K'}`,
           "MetalPurityid": Number(`${product?.MetalTypeid}`),
-          "MetalTypeName": `${product?.MetalTypeName ?? ""}`,
+          "MetalTypeName":`${product?.updMT.split(" ")[0]}`,
           "MetalTypeid": Number(`${product?.IsInReadyStock}`),
           "MetalWeight": Number(`${product?.updNWT}`),
-          "OcassionName": `${product?.OcassionName ?? ""}`,
+          "OcassionName": `${findValueFromId("ocass",product?.Ocassionid)?.OcassionName}`,
           "Ocassionid": Number(`${product?.Ocassionid}`),
-          "ProducttypeName": `${product?.ProducttypeName}`,
+          "ProducttypeName":`${findValueFromId("prodtype",product?.Producttypeid)?.ProducttypeName}`,
           "Producttypeid": Number(`${product?.Producttypeid}`),
           "RollOverImageName": `${product?.RollOverImageName}`,
-          "SubCategoryName": `${product?.SubCategoryName ?? ""}`,
-          "SubCategoryid": Number(`${product?.SubCategoryid ?? ""}`),
-          "ThemeName": `${product?.ThemeName ?? ""}`,
+          "SubCategoryName": `${findValueFromId("subcate",product?.SubCategoryid)?.SubCategoryName}`,
+          "SubCategoryid": Number(`${product?.SubCategoryid}`),
+          "ThemeName":`${findValueFromId("theme",product?.Themeid)?.ThemeName}`,
           "Themeid": Number(`${product?.Themeid}`),
           "TitleLine": `${product?.TitleLine}`,
           // "UnitCost": `${product?.price === "Not Available" ? 0 : product?.price}`,
-          "UnitCost": `${product?.price ?? 0}`,
+          "UnitCost":  Number(`${product?.price === "Not Available" ? 0 : product?.price}`),
           // "UnitCostWithmarkup": (`${(product?.price === "Not Available" ? 0 : product?.price) + (product?.markup ?? 0)}`),
-          "UnitCostWithmarkup": (`${PriceWithMarkupFunction(product?.markup, product?.price, currData?.CurrencyRate)}`),
+          "UnitCostWithmarkup": Number(`${(product?.price === "Not Available" ? 0 : product?.price) + (product?.markup ?? 0)}`),
           "autocode": `${product?.autocode}`,
           "colorstonecolorname": `${product?.colorstonecolorname}`,
           "colorstonequality": `${product?.colorstonequality}`,
@@ -1219,7 +1211,7 @@ const ProductList = () => {
           "diamondshape": `${product?.diamondshape}`,
           "diamondweight": Number(`${product?.updDWT}`),
           "encrypted_designno": `${product?.encrypted_designno ?? ""}`,
-          "hashtagid": `${product?.Hashtagid ?? ""}`,
+          "hashtagid": Number(`${product?.Hashtagid ?? 0}`),
           "hashtagname": `${product?.Hashtagname ?? ""}`,
           "imagepath": `${globImagePath}`,
           "imgrandomno": `${product?.imgrandomno}`,
@@ -1227,15 +1219,15 @@ const ProductList = () => {
           "originalimage": `${product?.OriginalImagePath}`,
           "storyline_html": `${product?.storyline_html ?? ""}`,
           "storyline_video": `${product?.storyline_video ?? ""}`,
-          "thumbimage": `${product?.ThumbImagePath}`,
-          "totaladditionalvalueweight": 0,
+          "thumbimage": `${product?.ThumbImagePath ?? ''}`,
+          "totaladditionalvalueweight":  Number(`${product?.totaladditionalvalueweigt ?? 0}`) ,
           "totalcolorstoneweight": Number(`${product?.updCWT}`),
           "totaldiamondweight": Number(`${product?.updDWT}`),
-          "updatedate": `${product?.UpdateDate}`,
+          "updatedate": `${product?.UpdateDate ?? 0}`,
           "videoname": `${product?.videoname ?? ""}`,
           "FrontEnd_RegNo": `${storeInit?.FrontEnd_RegNo}`,
-          "Customerid": `${Customer_id?.id}`,
-          "PriceMastersetid": `${product?.PriceMastersetid ?? ""}`,
+          "Customerid":  Number(`${Customer_id?.id}`),
+          "PriceMastersetid":  Number(`${product?.PriceMastersetid ?? 0}`),
           "DQuality": `${JSON.parse(localStorage.getItem("loginUserDetail"))?.cmboDiaQualityColor.split("#@#")[0]}`,
           "DColor": `${JSON.parse(localStorage.getItem("loginUserDetail"))?.cmboDiaQualityColor.split("#@#")[1]}`,
           "UploadLogicalPath": `${product?.UploadLogicalPath ?? ""}`,
@@ -1285,22 +1277,17 @@ const ProductList = () => {
             // removefromCart(prod)
           }
         })
-
       }
     }
     catch (error) {
       console.log("error", error);
     }
-    // console.log("productsWish",prod)
-    // prod["checkFlag"] = event.target.checked
   }
-  const [disablecartBtn, setDisablecartBtn] = useState(false);
 
   const handelCartList = async (event, prod) => {
     try {
       setCartFlag(prev => ({ ...prev, [prod?.designno]: event.target.checked }))
 
-      setDisablecartBtn(true);
       if (event.target.checked === true) {
         const storeInit = JSON.parse(localStorage.getItem("storeInit"))
         const UserEmail = localStorage.getItem("registerEmail")
@@ -1318,36 +1305,36 @@ const ProductList = () => {
           "designno": `${product?.designno}`,
           "autocode": `${product?.autocode}`,
           "imgrandomno": `${product?.imgrandomno}`,
-          "producttypeid": `${product?.Producttypeid}`,
-          "metaltypeid": `${product?.MetalTypeid}`,
-          "metalcolorid": `${product?.MetalColorid}`,
+          "producttypeid": Number(`${product?.Producttypeid}`),
+          "metaltypeid": Number(`${product?.MetalTypeid}`),
+          "metalcolorid": Number(`${product?.MetalColorid}`),
           "stockno": "",
           // "DQuality": `${product?.diamondquality?.split(",")[0]}`,
           "DQuality": `${JSON.parse(localStorage.getItem("loginUserDetail"))?.cmboDiaQualityColor.split("#@#")[0]}`,
           "DColor": `${JSON.parse(localStorage.getItem("loginUserDetail"))?.cmboDiaQualityColor.split("#@#")[1]}`,
-          "cmboMetalType": `${product?.MetalTypeName} ${product?.MetalPurity}`,
-          "AdditionalValWt": Number(`${product?.AdditionalValWt}`),
-          "BrandName": `${product?.BrandName ?? ""}`,
+          "cmboMetalType": `${product?.updMT}`,
+          "AdditionalValWt": Number(`${product?.AdditionalValWt ?? 0}`),
+          "BrandName": `${findValueFromId("brand",product?.Brandid)?.BrandName}`,
           "Brandid": Number(`${product?.Brandid}`),
-          "CategoryName": `${product?.CategoryName}`,
+          "CategoryName": `${findValueFromId("cate",product?.Categoryid)?.CategoryName}`,
           "Categoryid": Number(`${product?.Categoryid}`),
           "CenterStoneId": Number(`${product?.CenterStoneId}`),
           "CenterStonePieces": Number(`${product?.updCPCS}`),
-          "CollectionName": `${product?.CollectionName}`,
+          "CollectionName": `${findValueFromId("collect",product?.Collectionid)?.CollectionName}`,
           "Collectionid": Number(`${product?.Collectionid}`),
           "ColorWiseRollOverImageName": `${product?.ColorWiseRollOverImageName}`,
           "DefaultImageName": `${product?.DefaultImageName}`,
           "DisplayOrder": Number(`${product?.DisplayOrder}`),
           "FrontEnd_OrderCnt": Number(`${product?.FrontEnd_OrderCnt}`),
-          "GenderName": `${product?.GenderName}`,
+          "GenderName": `${findValueFromId("gender",product?.Genderid)?.GenderName}`,
           "Genderid": Number(`${product?.Genderid}`),
           "Grossweight": Number(`${product?.updGWT}`),
           "InReadyStockCnt": Number(`${product?.InReadyStockCnt}`),
           "IsBestSeller": Number(`${product?.IsBestSeller}`),
-          "IsColorWiseImageExists": `${product?.IsColorWiseImageExists ?? 0}`,
+          "IsColorWiseImageExists": Number(`${product?.IsColorWiseImageExists ?? 0}`),
           "IsInReadyStock": Number(`${product?.IsInReadyStock}`),
-          "IsNewArrival": `${product?.IsNewArrival}`,
-          "IsRollOverColorWiseImageExists": `${product?.IsRollOverColorWiseImageExists ?? ""}`,
+          "IsNewArrival": Number(`${product?.IsNewArrival ?? 0}`),
+          "IsRollOverColorWiseImageExists": Number(`${product?.IsRollOverColorWiseImageExists ?? 0}`),
           "IsTrending": Number(`${product?.IsTrending}`),
           "MasterManagement_labid": Number(`${product?.MasterManagement_labid}`),
           "MasterManagement_labname": "",
@@ -1355,57 +1342,57 @@ const ProductList = () => {
           "MetalColorid": Number(`${product?.MetalColorid}`),
           "MetalPurity": `${product?.updMT.split(" ")[1]}`,
           "MetalPurityid": Number(`${product?.MetalTypeid}`),
-          "MetalTypeName": `${product?.MetalTypeName}`,
+          "MetalTypeName": `${product?.updMT.split(" ")[0]}`,
           "MetalTypeid": Number(`${product?.IsInReadyStock}`),
           "MetalWeight": Number(`${product?.updNWT}`),
-          "OcassionName": `${product?.OcassionName ?? ""}`,
+          "OcassionName": `${findValueFromId("ocass",product?.Ocassionid)?.OcassionName}`,
           "Ocassionid": Number(`${product?.Ocassionid}`),
-          "ProducttypeName": `${product?.ProducttypeName}`,
+          "ProducttypeName": `${findValueFromId("prodtype",product?.Producttypeid)?.ProducttypeName}`,
           "Producttypeid": Number(`${product?.Producttypeid}`),
           "RollOverImageName": `${product?.RollOverImageName}`,
-          "SubCategoryName": `${product?.SubCategoryName ?? ""}`,
+          "SubCategoryName": `${findValueFromId("subcate",product?.SubCategoryid)?.SubCategoryName}`,
           "SubCategoryid": Number(`${product?.SubCategoryid}`),
-          "ThemeName": `${product?.ThemeName ?? ""}`,
+          "ThemeName": `${findValueFromId("theme",product?.Themeid)?.ThemeName}`,
           "Themeid": Number(`${product?.Themeid}`),
           "TitleLine": `${product?.TitleLine}`,
-          "UnitCost": `${product?.price === "Not Available" ? 0 : product?.price}`,
-          "UnitCostWithmarkup": (`${(product?.price === "Not Available" ? 0 : product?.price) + (product?.markup ?? 0)}`),
-          "colorstonecolorname": `${product?.colorstonecolorname}`,
-          "colorstonequality": `${product?.colorstonequality}`,
+          "UnitCost": Number(`${product?.price === "Not Available" ? 0 : product?.price}`),
+          "UnitCostWithmarkup": Number(`${(product?.price === "Not Available" ? 0 : product?.price) + (product?.markup ?? 0)}`),
+          "colorstonecolorname": `${product?.colorstonecolorname ?? ""}`,
+          "colorstonequality": `${product?.colorstonequality ?? ""}`,
           "diamondcolorname": `${JSON.parse(localStorage.getItem("loginUserDetail"))?.cmboDiaQualityColor.split("#@#")[1]}`,
           "diamondpcs": Number(`${product?.updDPCS}`),
           "diamondquality": `${JSON.parse(localStorage.getItem("loginUserDetail"))?.cmboDiaQualityColor.split("#@#")[0]}`,
-          "diamondsetting": `${product?.diamondsetting}`,
-          "diamondshape": `${product?.diamondshape}`,
+          "diamondsetting": `${product?.diamondsetting ?? ""}`,
+          "diamondshape": `${product?.diamondshape ?? ""}`,
           "diamondweight": Number(`${product?.updDWT}`),
           "encrypted_designno": `${product?.encrypted_designno ?? ""}`,
-          "hashtagid": `${product?.Hashtagid ?? ""}`,
+          "hashtagid": Number(`${product?.Hashtagid ?? 0}`),
           "hashtagname": `${product?.Hashtagname ?? ""}`,
           "imagepath": `${globImagePath}`,
           "mediumimage": `${product?.MediumImagePath ?? ""}`,
-          "originalimage": `${product?.OriginalImagePath}`,
+          "originalimage": `${product?.OriginalImagePath ?? ""}`,
           "storyline_html": `${product?.storyline_html ?? ""}`,
           "storyline_video": `${product?.storyline_video ?? ""}`,
-          "thumbimage": `${product?.ThumbImagePath}`,
-          "totaladditionalvalueweight": Number(`${product?.totaladditionalvalueweight}`),
+          "thumbimage": `${product?.ThumbImagePath ?? ''}`,
+          "totaladditionalvalueweight": Number(`${product?.totaladditionalvalueweigt ?? 0}`) ,
           "totalcolorstoneweight": Number(`${product?.updCWT}`),
           "totaldiamondweight": Number(`${product?.updDWT}`),
-          "updatedate": `${product?.UpdateDate}`,
+          "updatedate": `${product?.UpdateDate ?? 0}`,
           "videoname": `${product?.videoname ?? ""}`,
           "FrontEnd_RegNo": `${storeInit?.FrontEnd_RegNo}`,
-          "Customerid": `${Customer_id?.id}`,
-          "PriceMastersetid": `${product?.PriceMastersetid ?? ""}`,
-          "quantity": `${product?.quantity ?? "1"}`,
+          "Customerid": Number(`${Customer_id?.id}`),
+          "PriceMastersetid": Number(`${product?.PriceMastersetid ?? 0}`),
+          "quantity": Number(`${product?.quantity ?? 1}`),
           "CurrencyRate": `${product?.CurrencyRate ?? ""}`,
           "remarks_design": `${product?.remarks_design ?? ""}`,
           "diamondcolorid": `${product?.diamondcolorid ?? ""}`,
           "diamondqualityid": `${product?.diamondqualityid ?? ""}`,
           "detail_ringsize": `${product?.detail_ringsize ?? ""}`,
           "ProjMode": `${product?.ProjMode ?? ""}`,
-          "AlbumMasterid": `${product?.AlbumMasterid ?? ""}`,
+          "AlbumMasterid": Number(`${product?.AlbumMasterid ?? 0}`),
           "AlbumMastername": `${product?.AlbumMastername ?? ""}`,
           "Albumcode": `${product?.Albumcode ?? ""}`,
-          "Designid": `${product?.Designid ?? ""}`
+          "Designid": Number(`${product?.Designid ?? 0}`)
         }
 
         console.log("product", finalJSON)
@@ -1433,7 +1420,6 @@ const ProductList = () => {
             // await getCountApi()
             getCountFunc()
             // prod.checkFlag=false
-            setDisablecartBtn(false);
           }
 
           if (isWishHasCartData.length && res?.Data?.rd[0]?.stat_msg === "success") { //ADDWISHLISTTOCART
@@ -1486,7 +1472,6 @@ const ProductList = () => {
     }
     catch (error) {
       console.log("error", error);
-      setDisablecartBtn(false);
     }
 
   }
