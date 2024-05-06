@@ -8,7 +8,7 @@ function History() {
     <div>
     <div className="hsitroymainbanner">
       <img
-       src={`${storImagePath()}/images/HomePage/Promo/Banner/PromoBanner1.jpg`}
+       src={`${storImagePath()}/images/HomePage/History/HistoryMainBanner.jpg`}
         alt="#mainbanner"
         className="mainbanner_h"
       />
@@ -90,7 +90,7 @@ function History() {
       </div>
       <div className="history_journey_2">
         <img
-          src={`${storImagePath()}/images/HomePage/Promo/Banner/PromoBanner1.jpg`}
+          src={`${storImagePath()}/images/HomePage/History/HistorySubBanner1.jpg`}
           className="h_ownerimg"
           alt="#historyimg"
         />

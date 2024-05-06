@@ -67,7 +67,7 @@ function AboutUs() {
     <div>
       <div>
         <img
-          src={`${storImagePath()}/images/HomePage/MainBanner/image/HomepageMainBannerVideo.png`}
+          src={`${storImagePath()}/images/HomePage/AboutUs/AboutUsMainBannerImg.jpg`}
           alt="#mainbanner"
           className="mainbannerabus"
         />
@@ -99,7 +99,7 @@ function AboutUs() {
         </div>
         <div className="imgpart">
           <img
-            src={`${storImagePath()}/images/HomePage/MainBanner/image/HomepageMainBannerVideo.png`}
+            src={`${storImagePath()}/images/HomePage/AboutUs/AboutUsVisitngImg.jpg`}
             className="visitimgau"
             alt="#content"
           />

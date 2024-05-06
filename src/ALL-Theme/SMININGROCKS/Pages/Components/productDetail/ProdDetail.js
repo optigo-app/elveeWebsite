@@ -52,6 +52,8 @@ const ProdDetail = () => {
   const [diaQColOptId, setDiaQColOptId] = useState();
   const [mtTypeOption, setmtTypeOption] = useRecoilState(metalTypeG);
   const [mtTypeOptionId, setmtTypeOptionId] = useState();
+  const [mtPurity, setmtPurity] = useState();
+  const [mtColorName, setmtColorName] = useState();
   const [cSQopt, setCSQOpt] = useRecoilState(colorstoneQualityColorG);
   const [cSQoptId, setCSQOptId] = useState();
   const [colorImageData, setColorImageData] = useState([]);
@@ -85,6 +87,7 @@ const ProdDetail = () => {
   const [csqcSettRate, setCsqcSettRate] = useState()
   const [getPriceData, setGetPriceData] = useState([])
   const [globImagePath, setGlobImagepath] = useState()
+  const [imageSize, setImageSize] = useState()
   const [diaqcData, setDiaQcData] = useState([]);
   const [csData, setCsData] = useState([])
 
@@ -167,6 +170,7 @@ const ProdDetail = () => {
 
   useEffect(() => {
     const storeInit = JSON.parse(localStorage.getItem('storeInit'))
+    setImageSize(storeInit);
     setGlobImagepath(storeInit?.DesignImageFol)
   }, [])
 
@@ -194,11 +198,14 @@ const ProdDetail = () => {
 
     if (loginInfo?.MetalId !== 0) {
       let metalType = MetalTypeData?.find(item => item?.Metalid == loginInfo?.MetalId)
+
       setmtTypeOption(metalType?.metaltype)
       setmtTypeOptionId(metalType?.Metalid)
+      setmtPurity(metalType?.metaltype);
     } else {
       setmtTypeOption(MetalTypeData[0]?.metaltype)
       setmtTypeOptionId(MetalTypeData[0]?.Metalid)
+      setmtPurity(MetalTypeData[0]?.metaltype)
 
     }
 
@@ -393,12 +400,11 @@ const ProdDetail = () => {
     let srProductsData = JSON.parse(localStorage.getItem('srProductsData'));
     const storeInit = JSON.parse(localStorage.getItem('storeInit'));
     setUkey(storeInit.ukey);
-
     let mtrd = getPriceData?.rd?.filter((ele) =>
       storeInit?.IsMetalCustomization === 1
         ?
         ele?.A === srProductsData?.autocode &&
-        ele?.C === mtTypeOptionId
+        ele?.C === mtTypeOptionId 
         :
         ele?.A === srProductsData?.autocode
     );
@@ -593,6 +599,7 @@ const ProdDetail = () => {
   }, [selectedColor])
 
   const handleColorSelection = (color) => {
+    setmtColorName(color)
     let uploadPath = localStorage.getItem('UploadLogicalPath');
     const storedDataAll = localStorage.getItem('storeInit');
     const data = JSON.parse(storedDataAll);
@@ -1422,7 +1429,7 @@ const ProdDetail = () => {
             <div className="srprodetail1">
               {/* {!imgLoading */}
 
-              {imgLoading && (
+              {imgLoading == 'false' && (
                 <Skeleton
                   sx={{
                     width: "100%",
@@ -1449,22 +1456,27 @@ const ProdDetail = () => {
                 }} />
                 :
                 <img
+                  // src={
+                  //   (productData?.OriginalImagePath) ?
+                  //     updatedColorImage?.length !== 0 ?
+                  //       updatedColorImage[0]?.imagepath
+                  //       :
+                  //       (
+                  //         selectedImagePath == '' ?
+                  //           globImagePath + productData?.DesignFolderName + '/' + imageSize?.ImgOr + '/' + (!handelmainImg()?.length ? productData?.ImageName?.split(",")[0]
+                  //             :
+                  //             handelmainImg()
+                  //           )
+                  //           :
+                  //           selectedImagePath)
+                  //     :
+                  //     notFound
+                  // }
+                  
                   src={
-                    (productData?.OriginalImagePath) ?
-                      updatedColorImage?.length !== 0 ?
-                        updatedColorImage[0]?.imagepath
-                        :
-                        (
-                          selectedImagePath == '' ?
-                            globImagePath + (!handelmainImg()?.length ? productData?.OriginalImagePath?.split(",")[0]
-                              :
-                              handelmainImg()
-                            )
-                            :
-                            selectedImagePath)
-                      :
-                      notFound
+                    globImagePath + productData?.DesignFolderName + '/' + imageSize?.ImgOr + '/' + productData?.DefaultImageName
                   }
+
                   alt={""}
                   style={{
                     width: "100%",
@@ -1480,14 +1492,15 @@ const ProdDetail = () => {
               }
               {updatedColorImage?.length === 0 ?
                 <>
-                  {productData?.ThumbImagePath && <div className="srthumb_images">
-                    {productData?.ThumbImagePath?.split(",").map((data, i) => (
+                  {productData?.ImageName && <div className="srthumb_images">
+                    {productData?.ImageName?.split(",").map((data, i) => (
                       <img
-                        src={globImagePath + data}
+                        src={globImagePath + productData?.DesignFolderName + '/' + imageSize?.ImgOr + '/' + data}
                         alt={""}
                         className="srthumb_images_el"
                         onClick={() => setThumbImg(i)}
                       />
+                      
                     ))}
 
                   </div>}
@@ -1570,7 +1583,10 @@ const ProdDetail = () => {
                     >
                       Metal Purity :
                       <span style={{ fontWeight: 'bold', letterSpacing: '2px' }}>
-                        {mtTypeOption ? mtTypeOption?.split(" ")[1] : productData?.MetalPurity}
+                        <>
+                        {console.log('mtTypeOptionId',mtTypeOptionId)}
+                        {mtPurity ? mtPurity : mtTypeOption ? mtTypeOption?.split(" ")[1] : productData?.MetalPurity}
+                        </>
                       </span>
                     </span>
                     <sapn
@@ -1579,7 +1595,7 @@ const ProdDetail = () => {
                         color: "rgb(66, 66, 66)",
                       }}
                     >
-                      Metal Color : <span style={{ fontWeight: 'bold', letterSpacing: '2px' }}>{selectedColor ? selectedColor : productData?.updMC}</span>
+                      Metal Color : <span style={{ fontWeight: 'bold', letterSpacing: '2px' }}>{mtColorName? mtColorName : selectedColor ? selectedColor : productData?.updMC}</span>
                     </sapn>
                     <sapn
                       style={{
@@ -1674,11 +1690,11 @@ const ProdDetail = () => {
                         className='menuitemSelectoreMain'
                         defaultValue={mtTypeOption}
                         onChange={(e) => {
-                          setmtTypeOptionId(e.target.value)
+                          {setmtTypeOptionId(e.target.value); setmtPurity(e.target.value)}
                         }}
                       >
                         {metalType.map((data, index) => (
-                          <option key={index} value={data.Metalid}>
+                          <option key={index} value={data.metalType}>
                             {data.metaltype}
                           </option>
                         ))}
@@ -2291,6 +2307,7 @@ const ProdDetail = () => {
                 alignItems: "center",
                 width: "100%",
                 flexDirection: "column",
+                marginBottom:'60px'
               }}
             >
               <p
@@ -2309,7 +2326,7 @@ const ProdDetail = () => {
                     <ul style={{
                       margin: '0px 0px 3px 0px'
                     }}>
-                      <li style={{ fontWeight: 600 }}>Daimond Detail(19/0.50ct)</li>
+                      <li style={{ fontWeight: 600 }}>{`Diamond Detail(${fullProdData?.rd1?.reduce((accumulator, data) => accumulator + data.M, 0)}/${fullProdData?.rd1?.reduce((accumulator, data) => accumulator + data?.N, 0).toFixed(2)}ct)`}</li>
                     </ul>
                     {
                       fullProdData?.rd1?.map((data) => (
