@@ -1,6 +1,6 @@
 import { CommonAPI } from "./CommonAPI"
 
-export const productListApiCall = async(param,page=1) =>{
+export const productListApiCall = async(param,page=1,filterObj={}) =>{
 
     const keyMapping = {
         "0": "id",
@@ -92,17 +92,36 @@ export const productListApiCall = async(param,page=1) =>{
       console.log('props---', param);
 
     let encodedFilter = {
-      // "FilterKey":`${param?.FilterKey}`,
-      "FilterKey":'',
       "DesignNo":"",
+      // "FilterKey":`${param?.FilterKey}`,
       // "FilterVal":`${param?.FilterVal}`,
+      "FilterKey":'',
       "FilterVal":'',
       "FilterKey1":`${param?.FilterKey1}`,
       "FilterVal1":`${param?.FilterVal1}`,
       "FilterKey2":`${param?.FilterKey2}`,
       "FilterVal2":`${param?.FilterVal2}`,
       "PageNo":`${page}`,
-      "PageSize":`${storeinit?.PageSize}`}
+      "PageSize":`${storeinit?.PageSize}`,
+      "Collectionid": `${filterObj?.Collectionid ?? ""}`,
+      "Categoryid": `${filterObj?.Categoryid ?? ""}`,
+      "SubCategoryid": `${filterObj?.SubCategoryid ?? ""}`,
+      "Brandid": `${filterObj?.Brandid ?? ""}`,
+      "Genderid": `${filterObj?.Genderid ?? ""}`,
+      "Ocassionid": `${filterObj?.Ocassionid ?? ""}`,
+      "Themeid": `${filterObj?.Themeid ?? ""}`,
+      "Min_DiaWeight": '',
+      "Max_DiaWeight": '',
+      "Min_GrossWeight": '',
+      "Max_GrossWeight": '',
+      "Max_NetWt": '',
+      "Min_NetWt": '',
+      "Max_Price": '',
+      "Min_Price": '',
+      "Producttypeid": `${filterObj?.Producttypeid ?? ""}`
+    }
+
+
 
     const data = {
       "PackageId":`${loginInfo?.PackageId}`,
