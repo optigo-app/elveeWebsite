@@ -2319,7 +2319,7 @@ const ProdDetail = () => {
               >
                 Tell Me More
               </p>
-              <div style={{ width: '60%' }} className='tellmeMoreMain'>
+              <div style={{ width: '60%' , marginBottom: '60px' }} className='tellmeMoreMain'>
 
                 {fullProdData?.rd1?.length !== 0 &&
                   <div className='tellmeMoreMainMobileDiv'>

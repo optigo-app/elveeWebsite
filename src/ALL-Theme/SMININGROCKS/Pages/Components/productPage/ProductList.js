@@ -1760,7 +1760,7 @@ const handleColorSelection = async (product, index, color) => {
     if (availableImage) {
       const formedImgData = { [index]: availableImage.imagePath };
       setUpdateColorImage(formedImgData);
-      console.log('formedImgData', formedImgData)
+      console.log('formedImgData',  formedImgData)
       return availableImage;
     } else {
       console.log('No available image found');
@@ -1850,34 +1850,41 @@ const list = (anchor) => (
                   color: "#7f7d85",
                   borderRadius: 0,
 
-                  "&.MuiAccordionSummary-root": {
-                    padding: 0,
-                  },
-                }}
-              >
-                <span className="filtercategoryLable">
-                  {ele.label}
-                </span>
-              </AccordionSummary>
-              <AccordionDetails
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "4px",
-                }}
-              >
-                {ele.label === "PRICE" &&
-                  <div>
-                    <Slider
-                      className='netWtSecSlider'
-                      getAriaLabel={() => 'Minimum distance'}
-                      value={value1}
-                      onChange={handleChange1}
-                      valueLabelDisplay="auto"
-                      getAriaValueText={valuetext}
-                      disableSwap
-                    />
-                  </div>}
+                    "&.MuiAccordionSummary-root": {
+                      padding: 0,
+                    },
+                  }}
+                >
+                  <span className="filtercategoryLable">
+                    {ele.label}
+                  </span>
+                </AccordionSummary>
+                <AccordionDetails
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "4px",
+                  }}
+                >
+                  {ele.label === "PRICE" &&
+                    <div>
+                      <Slider
+                        className='netWtSecSlider'
+                        getAriaLabel={() => 'Minimum distance'}
+                        value={value1}
+                        min={minPrice}
+                        max={maxPrice}
+                        size="small"
+                        onChange={handlePriceChange}
+                        valueLabelDisplay="auto"
+                        getAriaValueText={valuetext}
+                        disableSwap
+                      />
+                      <div className="d-flex w-100 justify-content-between align-items-center mt-1">
+                        <input value={value1[0]} className="minmaxvalpl" disabled />
+                        <input value={value1[1]} className="minmaxvalpl" disabled />
+                      </div>
+                    </div>}
 
                 {ele.label === "CENTERSTONE" &&
                   <div>
@@ -2685,7 +2692,7 @@ return (
                           </div>
                         </div>
                         <div>
-                          <p className="property-type" style={{ margin: '0px 0px 10px 8px' }}>
+                          <p className="property-type" style={{  margin: '0px 0px 10px 8px'  }}>
                             {isMetalTCShow === 1 && <span>
                               {products?.updMC} -
                               {products?.updMT}
