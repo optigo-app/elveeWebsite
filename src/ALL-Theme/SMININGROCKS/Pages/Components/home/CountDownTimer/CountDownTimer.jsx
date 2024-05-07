@@ -3,18 +3,36 @@ import './Styles.css';
 import featherImg from '../../../assets/LV Feather.png';
 
 const TwoPartDiv = () => {
-    const [countdown, setCountdown] = useState(calculateCountdown());
-    const [showDays, setShowDays] = useState(true);
+    const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0 });
+    const [startDateData, setStartDateData] = useState();
+    const [endDateData, setEndDateData] = useState();
 
     useEffect(() => {
-        const timerID = setInterval(() => tick(), 1000);
-        return () => clearInterval(timerID);
+        const storedData = JSON.parse(localStorage.getItem('loginUserDetail')) || {};
+        const entryDate = storedData.adhoc_startdate1;
+        const expiryDate = storedData.adhoc_enddate1;
+
+        if (entryDate && expiryDate) {
+            setStartDateData(entryDate);
+            setEndDateData(expiryDate);
+            const timerID = setInterval(() => tick(entryDate, expiryDate), 1000);
+            return () => clearInterval(timerID);
+        }
     }, []);
 
-    function calculateCountdown() {
-        const endDate = new Date("2024-05-06T17:53:01.437").getTime();
+    function calculateCountdown(startDate, endDate) {
+        const startTimestamp = new Date(startDate).getTime();
+        const endTimestamp = new Date(endDate).getTime();
         const now = new Date().getTime();
-        const timeDifference = endDate - now;
+        let timeDifference;
+
+        if (now < startTimestamp) {
+            timeDifference = startTimestamp - now;
+        } else if (now > endTimestamp) {
+            return { days: 0, hours: 0, minutes: 0 };
+        } else {
+            timeDifference = endTimestamp - now;
+        }
 
         const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
         const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -27,8 +45,8 @@ const TwoPartDiv = () => {
         };
     }
 
-    function tick() {
-        setCountdown(calculateCountdown());
+    function tick(startDate, endDate) {
+        setCountdown(calculateCountdown(startDate, endDate));
     }
 
     return (
@@ -50,7 +68,7 @@ const TwoPartDiv = () => {
                     <p className='ptitle'>{countdown.hours}</p>
                     <p className='pcontent'>Hours</p>
                 </span>
-                <span className='spanData'>
+                <span className='spanData lastspanData'>
                     <p className='ptitle'>{countdown.minutes}</p>
                     <p className='pcontent'>Minutes</p>
                 </span>

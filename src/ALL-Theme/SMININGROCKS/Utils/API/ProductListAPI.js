@@ -1,6 +1,6 @@
 import { CommonAPI } from "./CommonAPI"
 
-export const productListApiCall = async(param,page=1) =>{
+export const productListApiCall = async(param,page=1,filterObj={}) =>{
 
     const keyMapping = {
         "0": "id",
@@ -89,14 +89,39 @@ export const productListApiCall = async(param,page=1) =>{
     let storeinit = JSON.parse(localStorage.getItem("storeInit"))
     let loginInfo = JSON.parse(localStorage.getItem("loginUserDetail"))
     let userEmail = localStorage.getItem("userEmailForPdList")
-
+      console.log('props---', param);
 
     let encodedFilter = {
-      "FilterKey":`${param?.data.param1name}`,
       "DesignNo":"",
-      "FilterVal":`${param?.data.param1dataname}`,
+      // "FilterKey":`${param?.FilterKey}`,
+      // "FilterVal":`${param?.FilterVal}`,
+      "FilterKey":'',
+      "FilterVal":'',
+      "FilterKey1":`${param?.FilterKey1}`,
+      "FilterVal1":`${param?.FilterVal1}`,
+      "FilterKey2":`${param?.FilterKey2}`,
+      "FilterVal2":`${param?.FilterVal2}`,
       "PageNo":`${page}`,
-      "PageSize":`${storeinit?.PageSize}`}
+      "PageSize":`${storeinit?.PageSize}`,
+      "Collectionid": `${filterObj?.Collectionid ?? ""}`,
+      "Categoryid": `${filterObj?.Categoryid ?? ""}`,
+      "SubCategoryid": `${filterObj?.SubCategoryid ?? ""}`,
+      "Brandid": `${filterObj?.Brandid ?? ""}`,
+      "Genderid": `${filterObj?.Genderid ?? ""}`,
+      "Ocassionid": `${filterObj?.Ocassionid ?? ""}`,
+      "Themeid": `${filterObj?.Themeid ?? ""}`,
+      "Min_DiaWeight": '',
+      "Max_DiaWeight": '',
+      "Min_GrossWeight": '',
+      "Max_GrossWeight": '',
+      "Max_NetWt": '',
+      "Min_NetWt": '',
+      "Max_Price": '',
+      "Min_Price": '',
+      "Producttypeid": `${filterObj?.Producttypeid ?? ""}`
+    }
+
+
 
     const data = {
       "PackageId":`${loginInfo?.PackageId}`,
@@ -104,8 +129,8 @@ export const productListApiCall = async(param,page=1) =>{
       "Customerid":`${loginInfo?.id}`,
       "Filter":btoa(JSON.stringify(encodedFilter)),
     }
-
     let encData =  btoa(JSON.stringify(data))
+    console.log('encodedFilter',encodedFilter);
 
     let body = {
       "con":`{\"id\":\"\",\"mode\":\"GETPRODUCTLIST\",\"appuserid\":\"${userEmail}\"}`,
@@ -117,6 +142,11 @@ export const productListApiCall = async(param,page=1) =>{
     let ProductTypeFilter;
     let GenderFilter;
     let CollectionFilter;
+    let BrandFilter;
+    let OcassionFilter;
+    let ThemeFilter;
+    let SubCategoryFilter;
+
 
     let prodCount;
     await CommonAPI(body).then((res) => {
@@ -131,10 +161,15 @@ export const productListApiCall = async(param,page=1) =>{
             }
             pdList.push(mergedItem); 
         });
+
         CategoryFilter = res?.Data.rd3
         ProductTypeFilter = res?.Data.rd14
         GenderFilter = res?.Data.rd6;
         CollectionFilter = res?.Data.rd2
+        BrandFilter = res?.Data.rd5
+        OcassionFilter = res?.Data.rd7
+        ThemeFilter = res?.Data.rd8
+        SubCategoryFilter = res?.Data.rd4
         // console.log("pdList",pdList);
     });
 
@@ -146,6 +181,11 @@ export const productListApiCall = async(param,page=1) =>{
     localStorage.setItem("ProductTypeFilter",JSON.stringify(ProductTypeFilter));
     localStorage.setItem("GenderFilter",JSON.stringify(GenderFilter));
     localStorage.setItem("CollectionFilter",JSON.stringify(CollectionFilter));
+    localStorage.setItem("BrandFilter",JSON.stringify(BrandFilter));
+    localStorage.setItem("OcassionFilter",JSON.stringify(OcassionFilter));
+    localStorage.setItem("ThemeFilter",JSON.stringify(ThemeFilter));
+    localStorage.setItem("SubCategoryFilter",JSON.stringify(SubCategoryFilter));
+    
 
     //DesignList API Calling
     return pdList

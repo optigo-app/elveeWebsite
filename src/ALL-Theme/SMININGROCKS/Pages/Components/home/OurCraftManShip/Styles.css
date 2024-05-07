@@ -1,7 +1,7 @@
 .mainSocialMediaConatiner{
     margin-top: 20px;
   }
-  .swiper {
+  /* .swiper {
     width: 100%;
     height: 100%;
   }
@@ -20,7 +20,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-  }
+  } */
   .craftmenship{
     color: rgba(29, 50, 88, 0.8) !important;
     text-align: center;

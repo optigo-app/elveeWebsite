@@ -203,39 +203,112 @@ export function findMetalType(paramId) {
     return item
 }
 
-export function findMetalTypeId(param) {
-    let metalTypeArr = JSON.parse(localStorage.getItem("MetalTypeData"))
-    let item = metalTypeArr.filter(item => item?.metaltype === param)
-    return item
-}
-
 export function findMetalColor(paramId) {
     let metalColorArr = JSON.parse(localStorage.getItem("MetalColorData"))
     let item = metalColorArr.filter(item => item?.id === paramId)
     return item
 }
   
+export function findMetalTypeId(param) {
+    let metalTypeArr = JSON.parse(localStorage.getItem("MetalTypeData"))
+    let item = metalTypeArr.filter(item => item?.metaltype === param)
+    console.log("param",item);
+    return item
+}
+
 export function findDiaQcId(param){
+
     let diaQCArr = JSON.parse(localStorage.getItem("QualityColor"))
     let quality = param.split("#")[0]
     let color = param.split("#")[1]
     
     let item = diaQCArr?.filter(ele => ele?.Quality == quality && ele?.color == color)
+    console.log("param",item);
     return item
  }
 
 export function findCsQcId(param){
+
     let CsQCArr = JSON.parse(localStorage.getItem("ColorStoneQualityColor"))
     let quality = param.split("-")[0]
     let color = param.split("-")[1]
 
     let item = CsQCArr?.filter(ele => ele?.Quality == quality && ele?.color == color)
+    console.log("param",item);
     return item
+}
+
+export function findValueFromId(param1,param2) {
+
+    let output;
+
+    let categoryFilter = JSON.parse(localStorage.getItem("CategoryFilter"))
+    let ProductTypeFilter = JSON.parse(localStorage.getItem("ProductTypeFilter"))
+    let GenderFilter = JSON.parse(localStorage.getItem("GenderFilter"))
+    let CollectionFilter = JSON.parse(localStorage.getItem("CollectionFilter"))
+    let BrandFilter = JSON.parse(localStorage.getItem("BrandFilter"))
+    let OcassionFilter = JSON.parse(localStorage.getItem("OcassionFilter"))
+    let ThemeFilter = JSON.parse(localStorage.getItem("ThemeFilter"))
+    let SubCategoryFilter = JSON.parse(localStorage.getItem("SubCategoryFilter"))
+
+    if(param1 === "cate"){
+        let data = categoryFilter?.filter(item => item?.Categoryid == param2)
+        console.log("cate",data);
+        output = data[0]
+        return output;
+    }
+    if(param1 === "brand"){
+        let data = BrandFilter?.filter(item => item?.Brandid == param2)
+        console.log("brand",data);
+        output = data[0]
+        return output;
+    }
+    if(param1 === "prodtype"){
+        let data = ProductTypeFilter?.filter(item => item?.Producttypeid == param2)
+        console.log("prodtype",data);
+        output = data[0]
+        return output;
+    }
+    if(param1 === "collect"){
+        let data = CollectionFilter?.filter(item => item?.Collectionid == param2)
+        console.log("collect",data);
+        output = data[0]
+        return output;
+    }
+    if(param1 === "theme"){
+        let data = ThemeFilter?.filter(item => item?.Themeid == param2)
+        console.log("theme",data);
+        output = data[0]
+        return output;
+    }
+    if(param1 === "gender"){
+        let data = GenderFilter?.filter(item => item?.Genderid == param2)
+        console.log("gender",data);
+        output = data[0]
+        return output;
+    }
+    if(param1 === "subcate"){
+        let data = SubCategoryFilter?.filter(item => item?.SubCategoryid == param2)
+        console.log("subcate",data);
+        output = data[0]
+        return output;
+    }
+    if(param1 === "ocass"){
+        let data = OcassionFilter?.filter(item => item?.Ocassionid == param2)
+        console.log("ocass",data);
+        output = data[0]
+        return output;
+    }
     
 }
 
 export function ScrollToView(param){
-    const element = document.getElementById(param);
-    element.scrollIntoView({behavior:'smooth', block:'center', inline:'nearest'})
+    const element = document?.getElementById(param);
+    if (!element) {
+        window.location.href = '/';
+        return;
+    }
+    element?.scrollIntoView({behavior:'smooth', block:'center', inline:'nearest'});
 }
+
   

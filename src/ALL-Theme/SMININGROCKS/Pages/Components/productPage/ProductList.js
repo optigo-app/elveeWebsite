@@ -31,7 +31,7 @@ import { TfiLayoutGrid4Alt } from "react-icons/tfi";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { getDesignPriceList } from "../../../Utils/API/PriceDataApi";
-import { findCsQcId, findDiaQcId, findMetalColor, findMetalType, findMetalTypeId } from "../../../Utils/globalFunctions/GlobalFunction";
+import { findCsQcId, findDiaQcId, findMetalColor, findMetalType, findMetalTypeId, findValueFromId } from "../../../Utils/globalFunctions/GlobalFunction";
 
 function valuetext(value) {
   return `${value}°C`;
@@ -46,7 +46,7 @@ const ProductList = () => {
   const [ProductApiData, setProductApiData] = useState([])
   const [ProductApiData2, setProductApiData2] = useState([])
   const [drawerShowOverlay, setDrawerShowOverlay] = useState(false)
-  const [filterChecked, setFilterChecked] = useState({})
+  const [filterChecked, setFilterChecked] = useState({})  
   const [wishFlag, setWishFlag] = useState({})
   const [cartFlag, setCartFlag] = useState(false)
   const [cartData, setCartData] = useState([])
@@ -69,7 +69,6 @@ const ProductList = () => {
   const getnewMenuData = useRecoilValue(newMenuData)
   const getAllProdData = useRecoilValue(newTestProdData);
 
-  // console.log("getnewMenuData",getnewMenuData)  
   // console.log("getHeaderData2",getHeaderData2)
 
   const [minPrice, setMinPrice] = useState(null);
@@ -340,52 +339,21 @@ const ProductList = () => {
     setpriceDataApi(data)
   }, [])
 
-  //   const loginUserDetail = JSON.parse(localStorage.getItem('loginUserDetail'));  
-
+ 
   useEffect(() => {
     const fetchData = async () => {
       const data = JSON.parse(localStorage.getItem("allproductlist"));
-      const loginUserDetail = JSON.parse(localStorage.getItem('loginUserDetail'));
-      const storeInit = JSON.parse(localStorage.getItem('storeInit'));
+      // const loginUserDetail = JSON.parse(localStorage.getItem('loginUserDetail'));
+      // const storeInit = JSON.parse(localStorage.getItem('storeInit'));
+
+      console.log("priceDataApi",priceDataApi);
 
       const updatedData = await Promise?.all(data?.map(async (product) => {
-        const newPriceData = priceDataApi?.rd?.find(
-          (pda) =>
-            storeInit?.IsMetalCustomization === 1
-              ?
-              pda.A === product.autocode &&
-              pda.C === loginUserDetail?.MetalId
-              :
-              pda.A === product.autocode
-        );
+        const newPriceData = priceDataApi?.rd?.find((pda) => pda.A == product.autocode)
 
-        console.log("newPriceData", newPriceData)
+        const newPriceData1 = priceDataApi?.rd1?.filter((pda) => pda.A == product.autocode ).reduce((acc, obj) => acc + obj.S, 0)
 
-        const newPriceData1 = priceDataApi?.rd1?.filter(
-          (pda) =>
-
-            storeInit?.IsDiamondCustomization === 1
-              ?
-              pda.A === product.autocode &&
-              pda.G == loginUserDetail?.cmboDiaQCid?.split(',')[0] &&
-              pda.I == loginUserDetail?.cmboDiaQCid?.split(',')[1]
-              :
-              pda.A === product.autocode
-
-        ).reduce((acc, obj) => acc + obj.S, 0)
-
-        const newPriceData2 = priceDataApi?.rd2?.filter(
-          (pda) =>
-
-            storeInit?.IsCsCustomization === 1
-              ?
-              pda.A === product.autocode &&
-              pda.H === loginUserDetail?.cmboCSQCid?.split(',')[0] &&
-              pda.J === loginUserDetail?.cmboCSQCid?.split(',')[1]
-              :
-              pda.A === product.autocode
-
-        ).reduce((acc, obj) => acc + obj.S, 0)
+        const newPriceData2 = priceDataApi?.rd2?.filter((pda) => pda.A == product.autocode ).reduce((acc, obj) => acc + obj.S, 0)
 
         let price = 0;
         let markup = 0;
@@ -400,6 +368,16 @@ const ProductList = () => {
         let updCPCS = 0;
         let updMT = "";
         let updMC = "";
+        let diaQ = "";
+        let diaQid = "";
+        let diaC = "";
+        let diaCid = "";
+        let csQ = "";
+        let csQid = "";
+        let csC = "";
+        let csCid = "";
+        
+
 
         if (newPriceData || newPriceData1 || newPriceData2) {
           price = (((newPriceData?.V ?? 0) / currData?.CurrencyRate ?? 0) + (newPriceData?.W ?? 0) + (newPriceData?.X ?? 0)) + (newPriceData1 ?? 0) + (newPriceData2 ?? 0);
@@ -415,11 +393,22 @@ const ProductList = () => {
           updCPCS = newPriceData?.L ?? 0
           updMT = findMetalType(newPriceData?.C ?? product?.MetalTypeid)[0]?.metaltype ?? ""
           updMC = findMetalColor(product?.MetalColorid)[0]?.metalcolorname ?? ""
+          diaQ = ""
+          diaQid = ""
+          diaC = ""
+          diaCid = ""
+          csQ = ""
+          csQid = ""
+          csC = ""
+          csCid = ""
         }
         console.log("priceprod", product?.designno, metalrd, diard1, csrd2);
-        return { ...product, price, markup, metalrd, diard1, csrd2, updNWT, updGWT, updDWT, updDPCS, updCWT, updCPCS, updMT, updMC }
+        return { ...product, price, markup, metalrd, diard1, csrd2, updNWT, updGWT, 
+          updDWT, updDPCS, updCWT, updCPCS, updMT, updMC, 
+          diaQ, diaQid,
+          diaC, diaCid, csQ, csQid, csC,csCid
+        }
       }));
-
 
       localStorage.setItem("allproductlist", JSON.stringify(updatedData));
       setProductApiData2(updatedData);
@@ -759,7 +748,7 @@ const ProductList = () => {
   //     localStorage.setItem("allproductlist",JSON?.stringify(product))
   //     setProductApiData2(product)
 
-  useEffect(() => {
+  // useEffect(() => {
     // let newWishCheckData = (ProductApiData2)?.map((pd) => {
 
     //   let newWish = WishData?.find((cd) => pd.designno === cd.DesignNo && pd.autocode === cd.autocode)
@@ -780,43 +769,43 @@ const ProductList = () => {
     //   localStorage.setItem("allproductlist",JSON.stringify(newWishCheckData))
     // }
 
-    let newWishCheckData = (ProductApiData2 || []).map((pd) => {
-      const newWish = WishData?.find((cd) => pd.designno === cd.DesignNo && pd.autocode === cd.autocode);
-      let wishCheck = !!newWish;
-      return { ...pd, wishCheck };
-    });
+  //   let newWishCheckData = (ProductApiData2 || []).map((pd) => {
+  //     const newWish = WishData?.find((cd) => pd.designno === cd.DesignNo && pd.autocode === cd.autocode);
+  //     let wishCheck = !!newWish;
+  //     return { ...pd, wishCheck };
+  //   });
 
-    try {
-      localStorage.setItem("allproductlist", JSON.stringify(newWishCheckData));
-      if (JSON.stringify(newWishCheckData) !== JSON.stringify(ProductApiData2)) {
-        setProductApiData2(newWishCheckData);
-      }
-    } catch (error) {
-      console.error("Error storing data in localStorage:", error);
-    }
-  }, [WishData, ProductApiData2])
+  //   try {
+  //     localStorage.setItem("allproductlist", JSON.stringify(newWishCheckData));
+  //     if (JSON.stringify(newWishCheckData) !== JSON.stringify(ProductApiData2)) {
+  //       setProductApiData2(newWishCheckData);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error storing data in localStorage:", error);
+  //   }
+  // }, [WishData, ProductApiData2])
 
-  let cartlistUpdate = async () => {
-    let newCartCheckData = (ProductApiData2)?.map((pd) => {
+  // let cartlistUpdate = async () => {
+  //   let newCartCheckData = (ProductApiData2)?.map((pd) => {
 
-      let newWish = cartData?.find((cd) => pd.designno === cd.DesignNo && pd.autocode === cd.autocode)
+  //     let newWish = cartData?.find((cd) => pd.designno === cd.DesignNo && pd.autocode === cd.autocode)
 
 
-      let checkFlag = false
-      if (newWish) {
-        checkFlag = true
-      } else {
-        checkFlag = false
-      }
-      return { ...pd, checkFlag }
-    })
-    if (newCartCheckData) {
-      setProductApiData2(newCartCheckData)
-      localStorage.setItem("allproductlist", JSON.stringify(newCartCheckData))
-    }
-  }
+  //     let checkFlag = false
+  //     if (newWish) {
+  //       checkFlag = true
+  //     } else {
+  //       checkFlag = false
+  //     }
+  //     return { ...pd, checkFlag }
+  //   })
+  //   if (newCartCheckData) {
+  //     setProductApiData2(newCartCheckData)
+  //     localStorage.setItem("allproductlist", JSON.stringify(newCartCheckData))
+  //   }
+  // }
 
-  useEffect(() => {
+  // useEffect(() => {
     // let newCartCheckData = (ProductApiData2 || []).map((pd) => {
     //   const newWish = cartData?.find((cd) => pd.designno === cd.DesignNo && pd.autocode === cd.autocode);
     //   let checkFlag = !!newWish;
@@ -831,8 +820,8 @@ const ProductList = () => {
     // } catch (error) {
     //   console.error("Error storing data in localStorage:", error);
     // }
-    cartlistUpdate()
-  }, [cartData])
+    // cartlistUpdate()
+  // }, [cartData])
 
 
   const handelProductSubmit = (product) => {
@@ -840,70 +829,76 @@ const ProductList = () => {
     navigate("/productdetail");
   };
 
-  // const NewFilterData = () => {
-  //   const newFilter = [];
-  //   filterData?.SideMenuList?.forEach((ele) => {
-  //     if (ele.Fno === '1') {
-  //       newFilter.push({ label: "CATEGORY", filterList: filterData.CategoryList?.map((ele) => { return ele.CategoryName }), listType: 'CategoryName' });
-  //     } else if (ele.Fno === '2') {
-  //       newFilter.push({ label: "PRODUCT TYPE", filterList: filterData.ProductTypeList?.map((ele) => { return ele.ProducttypeName }), listType: 'ProducttypeName' });
-  //     } else if (ele.Fno === '8') {
-  //       newFilter.push({ label: "GENDER", filterList: filterData.GenderList?.map((ele) => { return ele.GenderName }), listType: 'GenderName' });
-  //     } else if (ele.Fno === '12') {
-  //       // newFilter.push({ label: "PRICE", filterList: [] });
-  //     } else if (ele.Fno === '15') {
-  //       newFilter.push({ label: "COLLECTION", filterList: filterData.CollectionList?.map((ele) => { return ele.CollectionName }), listType: 'CollectionName' });
-  //     } else if (ele.Fno === '18') {
 
-  //       newFilter.push({ label: "PRICE", filterList: [] });
-  //       newFilter.push({ label: "NETWT", filterList: [] });
-  //       newFilter.push({ label: "GROSSWT", filterList: [] });
-  //       newFilter.push({ label: "DIAMONDWT", filterList: [] });
-  //     }
-  //   });
 
-  //   return newFilter;
-  // }
+// const NewFilterData = () => {
+//   const newFilter = [];
+//   filterData?.SideMenuList?.forEach((ele) => {
+//     if (ele.Fno === '1') {
+//       newFilter.push({ label: "CATEGORY", filterList: filterData.CategoryList?.map((ele) => { return ele.CategoryName }), listType: 'CategoryName' });
+//     } else if (ele.Fno === '2') {
+//       newFilter.push({ label: "PRODUCT TYPE", filterList: filterData.ProductTypeList?.map((ele) => { return ele.ProducttypeName }), listType: 'ProducttypeName' });
+//     } else if (ele.Fno === '8') {
+//       newFilter.push({ label: "GENDER", filterList: filterData.GenderList?.map((ele) => { return ele.GenderName }), listType: 'GenderName' });
+//     } else if (ele.Fno === '12') {
+//       // newFilter.push({ label: "PRICE", filterList: [] });
+//     } else if (ele.Fno === '15') {
+//       newFilter.push({ label: "COLLECTION", filterList: filterData.CollectionList?.map((ele) => { return ele.CollectionName }), listType: 'CollectionName' });
+//     } else if (ele.Fno === '18') {
 
-  // let NewFilterData = () => {
+//       newFilter.push({ label: "PRICE", filterList: [] });
+//       newFilter.push({ label: "NETWT", filterList: [] });
+//       newFilter.push({ label: "GROSSWT", filterList: [] });
+//       newFilter.push({ label: "DIAMONDWT", filterList: [] });
+//     }
+//   });
 
-  //   const newFilter = [];
+//   return newFilter;
+// }
 
-  //   let categoryFilter = JSON.parse(localStorage.getItem("CategoryFilter"))
-  //   let ProductTypeFilter = JSON.parse(localStorage.getItem("ProductTypeFilter"))
-  //   let GenderFilter = JSON.parse(localStorage.getItem("GenderFilter"))
-  //   let CollectionFilter = JSON.parse(localStorage.getItem("CollectionFilter"))
+// let NewFilterData = () => {
 
-  //   if (categoryFilter) {
-  //     newFilter.push({ label: "CATEGORY", filterList: categoryFilter.map((res) => { return res?.CategoryName }), listType: 'CategoryName' })
-  //   }
-  //   if (ProductTypeFilter) {
-  //     newFilter.push({ label: "PRODUCT TYPE", filterList: ProductTypeFilter.map((res) => { return res?.ProducttypeName }), listType: 'ProducttypeName' })
-  //   }
-  //   if (GenderFilter) {
-  //     newFilter.push({ label: "GENDER", filterList: GenderFilter.map((res) => { return res?.GenderName }), listType: 'GenderName' })
-  //   }
-  //   if (CollectionFilter) {
-  //     newFilter.push({ label: "COLLECTION", filterList: CollectionFilter.map((res) => { return res?.CollectionName }), listType: 'CollectionName' })
-  //   }
+//   const newFilter = [];
 
-  //   newFilter.push({ label: "PRICE", filterList: [] });
-  //   newFilter.push({ label: "NETWT", filterList: [] });
-  //   newFilter.push({ label: "GROSSWT", filterList: [] });
-  //   newFilter.push({ label: "DIAMONDWT", filterList: [] });
+//   let categoryFilter = JSON.parse(localStorage.getItem("CategoryFilter"))
+//   let ProductTypeFilter = JSON.parse(localStorage.getItem("ProductTypeFilter"))
+//   let GenderFilter = JSON.parse(localStorage.getItem("GenderFilter"))
+//   let CollectionFilter = JSON.parse(localStorage.getItem("CollectionFilter"))
 
-  //   return newFilter
+//   if (categoryFilter) {
+//     newFilter.push({ label: "CATEGORY", filterList: categoryFilter.map((res) => { return res?.CategoryName }), listType: 'CategoryName' })
+//   }
+//   if (ProductTypeFilter) {
+//     newFilter.push({ label: "PRODUCT TYPE", filterList: ProductTypeFilter.map((res) => { return res?.ProducttypeName }), listType: 'ProducttypeName' })
+//   }
+//   if (GenderFilter) {
+//     newFilter.push({ label: "GENDER", filterList: GenderFilter.map((res) => { return res?.GenderName }), listType: 'GenderName' })
+//   }
+//   if (CollectionFilter) {
+//     newFilter.push({ label: "COLLECTION", filterList: CollectionFilter.map((res) => { return res?.CollectionName }), listType: 'CollectionName' })
+//   }
 
-  // }
+//   newFilter.push({ label: "PRICE", filterList: [] });
+//   newFilter.push({ label: "NETWT", filterList: [] });
+//   newFilter.push({ label: "GROSSWT", filterList: [] });
+//   newFilter.push({ label: "DIAMONDWT", filterList: [] });
 
-  let NewFilterData1 = () => {
+//   return newFilter
 
-    const newFilter = [];
+// }
+
+let NewFilterData1 = () => {
+
+  const newFilter = [];
 
     let categoryFilter = JSON.parse(localStorage.getItem("CategoryFilter"))
     let ProductTypeFilter = JSON.parse(localStorage.getItem("ProductTypeFilter"))
     let GenderFilter = JSON.parse(localStorage.getItem("GenderFilter"))
     let CollectionFilter = JSON.parse(localStorage.getItem("CollectionFilter"))
+    let BrandFilter = JSON.parse(localStorage.getItem("BrandFilter"))
+    let OcassionFilter = JSON.parse(localStorage.getItem("OcassionFilter"))
+    let ThemeFilter = JSON.parse(localStorage.getItem("ThemeFilter"))
+    let SubCategoryFilter = JSON.parse(localStorage.getItem("SubCategoryFilter"))
 
     if (categoryFilter) {
       newFilter.push({ label: "CATEGORY", filterList: categoryFilter.map((res) => { return { "label": res?.CategoryName, "id": res?.Categoryid } }), listType: 'Categoryid' })
@@ -917,33 +912,44 @@ const ProductList = () => {
     if (CollectionFilter) {
       newFilter.push({ label: "COLLECTION", filterList: CollectionFilter.map((res) => { return { "label": res?.CollectionName, "id": res?.Collectionid } }), listType: 'Collectionid' })
     }
+    if (BrandFilter) {
+      newFilter.push({ label: "BRAND", filterList: BrandFilter.map((res) => { return { "label": res?.BrandName, "id": res?.Brandid } }), listType: 'Brandid' })
+    }
+    if (OcassionFilter) {
+      newFilter.push({ label: "OCASSION", filterList: OcassionFilter.map((res) => { return { "label": res?.OcassionName, "id": res?.Ocassionid } }), listType: 'Ocassionid' })
+    }
+    if (ThemeFilter) {
+      newFilter.push({ label: "THEME", filterList: ThemeFilter.map((res) => { return { "label": res?.ThemeName, "id": res?.Themeid } }), listType: 'Themeid' })
+    }
+    if (SubCategoryFilter) {
+      newFilter.push({ label: "SUBCATEGORY", filterList: SubCategoryFilter.map((res) => { return { "label": res?.SubCategoryName, "id": res?.SubCategoryid } }), listType: 'SubCategoryid' })
+    }
+    
+    // newFilter.push({ label: "PRICE", filterList: [] });
+    // newFilter.push({ label: "NETWT", filterList: [] });
+    // newFilter.push({ label: "GROSSWT", filterList: [] });
+    // newFilter.push({ label: "DIAMONDWT", filterList: [] });
 
-    newFilter.push({ label: "PRICE", filterList: [] });
-    newFilter.push({ label: "NETWT", filterList: [] });
-    newFilter.push({ label: "GROSSWT", filterList: [] });
-    newFilter.push({ label: "DIAMONDWT", filterList: [] });
+  return newFilter
 
-    return newFilter
+}
 
-  }
+// console.log("NewFilterData()",NewFilterData1())
 
-  // console.log("NewFilterData()",NewFilterData1())
+const handleCheckboxChange = (e, ele, flist) => {
+  const { name, checked, value } = e.target;
 
-  const handleCheckboxChange = (e, ele, flist) => {
-    const { name, checked, value } = e.target;
-
-    setFilterChecked((prev) => ({
-      ...prev,
-      [name]: { checked, value: flist, type: ele.listType }
-    }));
-  }
+  setFilterChecked((prev) => ({
+    ...prev,
+    [name]: { checked, value: flist, type: ele.listType }
+  }));
+}
 
 
-  useEffect(() => {
+useEffect(() => {
 
-    let FilterCheckedLength = (Object.values(filterChecked)).filter(fc => fc.checked !== false).filter(fc => fc.checked !== undefined)
+  let FilterCheckedLength = (Object.values(filterChecked)).filter(fc => fc.checked !== false).filter(fc => fc.checked !== undefined)
 
-    console.log("isFilterData", FilterCheckedLength?.length, newProData?.length)
     setTimeout(() => {
       if (FilterCheckedLength?.length > 0 && newProData?.length === 0) {
         setIsFilterData(true)
@@ -952,137 +958,195 @@ const ProductList = () => {
       }
     }, 0)
 
-  }, [filterChecked, newProData])
+}, [filterChecked, newProData])
 
 
-  // useEffect(() => {
-  //   let FilterDataVar = [];
-  //   let NewFilterArr = Object?.values(filterChecked).filter((ele) => ele?.checked === true)
-  //   NewFilterArr.map((ele) => {
-  //     let fd = ProductApiData2.filter((pd) => pd[ele?.type] === ele?.value)
-  //     if (fd) {
-  //       FilterDataVar.push(fd)
-  //     }
-  //   })
+// useEffect(() => {
+//   let FilterDataVar = [];
+//   let NewFilterArr = Object?.values(filterChecked).filter((ele) => ele?.checked === true)
+//   NewFilterArr.map((ele) => {
+//     let fd = ProductApiData2.filter((pd) => pd[ele?.type] === ele?.value)
+//     if (fd) {
+//       FilterDataVar.push(fd)
+//     }
+//   })
 
-  //   console.log("filterDataVar",NewFilterArr)
+//   console.log("filterDataVar",NewFilterArr)
 
-  //   if (FilterDataVar.length && FilterDataVar) {
-  //     let reverseData = FilterDataVar.reverse()
-  //     const mergedArray = [].concat(...reverseData);
-  //     setNewProData(mergedArray)
-  //     // console.log("FilterDataVar", mergedArray)
-  //   } else {
-  //     setNewProData(ProductApiData2)
-  //   }
+//   if (FilterDataVar.length && FilterDataVar) {
+//     let reverseData = FilterDataVar.reverse()
+//     const mergedArray = [].concat(...reverseData);
+//     setNewProData(mergedArray)
+//     // console.log("FilterDataVar", mergedArray)
+//   } else {
+//     setNewProData(ProductApiData2)
+//   }
 
-  // }, [filterChecked])
+// }, [filterChecked])
 
-  useEffect(() => {
-    let filteredData = ProductApiData2;
-
+  let filterFunction = async() =>{
+    let param = JSON.parse(localStorage.getItem("menuparams"))
     const activeFilters = Object.values(filterChecked).filter(ele => ele.checked);
+    
+    const output = {};
 
-    if (activeFilters.length > 0) {
-      filteredData = filteredData.filter(product => {
-        // Group filters by type
-        const filtersByType = activeFilters.reduce((acc, filter) => {
-          acc[filter.type] = acc[filter.type] || [];
-          acc[filter.type].push(filter);
-          return acc;
-        }, {});
+    activeFilters.forEach(item => {
+      if (!output[item.type]) {
+        output[item.type] = '';
+    }
+    output[item.type] += `${item.value}, `;
+    });
 
-        // return Object.values(filtersByType).every(filters => {
-        //     return filters.some(filter => product[filter.type] === filter.value);
-        // });
-
-        return Object.values(filtersByType).every(filters => {
-          const filterResults = filters.map(filter => product[filter.type] === filter.value);
-          return filterResults.some(result => result);
-        });
-      });
+    for (const key in output) {
+      output[key] = output[key].slice(0, -2);
     }
 
-    // let FilterCheckedLength = (Object.values(filterChecked)).filter(fc=> fc.checked !== false).filter(fc=> fc.checked !== undefined)
-    let FilterCheckedLength = (Object.values(filterChecked)).filter(fc => fc.checked === true)
+    console.log("activeFilters",output)
 
-    if (FilterCheckedLength.length === 0) {
-      setNewProData([])
-      setRangeProData([])
-      setSelectedSortOption('Recommended')
-    } else {
-      setNewProData(filteredData);
-    }
-
-  }, [filterChecked]);
-
-
-  const getCartAndWishListData = async () => {
-
-    const UserEmail = localStorage.getItem("registerEmail")
-    const storeInit = JSON.parse(localStorage.getItem("storeInit"))
-    const Customer_id = JSON.parse(localStorage.getItem("loginUserDetail"));
-
-    let EncodeData = { FrontEnd_RegNo: `${storeInit?.FrontEnd_RegNo}`, Customerid: `${Customer_id?.id}` }
-
-    const encodedCombinedValue = btoa(JSON.stringify(EncodeData));
-
-    const body = {
-      "con": `{\"id\":\"Store\",\"mode\":\"getdesignnolist\",\"appuserid\":\"${UserEmail}\"}`,
-      "f": " useEffect_login ( getdataofcartandwishlist )",
-      "p": encodedCombinedValue
-    }
-
-    await CommonAPI(body).then((res) => {
-      if (res?.Message === "Success") {
-
-        setCartData(res?.Data?.rd)
-        setWishData(res?.Data?.rd1)
-
-      }
+    await productListApiCall(param,currentPage,output).then(res =>{
+           if(res){
+            getProductData()
+           }
     })
-
   }
 
-  // useEffect(() => {
-  //   let newData = Object.keys(cartFlag).filter((cf) => Object.keys(wishFlag).find((wf) => wf === cf))
-
-  //   // const cartFlagKeys = Object.keys(cartFlag);
-  //   // const updatedWishFlag = { ...wishFlag };
-
-  //   // cartFlagKeys.forEach((cf) => {
-  //   //   if (updatedWishFlag.hasOwnProperty(cf)) {
-  //   //     delete updatedWishFlag[cf];
-  //   //   }
-  //   // });
-  //   // console.log({ cartFlag, wishFlag }, newData)
-  //   console.log(wishFlag)
-
-  // }, [cartFlag, wishFlag])
-
   useEffect(() => {
+    // let filteredData = ProductApiData2;
+    filterFunction();
 
-    getCartAndWishListData()
-    // getCountApi()
-    getCountFunc()
+  //   {
+  //     "checked": true,
+  //     "value": 22,
+  //     "type": "Brandid"
+  // }
 
-  }, [])
+    // if (activeFilters.length > 0) {
+    //   filteredData = filteredData.filter(product => {
+    //     // Group filters by type
+    //     const filtersByType = activeFilters.reduce((acc, filter) => {
+    //       acc[filter.type] = acc[filter.type] || [];
+    //       acc[filter.type].push(filter);
+    //       return acc;
+    //     }, {});
 
-  const handelWishList = async (event, prod) => {
+    //     // return Object.values(filtersByType).every(filters => {
+    //     //     return filters.some(filter => product[filter.type] === filter.value);
+    //     // });
 
-    try {
-      setWishFlag(prev => ({ ...prev, [prod?.designno]: event.target.checked }))
-      // setWishFlag(event.target.checked)
+    //     return Object.values(filtersByType).every(filters => {
+    //       const filterResults = filters.map(filter => product[filter.type] === filter.value);
+    //       return filterResults.some(result => result);
+    //     });
+    //   });
+    // }
 
-      if (event.target.checked === true) {
+    // // let FilterCheckedLength = (Object.values(filterChecked)).filter(fc=> fc.checked !== false).filter(fc=> fc.checked !== undefined)
+    // let FilterCheckedLength = (Object.values(filterChecked)).filter(fc => fc.checked === true)
 
-        const storeInit = JSON.parse(localStorage.getItem("storeInit"))
-        const UserEmail = localStorage.getItem("registerEmail")
-        const Customer_id = JSON.parse(localStorage.getItem("loginUserDetail"));
+    // if (FilterCheckedLength.length === 0) {
+    //   setNewProData([])
+    //   setRangeProData([])
+    //   setSelectedSortOption('Recommended')
+    // } else {
+    //   setNewProData(filteredData);
+    // }
+
+}, [filterChecked]);
+
+  useEffect(() =>{
+    // let productList =  JSON.parse(localStorage.getItem('allproductlist'))
+  
+    ProductApiData2.forEach(item =>{
+      let prodData = cartData.find(ele => ele.autocode == item?.autocode)
+
+      if(prodData){
+        item.checkFlag = true
+      }else{
+        item.checkFlag = false
+      }
+
+    })
+    localStorage.setItem("allproductlist",JSON.stringify(ProductApiData2))
+  },[cartData,ProductApiData2])
+
+  useEffect(() =>{
+    ProductApiData2.forEach(item =>{
+      let prodData = WishData.find(ele => ele.autocode == item?.autocode)
+
+      if(prodData){
+        item.wishCheck = true
+      }else{
+        item.wishCheck = false
+      }
+    })
+    localStorage.setItem("allproductlist",JSON.stringify(ProductApiData2))
+  },[WishData,ProductApiData2])
+
+
+const getCartAndWishListData = async () => {
+
+  const UserEmail = localStorage.getItem("registerEmail")
+  const storeInit = JSON.parse(localStorage.getItem("storeInit"))
+  const Customer_id = JSON.parse(localStorage.getItem("loginUserDetail"));
+
+  let EncodeData = { FrontEnd_RegNo: `${storeInit?.FrontEnd_RegNo}`, Customerid: `${Customer_id?.id}` }
+
+  const encodedCombinedValue = btoa(JSON.stringify(EncodeData));
+
+  const body = {
+    "con": `{\"id\":\"Store\",\"mode\":\"getdesignnolist\",\"appuserid\":\"${UserEmail}\"}`,
+    "f": " useEffect_login ( getdataofcartandwishlist )",
+    "p": encodedCombinedValue
+  }
+
+  await CommonAPI(body).then((res) => {
+    if (res?.Message === "Success") {
+
+      setCartData(res?.Data?.rd)
+      setWishData(res?.Data?.rd1)
+
+    }
+  })
+
+}
+
+// useEffect(() => {
+//   let newData = Object.keys(cartFlag).filter((cf) => Object.keys(wishFlag).find((wf) => wf === cf))
+
+//   // const cartFlagKeys = Object.keys(cartFlag);
+//   // const updatedWishFlag = { ...wishFlag };
+
+//   // cartFlagKeys.forEach((cf) => {
+//   //   if (updatedWishFlag.hasOwnProperty(cf)) {
+//   //     delete updatedWishFlag[cf];
+//   //   }
+//   // });
+//   // console.log({ cartFlag, wishFlag }, newData)
+//   console.log(wishFlag)
+
+// }, [cartFlag, wishFlag])
+
+useEffect(() => {
+
+  getCartAndWishListData()
+  // getCountApi()
+  getCountFunc()
+
+}, [])
+
+const handelWishList = async (event, prod) => {
+
+  try {
+    setWishFlag(prev => ({ ...prev, [prod?.designno]: event.target.checked }))
+    // setWishFlag(event.target.checked)
+
+    if (event.target.checked === true) {
+
+      const storeInit = JSON.parse(localStorage.getItem("storeInit"))
+      const UserEmail = localStorage.getItem("registerEmail")
+      const Customer_id = JSON.parse(localStorage.getItem("loginUserDetail"));
 
         const product = prod
-
-        console.log("prod", prod)
 
         const finalJSON = {
           "stockweb_event": "",
@@ -1091,29 +1155,29 @@ const ProductList = () => {
           "stockno": "",
           "is_show_stock_website": "0",
           "cmboDiaQualityColor": `${JSON.parse(localStorage.getItem("loginUserDetail"))?.cmboDiaQualityColor ?? ""}`,
-          "cmboMetalType": `${JSON.parse(localStorage.getItem("loginUserDetail"))?.cmboMetalType ?? ""}`,
-          "AdditionalValWt": Number(`${product?.AdditionalValWt}`),
-          "BrandName": `${product?.BrandName ?? ""}`,
-          "Brandid": 5,
-          "CategoryName": `${product?.CategoryName}`,
+          "cmboMetalType": `${product?.updMT}`,
+          "AdditionalValWt": Number(`${product?.AdditionalValWt ?? 0}`),
+          "BrandName": `${findValueFromId("brand",product?.Brandid)?.BrandName}`,
+          "Brandid": Number(`${product?.Brandid}`),
+          "CategoryName": `${findValueFromId("cate",product?.Categoryid)?.CategoryName}`,
           "Categoryid": Number(`${product?.Categoryid}`),
           "CenterStoneId": Number(`${product?.CenterStoneId}`),
           "CenterStonePieces": Number(`${product?.updCPCS}`),
-          "CollectionName": `${product?.CollectionName}`,
+          "CollectionName": `${findValueFromId("collect",product?.Collectionid)?.CollectionName}`,
           "Collectionid": Number(`${product?.Collectionid}`),
           "ColorWiseRollOverImageName": `${product?.ColorWiseRollOverImageName}`,
           "DefaultImageName": `${product?.DefaultImageName}`,
           "DisplayOrder": Number(`${product?.DisplayOrder}`),
           "FrontEnd_OrderCnt": Number(`${product?.FrontEnd_OrderCnt}`),
-          "GenderName": `${product?.GenderName}`,
+          "GenderName": `${findValueFromId("gender",product?.Genderid)?.GenderName}`,
           "Genderid": Number(`${product?.Genderid}`),
           "Grossweight": Number(`${product?.updGWT}`),
           "InReadyStockCnt": Number(`${product?.InReadyStockCnt}`),
           "IsBestSeller": Number(`${product?.IsBestSeller}`),
           "IsColorWiseImageExists": `${product?.ColorWiseRollOverImageName?.length > 0 ? 1 : 0}`,
           "IsInReadyStock": Number(`${product?.IsInReadyStock}`),
-          "IsNewArrival": `${product?.IsNewArrival}`,
-          "IsRollOverColorWiseImageExists": `${product?.IsRollOverColorWiseImageExists?.length > 0 ? 1 : 0}`,
+          "IsNewArrival": Number(`${product?.IsNewArrival}`),
+          "IsRollOverColorWiseImageExists": Number(`${product?.IsRollOverColorWiseImageExists?.length > 0 ? 1 : 0}`),
           "IsTrending": Number(`${product?.IsTrending}`),
           "MasterManagement_labid": Number(`${product?.MasterManagement_labid}`),
           "MasterManagement_labname": "",
@@ -1121,23 +1185,23 @@ const ProductList = () => {
           "MetalColorid": Number(`${product?.MetalColorid}`),
           "MetalPurity": `${product?.updMT?.split(" ")[1] ?? '18K'}`,
           "MetalPurityid": Number(`${product?.MetalTypeid}`),
-          "MetalTypeName": `${product?.MetalTypeName ?? ""}`,
+          "MetalTypeName":`${product?.updMT.split(" ")[0]}`,
           "MetalTypeid": Number(`${product?.IsInReadyStock}`),
           "MetalWeight": Number(`${product?.updNWT}`),
-          "OcassionName": `${product?.OcassionName ?? ""}`,
+          "OcassionName": `${findValueFromId("ocass",product?.Ocassionid)?.OcassionName}`,
           "Ocassionid": Number(`${product?.Ocassionid}`),
-          "ProducttypeName": `${product?.ProducttypeName}`,
+          "ProducttypeName":`${findValueFromId("prodtype",product?.Producttypeid)?.ProducttypeName}`,
           "Producttypeid": Number(`${product?.Producttypeid}`),
           "RollOverImageName": `${product?.RollOverImageName}`,
-          "SubCategoryName": `${product?.SubCategoryName ?? ""}`,
-          "SubCategoryid": Number(`${product?.SubCategoryid ?? ""}`),
-          "ThemeName": `${product?.ThemeName ?? ""}`,
+          "SubCategoryName": `${findValueFromId("subcate",product?.SubCategoryid)?.SubCategoryName}`,
+          "SubCategoryid": Number(`${product?.SubCategoryid}`),
+          "ThemeName":`${findValueFromId("theme",product?.Themeid)?.ThemeName}`,
           "Themeid": Number(`${product?.Themeid}`),
           "TitleLine": `${product?.TitleLine}`,
           // "UnitCost": `${product?.price === "Not Available" ? 0 : product?.price}`,
-          "UnitCost": `${product?.price ?? 0}`,
+          "UnitCost":  Number(`${product?.price === "Not Available" ? 0 : product?.price}`),
           // "UnitCostWithmarkup": (`${(product?.price === "Not Available" ? 0 : product?.price) + (product?.markup ?? 0)}`),
-          "UnitCostWithmarkup": (`${PriceWithMarkupFunction(product?.markup, product?.price, currData?.CurrencyRate)}`),
+          "UnitCostWithmarkup": Number(`${(product?.price === "Not Available" ? 0 : product?.price) + (product?.markup ?? 0)}`),
           "autocode": `${product?.autocode}`,
           "colorstonecolorname": `${product?.colorstonecolorname}`,
           "colorstonequality": `${product?.colorstonequality}`,
@@ -1149,7 +1213,7 @@ const ProductList = () => {
           "diamondshape": `${product?.diamondshape}`,
           "diamondweight": Number(`${product?.updDWT}`),
           "encrypted_designno": `${product?.encrypted_designno ?? ""}`,
-          "hashtagid": `${product?.Hashtagid ?? ""}`,
+          "hashtagid": Number(`${product?.Hashtagid ?? 0}`),
           "hashtagname": `${product?.Hashtagname ?? ""}`,
           "imagepath": `${globImagePath}`,
           "imgrandomno": `${product?.imgrandomno}`,
@@ -1157,53 +1221,53 @@ const ProductList = () => {
           "originalimage": `${product?.OriginalImagePath}`,
           "storyline_html": `${product?.storyline_html ?? ""}`,
           "storyline_video": `${product?.storyline_video ?? ""}`,
-          "thumbimage": `${product?.ThumbImagePath}`,
-          "totaladditionalvalueweight": 0,
+          "thumbimage": `${product?.ThumbImagePath ?? ''}`,
+          "totaladditionalvalueweight":  Number(`${product?.totaladditionalvalueweigt ?? 0}`) ,
           "totalcolorstoneweight": Number(`${product?.updCWT}`),
           "totaldiamondweight": Number(`${product?.updDWT}`),
-          "updatedate": `${product?.UpdateDate}`,
+          "updatedate": `${product?.UpdateDate ?? 0}`,
           "videoname": `${product?.videoname ?? ""}`,
           "FrontEnd_RegNo": `${storeInit?.FrontEnd_RegNo}`,
-          "Customerid": `${Customer_id?.id}`,
-          "PriceMastersetid": `${product?.PriceMastersetid ?? ""}`,
+          "Customerid":  Number(`${Customer_id?.id}`),
+          "PriceMastersetid":  Number(`${product?.PriceMastersetid ?? 0}`),
           "DQuality": `${JSON.parse(localStorage.getItem("loginUserDetail"))?.cmboDiaQualityColor.split("#@#")[0]}`,
           "DColor": `${JSON.parse(localStorage.getItem("loginUserDetail"))?.cmboDiaQualityColor.split("#@#")[1]}`,
           "UploadLogicalPath": `${product?.UploadLogicalPath ?? ""}`,
           "ukey": `${storeInit?.ukey}`
         }
 
-        const encodedCombinedValue = btoa(JSON.stringify(finalJSON));
+      const encodedCombinedValue = btoa(JSON.stringify(finalJSON));
 
-        const body = {
-          con: `{\"id\":\"\",\"mode\":\"addwishlist\",\"appuserid\":\"${UserEmail}\"}`,
-          f: "AddToWishListIconClick (addwishlist)",
-          p: encodedCombinedValue,
-        };
+      const body = {
+        con: `{\"id\":\"\",\"mode\":\"addwishlist\",\"appuserid\":\"${UserEmail}\"}`,
+        f: "AddToWishListIconClick (addwishlist)",
+        p: encodedCombinedValue,
+      };
 
-        await CommonAPI(body).then(async (res) => {
-          if (res?.Data?.rd[0]?.msg === "success") {
-            await getCartAndWishListData()
-            getCountFunc()
-          }
-        })
-      }
-      else {
-        // {"designlist":"'MCJ10'","isselectall":"0","FrontEnd_RegNo":"95oztttesi0o50vr","Customerid":"856"}
-
-        const storeInit = JSON.parse(localStorage.getItem("storeInit"))
-        const UserEmail = localStorage.getItem("registerEmail")
-        const Customer_id = JSON.parse(localStorage.getItem("loginUserDetail"));
-
-        setWishListRemoveData(prod.designno)
-
-        let Data = { "designlist": `'${prod?.designno}'`, "isselectall": "0", "FrontEnd_RegNo": `${storeInit?.FrontEnd_RegNo}`, "Customerid": `${Customer_id?.id}` }
-
-        let encodedCombinedValue = btoa(JSON.stringify(Data))
-        const body = {
-          con: `{\"id\":\"\",\"mode\":\"removeFromWishList\",\"appuserid\":\"${UserEmail}\"}`,
-          f: "RemoveFromWishlistIconClick (removeFromWishList)",
-          p: encodedCombinedValue,
+      await CommonAPI(body).then(async (res) => {
+        if (res?.Data?.rd[0]?.msg === "success") {
+          await getCartAndWishListData()
+          getCountFunc()
         }
+      })
+    }
+    else {
+      // {"designlist":"'MCJ10'","isselectall":"0","FrontEnd_RegNo":"95oztttesi0o50vr","Customerid":"856"}
+
+      const storeInit = JSON.parse(localStorage.getItem("storeInit"))
+      const UserEmail = localStorage.getItem("registerEmail")
+      const Customer_id = JSON.parse(localStorage.getItem("loginUserDetail"));
+
+      setWishListRemoveData(prod.designno)
+
+      let Data = { "designlist": `'${prod?.designno}'`, "isselectall": "0", "FrontEnd_RegNo": `${storeInit?.FrontEnd_RegNo}`, "Customerid": `${Customer_id?.id}` }
+
+      let encodedCombinedValue = btoa(JSON.stringify(Data))
+      const body = {
+        con: `{\"id\":\"\",\"mode\":\"removeFromWishList\",\"appuserid\":\"${UserEmail}\"}`,
+        f: "RemoveFromWishlistIconClick (removeFromWishList)",
+        p: encodedCombinedValue,
+      }
 
         await CommonAPI(body).then(async (res) => {
           // console.log("responsePlist",res?.Data?.rd[0]?.msg === "success");
@@ -1215,69 +1279,64 @@ const ProductList = () => {
             // removefromCart(prod)
           }
         })
-
       }
     }
     catch (error) {
       console.log("error", error);
     }
-    // console.log("productsWish",prod)
-    // prod["checkFlag"] = event.target.checked
   }
-  const [disablecartBtn, setDisablecartBtn] = useState(false);
 
-  const handelCartList = async (event, prod) => {
-    try {
-      setCartFlag(prev => ({ ...prev, [prod?.designno]: event.target.checked }))
+const handelCartList = async (event, prod) => {
+  try {
+    setCartFlag(prev => ({ ...prev, [prod?.designno]: event.target.checked }))
 
-      setDisablecartBtn(true);
       if (event.target.checked === true) {
         const storeInit = JSON.parse(localStorage.getItem("storeInit"))
         const UserEmail = localStorage.getItem("registerEmail")
         const Customer_id = JSON.parse(localStorage.getItem("loginUserDetail"));
 
-        const product = prod
+      const product = prod
 
-        let isWishHasCartData = WishData?.filter((pd) => product.autocode === pd.autocode)
-        // console.log("isWishHasCartData", isWishHasCartData)
+      let isWishHasCartData = WishData?.filter((pd) => product.autocode === pd.autocode)
+      // console.log("isWishHasCartData", isWishHasCartData)
 
-        let wishToCartEncData = { "autocodelist": `${isWishHasCartData[0]?.autocode}`, "ischeckall": 0, "FrontEnd_RegNo": `${storeInit?.FrontEnd_RegNo}`, "Customerid": `${Customer_id?.id}` }
+      let wishToCartEncData = { "autocodelist": `${isWishHasCartData[0]?.autocode}`, "ischeckall": 0, "FrontEnd_RegNo": `${storeInit?.FrontEnd_RegNo}`, "Customerid": `${Customer_id?.id}` }
 
         const finalJSON = {
           "stockweb_event": "",
           "designno": `${product?.designno}`,
           "autocode": `${product?.autocode}`,
           "imgrandomno": `${product?.imgrandomno}`,
-          "producttypeid": `${product?.Producttypeid}`,
-          "metaltypeid": `${product?.MetalTypeid}`,
-          "metalcolorid": `${product?.MetalColorid}`,
+          "producttypeid": Number(`${product?.Producttypeid}`),
+          "metaltypeid": Number(`${product?.MetalTypeid}`),
+          "metalcolorid": Number(`${product?.MetalColorid}`),
           "stockno": "",
           // "DQuality": `${product?.diamondquality?.split(",")[0]}`,
           "DQuality": `${JSON.parse(localStorage.getItem("loginUserDetail"))?.cmboDiaQualityColor.split("#@#")[0]}`,
           "DColor": `${JSON.parse(localStorage.getItem("loginUserDetail"))?.cmboDiaQualityColor.split("#@#")[1]}`,
-          "cmboMetalType": `${product?.MetalTypeName} ${product?.MetalPurity}`,
-          "AdditionalValWt": Number(`${product?.AdditionalValWt}`),
-          "BrandName": `${product?.BrandName ?? ""}`,
+          "cmboMetalType": `${product?.updMT}`,
+          "AdditionalValWt": Number(`${product?.AdditionalValWt ?? 0}`),
+          "BrandName": `${findValueFromId("brand",product?.Brandid)?.BrandName}`,
           "Brandid": Number(`${product?.Brandid}`),
-          "CategoryName": `${product?.CategoryName}`,
+          "CategoryName": `${findValueFromId("cate",product?.Categoryid)?.CategoryName}`,
           "Categoryid": Number(`${product?.Categoryid}`),
           "CenterStoneId": Number(`${product?.CenterStoneId}`),
           "CenterStonePieces": Number(`${product?.updCPCS}`),
-          "CollectionName": `${product?.CollectionName}`,
+          "CollectionName": `${findValueFromId("collect",product?.Collectionid)?.CollectionName}`,
           "Collectionid": Number(`${product?.Collectionid}`),
           "ColorWiseRollOverImageName": `${product?.ColorWiseRollOverImageName}`,
           "DefaultImageName": `${product?.DefaultImageName}`,
           "DisplayOrder": Number(`${product?.DisplayOrder}`),
           "FrontEnd_OrderCnt": Number(`${product?.FrontEnd_OrderCnt}`),
-          "GenderName": `${product?.GenderName}`,
+          "GenderName": `${findValueFromId("gender",product?.Genderid)?.GenderName}`,
           "Genderid": Number(`${product?.Genderid}`),
           "Grossweight": Number(`${product?.updGWT}`),
           "InReadyStockCnt": Number(`${product?.InReadyStockCnt}`),
           "IsBestSeller": Number(`${product?.IsBestSeller}`),
-          "IsColorWiseImageExists": `${product?.IsColorWiseImageExists ?? 0}`,
+          "IsColorWiseImageExists": Number(`${product?.IsColorWiseImageExists ?? 0}`),
           "IsInReadyStock": Number(`${product?.IsInReadyStock}`),
-          "IsNewArrival": `${product?.IsNewArrival}`,
-          "IsRollOverColorWiseImageExists": `${product?.IsRollOverColorWiseImageExists ?? ""}`,
+          "IsNewArrival": Number(`${product?.IsNewArrival ?? 0}`),
+          "IsRollOverColorWiseImageExists": Number(`${product?.IsRollOverColorWiseImageExists ?? 0}`),
           "IsTrending": Number(`${product?.IsTrending}`),
           "MasterManagement_labid": Number(`${product?.MasterManagement_labid}`),
           "MasterManagement_labname": "",
@@ -1285,76 +1344,76 @@ const ProductList = () => {
           "MetalColorid": Number(`${product?.MetalColorid}`),
           "MetalPurity": `${product?.updMT.split(" ")[1]}`,
           "MetalPurityid": Number(`${product?.MetalTypeid}`),
-          "MetalTypeName": `${product?.MetalTypeName}`,
+          "MetalTypeName": `${product?.updMT.split(" ")[0]}`,
           "MetalTypeid": Number(`${product?.IsInReadyStock}`),
           "MetalWeight": Number(`${product?.updNWT}`),
-          "OcassionName": `${product?.OcassionName ?? ""}`,
+          "OcassionName": `${findValueFromId("ocass",product?.Ocassionid)?.OcassionName}`,
           "Ocassionid": Number(`${product?.Ocassionid}`),
-          "ProducttypeName": `${product?.ProducttypeName}`,
+          "ProducttypeName": `${findValueFromId("prodtype",product?.Producttypeid)?.ProducttypeName}`,
           "Producttypeid": Number(`${product?.Producttypeid}`),
           "RollOverImageName": `${product?.RollOverImageName}`,
-          "SubCategoryName": `${product?.SubCategoryName ?? ""}`,
+          "SubCategoryName": `${findValueFromId("subcate",product?.SubCategoryid)?.SubCategoryName}`,
           "SubCategoryid": Number(`${product?.SubCategoryid}`),
-          "ThemeName": `${product?.ThemeName ?? ""}`,
+          "ThemeName": `${findValueFromId("theme",product?.Themeid)?.ThemeName}`,
           "Themeid": Number(`${product?.Themeid}`),
           "TitleLine": `${product?.TitleLine}`,
-          "UnitCost": `${product?.price === "Not Available" ? 0 : product?.price}`,
-          "UnitCostWithmarkup": (`${(product?.price === "Not Available" ? 0 : product?.price) + (product?.markup ?? 0)}`),
-          "colorstonecolorname": `${product?.colorstonecolorname}`,
-          "colorstonequality": `${product?.colorstonequality}`,
+          "UnitCost": Number(`${product?.price === "Not Available" ? 0 : product?.price}`),
+          "UnitCostWithmarkup": Number(`${(product?.price === "Not Available" ? 0 : product?.price) + (product?.markup ?? 0)}`),
+          "colorstonecolorname": `${product?.colorstonecolorname ?? ""}`,
+          "colorstonequality": `${product?.colorstonequality ?? ""}`,
           "diamondcolorname": `${JSON.parse(localStorage.getItem("loginUserDetail"))?.cmboDiaQualityColor.split("#@#")[1]}`,
           "diamondpcs": Number(`${product?.updDPCS}`),
           "diamondquality": `${JSON.parse(localStorage.getItem("loginUserDetail"))?.cmboDiaQualityColor.split("#@#")[0]}`,
-          "diamondsetting": `${product?.diamondsetting}`,
-          "diamondshape": `${product?.diamondshape}`,
+          "diamondsetting": `${product?.diamondsetting ?? ""}`,
+          "diamondshape": `${product?.diamondshape ?? ""}`,
           "diamondweight": Number(`${product?.updDWT}`),
           "encrypted_designno": `${product?.encrypted_designno ?? ""}`,
-          "hashtagid": `${product?.Hashtagid ?? ""}`,
+          "hashtagid": Number(`${product?.Hashtagid ?? 0}`),
           "hashtagname": `${product?.Hashtagname ?? ""}`,
           "imagepath": `${globImagePath}`,
           "mediumimage": `${product?.MediumImagePath ?? ""}`,
-          "originalimage": `${product?.OriginalImagePath}`,
+          "originalimage": `${product?.OriginalImagePath ?? ""}`,
           "storyline_html": `${product?.storyline_html ?? ""}`,
           "storyline_video": `${product?.storyline_video ?? ""}`,
-          "thumbimage": `${product?.ThumbImagePath}`,
-          "totaladditionalvalueweight": Number(`${product?.totaladditionalvalueweight}`),
+          "thumbimage": `${product?.ThumbImagePath ?? ''}`,
+          "totaladditionalvalueweight": Number(`${product?.totaladditionalvalueweigt ?? 0}`) ,
           "totalcolorstoneweight": Number(`${product?.updCWT}`),
           "totaldiamondweight": Number(`${product?.updDWT}`),
-          "updatedate": `${product?.UpdateDate}`,
+          "updatedate": `${product?.UpdateDate ?? 0}`,
           "videoname": `${product?.videoname ?? ""}`,
           "FrontEnd_RegNo": `${storeInit?.FrontEnd_RegNo}`,
-          "Customerid": `${Customer_id?.id}`,
-          "PriceMastersetid": `${product?.PriceMastersetid ?? ""}`,
-          "quantity": `${product?.quantity ?? "1"}`,
+          "Customerid": Number(`${Customer_id?.id}`),
+          "PriceMastersetid": Number(`${product?.PriceMastersetid ?? 0}`),
+          "quantity": Number(`${product?.quantity ?? 1}`),
           "CurrencyRate": `${product?.CurrencyRate ?? ""}`,
           "remarks_design": `${product?.remarks_design ?? ""}`,
           "diamondcolorid": `${product?.diamondcolorid ?? ""}`,
           "diamondqualityid": `${product?.diamondqualityid ?? ""}`,
           "detail_ringsize": `${product?.detail_ringsize ?? ""}`,
           "ProjMode": `${product?.ProjMode ?? ""}`,
-          "AlbumMasterid": `${product?.AlbumMasterid ?? ""}`,
+          "AlbumMasterid": Number(`${product?.AlbumMasterid ?? 0}`),
           "AlbumMastername": `${product?.AlbumMastername ?? ""}`,
           "Albumcode": `${product?.Albumcode ?? ""}`,
-          "Designid": `${product?.Designid ?? ""}`
+          "Designid": Number(`${product?.Designid ?? 0}`)
         }
 
-        console.log("product", finalJSON)
+      console.log("product", finalJSON)
 
 
-        const encodedCombinedValue = btoa(JSON.stringify(finalJSON));
-        const wishToCartEncData1 = btoa(JSON.stringify(wishToCartEncData));
+      const encodedCombinedValue = btoa(JSON.stringify(finalJSON));
+      const wishToCartEncData1 = btoa(JSON.stringify(wishToCartEncData));
 
-        const body = {
-          con: `{\"id\":\"\",\"mode\":\"ADDTOCART\",\"appuserid\":\"${UserEmail}\"}`,
-          f: "AddToCartIconClick (addcartlist)",
-          p: encodedCombinedValue,
-        };
+      const body = {
+        con: `{\"id\":\"\",\"mode\":\"ADDTOCART\",\"appuserid\":\"${UserEmail}\"}`,
+        f: "AddToCartIconClick (addcartlist)",
+        p: encodedCombinedValue,
+      };
 
-        let body1 = {
-          con: `{\"id\":\"Store\",\"mode\":\"addwishlisttocart\",\"appuserid\":\"${UserEmail}\"}`,
-          f: "iconclick (addwishlisttocart)",
-          p: wishToCartEncData1
-        }
+      let body1 = {
+        con: `{\"id\":\"Store\",\"mode\":\"addwishlisttocart\",\"appuserid\":\"${UserEmail}\"}`,
+        f: "iconclick (addwishlisttocart)",
+        p: wishToCartEncData1
+      }
 
         await CommonAPI(isWishHasCartData.length ? body1 : body).then(async (res) => {
           // console.log("responsePlist",res?.Data?.rd[0]?.msg === "success");
@@ -1363,384 +1422,383 @@ const ProductList = () => {
             // await getCountApi()
             getCountFunc()
             // prod.checkFlag=false
-            setDisablecartBtn(false);
           }
 
-          if (isWishHasCartData.length && res?.Data?.rd[0]?.stat_msg === "success") { //ADDWISHLISTTOCART
-            await getCartAndWishListData()
-            // await getCountApi()
-            getCountFunc()
-            WishListToCart()
+        if (isWishHasCartData.length && res?.Data?.rd[0]?.stat_msg === "success") { //ADDWISHLISTTOCART
+          await getCartAndWishListData()
+          // await getCountApi()
+          getCountFunc()
+          WishListToCart()
 
-          } else {
-            await getCartAndWishListData()
-            getCountFunc()
-          }
-        })
-
-
-
-      }
-      else {
-        const storeInit = JSON.parse(localStorage.getItem("storeInit"))
-        const Customer_id = JSON.parse(localStorage.getItem("loginUserDetail"));
-        const UserEmail = localStorage.getItem("registerEmail")
-
-        setCartRemoveData(prod.designno)
-
-        let Data = { "designno": `${prod?.designno}`, "autocode": `${prod?.autocode}`, "metalcolorid": 0, "isSolStockNo": 0, "is_show_stock_website": "0", "isdelete_all": 0, "FrontEnd_RegNo": `${storeInit?.FrontEnd_RegNo}`, "Customerid": `${Customer_id?.id}`, "cartidlist": "" }
-
-        let encodedCombinedValue = btoa(JSON.stringify(Data))
-        const body = {
-          con: `{\"id\":\"\",\"mode\":\"removeFromCartList\",\"appuserid\":\"${UserEmail}\"}`,
-          f: "RemoveFromCartIconClick (removeFromCartList)",
-          p: encodedCombinedValue,
+        } else {
+          await getCartAndWishListData()
+          getCountFunc()
         }
+      })
 
-        await CommonAPI(body).then(async (res) => {
-          // console.log("responsePlist",res?.Data?.rd[0]?.msg === "success");
-          if (res?.Data?.rd[0]?.stat_msg === "success") {
-            // removefromCart()
-            await getCartAndWishListData()
-            // await getCountApi()
-            getCountFunc()
-            // removefromCart(prod)
-          } else {
-            await getCartAndWishListData()
-            getCountFunc()
-          }
-        })
 
+
+    }
+    else {
+      const storeInit = JSON.parse(localStorage.getItem("storeInit"))
+      const Customer_id = JSON.parse(localStorage.getItem("loginUserDetail"));
+      const UserEmail = localStorage.getItem("registerEmail")
+
+      setCartRemoveData(prod.designno)
+
+      let Data = { "designno": `${prod?.designno}`, "autocode": `${prod?.autocode}`, "metalcolorid": 0, "isSolStockNo": 0, "is_show_stock_website": "0", "isdelete_all": 0, "FrontEnd_RegNo": `${storeInit?.FrontEnd_RegNo}`, "Customerid": `${Customer_id?.id}`, "cartidlist": "" }
+
+      let encodedCombinedValue = btoa(JSON.stringify(Data))
+      const body = {
+        con: `{\"id\":\"\",\"mode\":\"removeFromCartList\",\"appuserid\":\"${UserEmail}\"}`,
+        f: "RemoveFromCartIconClick (removeFromCartList)",
+        p: encodedCombinedValue,
       }
+
+      await CommonAPI(body).then(async (res) => {
+        // console.log("responsePlist",res?.Data?.rd[0]?.msg === "success");
+        if (res?.Data?.rd[0]?.stat_msg === "success") {
+          // removefromCart()
+          await getCartAndWishListData()
+          // await getCountApi()
+          getCountFunc()
+          // removefromCart(prod)
+        } else {
+          await getCartAndWishListData()
+          getCountFunc()
+        }
+      })
+
+    }
 
     }
     catch (error) {
       console.log("error", error);
-      setDisablecartBtn(false);
     }
 
-  }
+}
 
-  // useEffect(() => {
-  //   let flag = localStorage.getItem('productDataShow') ?? 'true';
-  //   if (newProData.length === 0 && flag === 'true') {
-  //     let data = productData.filter((pd) => pd && pd.CollectionName === getHeaderData?.value1)
-  //     setNewProData(data);
-  //     setTimeout(() => {
-  //       localStorage.setItem('productDataShow', 'false')
-  //     }, 100)
-  //   }
-  // }, [getHeaderData, newProData])
+// useEffect(() => {
+//   let flag = localStorage.getItem('productDataShow') ?? 'true';
+//   if (newProData.length === 0 && flag === 'true') {
+//     let data = productData.filter((pd) => pd && pd.CollectionName === getHeaderData?.value1)
+//     setNewProData(data);
+//     setTimeout(() => {
+//       localStorage.setItem('productDataShow', 'false')
+//     }, 100)
+//   }
+// }, [getHeaderData, newProData])
 
 
-  useEffect(() => {
-    //level1 filter
-    if (getHeaderData2?.label1 === "collection" && getHeaderData2?.label2 === "collection") {
-      let data = productData.filter((pd) => pd && pd.CollectionName === getHeaderData2?.value1 && pd.CollectionName === getHeaderData2?.value2)
-      setNewProData(data)
-    }
-    if (getHeaderData2?.label1 === "collection" && getHeaderData2?.label2 === "category") {
-      let data = productData.filter((pd) => pd && pd.CollectionName === getHeaderData2?.value1 && pd.CategoryName === getHeaderData2?.value2)
-      setNewProData(data);
-
-    }
-    if (getHeaderData2?.label1 === "collection" && getHeaderData2?.label2 === "gender") {
-      let data = productData.filter((pd) => pd && pd.CollectionName === getHeaderData2?.value1 && pd.GenderName === getHeaderData2?.value2)
-      setNewProData(data);
-
-    }
-    if (getHeaderData2?.label1 === "collection" && getHeaderData2?.label2 === "brand") {
-      let data = productData.filter((pd) => pd && pd.CollectionName === getHeaderData2?.value1 && pd.BrandName === getHeaderData2?.value2)
-      setNewProData(data);
-
-    }
-    if (getHeaderData2?.label1 === "brand" && getHeaderData2?.label2 === "brand") {
-      let data = productData?.filter((pd) => pd && pd.BrandName === getHeaderData2?.value1 && pd.BrandName === getHeaderData2?.value2)
-      setNewProData(data);
-
-    }
-    if (getHeaderData2?.label1 === "brand" && getHeaderData2?.label2 === "collection") {
-      let data = productData?.filter((pd) => pd && pd.BrandName === getHeaderData2?.value1 && pd.CollectionName === getHeaderData2?.value2)
-      setNewProData(data);
-
-    }
-    if (getHeaderData2?.label1 === "brand" && getHeaderData2?.label2 === "category") {
-      let data = productData?.filter((pd) => pd && pd.BrandName === getHeaderData2?.value1 && pd.CategoryName === getHeaderData2?.value2)
-      setNewProData(data);
-
-    }
-    if (getHeaderData2?.label1 === "brand" && getHeaderData2?.label2 === "gender") {
-      let data = productData?.filter((pd) => pd && pd.BrandName === getHeaderData2?.value1 && pd.GenderName === getHeaderData2?.value2)
-      setNewProData(data);
-
-    }
-
-    // level2 filter
-    if (getHeaderData?.label1 === "collection") {
-      let data = productData?.filter((pd) => pd && pd.CollectionName === getHeaderData?.value1)
-      setNewProData(data)
-
-    }
-    if (getHeaderData?.label1 === "brand") {
-      let data = productData?.filter((pd) => pd && pd.BrandName === getHeaderData?.value1)
-      setNewProData(data)
-
-    }
-    if (getHeaderData?.label1 === "category") {
-      let data = productData?.filter((pd) => pd && pd.CategoryName === getHeaderData?.value1)
-      setNewProData(data)
-
-    }
-    if (getHeaderData?.label1 === "gender") {
-      let data = productData?.filter((pd) => pd && pd.GenderName === getHeaderData?.value1)
-      setNewProData(data)
-
-    }
-
-  }, [getHeaderData2, getHeaderData])
-
-  const newMenuProdData = () => {
-    let data = productData?.filter((pd) => pd && pd.CollectionName === getHeaderData?.value1)
+useEffect(() => {
+  //level1 filter
+  if (getHeaderData2?.label1 === "collection" && getHeaderData2?.label2 === "collection") {
+    let data = productData.filter((pd) => pd && pd.CollectionName === getHeaderData2?.value1 && pd.CollectionName === getHeaderData2?.value2)
     setNewProData(data)
   }
-  useEffect(() => {
-    if (getHeaderData && getHeaderData.value1 && productData) {
-      newMenuProdData()
-    }
-  }, [getHeaderData])
+  if (getHeaderData2?.label1 === "collection" && getHeaderData2?.label2 === "category") {
+    let data = productData.filter((pd) => pd && pd.CollectionName === getHeaderData2?.value1 && pd.CategoryName === getHeaderData2?.value2)
+    setNewProData(data);
 
-  // const getDesignPriceList = async () => {
+  }
+  if (getHeaderData2?.label1 === "collection" && getHeaderData2?.label2 === "gender") {
+    let data = productData.filter((pd) => pd && pd.CollectionName === getHeaderData2?.value1 && pd.GenderName === getHeaderData2?.value2)
+    setNewProData(data);
 
-  //   const storeInit = JSON.parse(localStorage.getItem("storeInit"))
-  //   const loginUserDetail = JSON.parse(localStorage.getItem("loginUserDetail"));
-  //   const currencyCombo = JSON.parse(localStorage.getItem("CURRENCYCOMBO"));
-  //   const UserEmail = localStorage.getItem("registerEmail")
+  }
+  if (getHeaderData2?.label1 === "collection" && getHeaderData2?.label2 === "brand") {
+    let data = productData.filter((pd) => pd && pd.CollectionName === getHeaderData2?.value1 && pd.BrandName === getHeaderData2?.value2)
+    setNewProData(data);
 
-  //   const GetPriceReq = {
-  //     "CurrencyRate": `${currencyCombo?.CurrencyRate}`,
-  //     "FrontEnd_RegNo": `${storeInit?.FrontEnd_RegNo}`,
-  //     "Customerid": `${loginUserDetail?.id}`,
-  //     "Laboursetid": `${storeInit.PolicyApplyOnName === "Customer Wise Policy" ? loginUserDetail?._pricemanagement_laboursetid : loginUserDetail?.pricemanagement_laboursetid}`,
-  //     "diamondpricelistname": `${loginUserDetail?._diamondpricelistname}`,
-  //     "colorstonepricelistname": `${loginUserDetail?._colorstonepricelistname}`,
-  //     "SettingPriceUniqueNo": `${loginUserDetail?.SettingPriceUniqueNo}`,
-  //     "DesignNo": ""
-  //   }
+  }
+  if (getHeaderData2?.label1 === "brand" && getHeaderData2?.label2 === "brand") {
+    let data = productData?.filter((pd) => pd && pd.BrandName === getHeaderData2?.value1 && pd.BrandName === getHeaderData2?.value2)
+    setNewProData(data);
 
-  //   const encodedCombinedValue = btoa(JSON.stringify(GetPriceReq));
+  }
+  if (getHeaderData2?.label1 === "brand" && getHeaderData2?.label2 === "collection") {
+    let data = productData?.filter((pd) => pd && pd.BrandName === getHeaderData2?.value1 && pd.CollectionName === getHeaderData2?.value2)
+    setNewProData(data);
 
-  //   let body = {
-  //     "con": `{\"id\":\"Store\",\"mode\":\"getdesignpricelist\",\"appuserid\":\"${UserEmail}\"}`,
-  //     "f": "onloadFirstTime (getdesignpricelist)",
-  //     "p": encodedCombinedValue
-  //   }
+  }
+  if (getHeaderData2?.label1 === "brand" && getHeaderData2?.label2 === "category") {
+    let data = productData?.filter((pd) => pd && pd.BrandName === getHeaderData2?.value1 && pd.CategoryName === getHeaderData2?.value2)
+    setNewProData(data);
 
-  //   await CommonAPI(body).then((res) => {
-  //     localStorage.setItem("getPriceData",JSON.stringify(res?.Data))
-  //     setpriceDataApi(res?.Data)
-  //   })
-
-  // }
-
-  const handleChange1 = () => {
+  }
+  if (getHeaderData2?.label1 === "brand" && getHeaderData2?.label2 === "gender") {
+    let data = productData?.filter((pd) => pd && pd.BrandName === getHeaderData2?.value1 && pd.GenderName === getHeaderData2?.value2)
+    setNewProData(data);
 
   }
 
-  // useEffect(() => {
-  //   getDesignPriceList()
-  // }, [])
+  // level2 filter
+  if (getHeaderData?.label1 === "collection") {
+    let data = productData?.filter((pd) => pd && pd.CollectionName === getHeaderData?.value1)
+    setNewProData(data)
 
-  useEffect(() => {
-    const priceOnly = (newProData.length ? newProData : ProductApiData2)?.filter(item => item?.price !== 'Not Available')
-      ?.map(item => item.price != 0 && item.price)?.sort((a, b) => a - b);
+  }
+  if (getHeaderData?.label1 === "brand") {
+    let data = productData?.filter((pd) => pd && pd.BrandName === getHeaderData?.value1)
+    setNewProData(data)
 
-    // ?.map(item => item.price != 0 && item.price != '' ? item.price + item?.UnitCost : item.UnitCost)
+  }
+  if (getHeaderData?.label1 === "category") {
+    let data = productData?.filter((pd) => pd && pd.CategoryName === getHeaderData?.value1)
+    setNewProData(data)
 
-    setMinPrice(priceOnly[0]);
-    setMaxPrice(priceOnly[priceOnly?.length - 1]);
-    setValue1([priceOnly[0], priceOnly[priceOnly?.length - 1]])
-    // const netWtOnly = ProductApiData2?.map((item) => item?.netwt).sort((a, b) => a - b);
-    const netWtOnly = (newProData.length ? newProData : ProductApiData2)?.map((item) => item?.updNWT).sort((a, b) => a - b);
-    setMinNetwt(netWtOnly[0]);
-    setMaxNetwt(netWtOnly[netWtOnly?.length - 1]);
-    setValue2([netWtOnly[0], netWtOnly[netWtOnly?.length - 1]])
+  }
+  if (getHeaderData?.label1 === "gender") {
+    let data = productData?.filter((pd) => pd && pd.GenderName === getHeaderData?.value1)
+    setNewProData(data)
 
-    // const grossWtOnly = ProductApiData2?.map((item) => item?.Grossweight).sort((a, b) => a - b);
-    const grossWtOnly = (newProData.length ? newProData : ProductApiData2)?.map((item) => item?.updGWT).sort((a, b) => a - b);
-    setMinGrossWt(grossWtOnly[0]);
-    setMaxGrossWtt(grossWtOnly[grossWtOnly?.length - 1]);
-    setValue3([grossWtOnly[0], grossWtOnly[grossWtOnly?.length - 1]])
-
-    // const diamondWtOnly = ProductApiData2?.map((item) => item?.diamondweight).sort((a, b) => a - b);
-    const diamondWtOnly = (newProData.length ? newProData : ProductApiData2)?.map((item) => item?.updDWT).sort((a, b) => a - b);
-    setMinDiamondWt(diamondWtOnly[0]);
-    setMaxDiamondWt(diamondWtOnly[diamondWtOnly?.length - 1]);
-    setValue4([diamondWtOnly[0], diamondWtOnly[diamondWtOnly?.length - 1]])
-
-  }, [ProductApiData2, newProData]);
-
-  const handlePriceChange = (event, newValue, activeThumb) => {
-    setValue1(newValue);
-    filterDatasfunc(newValue, value2, value3, value4);
-  };
-
-  const handleNetWtChange = (event, newValue, activeThumb) => {
-    setValue2(newValue);
-    filterDatasfunc(value1, newValue, value3, value4);
-  };
-
-  const handlegrossWtChange = (event, newValue, activeThumb) => {
-    setValue3(newValue);
-    filterDatasfunc(value1, value2, newValue, value4);
-  };
-
-  const handleDiamondChange = (event, newValue, activeThumb) => {
-    setValue4(newValue);
-    filterDatasfunc(value1, value2, value3, newValue);
-  };
-
-  const filterDatasfunc = (priceRange, netWtRange, grossWtRange, diamondWtRange) => {
-
-    const filteredData = (newProData.length ? newProData : ProductApiData2)?.filter((item) => {
-      const priceInRange = item?.price >= priceRange[0] && item?.price <= priceRange[1];
-      const netWtInRange = item.netwt >= netWtRange[0] && item.netwt <= netWtRange[1];
-      const grossWtInRange = item.Grossweight >= grossWtRange[0] && item.Grossweight <= grossWtRange[1];
-      const diamondWtInRange = item.diamondweight >= diamondWtRange[0] && item.diamondweight <= diamondWtRange[1];
-      return priceInRange && netWtInRange && grossWtInRange && diamondWtInRange;
-
-    });
-    // setNewProData(filteredData);
-    setRangeProData(filteredData)
-  };
-
-  const handlePageReload = () => {
-    // setRangeProData([])
-    setFilterChecked({})
-    setNewProData(ProductApiData2);
-    setMinPrice(0)
-    setMaxPrice(maxPrice)
-    setValue1([minPrice, maxPrice])
-    setMinNetwt(0)
-    setMaxNetwt(maxNetwt)
-    setValue2([0, maxNetwt])
-    setMinGrossWt(0)
-    setMaxGrossWtt(maxGrosswt)
-    setValue3([0, maxGrosswt])
-    setMinDiamondWt(0)
-    setMaxDiamondWt(maxDiamondWt)
-    setValue4([0, maxDiamondWt])
   }
 
-  const [hoveredImageUrls, setHoveredImageUrls] = useState({});
+}, [getHeaderData2, getHeaderData])
 
-  const handleHoverImageShow = (index, designimgfol, dfoldername, imgSize, roleoverImage) => {
-    // let updatedFilename = rollPath?.replace(/\s/g, '_');
-    // let newPath = url.replace(/\/([^/]+)$/, '/' + updatedFilename);
-
-    let path = `${designimgfol}${dfoldername}/${imgSize}/${roleoverImage}`
-
-    if (roleoverImage.length !== 0) {
-      setHoveredImageUrls(prevHoveredImageUrls => {
-        return { ...prevHoveredImageUrls, [index]: path };
-      });
-    }
-  };
-
-  console.log("prod_img", hoveredImageUrls);
-
-  const handleMouseLeave = (index) => {
-    setHoveredImageUrls(prevState => {
-      const newState = { ...prevState };
-      delete newState[index];
-      return newState;
-    });
-  };
-
-
-  function convertPath(path) {
-    return path.replace(/\\/g, '/');
+const newMenuProdData = () => {
+  let data = productData?.filter((pd) => pd && pd.CollectionName === getHeaderData?.value1)
+  setNewProData(data)
+}
+useEffect(() => {
+  if (getHeaderData && getHeaderData.value1 && productData) {
+    newMenuProdData()
   }
+}, [getHeaderData])
 
-  function checkImageAvailability(imageUrl) {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.onload = () => resolve(true);
-      img.onerror = () => resolve(false);
-      img.src = imageUrl;
-    });
-  }
+// const getDesignPriceList = async () => {
 
-  const handleColorSelection = async (product, index, color) => {
-    const uploadPath = localStorage.getItem('UploadLogicalPath');
-    const storedDataAll = localStorage.getItem('storeInit');
-    const data = JSON.parse(storedDataAll);
-    const colorWiseImageData = JSON.parse(localStorage.getItem('colorDataImages'));
-    const productAutoCode = product?.autocode;
-    const productColorName = color;
-    console.log("color--", productColorName);
+//   const storeInit = JSON.parse(localStorage.getItem("storeInit"))
+//   const loginUserDetail = JSON.parse(localStorage.getItem("loginUserDetail"));
+//   const currencyCombo = JSON.parse(localStorage.getItem("CURRENCYCOMBO"));
+//   const UserEmail = localStorage.getItem("registerEmail")
 
-    if (!colorWiseImageData) {
-      return [];
-    }
+//   const GetPriceReq = {
+//     "CurrencyRate": `${currencyCombo?.CurrencyRate}`,
+//     "FrontEnd_RegNo": `${storeInit?.FrontEnd_RegNo}`,
+//     "Customerid": `${loginUserDetail?.id}`,
+//     "Laboursetid": `${storeInit.PolicyApplyOnName === "Customer Wise Policy" ? loginUserDetail?._pricemanagement_laboursetid : loginUserDetail?.pricemanagement_laboursetid}`,
+//     "diamondpricelistname": `${loginUserDetail?._diamondpricelistname}`,
+//     "colorstonepricelistname": `${loginUserDetail?._colorstonepricelistname}`,
+//     "SettingPriceUniqueNo": `${loginUserDetail?.SettingPriceUniqueNo}`,
+//     "DesignNo": ""
+//   }
 
-    if (data.IsColorWiseImages === 1) {
-      const matchingData = colorWiseImageData?.filter(imageDataItem => (
-        productAutoCode == imageDataItem.autocode && productColorName == imageDataItem.colorname
-      ));
-      console.log("matchingData", matchingData, productAutoCode, productColorName)
+//   const encodedCombinedValue = btoa(JSON.stringify(GetPriceReq));
 
-      const checkAvailabilityPromises = matchingData.map(async (imageDataItem) => {
-        const imagePath = uploadPath + '/' + data.ukey + convertPath(imageDataItem.imagepath);
-        const isAvailable = await checkImageAvailability(imagePath);
-        console.log('isAvailable---', isAvailable);
-        return { imagePath: imagePath.replace(/ /g, "%20"), isAvailable };
-      });
+//   let body = {
+//     "con": `{\"id\":\"Store\",\"mode\":\"getdesignpricelist\",\"appuserid\":\"${UserEmail}\"}`,
+//     "f": "onloadFirstTime (getdesignpricelist)",
+//     "p": encodedCombinedValue
+//   }
 
-      const imageData = await Promise.all(checkAvailabilityPromises);
-      const availableImage = imageData.find(image => image.isAvailable);
+//   await CommonAPI(body).then((res) => {
+//     localStorage.setItem("getPriceData",JSON.stringify(res?.Data))
+//     setpriceDataApi(res?.Data)
+//   })
 
-      if (availableImage) {
-        const formedImgData = { [index]: availableImage.imagePath };
-        setUpdateColorImage(formedImgData);
-        console.log('formedImgData', formedImgData)
-        return availableImage;
-      } else {
-        console.log('No available image found');
-        return [];
-      }
-    } else {
-      setUpdateColorImage({});
-      return [];
-    }
-  };
+// }
 
-  const [state, setState] = React.useState({
-    top: false,
-    left: false,
-    bottom: false,
-    right: false,
+const handleChange1 = () => {
+
+}
+
+// useEffect(() => {
+//   getDesignPriceList()
+// }, [])
+
+useEffect(() => {
+  const priceOnly = (newProData.length ? newProData : ProductApiData2)?.filter(item => item?.price !== 'Not Available')
+    ?.map(item => item.price != 0 && item.price)?.sort((a, b) => a - b);
+
+  // ?.map(item => item.price != 0 && item.price != '' ? item.price + item?.UnitCost : item.UnitCost)
+
+  setMinPrice(priceOnly[0]);
+  setMaxPrice(priceOnly[priceOnly?.length - 1]);
+  setValue1([priceOnly[0], priceOnly[priceOnly?.length - 1]])
+  // const netWtOnly = ProductApiData2?.map((item) => item?.netwt).sort((a, b) => a - b);
+  const netWtOnly = (newProData.length ? newProData : ProductApiData2)?.map((item) => item?.updNWT).sort((a, b) => a - b);
+  setMinNetwt(netWtOnly[0]);
+  setMaxNetwt(netWtOnly[netWtOnly?.length - 1]);
+  setValue2([netWtOnly[0], netWtOnly[netWtOnly?.length - 1]])
+
+  // const grossWtOnly = ProductApiData2?.map((item) => item?.Grossweight).sort((a, b) => a - b);
+  const grossWtOnly = (newProData.length ? newProData : ProductApiData2)?.map((item) => item?.updGWT).sort((a, b) => a - b);
+  setMinGrossWt(grossWtOnly[0]);
+  setMaxGrossWtt(grossWtOnly[grossWtOnly?.length - 1]);
+  setValue3([grossWtOnly[0], grossWtOnly[grossWtOnly?.length - 1]])
+
+  // const diamondWtOnly = ProductApiData2?.map((item) => item?.diamondweight).sort((a, b) => a - b);
+  const diamondWtOnly = (newProData.length ? newProData : ProductApiData2)?.map((item) => item?.updDWT).sort((a, b) => a - b);
+  setMinDiamondWt(diamondWtOnly[0]);
+  setMaxDiamondWt(diamondWtOnly[diamondWtOnly?.length - 1]);
+  setValue4([diamondWtOnly[0], diamondWtOnly[diamondWtOnly?.length - 1]])
+
+}, [ProductApiData2, newProData]);
+
+const handlePriceChange = (event, newValue, activeThumb) => {
+  setValue1(newValue);
+  filterDatasfunc(newValue, value2, value3, value4);
+};
+
+const handleNetWtChange = (event, newValue, activeThumb) => {
+  setValue2(newValue);
+  filterDatasfunc(value1, newValue, value3, value4);
+};
+
+const handlegrossWtChange = (event, newValue, activeThumb) => {
+  setValue3(newValue);
+  filterDatasfunc(value1, value2, newValue, value4);
+};
+
+const handleDiamondChange = (event, newValue, activeThumb) => {
+  setValue4(newValue);
+  filterDatasfunc(value1, value2, value3, newValue);
+};
+
+const filterDatasfunc = (priceRange, netWtRange, grossWtRange, diamondWtRange) => {
+
+  const filteredData = (newProData.length ? newProData : ProductApiData2)?.filter((item) => {
+    const priceInRange = item?.price >= priceRange[0] && item?.price <= priceRange[1];
+    const netWtInRange = item.netwt >= netWtRange[0] && item.netwt <= netWtRange[1];
+    const grossWtInRange = item.Grossweight >= grossWtRange[0] && item.Grossweight <= grossWtRange[1];
+    const diamondWtInRange = item.diamondweight >= diamondWtRange[0] && item.diamondweight <= diamondWtRange[1];
+    return priceInRange && netWtInRange && grossWtInRange && diamondWtInRange;
+
   });
+  // setNewProData(filteredData);
+  setRangeProData(filteredData)
+};
 
-  const toggleDrawer = (anchor, open) => (event) => {
-    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-      return;
+const handlePageReload = () => {
+  // setRangeProData([])
+  // setFilterChecked({})
+  // setNewProData(ProductApiData2);  
+  setMinPrice(0)
+  setMaxPrice(maxPrice)
+  setValue1([minPrice, maxPrice])
+  setMinNetwt(0)
+  setMaxNetwt(maxNetwt)
+  setValue2([0, maxNetwt])
+  setMinGrossWt(0)
+  setMaxGrossWtt(maxGrosswt)
+  setValue3([0, maxGrosswt])
+  setMinDiamondWt(0)
+  setMaxDiamondWt(maxDiamondWt)
+  setValue4([0, maxDiamondWt])
+}
+
+const [hoveredImageUrls, setHoveredImageUrls] = useState({});
+
+const handleHoverImageShow = (index, designimgfol, dfoldername, imgSize, roleoverImage) => {
+  // let updatedFilename = rollPath?.replace(/\s/g, '_');
+  // let newPath = url.replace(/\/([^/]+)$/, '/' + updatedFilename);
+
+  let path = `${designimgfol}${dfoldername}/${imgSize}/${roleoverImage}`
+
+  if (roleoverImage.length !== 0) {
+    setHoveredImageUrls(prevHoveredImageUrls => {
+      return { ...prevHoveredImageUrls, [index]: path };
+    });
+  }
+};
+
+console.log("prod_img", hoveredImageUrls);
+
+const handleMouseLeave = (index) => {
+  setHoveredImageUrls(prevState => {
+    const newState = { ...prevState };
+    delete newState[index];
+    return newState;
+  });
+};
+
+
+function convertPath(path) {
+  return path.replace(/\\/g, '/');
+}
+
+function checkImageAvailability(imageUrl) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(true);
+    img.onerror = () => resolve(false);
+    img.src = imageUrl;
+  });
+}
+
+const handleColorSelection = async (product, index, color) => {
+  const uploadPath = localStorage.getItem('UploadLogicalPath');
+  const storedDataAll = localStorage.getItem('storeInit');
+  const data = JSON.parse(storedDataAll);
+  const colorWiseImageData = JSON.parse(localStorage.getItem('colorDataImages'));
+  const productAutoCode = product?.autocode;
+  const productColorName = color;
+  console.log("color--", productColorName);
+
+  if (!colorWiseImageData) {
+    return [];
+  }
+
+  if (data.IsColorWiseImages === 1) {
+    const matchingData = colorWiseImageData.filter(imageDataItem => (
+      productAutoCode === imageDataItem.autocode &&
+      productColorName.toLowerCase() === imageDataItem.colorname.toLowerCase()
+    ));
+    console.log("matchingData", matchingData, productAutoCode, productColorName)
+
+    const checkAvailabilityPromises = matchingData.map(async (imageDataItem) => {
+      const imagePath = uploadPath + '/' + data.ukey + convertPath(imageDataItem.imagepath);
+      const isAvailable = await checkImageAvailability(imagePath);
+      console.log('isAvailable---', isAvailable);
+      return { imagePath: imagePath.replace(/ /g, "%20"), isAvailable };
+    });
+
+    const imageData = await Promise.all(checkAvailabilityPromises);
+    const availableImage = imageData.find(image => image.isAvailable);
+
+    if (availableImage) {
+      const formedImgData = { [index]: availableImage.imagePath };
+      setUpdateColorImage(formedImgData);
+      console.log('formedImgData',  formedImgData)
+      return availableImage;
+    } else {
+      console.log('No available image found');
+      return [];
     }
+  } else {
+    setUpdateColorImage({});
+    return [];
+  }
+};
 
-    setState({ ...state, [anchor]: open });
-  };
+const [state, setState] = React.useState({
+  top: false,
+  left: false,
+  bottom: false,
+  right: false,
+});
 
-  const toggleDetailDrawer = () => {
-    setIsOpenDetail(!isOpenDetail);
-  };
+const toggleDrawer = (anchor, open) => (event) => {
+  if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+    return;
+  }
 
-  const list = (anchor) => (
-    <Box
-      sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
-      role="presentation"
-      onClick={toggleDrawer(anchor, false)}
-      onKeyDown={toggleDrawer(anchor, false)}
-    >
-      {/* <List>
+  setState({ ...state, [anchor]: open });
+};
+
+const toggleDetailDrawer = () => {
+  setIsOpenDetail(!isOpenDetail);
+};
+
+const list = (anchor) => (
+  <Box
+    sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
+    role="presentation"
+    onClick={toggleDrawer(anchor, false)}
+    onKeyDown={toggleDrawer(anchor, false)}
+  >
+    {/* <List>
         {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
           <ListItem key={text} disablePadding>
             <ListItemButton>
@@ -1766,31 +1824,31 @@ const ProductList = () => {
         ))}
       </List> */}
 
-      {isOpenDetail &&
-        <div>
-          {NewFilterData1().map((ele, index) => (
-            <>
-              <Accordion
-                elevation={0}
+    {isOpenDetail &&
+      <div>
+        {NewFilterData1().map((ele, index) => (
+          <>
+            <Accordion
+              elevation={0}
+              sx={{
+                borderBottom: "1px solid #c7c8c9",
+                borderRadius: 0,
+                "&.MuiPaper-root.MuiAccordion-root:last-of-type": {
+                  borderBottomLeftRadius: "0px",
+                  borderBottomRightRadius: "0px",
+                },
+                "&.MuiPaper-root.MuiAccordion-root:before": {
+                  background: "none",
+                },
+              }}
+            >
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon sx={{ width: "20px" }} />}
+                aria-controls="panel1-content"
+                id="panel1-header"
                 sx={{
-                  borderBottom: "1px solid #c7c8c9",
+                  color: "#7f7d85",
                   borderRadius: 0,
-                  "&.MuiPaper-root.MuiAccordion-root:last-of-type": {
-                    borderBottomLeftRadius: "0px",
-                    borderBottomRightRadius: "0px",
-                  },
-                  "&.MuiPaper-root.MuiAccordion-root:before": {
-                    background: "none",
-                  },
-                }}
-              >
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon sx={{ width: "20px" }} />}
-                  aria-controls="panel1-content"
-                  id="panel1-header"
-                  sx={{
-                    color: "#7f7d85",
-                    borderRadius: 0,
 
                     "&.MuiAccordionSummary-root": {
                       padding: 0,
@@ -1828,164 +1886,163 @@ const ProductList = () => {
                       </div>
                     </div>}
 
-                  {ele.label === "CENTERSTONE" &&
-                    <div>
-                      <Slider
-                        className='netWtSecSlider'
-                        getAriaLabel={() => 'Minimum distance'}
-                        value={value1}
-                        onChange={handleChange1}
-                        valueLabelDisplay="auto"
-                        getAriaValueText={valuetext}
-                        disableSwap
-                      />
-                    </div>
-                  }
+                {ele.label === "CENTERSTONE" &&
+                  <div>
+                    <Slider
+                      className='netWtSecSlider'
+                      getAriaLabel={() => 'Minimum distance'}
+                      value={value1}
+                      onChange={handleChange1}
+                      valueLabelDisplay="auto"
+                      getAriaValueText={valuetext}
+                      disableSwap
+                    />
+                  </div>
+                }
 
-                  {ele?.filterList?.map((flist, i) => (
-                    <div
+                {ele?.filterList?.map((flist, i) => (
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "12px",
+                    }}
+                    key={i}
+                  >
+                    <Checkbox
+                      name={`checkbox${index + 1}${i + 1}`}
+                      checked={
+                        filterChecked[`checkbox${index + 1}${i + 1}`]
+                          ?.checked
+                      }
                       style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "12px",
+                        color: "#7f7d85",
+                        padding: 0,
+                        width: "10px",
                       }}
-                      key={i}
+                      onClick={(e) =>
+                        handleCheckboxChange(e, ele, flist.id)
+                      }
+                      size="small"
+                    />
+                    <small
+                      style={{
+                        fontFamily: "TT Commons, sans-serif",
+                        color: "#7f7d85",
+                        textTransform: "lowercase",
+                      }}
                     >
-                      <Checkbox
-                        name={`checkbox${index + 1}${i + 1}`}
-                        checked={
-                          filterChecked[`checkbox${index + 1}${i + 1}`]
-                            ?.checked
-                        }
-                        style={{
-                          color: "#7f7d85",
-                          padding: 0,
-                          width: "10px",
-                        }}
-                        onClick={(e) =>
-                          handleCheckboxChange(e, ele, flist.id)
-                        }
-                        size="small"
-                      />
-                      <small
-                        style={{
-                          fontFamily: "TT Commons, sans-serif",
-                          color: "#7f7d85",
-                          textTransform: "lowercase",
-                        }}
-                      >
-                        {flist.label}
-                      </small>
-                    </div>
-                  ))}
-                </AccordionDetails>
-              </Accordion>
-            </>
-          ))}
-        </div>}
-    </Box>
-  );
+                      {flist.label}
+                    </small>
+                  </div>
+                ))}
+              </AccordionDetails>
+            </Accordion>
+          </>
+        ))}
+      </div>}
+  </Box>
+);
 
-  const [selectedSortOption, setSelectedSortOption] = useState('None');
+const [selectedSortOption, setSelectedSortOption] = useState('None');
 
-  // useEffect(() => {
-  //   const data = JSON.parse(localStorage.getItem("allproductlist"));
-  //   setProductApiData2(data);
-  // }, []);
+// useEffect(() => {
+//   const data = JSON.parse(localStorage.getItem("allproductlist"));
+//   setProductApiData2(data);
+// }, []);
 
 
-  const handleSortChange = (option) => {
-    const selectedOption = option?.label;
-    setSelectedOptionData(option?.label);
-    setIsActive(false);
-    setSelectedSortOption(option?.label);
-    let sortedData = [...ProductApiData2];
+const handleSortChange = (option) => {
+  const selectedOption = option?.label;
+  setSelectedOptionData(option?.label);
+  setIsActive(false);
+  setSelectedSortOption(option?.label);
+  let sortedData = [...ProductApiData2];
 
-    if (selectedOption === 'PRICE HIGH TO LOW') {
-      sortedData.sort((a, b) => ((b?.UnitCost ?? 0) + (b?.price ?? 0) + (b?.markup ?? 0)) - ((a?.UnitCost ?? 0) + (a?.price ?? 0) + (a?.markup ?? 0)));
-    } else if (selectedOption === 'PRICE LOW TO HIGH') {
-      sortedData.sort((a, b) => ((a?.UnitCost ?? 0) + (a?.price ?? 0) + (a?.markup ?? 0)) - ((b?.UnitCost ?? 0) + (b?.price ?? 0) + (b?.markup ?? 0)));
-    } else {
-      setNewProData(ProductApiData2);
-    }
-    setNewProData(sortedData);
-  };
-
-  useEffect(() => {
-    if ((newProData?.length || ProductApiData2?.length)) {
-      setIsProdLoading(true)
-    } else {
-      setIsProdLoading(false)
-    }
-  }, [newProData, ProductApiData2])
-
-
-  const decodeEntities = (html) => {
-    var txt = document.createElement("textarea");
-    txt.innerHTML = html;
-    return txt.value;
+  if (selectedOption === 'PRICE HIGH TO LOW') {
+    sortedData.sort((a, b) => ((b?.UnitCost ?? 0) + (b?.price ?? 0) + (b?.markup ?? 0)) - ((a?.UnitCost ?? 0) + (a?.price ?? 0) + (a?.markup ?? 0)));
+  } else if (selectedOption === 'PRICE LOW TO HIGH') {
+    sortedData.sort((a, b) => ((a?.UnitCost ?? 0) + (a?.price ?? 0) + (a?.markup ?? 0)) - ((b?.UnitCost ?? 0) + (b?.price ?? 0) + (b?.markup ?? 0)));
+  } else {
+    setNewProData(ProductApiData2);
   }
+  setNewProData(sortedData);
+};
 
-  const PriceWithMarkupFunction = (pmu, pPrice, curr) => {
-    if (pPrice <= 0) {
-      return 0
-    }
-    else if (pmu <= 0) {
-      return pPrice
-    }
-    else {
-      let percentPMU = ((pmu / 100) / curr)
-      return (Number(pPrice * (percentPMU ?? 0)) + Number(pPrice ?? 0))
-    }
+useEffect(() => {
+  if ((newProData?.length || ProductApiData2?.length)) {
+    setIsProdLoading(true)
+  } else {
+    setIsProdLoading(false)
   }
+}, [newProData, ProductApiData2])
 
-  const [isActive, setIsActive] = useState(false);
 
-  const [isShowfilter, setIsShowFilter] = useState(true);
-  const options = [
-    { label: 'Recommended' },
-    { label: 'New' },
-    { label: 'In stock' },
-    { label: 'PRICE LOW TO HIGH' },
-    { label: 'PRICE HIGH TO LOW' },
-  ];
+const decodeEntities = (html) => {
+  var txt = document.createElement("textarea");
+  txt.innerHTML = html;
+  return txt.value;
+}
 
-  const handleFilterShow = () => {
-    setIsShowFilter(!isShowfilter)
+const PriceWithMarkupFunction = (pmu, pPrice, curr) => {
+  if (pPrice <= 0) {
+    return 0
   }
-
-
-  const toggleDropdown = () => {
-    setIsActive(!isActive);
-  };
-
-  const [show2ImagesView, setShow2ImageView] = useState(false);
-  const [show3ImagesView, setShow3ImageView] = useState(false);
-  const [show4ImagesView, setShow4ImageView] = useState(false);
-  const handle2ImageShow = () => {
-    setShow4ImageView(false)
-    setShow3ImageView(false)
-    setShow2ImageView(true)
-
+  else if (pmu <= 0) {
+    return pPrice
   }
-
-  const handle3ImageShow = () => {
-    setShow4ImageView(false)
-    setShow2ImageView(false)
-    setShow3ImageView(true)
+  else {
+    let percentPMU = ((pmu / 100) / curr)
+    return (Number(pPrice * (percentPMU ?? 0)) + Number(pPrice ?? 0))
   }
+}
 
-  const handle4ImageShow = () => {
-    setShow2ImageView(false)
-    setShow3ImageView(false)
-    setShow4ImageView(true)
-  }
+const [isActive, setIsActive] = useState(false);
 
-  const ShortcutComboFunc = async () => {
-    // mtTypeOption,diaQColOpt,cSQopt
-    let metalTypeId = findMetalTypeId(mtTypeOption)?.Metalid ?? "0,0"
-    let DiaQCid = findDiaQcId(diaQColOpt)?.QualityId ?? "0,0"
-    let CsQcid = findCsQcId(cSQopt)?.QualityId ?? "0,0"
+const [isShowfilter, setIsShowFilter] = useState(true);
+const options = [
+  { label: 'Recommended' },
+  { label: 'New' },
+  { label: 'In stock' },
+  { label: 'PRICE LOW TO HIGH' },
+  { label: 'PRICE HIGH TO LOW' },
+];
+
+const handleFilterShow = () => {
+  setIsShowFilter(!isShowfilter)
+}
+
+
+const toggleDropdown = () => {
+  setIsActive(!isActive);
+};
+
+const [show2ImagesView, setShow2ImageView] = useState(false);
+const [show3ImagesView, setShow3ImageView] = useState(false);
+const [show4ImagesView, setShow4ImageView] = useState(false);
+const handle2ImageShow = () => {
+  setShow4ImageView(false)
+  setShow3ImageView(false)
+  setShow2ImageView(true)
+
+}
+
+const handle3ImageShow = () => {
+  setShow4ImageView(false)
+  setShow2ImageView(false)
+  setShow3ImageView(true)
+}
+
+const handle4ImageShow = () => {
+  setShow2ImageView(false)
+  setShow3ImageView(false)
+  setShow4ImageView(true)
+}
+
+  const ShortcutComboFunc = async() =>{
+    let metalTypeId = findMetalTypeId(mtTypeOption)[0]?.Metalid
+    let DiaQCid = [findDiaQcId(diaQColOpt)[0]?.QualityId,findDiaQcId(diaQColOpt)[0]?.ColorId] 
+    let CsQcid = [findCsQcId(cSQopt)[0]?.QualityId,findCsQcId(cSQopt)[0]?.ColorId]
 
     let obj = { metalTypeId, DiaQCid, CsQcid }
 
@@ -1995,17 +2052,27 @@ const ProductList = () => {
     })
   }
 
+  useEffect(()=>{
+    ShortcutComboFunc()
+  },[mtTypeOption,diaQColOpt,cSQopt])
 
-  const handlePageChange = async (event, value) => {
-    let param = JSON.parse(localStorage.getItem("menuparams"))
-    setCurrentPage(value)
 
-    await productListApiCall(param, value).then((res) => {
-      if (res) return res
+const handlePageChange = async (event, value) => {
+  let param = JSON.parse(localStorage.getItem("menuparams"))
+  setCurrentPage(value)
+
+    let metalTypeId = findMetalTypeId(mtTypeOption)[0]?.Metalid
+    let DiaQCid = [findDiaQcId(diaQColOpt)[0]?.QualityId,findDiaQcId(diaQColOpt)[0]?.ColorId] 
+    let CsQcid = [findCsQcId(cSQopt)[0]?.QualityId,findCsQcId(cSQopt)[0]?.ColorId]
+
+    let obj={mt:metalTypeId,dqc:DiaQCid,csqc:CsQcid}
+
+     await productListApiCall(param,value).then((res)=>{
+      if(res) return res
       return res
-    }).then(async (res) => {
-      if (res) {
-        await getDesignPriceList(param, value)
+    }).then(async(res)=>{
+      if(res) {
+        await getDesignPriceList(param,value,obj)
         return res
       }
     }).then((res) => {
@@ -2020,211 +2087,211 @@ const ProductList = () => {
       }
     })
 
-    console.log("value", value, param);
-  }
+  console.log("value", value, param);
+}
 
-  return (
-    <div id="top">
+return (
+  <div id="top">
 
+    <div
+      style={{
+        height: "100%",
+        width: "100%",
+      }}
+    >
+      {(!IsProdLoading && <div className="loader-overlay">
+        <CircularProgress className="loadingBarManage" />
+      </div>)}
       <div
         style={{
-          height: "100%",
-          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          paddingTop: '30px',
+          marginInline: '13%'
         }}
+        className='paddingTopMobileSet mainProduct'
       >
-        {(!IsProdLoading && <div className="loader-overlay">
-          <CircularProgress className="loadingBarManage" />
-        </div>)}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            paddingTop: '30px',
-            marginInline: '13%'
-          }}
-          className='paddingTopMobileSet mainProduct'
-        >
-          <div style={{ width: '100%' }}>
-            <div class="bg-image">
-              <div class="overlay"></div>
-              <div class="text-container">
-                <h1>All</h1>
+        <div style={{ width: '100%' }}>
+          <div class="bg-image">
+            <div class="overlay"></div>
+            <div class="text-container">
+              <h1>All</h1>
+            </div>
+          </div>
+          <div className="filterDivcontainer">
+            <div className="part" style={{ flex: '20%' }}>
+              <div className="part-content" onClick={handleFilterShow}>
+                {isShowfilter ? "Hide Filter" : "Show Filter"}
+                <FilterListIcon />
               </div>
             </div>
-            <div className="filterDivcontainer">
-              <div className="part" style={{ flex: '20%' }}>
-                <div className="part-content" onClick={handleFilterShow}>
-                  {isShowfilter ? "Hide Filter" : "Show Filter"}
-                  <FilterListIcon />
+            <div className="divider"></div>
+            <div className="part" style={{ flex: '20%' }}>
+              <div className="part-content">
+                <div className={`custom-select ${isActive ? 'active' : ''}`}>
+                  <button
+                    ref={dropdownRef}
+                    className="select-button"
+                    onClick={toggleDropdown}
+                    aria-haspopup="listbox"
+                    aria-expanded={isActive}
+                  >
+                    <span className="selected-value">{selectedOptionData ? selectedOptionData : 'Featured'}
+                      <SortIcon />
+                    </span>
+                  </button>
+                  {isActive && (
+                    <ul className="select-dropdown">
+                      {options.map((option, index) => (
+                        <li key={index} role="option" onClick={() => handleSortChange(option)}>
+                          <label htmlFor={`option-${index}`}>{option.label}</label>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
               </div>
-              <div className="divider"></div>
-              <div className="part" style={{ flex: '20%' }}>
-                <div className="part-content">
-                  <div className={`custom-select ${isActive ? 'active' : ''}`}>
-                    <button
-                      ref={dropdownRef}
-                      className="select-button"
-                      onClick={toggleDropdown}
-                      aria-haspopup="listbox"
-                      aria-expanded={isActive}
-                    >
-                      <span className="selected-value">{selectedOptionData ? selectedOptionData : 'Featured'}
-                        <SortIcon />
-                      </span>
-                    </button>
-                    {isActive && (
-                      <ul className="select-dropdown">
-                        {options.map((option, index) => (
-                          <li key={index} role="option" onClick={() => handleSortChange(option)}>
-                            <label htmlFor={`option-${index}`}>{option.label}</label>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                </div>
-              </div>
-              <div className="divider"></div>
+            </div>
+            <div className="divider"></div>
 
+            <div className="part" style={{ flex: '20%' }}>
+              {isMetalCutoMizeFlag == 1 && <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  width: '95%',
+                  gap: '5px'
+                }}
+              >
+                <select
+                  className='menuitemSelectoreMain'
+                  defaultValue={mtTypeOption}
+                  onChange={(e) => {
+                    setmtTypeOption(e.target.value)
+                  }}
+                >
+                  {metalType.map((data, index) => (
+                    <option key={index} value={data.metalType}>
+                      {data.metaltype}
+                    </option>
+                  ))}
+                </select>
+              </div>}
+            </div>
+            {isMetalCutoMizeFlag == 1 && <div className="divider"></div>}
+            {((isDaimondCstoFlag == 1) && (productData?.diamondweight !== 0 || productData?.diamondpcs !== 0)) &&
               <div className="part" style={{ flex: '20%' }}>
-                {isMetalCutoMizeFlag == 1 && <div
+                <div
                   style={{
                     display: "flex",
                     flexDirection: "column",
                     width: '95%',
-                    gap: '5px'
+                    paddingTop: '10px',
+                    marginBottom: '15px',
+                    gap: '5px',
                   }}
                 >
                   <select
                     className='menuitemSelectoreMain'
-                    defaultValue={mtTypeOption}
-                    onChange={(e) => {
-                      setmtTypeOption(e.target.value)
-                    }}
+                    defaultValue={diaQColOpt}
+                    onChange={(e) => setDiaQColOpt(e.target.value)}
                   >
-                    {metalType.map((data, index) => (
-                      <option key={index} value={data.metalType}>
-                        {data.metaltype}
+                    {colorData?.map((colorItem) => (
+                      <option key={colorItem.ColorId} value={`${colorItem.Quality}#${colorItem.color}`}>
+                        {`${colorItem.Quality}#${colorItem.color}`}
                       </option>
                     ))}
                   </select>
-                </div>}
+                </div>
               </div>
-              {isMetalCutoMizeFlag == 1 && <div className="divider"></div>}
-              {((isDaimondCstoFlag == 1) && (productData?.diamondweight !== 0 || productData?.diamondpcs !== 0)) &&
-                <div className="part" style={{ flex: '20%' }}>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      width: '95%',
-                      paddingTop: '10px',
-                      marginBottom: '15px',
-                      gap: '5px',
-                    }}
-                  >
-                    <select
-                      className='menuitemSelectoreMain'
-                      defaultValue={diaQColOpt}
-                      onChange={(e) => setDiaQColOpt(e.target.value)}
-                    >
-                      {colorData?.map((colorItem) => (
-                        <option key={colorItem.ColorId} value={`${colorItem.Quality}#${colorItem.color}`}>
-                          {`${colorItem.Quality}#${colorItem.color}`}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-              }
-              {((isDaimondCstoFlag == 1) && (productData?.diamondweight !== 0 || productData?.diamondpcs !== 0)) &&
-                <div className="divider"></div>}
+            }
+            {((isDaimondCstoFlag == 1) && (productData?.diamondweight !== 0 || productData?.diamondpcs !== 0)) &&
+              <div className="divider"></div>}
 
-              {isCColrStoneCustFlag === 1 &&
-                <div className="part" style={{ flex: '20%' }}>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      width: '95%',
-                      paddingTop: '10px',
-                      gap: '5px',
-                      borderTop: '1px solid rgba(66, 66, 66, 0.2)'
+            {isCColrStoneCustFlag === 1 &&
+              <div className="part" style={{ flex: '20%' }}>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    width: '95%',
+                    paddingTop: '10px',
+                    gap: '5px',
+                    borderTop: '1px solid rgba(66, 66, 66, 0.2)'
 
-                    }}
+                  }}
+                >
+                  <select
+                    className='menuitemSelectoreMain'
+                    onChange={(e) => setCSQOpt(e.target.value)}
+                    defaultValue={cSQopt}
                   >
-                    <select
-                      className='menuitemSelectoreMain'
-                      onChange={(e) => setCSQOpt(e.target.value)}
-                      defaultValue={cSQopt}
-                    >
-                      {DaimondQualityColor.map((data, index) => (
-                        <option
-                          key={index}
-                          value={`${data.Quality}_${data.color}`}
-                        >
-                          {`${data.Quality}_${data.color}`}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                    {DaimondQualityColor.map((data, index) => (
+                      <option
+                        key={index}
+                        value={`${data.Quality}_${data.color}`}
+                      >
+                        {`${data.Quality}_${data.color}`}
+                      </option>
+                    ))}
+                  </select>
                 </div>
-              }
-              {isCColrStoneCustFlag === 1 &&
-                <div className="divider"></div>}
-              <div className="part" style={{ flex: '60%', justifyContent: 'end' }}>
-                <div className="part-content">
-                  <IoGrid style={{ height: '18px', width: '18px', opacity: 0.7, color: '#7b7b7b' }} onClick={() => handle2ImageShow()} />
-                  <AppsIcon style={{ height: '22px', width: '22px', opacity: 0.8, color: '#1f1919' }} onClick={() => handle3ImageShow()} />
-                  <TfiLayoutGrid4Alt style={{ height: '17px', width: '17px', opacity: 0.6 }} onClick={() => handle4ImageShow()} />
-                </div>
+              </div>
+            }
+            {isCColrStoneCustFlag === 1 &&
+              <div className="divider"></div>}
+            <div className="part" style={{ flex: '60%', justifyContent: 'end' }}>
+              <div className="part-content">
+                <IoGrid style={{ height: '18px', width: '18px', opacity: 0.7, color: '#7b7b7b' }} onClick={() => handle2ImageShow()} />
+                <AppsIcon style={{ height: '22px', width: '22px', opacity: 0.8, color: '#1f1919' }} onClick={() => handle3ImageShow()} />
+                <TfiLayoutGrid4Alt style={{ height: '17px', width: '17px', opacity: 0.6 }} onClick={() => handle4ImageShow()} />
               </div>
             </div>
-            <div className="smilingProductMain" id="smilingProductMain">
-              <div
-                className="smilingProductSubMain"
-                style={{ width: "100%", display: "flex", position: "relative" }}
-              >
-                <div className="smilingWebProductListSideBar" style={{ transition: "1s ease", width: `19%`, left: `${isShowfilter ? "0" : "-500%"}` }}>
-                  <ul className="d-flex" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', padding: '0px 20px 0px 0px' }}>
-                    <li className="finejwelery me-4" id="finejwelery" style={{ fontSize: '14px' }}>Filters{newProData.length > 0 ? ` (${newProData.length}/${ProductApiData2?.length}) ` : null}</li>
-                    <li className="finejwelery" id="finejwelery"
-                      onClick={() => handlePageReload()}
-                      style={{ cursor: 'pointer', fontSize: '14px' }}>
-                      {
-                        (Object.values(filterChecked)).filter(fc => fc.checked !== false).filter(fc => fc.checked !== undefined).length ?
-                          "Clear All"
-                          :
-                          `Product: ${ProductApiData2?.length}`
-                      }
-                    </li>
-                  </ul>
-                  <div>
-                    {NewFilterData1().map((ele, index) => (
-                      <>
-                        <Accordion
-                          elevation={0}
+          </div>
+          <div className="smilingProductMain" id="smilingProductMain">
+            <div
+              className="smilingProductSubMain"
+              style={{ width: "100%", display: "flex", position: "relative" }}
+            >
+              <div className="smilingWebProductListSideBar" style={{ transition: "1s ease", width: `19%`, left: `${isShowfilter ? "0" : "-500%"}` }}>
+                <ul className="d-flex" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', padding: '0px 20px 0px 0px' }}>
+                  <li className="finejwelery me-4" id="finejwelery" style={{ fontSize: '14px' }}>Filters{newProData.length > 0 ? ` (${newProData.length}/${ProductApiData2?.length}) ` : null}</li>
+                  <li className="finejwelery" id="finejwelery"
+                    onClick={() => handlePageReload()}
+                    style={{ cursor: 'pointer', fontSize: '14px' }}>
+                    {
+                      (Object.values(filterChecked)).filter(fc => fc.checked !== false).filter(fc => fc.checked !== undefined).length ?
+                        "Clear All"
+                        :
+                        `Product: ${ProductApiData2?.length}`
+                    }
+                  </li>
+                </ul>
+                <div>
+                  {NewFilterData1().map((ele, index) => (
+                    <>
+                      <Accordion
+                        elevation={0}
+                        sx={{
+                          borderBottom: "1px solid #c7c8c9",
+                          borderRadius: 0,
+                          "&.MuiPaper-root.MuiAccordion-root:last-of-type": {
+                            borderBottomLeftRadius: "0px",
+                            borderBottomRightRadius: "0px",
+                          },
+                          "&.MuiPaper-root.MuiAccordion-root:before": {
+                            background: "none",
+                          },
+                        }}
+                      >
+                        <AccordionSummary
+                          expandIcon={<ExpandMoreIcon sx={{ width: "20px" }} />}
+                          aria-controls="panel1-content"
+                          id="panel1-header"
                           sx={{
-                            borderBottom: "1px solid #c7c8c9",
+                            color: "#7f7d85",
                             borderRadius: 0,
-                            "&.MuiPaper-root.MuiAccordion-root:last-of-type": {
-                              borderBottomLeftRadius: "0px",
-                              borderBottomRightRadius: "0px",
-                            },
-                            "&.MuiPaper-root.MuiAccordion-root:before": {
-                              background: "none",
-                            },
-                          }}
-                        >
-                          <AccordionSummary
-                            expandIcon={<ExpandMoreIcon sx={{ width: "20px" }} />}
-                            aria-controls="panel1-content"
-                            id="panel1-header"
-                            sx={{
-                              color: "#7f7d85",
-                              borderRadius: 0,
 
                               "&.MuiAccordionSummary-root": {
                                 padding: 0,
@@ -2242,7 +2309,7 @@ const ProductList = () => {
                               gap: "4px",
                             }}
                           >
-                            {ele.label === "PRICE" &&
+                            {/* {ele.label === "PRICE" &&
                               <div>
                                 <Slider
                                   className='netWtSecSlider'
@@ -2262,47 +2329,47 @@ const ProductList = () => {
                                 </div>
                               </div>}
 
-                            {ele.label === "NETWT" &&
-                              <div>
-                                <Slider
-                                  className='netWtSecSlider'
-                                  getAriaLabel={() => 'Minimum distance'}
-                                  value={value2}
-                                  min={minNetwt}
-                                  max={maxNetwt}
-                                  size="small"
-                                  onChange={handleNetWtChange}
-                                  valueLabelDisplay="auto"
-                                  getAriaValueText={valuetext}
-                                  disableSwap
-                                />
-                                <div className="d-flex w-100 justify-content-between align-items-center mt-1">
-                                  <input value={value2[0]} className="minmaxvalpl" disabled />
-                                  <input value={value2[1]} className="minmaxvalpl" disabled />
-                                </div>
+                          {ele.label === "NETWT" &&
+                            <div>
+                              <Slider
+                                className='netWtSecSlider'
+                                getAriaLabel={() => 'Minimum distance'}
+                                value={value2}
+                                min={minNetwt}
+                                max={maxNetwt}
+                                size="small"
+                                onChange={handleNetWtChange}
+                                valueLabelDisplay="auto"
+                                getAriaValueText={valuetext}
+                                disableSwap
+                              />
+                              <div className="d-flex w-100 justify-content-between align-items-center mt-1">
+                                <input value={value2[0]} className="minmaxvalpl" disabled />
+                                <input value={value2[1]} className="minmaxvalpl" disabled />
                               </div>
-                            }
+                            </div>
+                          }
 
-                            {ele.label === "GROSSWT" &&
-                              <div>
-                                <Slider
-                                  className='netWtSecSlider'
-                                  getAriaLabel={() => 'Minimum distance'}
-                                  value={value3}
-                                  min={minGrosswt}
-                                  max={maxGrosswt}
-                                  size="small"
-                                  onChange={handlegrossWtChange}
-                                  valueLabelDisplay="auto"
-                                  getAriaValueText={valuetext}
-                                  disableSwap
-                                />
-                                <div className="d-flex w-100 justify-content-between align-items-center mt-1">
-                                  <input value={value3[0]} className="minmaxvalpl" disabled />
-                                  <input value={value3[1]} className="minmaxvalpl" disabled />
-                                </div>
+                          {ele.label === "GROSSWT" &&
+                            <div>
+                              <Slider
+                                className='netWtSecSlider'
+                                getAriaLabel={() => 'Minimum distance'}
+                                value={value3}
+                                min={minGrosswt}
+                                max={maxGrosswt}
+                                size="small"
+                                onChange={handlegrossWtChange}
+                                valueLabelDisplay="auto"
+                                getAriaValueText={valuetext}
+                                disableSwap
+                              />
+                              <div className="d-flex w-100 justify-content-between align-items-center mt-1">
+                                <input value={value3[0]} className="minmaxvalpl" disabled />
+                                <input value={value3[1]} className="minmaxvalpl" disabled />
                               </div>
-                            }
+                            </div>
+                          }
 
                             {ele.label === "DIAMONDWT" &&
                               <div>
@@ -2323,119 +2390,119 @@ const ProductList = () => {
                                   <input value={value4[1]} className="minmaxvalpl" disabled />
                                 </div>
                               </div>
-                            }
+                            } */}
 
-                            {ele.filterList.map((flist, i) => (
-                              <div
+                          {ele.filterList.map((flist, i) => (
+                            <div
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: 'space-between',
+                                gap: "12px",
+                              }}
+                              key={i}
+                            >
+
+                              <small
                                 style={{
-                                  display: "flex",
-                                  alignItems: "center",
-                                  justifyContent: 'space-between',
-                                  gap: "12px",
+                                  fontFamily: "TT Commons, sans-serif",
+                                  color: "#7f7d85",
+                                  textTransform: "lowercase",
                                 }}
-                                key={i}
                               >
-
-                                <small
-                                  style={{
-                                    fontFamily: "TT Commons, sans-serif",
-                                    color: "#7f7d85",
-                                    textTransform: "lowercase",
-                                  }}
-                                >
-                                  {flist.label}
-                                </small>
-                                <Checkbox
-                                  name={`checkbox${index + 1}${i + 1}`}
-                                  checked={
-                                    filterChecked[`checkbox${index + 1}${i + 1}`]
-                                      ? filterChecked[`checkbox${index + 1}${i + 1}`]?.checked
-                                      : false
-                                  }
-                                  style={{
-                                    color: "#7f7d85",
-                                    padding: 0,
-                                    width: "10px",
-                                  }}
-                                  onClick={(e) =>
-                                    handleCheckboxChange(e, ele, flist.id)
-                                  }
-                                  size="small"
-                                />
-                              </div>
-                            ))}
-                          </AccordionDetails>
-                        </Accordion>
-                      </>
-                    ))}
-                  </div>
-                </div>
-                {/* for mobile */}
-                <div className="smilingMobileProductListSideBar">
-                  <div className="filterListMobileData" style={{ display: "flex", marginInline: "15px" }}>
-                    <div style={{ width: "100%" }} onClick={toggleDrawerOverlay}>
-                      <Drawer
-                        anchor="left"
-                        open={isOpenDetail}
-                        onClose={toggleDetailDrawer}
-                      >
-                        {list("left")}
-                      </Drawer>
-                      <div className="filterMobileDivcontainer">
-                        <div className="part firstfilteDiv" style={{ flex: '20%' }}>
-                          <div className="part-content" onClick={toggleDetailDrawer}>
-                            Filter
-                            <FilterListIcon />
-
-                          </div>
-                        </div>
-                        <div className="part secondfilteDiv" style={{ flex: '20%' }}>
-                          <div className="part-content">
-                            <div className={`custom-select ${isActive ? 'active' : ''}`}>
-                              <button
-                                className="select-button"
-                                onClick={toggleDropdown}
-                                aria-haspopup="listbox"
-                                aria-expanded={isActive}
-                              >
-                                <span className="selected-value">{selectedOptionData ? selectedOptionData : 'Featured'}
-                                  <SortIcon />
-                                </span>
-                              </button>
-                              <ul className="select-dropdown">
-                                {options.map((option, index) => (
-                                  <li key={index} role="option" onClick={() => handleSortChange(option)}>
-                                    <label htmlFor={`option-${index}`}>{option.label}</label>
-                                  </li>
-                                ))}
-                              </ul>
+                                {flist.label}
+                              </small>
+                              <Checkbox
+                                name={`checkbox${index + 1}${i + 1}`}
+                                checked={
+                                  filterChecked[`checkbox${index + 1}${i + 1}`]
+                                    ? filterChecked[`checkbox${index + 1}${i + 1}`]?.checked
+                                    : false
+                                }
+                                style={{
+                                  color: "#7f7d85",
+                                  padding: 0,
+                                  width: "10px",
+                                }}
+                                onClick={(e) =>
+                                  handleCheckboxChange(e, ele, flist.id)
+                                }
+                                size="small"
+                              />
                             </div>
+                          ))}
+                        </AccordionDetails>
+                      </Accordion>
+                    </>
+                  ))}
+                </div>
+              </div>
+              {/* for mobile */}
+              <div className="smilingMobileProductListSideBar">
+                <div className="filterListMobileData" style={{ display: "flex", marginInline: "15px" }}>
+                  <div style={{ width: "100%" }} onClick={toggleDrawerOverlay}>
+                    <Drawer
+                      anchor="left"
+                      open={isOpenDetail}
+                      onClose={toggleDetailDrawer}
+                    >
+                      {list("left")}
+                    </Drawer>
+                    <div className="filterMobileDivcontainer">
+                      <div className="part firstfilteDiv" style={{ flex: '20%' }}>
+                        <div className="part-content" onClick={toggleDetailDrawer}>
+                          Filter
+                          <FilterListIcon />
+
+                        </div>
+                      </div>
+                      <div className="part secondfilteDiv" style={{ flex: '20%' }}>
+                        <div className="part-content">
+                          <div className={`custom-select ${isActive ? 'active' : ''}`}>
+                            <button
+                              className="select-button"
+                              onClick={toggleDropdown}
+                              aria-haspopup="listbox"
+                              aria-expanded={isActive}
+                            >
+                              <span className="selected-value">{selectedOptionData ? selectedOptionData : 'Featured'}
+                                <SortIcon />
+                              </span>
+                            </button>
+                            <ul className="select-dropdown">
+                              {options.map((option, index) => (
+                                <li key={index} role="option" onClick={() => handleSortChange(option)}>
+                                  <label htmlFor={`option-${index}`}>{option.label}</label>
+                                </li>
+                              ))}
+                            </ul>
                           </div>
                         </div>
+                      </div>
 
-                        <div className="part thirdfilteDiv" style={{ flex: '60%', justifyContent: 'end' }}>
-                          <div className="part-content">
-                            <GridViewIcon onClick={() => handle2ImageShow()} />
-                            <AppsIcon />
-                          </div>
+                      <div className="part thirdfilteDiv" style={{ flex: '60%', justifyContent: 'end' }}>
+                        <div className="part-content">
+                          <GridViewIcon onClick={() => handle2ImageShow()} />
+                          <AppsIcon />
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div
-                  style={{
-                    // width: isShowfilter ? "80%" : "100%",
-                    width: isShowfilter ? "80%" : "100%",
-                    display: "flex",
-                    flexDirection: 'column',
-                    transition: "1s ease"
-                    // margin: "40px 0px 0px 0px",
-                  }}
-                  className="smilingProductImageMain"
-                  id="smilingProductImageMain"
-                >
-                  {/* <div
+              </div>
+              <div
+                style={{
+                  // width: isShowfilter ? "80%" : "100%",
+                  width: isShowfilter ? "80%" : "100%",
+                  display: "flex",
+                  flexDirection: 'column',
+                  transition: "1s ease"
+                  // margin: "40px 0px 0px 0px",
+                }}
+                className="smilingProductImageMain"
+                id="smilingProductImageMain"
+              >
+                {/* <div
                     style={{
                       width: "100%",
                       display: "flex",
@@ -2465,98 +2532,98 @@ const ProductList = () => {
                     </select>
                   </div> */}
 
-                  <div className={`smilingAllProductDataMainMobile
+                <div className={`smilingAllProductDataMainMobile
                                     ${show2ImagesView ? "smilingAllProductDataMainMobileShow2Image" : ""}
                                     ${show4ImagesView ? "smilingAllProductDataMainMobileShow4Image" : ""}`}>
-                    {/* RollOverImageName */}
-                    {/* {(newProData.length ? newProData : finalDataOfDisplaying())?.map((products, i) => ( */}
-                    {(rangeProData.length ? rangeProData : (newProData?.length ? newProData : ProductApiData2))?.map((products, i) => (
-                      <div className={`main-ProdcutListConatiner
+                  {/* RollOverImageName */}
+                  {/* {(newProData.length ? newProData : finalDataOfDisplaying())?.map((products, i) => ( */}
+                  {(rangeProData.length ? rangeProData : (newProData?.length ? newProData : ProductApiData2))?.map((products, i) => (
+                    <div className={`main-ProdcutListConatiner
                       ${show2ImagesView ? "main-ProdcutListConatiner2ImageShow" : ""}
                       ${show4ImagesView ? "main-ProdcutListConatiner4ImageShow" : ""}`}
-                      >
-                        <div className={`listing-card
+                    >
+                      <div className={`listing-card
                           ${show2ImagesView ? "listing-cardShow2Image" : ""}
                           ${show4ImagesView ? "listing-cardShow4Image" : ""}`} >
-                          <div className="listing-image">
-                            {products?.designno === "S24705E" && <p id="labelTag_0002388" className="instockP">IN STOCK</p>}
-                            {products?.designno === "S24705" && <p id="labelTag_0002388" className="instockP">IN STOCK</p>}
-                            {products?.designno === "MCJ2" && <p id="labelTag_0002388" className="instockP">IN STOCK</p>}
-                            {/* {console.log("imagePath", `${storeInitData?.DesignImageFol}${products?.DesignFolderName}/${storeInitData?.ImgMe}/${products?.DefaultImageName}`)} */}
-                            <div>
-                              <img
-                                className="prod_img"
-                                src={
-                                  hoveredImageUrls[i] ? hoveredImageUrls[i] : updatedColorImage[i] ? updatedColorImage[i] :
-                                    (storeInitData ?
-                                      `${storeInitData?.DesignImageFol}${products?.DesignFolderName}/${storeInitData?.ImgMe}/${products?.DefaultImageName}`
-                                      :
-                                      notFound)
+                        <div className="listing-image">
+                          {products?.designno === "S24705E" && <p id="labelTag_0002388" className="instockP">IN STOCK</p>}
+                          {products?.designno === "S24705" && <p id="labelTag_0002388" className="instockP">IN STOCK</p>}
+                          {products?.designno === "MCJ2" && <p id="labelTag_0002388" className="instockP">IN STOCK</p>}
+                          {/* {console.log("imagePath", `${storeInitData?.DesignImageFol}${products?.DesignFolderName}/${storeInitData?.ImgMe}/${products?.DefaultImageName}`)} */}
+                          <div>
+                            <img
+                              className="prod_img"
+                              src={
+                                hoveredImageUrls[i] ? hoveredImageUrls[i] : updatedColorImage[i] ? updatedColorImage[i] :
+                                  (storeInitData ?
+                                    `${storeInitData?.DesignImageFol}${products?.DesignFolderName}/${storeInitData?.ImgMe}/${products?.DefaultImageName}`
+                                    :
+                                    notFound)
+                              }
+                              // src={
+                              //   hoveredImageUrls[i] ? hoveredImageUrls[i] : updatedColorImage[i] ? updatedColorImage[i] :
+                              //     (products?.MediumImagePath ?
+                              //       (globImagePath + products?.MediumImagePath?.split(",")[0])
+                              //       :
+                              //       notFound)
+                              // }
+                              onMouseEnter={() => handleHoverImageShow(i, storeInitData?.DesignImageFol, products?.DesignFolderName, storeInitData?.ImgMe, products?.RollOverImageName)}
+                              // onMouseEnter={() => handleHoverImageShow(products?.MediumImagePath?.split(",")[0], i, products?.RollOverImageName, globImagePath)}
+                              // onMouseEnter={() => handleHoverImageShow(products?.MediumImagePath?.split(",")[0], i, isColorWiseImageShow === 1 ? products?.ColorWiseRollOverImageName : products?.RollOverImageName, products?.imagepath)}
+                              onMouseLeave={() => handleMouseLeave(i)}
+                              style={{ objectFit: 'cover' }}
+                              alt="#"
+                              onError={(e) => {
+                                e.target.src = notFound;
+                              }}
+                              onClick={() => handelProductSubmit(products)}
+                            />
+                            <div className="cart-icon">
+                              <Checkbox
+                                icon={
+                                  <LocalMallOutlinedIcon
+                                    sx={{ fontSize: "22px", color: "#1f1919", opacity: '.7' }}
+                                  />
                                 }
-                                // src={
-                                //   hoveredImageUrls[i] ? hoveredImageUrls[i] : updatedColorImage[i] ? updatedColorImage[i] :
-                                //     (products?.MediumImagePath ?
-                                //       (globImagePath + products?.MediumImagePath?.split(",")[0])
-                                //       :
-                                //       notFound)
-                                // }
-                                onMouseEnter={() => handleHoverImageShow(i, storeInitData?.DesignImageFol, products?.DesignFolderName, storeInitData?.ImgMe, products?.RollOverImageName)}
-                                // onMouseEnter={() => handleHoverImageShow(products?.MediumImagePath?.split(",")[0], i, products?.RollOverImageName, globImagePath)}
-                                // onMouseEnter={() => handleHoverImageShow(products?.MediumImagePath?.split(",")[0], i, isColorWiseImageShow === 1 ? products?.ColorWiseRollOverImageName : products?.RollOverImageName, products?.imagepath)}
-                                onMouseLeave={() => handleMouseLeave(i)}
-                                style={{ objectFit: 'cover' }}
-                                alt="#"
-                                onError={(e) => {
-                                  e.target.src = notFound;
-                                }}
-                                onClick={() => handelProductSubmit(products)}
+                                checkedIcon={
+                                  <LocalMallIcon
+                                    sx={{ fontSize: "22px", color: "#f0d85e" }}
+                                  />
+                                }
+                                disableRipple={true}
+                                sx={{ padding: "5px" }}
+
+                                checked={products?.checkFlag}
+                                onChange={(e) => handelCartList(e, products)}
                               />
-                              <div className="cart-icon">
-                                <Checkbox
-                                  icon={
-                                    <LocalMallOutlinedIcon
-                                      sx={{ fontSize: "22px", color: "#1f1919", opacity: '.7' }}
-                                    />
-                                  }
-                                  checkedIcon={
-                                    <LocalMallIcon
-                                      sx={{ fontSize: "22px", color: "#f0d85e" }}
-                                    />
-                                  }
-                                  disableRipple={true}
-                                  sx={{ padding: "5px" }}
+                            </div>
+                            <div className="wishlist-icon">
+                              <Checkbox
+                                icon={
+                                  <FavoriteBorderIcon
+                                    sx={{ fontSize: "22px", color: "#1f1919", opacity: '.7' }}
+                                  />
+                                }
+                                checkedIcon={
+                                  <FavoriteIcon
+                                    sx={{ fontSize: "22px", color: "#e31b23" }}
+                                  />
+                                }
+                                disableRipple={true}
+                                sx={{ padding: "5px" }}
 
-                                  checked={products?.checkFlag}
-                                  onChange={(e) => handelCartList(e, products)}
-                                />
-                              </div>
-                              <div className="wishlist-icon">
-                                <Checkbox
-                                  icon={
-                                    <FavoriteBorderIcon
-                                      sx={{ fontSize: "22px", color: "#1f1919", opacity: '.7' }}
-                                    />
-                                  }
-                                  checkedIcon={
-                                    <FavoriteIcon
-                                      sx={{ fontSize: "22px", color: "#e31b23" }}
-                                    />
-                                  }
-                                  disableRipple={true}
-                                  sx={{ padding: "5px" }}
-
-                                  checked={products?.wishCheck}
-                                  onChange={(e) => handelWishList(e, products)}
-                                />
-                              </div>
+                                checked={products?.wishCheck}
+                                onChange={(e) => handelWishList(e, products)}
+                              />
                             </div>
                           </div>
-                          <div className={show4ImagesView ? 'listing4-details' : "listing-details"} onClick={() => handelProductSubmit(products)}>
-                            <p className={show4ImagesView ? "productDetails property4-type" : "productDetails property-type"}>
-                              {products?.TitleLine}
-                            </p>
-                            <div>
-                              {/* {isPriceShow === 1 &&
+                        </div>
+                        <div className={show4ImagesView ? 'listing4-details' : "listing-details"} onClick={() => handelProductSubmit(products)}>
+                          <p className={show4ImagesView ? "productDetails property4-type" : "productDetails property-type"}>
+                            {products?.TitleLine}
+                          </p>
+                          <div>
+                            {/* {isPriceShow === 1 &&
                                 <p className={show4ImagesView ? "productDetails price4" : "productDetails price"}>{currencySym?.Currencysymbol}
                                   {((products?.UnitCost ?? 0) + (products?.price ?? 0) + (products?.markup ?? 0)).toFixed(2)}</p>
                               }
@@ -2570,26 +2637,26 @@ const ProductList = () => {
                                 />
                                 <p className="productDetails address"> {isMetalTCShow === 1 && products?.MetalTypeName}-{products?.MetalColorName}{products?.MetalPurity}</p>
                               </span> */}
-                            </div>
                           </div>
-                          <div className={show4ImagesView ? "listing-features4" : "listing-features"}>
-                            <div>
-                              {ismetalWShow === 1 &&
-                                <div className={show4ImagesView ? "feature4" : 'feature'}>
-                                  <p>
-                                    <span className="feature-count">NWT : </span> {parseFloat(products?.updNWT).toFixed(2)}
-                                  </p>
-                                </div>
-                              }
-                              {isGrossWShow === 1 &&
-                                <div className={show4ImagesView ? "feature4" : 'feature'}>
-                                  <p style={{ margin: '0px 0px 0px 8px' }}>
-                                    <span className="feature-count">GWT : </span> {parseFloat(products?.updGWT).toFixed(2)}
-                                  </p>
-                                </div>
-                              }
-                            </div>
-                            {/* <div className="mobileDeatilDiv2" style={{ display: 'flex', justifyContent: 'center', height: '20px' }}>
+                        </div>
+                        <div className={show4ImagesView ? "listing-features4" : "listing-features"}>
+                          <div>
+                            {ismetalWShow === 1 &&
+                              <div className={show4ImagesView ? "feature4" : 'feature'}>
+                                <p>
+                                  <span className="feature-count">NWT : </span> {parseFloat(products?.updNWT).toFixed(2)}
+                                </p>
+                              </div>
+                            }
+                            {isGrossWShow === 1 &&
+                              <div className={show4ImagesView ? "feature4" : 'feature'}>
+                                <p style={{ margin: '0px 0px 0px 8px' }}>
+                                  <span className="feature-count">GWT : </span> {parseFloat(products?.updGWT).toFixed(2)}
+                                </p>
+                              </div>
+                            }
+                          </div>
+                          {/* <div className="mobileDeatilDiv2" style={{ display: 'flex', justifyContent: 'center', height: '20px' }}>
                               {((isDaaimongWShow || isDaaimongWShow) === 1 && (products?.diamondweight !== 0 || products?.diamondpcs !== 0)) && <div>
                                 <p style={{ margin: '0px', fontSize: '13px' }}>DWT : <span style={{ fontWeight: 600, marginRight: '10px' }}>{(isDaaimongWShow === 1 && products?.diamondweight !== 0) && products?.updDWT + '/'}  {(isDaaimonPShow === 1 && products?.diamondpcs !== 0) && products?.updDPCS}</span></p>
                               </div>}
@@ -2599,40 +2666,40 @@ const ProductList = () => {
                               </div>}
                             </div> */}
 
-                            <div>
-                              <div className={show4ImagesView ? "feature4" : 'feature'}>
-                                <p>
-                                  <span className="feature-count">{products?.designno}</span>
-                                </p>
-                              </div>
-                              <p style={{ display: 'flex', margin: '0px' }}>
-                                {/* {products?.MetalTypeName} - */}
-                                {/* {isMetalTCShow === 1 && <span>
+                          <div>
+                            <div className={show4ImagesView ? "feature4" : 'feature'}>
+                              <p>
+                                <span className="feature-count">{products?.designno}</span>
+                              </p>
+                            </div>
+                            <p style={{ display: 'flex', margin: '0px' }}>
+                              {/* {products?.MetalTypeName} - */}
+                              {/* {isMetalTCShow === 1 && <span>
                                   {products?.updMC} -
                                   {products?.updMT} /
                                 </span>} */}
-                                {isPriceShow === 1 &&
-                                  <div className={show4ImagesView ? "feature4" : 'feature'}>
-                                    <p>
-                                      <span className="feature-count" style={{ display: 'flex' }}>
-                                        <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />
-                                        {PriceWithMarkupFunction(products?.markup, products?.price, currData?.CurrencyRate)?.toFixed(2)}</span>
-                                    </p>
-                                  </div>
-                                }
+                              {isPriceShow === 1 &&
+                                <div className={show4ImagesView ? "feature4" : 'feature'}>
+                                  <p>
+                                    <span className="feature-count" style={{ display: 'flex' }}>
+                                      <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />
+                                      {PriceWithMarkupFunction(products?.markup, products?.price, currData?.CurrencyRate)?.toFixed(2)}</span>
+                                  </p>
+                                </div>
+                              }
 
-                              </p>
-                            </div>
-                          </div>
-                          <div>
-                            <p className="property-type" style={{ margin: '0px 0px 10px 8px' }}>
-                              {isMetalTCShow === 1 && <span>
-                                {products?.updMC} -
-                                {products?.updMT}
-                              </span>}
                             </p>
                           </div>
-                          {/* <div style={{ position: "absolute", zIndex: 999999, top: 0, right: 0, display: 'flex' }}>
+                        </div>
+                        <div>
+                          <p className="property-type" style={{  margin: '0px 0px 10px 8px'  }}>
+                            {isMetalTCShow === 1 && <span>
+                              {products?.updMC} -
+                              {products?.updMT}
+                            </span>}
+                          </p>
+                        </div>
+                        {/* <div style={{ position: "absolute", zIndex: 999999, top: 0, right: 0, display: 'flex' }}>
                             <div>
                               <Checkbox
                                 icon={
@@ -2675,55 +2742,55 @@ const ProductList = () => {
                               />
                             </div>
                           </div> */}
-                          {isColorWiseImageShow == 1 && (
+                        {isColorWiseImageShow == 1 && (
+                          <div
+                            style={{
+                              display: "flex",
+                              gap: "8px",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              marginBottom: "12px",
+                            }}
+                          >
                             <div
                               style={{
-                                display: "flex",
-                                gap: "8px",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                marginBottom: "12px",
+                                width: "9px",
+                                height: "9px",
+                                backgroundColor: "#c8c8c8",
+                                borderRadius: "50%",
+                                cursor: 'pointer'
                               }}
+                              onClick={() => handleColorSelection(products, i, 'WHITE GOLD')}
+                            ></div>
+                            <div
+                              style={{
+                                width: "9px",
+                                height: "9px",
+                                backgroundColor: "#ffcfbc",
+                                borderRadius: "50%",
+                                cursor: 'pointer'
+                              }}
+                              onClick={(e) => handleColorSelection(products, i, 'ROSE GOLD')}
+                            ></div>
+                            <div
+                              style={{
+                                width: "9px",
+                                height: "9px",
+                                backgroundColor: "#e0be77",
+                                borderRadius: "50%",
+                                cursor: 'pointer'
+                              }}
+                              onClick={(e) => handleColorSelection(products, i, 'YELLOW GOLD')}
                             >
-                              <div
-                                style={{
-                                  width: "9px",
-                                  height: "9px",
-                                  backgroundColor: "#c8c8c8",
-                                  borderRadius: "50%",
-                                  cursor: 'pointer'
-                                }}
-                                onClick={() => handleColorSelection(products, i, 'WHITE GOLD')}
-                              ></div>
-                              <div
-                                style={{
-                                  width: "9px",
-                                  height: "9px",
-                                  backgroundColor: "#ffcfbc",
-                                  borderRadius: "50%",
-                                  cursor: 'pointer'
-                                }}
-                                onClick={(e) => handleColorSelection(products, i, 'ROSE GOLD')}
-                              ></div>
-                              <div
-                                style={{
-                                  width: "9px",
-                                  height: "9px",
-                                  backgroundColor: "#e0be77",
-                                  borderRadius: "50%",
-                                  cursor: 'pointer'
-                                }}
-                                onClick={(e) => handleColorSelection(products, i, 'YELLOW GOLD')}
-                              >
-                              </div>
                             </div>
-                          )}
-                        </div>
+                          </div>
+                        )}
                       </div>
-                    ))}
-                  </div>
+                    </div>
+                  ))}
                 </div>
-                {/* :
+              </div>
+              {/* :
                   <div style={{
                     width: "80%",
                     display: "flex",
@@ -2735,19 +2802,19 @@ const ProductList = () => {
                     <span style={{ fontWeight: 'bold', textTransform: 'capitalize', fontSize: '30px', marginTop: '-130px' }}>Data Not Available!!!</span>
                   </div>
                 } */}
-              </div>
-              <div style={{ display: 'flex', width: '100%', justifyContent: 'center', marginTop: '100px' }}>
-                <Pagination count={Math.ceil(prodCount / prodPageSize)} onChange={handlePageChange} />
-              </div>
-              <SmilingRock />
-              {/* <Footer /> */}
             </div>
+            <div style={{ display: 'flex', width: '100%', justifyContent: 'center', marginTop: '100px' }}>
+              <Pagination count={Math.ceil(prodCount / prodPageSize)} onChange={handlePageChange} />
+            </div>
+            <SmilingRock />
+            {/* <Footer /> */}
           </div>
         </div>
       </div>
-      <Footer />
-    </div >
-  );
+    </div>
+    <Footer />
+  </div >
+);
 };
 
 export default ProductList;

@@ -8,7 +8,7 @@ function TermsAndConditions() {
   return (
     <div>
       <div className="tncbannerpart">
-        <img src={`${storImagePath()}/images/HomePage/Promo/Banner/PromoBanner1.jpg`} alt="#mainbanner" className="mainbanner_tnc" />
+        <img src={`${storImagePath()}/images/HomePage/Terms-and-Condtions/TermConditionMainBanner.jpg`} alt="#mainbanner" className="mainbanner_tnc" />
         <div><img src={logo} className="tnclogo" alt="#logo" /></div>
       </div>
       <div>
