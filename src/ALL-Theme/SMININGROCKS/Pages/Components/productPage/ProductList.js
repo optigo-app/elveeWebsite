@@ -133,7 +133,7 @@ const ProductList = () => {
   const [storeInitData, setStoreInitData] = useState({})
   const [currentPage, setCurrentPage] = useState(1)
 
-  console.log("mttypeoption", mtTypeOption, diaQColOpt, cSQopt);
+  // console.log("mttypeoption", mtTypeOption, diaQColOpt, cSQopt);
 
 
   //   const handelCurrencyData = () =>{
@@ -277,7 +277,7 @@ const ProductList = () => {
 
   const WishListToCart = () => {
     let findData = Object.keys(wishFlag).filter((wd) => Object.keys(cartFlag).find((cd) => wd === cd))
-    console.log("findData", findData)
+    // console.log("findData", findData)
     if (findData) {
       wishFlag[findData] = false
       setWishFlag(wishFlag)
@@ -346,7 +346,7 @@ const ProductList = () => {
       // const loginUserDetail = JSON.parse(localStorage.getItem('loginUserDetail'));
       // const storeInit = JSON.parse(localStorage.getItem('storeInit'));
 
-      console.log("priceDataApi",priceDataApi);
+      // console.log("priceDataApi",priceDataApi);
 
       const updatedData = await Promise?.all(data?.map(async (product) => {
         const newPriceData = priceDataApi?.rd?.find((pda) => pda.A == product.autocode)
@@ -402,7 +402,7 @@ const ProductList = () => {
           csC = ""
           csCid = ""
         }
-        console.log("priceprod", product?.designno, metalrd, diard1, csrd2);
+        // console.log("priceprod", product?.designno, metalrd, diard1, csrd2);
         return { ...product, price, markup, metalrd, diard1, csrd2, updNWT, updGWT, 
           updDWT, updDPCS, updCWT, updCPCS, updMT, updMC, 
           diaQ, diaQid,
@@ -414,7 +414,7 @@ const ProductList = () => {
       setProductApiData2(updatedData);
     };
 
-    console.log("calling");
+    // console.log("calling");
     fetchData();
   }, [priceDataApi, mtTypeOption]);
 
@@ -1001,7 +1001,7 @@ useEffect(() => {
       output[key] = output[key].slice(0, -2);
     }
 
-    console.log("activeFilters",output)
+    // console.log("activeFilters",output)
 
     await productListApiCall(param,currentPage,output).then(res =>{
            if(res){
@@ -1397,7 +1397,7 @@ const handelCartList = async (event, prod) => {
           "Designid": Number(`${product?.Designid ?? 0}`)
         }
 
-      console.log("product", finalJSON)
+      // console.log("product", finalJSON)
 
 
       const encodedCombinedValue = btoa(JSON.stringify(finalJSON));
@@ -1703,7 +1703,7 @@ const handleHoverImageShow = (index, designimgfol, dfoldername, imgSize, roleove
   }
 };
 
-console.log("prod_img", hoveredImageUrls);
+// console.log("prod_img", hoveredImageUrls);
 
 const handleMouseLeave = (index) => {
   setHoveredImageUrls(prevState => {
@@ -1734,7 +1734,7 @@ const handleColorSelection = async (product, index, color) => {
   const colorWiseImageData = JSON.parse(localStorage.getItem('colorDataImages'));
   const productAutoCode = product?.autocode;
   const productColorName = color;
-  console.log("color--", productColorName);
+  // console.log("color--", productColorName);
 
   if (!colorWiseImageData) {
     return [];
@@ -1745,7 +1745,6 @@ const handleColorSelection = async (product, index, color) => {
       productAutoCode === imageDataItem.autocode &&
       productColorName.toLowerCase() === imageDataItem.colorname.toLowerCase()
     ));
-    console.log("matchingData", matchingData, productAutoCode, productColorName)
 
     const checkAvailabilityPromises = matchingData.map(async (imageDataItem) => {
       const imagePath = uploadPath + '/' + data.ukey + convertPath(imageDataItem.imagepath);
@@ -2087,7 +2086,7 @@ const handlePageChange = async (event, value) => {
       }
     })
 
-  console.log("value", value, param);
+  // console.log("value", value, param);
 }
 
 return (
