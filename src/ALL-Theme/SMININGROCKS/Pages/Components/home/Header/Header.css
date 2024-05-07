@@ -875,11 +875,22 @@
 .css-19kzrtu {
     padding: 0px !important;
 }
-
+@media (min-width: 768px) and (max-width: 1440px) {
+    .MainlogogMobileImage {
+        width: 70% !important;
+        margin-top: -21px
+    }
+}
+@media (min-width: 600px) and (max-width: 769px) {
+    .MainlogogMobileImage {
+        width: 70% !important;
+        margin-top: -21px
+    }
+}
 
 @media screen and (max-width: 400px) {
     .MainlogogMobileImage {
-        width: 56% !important;
+        width: 70% !important;
         /* margin-top: -11px */
     }
 

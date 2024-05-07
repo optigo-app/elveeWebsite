@@ -35,7 +35,7 @@
 }
 
 .smiTopClearBtn {
-    height: 45px;
+    height: 60px;
     width: 150px;
     background-color: white;
     border: 1px solid black;
@@ -70,6 +70,7 @@
     margin-inline: 5%;
     margin-top: 50px;
     flex-wrap: wrap;
+    margin-bottom: 20px;
 }
 
 .smiWishLsitBox {
