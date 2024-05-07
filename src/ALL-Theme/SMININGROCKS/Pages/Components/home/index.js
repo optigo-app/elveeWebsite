@@ -328,18 +328,6 @@ console.log('islogin',islogin);
           </>
         }
       </div>
-      <div>
-        <p style={{
-          paddingBlock: '30px',
-          margin: '0px',
-          textAlign: 'center',
-          color: 'white',
-          cursor: 'pointer',
-          fontSize: '13px',
-          fontWeight: 500,
-          letterSpacing: '1px'
-        }} onClick={() => window.scrollTo(0, 0)}>BACK TO TOP</p>
-      </div>
     </div>
   )
 }

@@ -550,10 +550,10 @@ export default function Header() {
       })
       await getDesignPriceList(finalData)
       navigation("/productpage", { state: { menuFlag: true } })
-      setTimeout(() =>{
+      setTimeout(() => {
         setDrawerOpen(false);
         handleMouseLeave();
-      },100)
+      }, 100)
     }
 
     console.log('menuData', finalData);
@@ -628,8 +628,8 @@ export default function Header() {
   const [selectedSubSubMenu, setSelectedSubSubMenu] = useState(null);
   const [finalMenuData, setFinalMenuData] = useState();
 
-  const handleLoginMenuClick = (menuName, menuItem,iconclicked) => {
-    if(iconclicked == 'iconclicked'){
+  const handleLoginMenuClick = (menuName, menuItem, iconclicked) => {
+    if (iconclicked == 'iconclicked') {
       setDrawerOpen(true);
       setSelectedMenu(prevMenu => (prevMenu === menuName ? null : menuName));
       setSelectedSubMenu(null);
@@ -639,15 +639,15 @@ export default function Header() {
     const { param1, ...menuItemWithoutParam1 } = menuItem;
     setFinalMenuData(menuItemWithoutParam1);
     handleMenuClick(menuItemWithoutParam1)
-    console.log('MenuItemDtata--',menuItemWithoutParam1);
+    console.log('MenuItemDtata--', menuItemWithoutParam1);
   };
   console.log('FinalMenuData--', finalMenuData);
 
-  const handleSubMenuClick = (menuItem, subMenuName, subMenuItem , iconclicked) => {
-    if(iconclicked == 'iconclicked'){
-    setSelectedSubMenu(prevSubMenu => (prevSubMenu === subMenuName ? null : subMenuName));
-    setSelectedSubSubMenu(null);
-    return;
+  const handleSubMenuClick = (menuItem, subMenuName, subMenuItem, iconclicked) => {
+    if (iconclicked == 'iconclicked') {
+      setSelectedSubMenu(prevSubMenu => (prevSubMenu === subMenuName ? null : subMenuName));
+      setSelectedSubSubMenu(null);
+      return;
     }
     console.log('menuItem--', menuItem);
     console.log('subMenuItem--', subMenuItem);
@@ -779,7 +779,7 @@ export default function Header() {
                     <ListItem onClick={() => handleLoginMenuClick(menuItem.menuname, menuItem)} >
                       <ListItemText primary={menuItem.menuname} className="muilistMenutext" />
                       {selectedMenu === menuItem.menuname ? (
-                        <RemoveIcon sx={{ color: '#7D7F85' }} onClick={(e) => { e.stopPropagation(); handleLoginMenuClick(menuItem.menuname, null, "iconclicked"); }}/>
+                        <RemoveIcon sx={{ color: '#7D7F85' }} onClick={(e) => { e.stopPropagation(); handleLoginMenuClick(menuItem.menuname, null, "iconclicked"); }} />
                       ) : (
                         <AddIcon sx={{ color: '#7D7F85' }} onClick={(e) => { e.stopPropagation(); handleLoginMenuClick(menuItem.menuname, null, "iconclicked") }} />
                       )}
@@ -791,9 +791,9 @@ export default function Header() {
                             <ListItem onClick={() => handleSubMenuClick(menuItem, subMenuItem.param1dataname, subMenuItem)} className="muilistSubMenutext" style={{ paddingLeft: '60px' }}>
                               <ListItemText primary={subMenuItem.param1dataname} />
                               {selectedSubMenu === subMenuItem.param1dataname ? (
-                                <RemoveIcon sx={{ color: '#7D7F85' }} onClick={(e) => { e.stopPropagation(); handleSubMenuClick(null, subMenuItem.param1dataname, null,"iconclicked") }} />
+                                <RemoveIcon sx={{ color: '#7D7F85' }} onClick={(e) => { e.stopPropagation(); handleSubMenuClick(null, subMenuItem.param1dataname, null, "iconclicked") }} />
                               ) : (
-                                <AddIcon sx={{ color: '#7D7F85' }} onClick={(e) => { e.stopPropagation(); handleSubMenuClick(null, subMenuItem.param1dataname, null,"iconclicked") }} />
+                                <AddIcon sx={{ color: '#7D7F85' }} onClick={(e) => { e.stopPropagation(); handleSubMenuClick(null, subMenuItem.param1dataname, null, "iconclicked") }} />
                               )}
                             </ListItem>
                             {selectedSubMenu === subMenuItem.param1dataname && (
@@ -850,7 +850,7 @@ export default function Header() {
                 <ListItem onClick={() => { setDrawerOpen(false); ScrollToView('brandsComponentID') }}>
                   <ListItemText primary="Our Brands" />
                 </ListItem>
-                <ListItem onClick={() => navigation("/productpage")}>
+                <ListItem onClick={() => { setDrawerOpen(false); ScrollToView('elveeGiftMainId') }}>
                   <ListItemText primary="Product" />
                 </ListItem>
                 <ListItem onClick={() => {
@@ -896,7 +896,7 @@ export default function Header() {
                 <li
                   className="nav-li-smining"
                   style={{ cursor: "pointer" }}
-                  onClick={() => navigation("/productpage")}
+                  onClick={() => ScrollToView('elveeGiftMainId')}
                 >
                   Product
                 </li>
@@ -1057,7 +1057,7 @@ export default function Header() {
                 <div style={{ width: '100%', display: 'flex', gap: '60px', textTransform: 'uppercase' }}>
                   {selectedData?.param1?.map((param1Item, param1Index) => (
                     <div key={param1Index}>
-                      <span onClick={() => handleMenuClick(param1Item)} className="level1MenuData" key={param1Index} style={{ fontSize: '15px', marginBottom: '10px', fontFamily: '"PT Sans", sans-serif', textAlign: 'start', letterSpacing: 1, fontWeight: 600, cursor:'pointer' }} > {param1Item?.param1dataname}</span>
+                      <span onClick={() => handleMenuClick(param1Item)} className="level1MenuData" key={param1Index} style={{ fontSize: '15px', marginBottom: '10px', fontFamily: '"PT Sans", sans-serif', textAlign: 'start', letterSpacing: 1, fontWeight: 600, cursor: 'pointer' }} > {param1Item?.param1dataname}</span>
                       {param1Item?.param2?.map((param2Item, param2Index) => (
                         <p key={param2Index} onClick={() => handleMenuClick(param1Item, param2Item)} style={{ fontSize: '13.5px', margin: '6px 0px 6px 0px', fontFamily: '"PT Sans", sans-serif', letterSpacing: 0.4, textAlign: 'start', cursor: 'pointer', textTransform: 'capitalize' }}>
                           {param2Item?.param2dataname}
@@ -1161,6 +1161,9 @@ export default function Header() {
                     gap: '20px'
                   }}
                 >
+                  <li onClick={toggleOverlay} style={{ listStyle: 'none', width: '40px', textAlign: 'center', cursor: 'pointer' }}>
+                    <IoSearch color="#7D7F85" fontSize='30px' />
+                  </li>
                   <Badge
                     badgeContent={getWishListCount}
                     max={1000}
@@ -1169,16 +1172,11 @@ export default function Header() {
                     style={{ marginInline: '5px' }}
                     className="smilingHeaderWhishlistIcon"
                   >
-                    <Tooltip title="WishList">
-                      <li style={{ listStyle: 'none', cursor: 'pointer' }} onClick={() => navigation("/myWishList")}>
-                        <GoHeart fontSize='25px' className="mobileViewSmilingTop1Icone" />
-                      </li>
-                    </Tooltip>
+                    <li style={{ listStyle: 'none', cursor: 'pointer' }} onClick={() => navigation("/myWishList")}>
+                      <GoHeart color="#7D7F85" fontSize='30px' className="mobileViewSmilingTop1Icone" />
+                    </li>
                   </Badge>
 
-                  <li onClick={toggleOverlay} style={{ listStyle: 'none', width: '40px', textAlign: 'center', cursor: 'pointer' }}>
-                    <IoSearch fontSize='25px' />
-                  </li>
 
                   <Badge
                     badgeContent={getCartListCount}
@@ -1187,20 +1185,25 @@ export default function Header() {
                     color="secondary"
                     style={{ marginInline: '10px' }}
                   >
-                    <Tooltip title="Cart">
-                      <li
-                        onClick={() => { setDrawerOpen(false); navigation('/CartPage') }}
-                        style={{
-                          marginLeft: "-10px",
-                          cursor: "pointer",
-                          listStyle: 'none',
-                          marginTop: "0px",
-                        }}
-                      >
-                        <HiOutlineShoppingBag fontSize='25px' />
-                      </li>
-                    </Tooltip>
+                    <li
+                      onClick={() => { setDrawerOpen(false); navigation('/CartPage') }}
+                      style={{
+                        marginLeft: "-10px",
+                        cursor: "pointer",
+                        listStyle: 'none',
+                        marginTop: "0px",
+                      }}
+                    >
+                      <HiOutlineShoppingBag color="#7D7F85" fontSize='30px' />
+                    </li>
                   </Badge>
+                  <li
+                    className="nav-li-smining"
+                    style={{ cursor: "pointer", textDecoration: 'none' }}
+                    onClick={() => navigation("/account")}
+                  >
+                    <IoPersonOutline color="#7D7F85" fontSize='30px' style={{marginTop:'-10px'}}/>
+                  </li>
                 </div>
               </div>
 

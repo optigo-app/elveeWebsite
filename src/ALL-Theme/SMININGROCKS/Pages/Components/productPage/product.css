@@ -454,6 +454,7 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
+    /* height: 36px; */
 }
 .listing4-details {
     padding: 0px;
@@ -638,11 +639,20 @@
 
 }
 
-@media screen and (min-width: 426px) and (max-width: 775px) {
+
+@media screen and (max-width: 775px) {
+    
+.selected-value{
+    gap: 5px!important;
+}
+
+}
+    @media screen and (min-width: 426px) and (max-width: 775px) {
     .filterDivcontainer {
         display: none !important;
     }
 
+   
     .smilingProductSubMain {
         display: flex;
         flex-direction: column;

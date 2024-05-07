@@ -98,11 +98,44 @@ const ProdDetail = () => {
   const [currData, setCurrData] = useState()
   const [fullProdData, setFullProdData] = useState();
 
-  const [storeInitData,setStoreInitData] = useState({})
+  const [storeInitData, setStoreInitData] = useState({})
+  const [productThumImg, setProductThumImg] = useState([]);
 
-  console.log("sizeData", sizeData);
 
+  useEffect(() => {
 
+    const fetchProductThumbnails = async () => {
+
+      let localProductData = JSON.parse(localStorage.getItem('srProductsData'))
+      setProductData(localProductData)
+
+      console.log('productDataproductDataproductData', localProductData?.ImageName);
+      // if (!localProductData?.ImageName) return;
+      const thumImgPromises = localProductData?.ImageName?.split(",").map(async (data, i) => {
+        console.log('imageUrlimageUrlimageUrl globImagePath', globImagePath);
+        console.log('imageUrlimageUrlimageUrl productData?.DesignFolderName', productData?.DesignFolderName);
+        console.log('imageUrlimageUrlimageUrl imageSize?.ImgTh', imageSize?.ImgThgeUrl);
+        console.log('imageUrlimageUrlimageUrl data', data);
+        const imageUrl = globImagePath + productData?.DesignFolderName + '/' + imageSize?.ImgTh + '/' + data;
+        const isAvailable = await checkImageAvailability(imageUrl);
+        if (isAvailable) {
+          return { imagepath: imageUrl };
+        }
+        return null;
+      });
+
+      const availableThumImgs = await Promise.all(thumImgPromises);
+
+      setProductThumImg(availableThumImgs?.filter(img => img !== null));
+      console.log('productDataproductDataproductData111', productThumImg);
+
+    };
+
+    fetchProductThumbnails();
+
+  }, [mtColorName]);
+
+  console.log('productThumImgproductThumImg', productThumImg);
 
   //   const handelCurrencyData = () =>{
   //     let currencyData = JSON.parse(localStorage.getItem('CURRENCYCOMBO'));
@@ -249,7 +282,7 @@ const ProdDetail = () => {
 
   }, [colorData, sizeData])
 
-  console.log("info", mtTypeOption, diaQColOpt, cSQopt);
+  // console.log("info", mtTypeOption, diaQColOpt, cSQopt);
 
   // console.log("productData",sizeOption)
 
@@ -339,7 +372,6 @@ const ProdDetail = () => {
 
   // },[mtPrice, dqcPrice, csqcPrice])
 
-  console.log("ppp", { mtrdData })
 
   let diaUpdatedPrice = () => {
     let srProductsData = JSON.parse(localStorage.getItem('srProductsData'))
@@ -408,12 +440,12 @@ const ProdDetail = () => {
       storeInit?.IsMetalCustomization === 1
         ?
         ele?.A === srProductsData?.autocode &&
-        ele?.C === mtTypeOptionId 
+        ele?.C === mtTypeOptionId
         :
         ele?.A === srProductsData?.autocode
     );
 
-    console.log("mtrdData2222", mtrd)
+    // console.log("mtrdData2222", mtrd)
 
     let showPrice = 0;
     if (mtrd && mtrd.length > 0) {
@@ -433,7 +465,7 @@ const ProdDetail = () => {
 
     )
 
-    console.log("diaQColOptId", diaqcprice);
+    // console.log("diaQColOpt", diaQColOpt);
 
     let showPrice1 = 0;
     if (diaqcprice && diaqcprice.length > 0) {
@@ -460,7 +492,7 @@ const ProdDetail = () => {
 
     );
 
-    console.log("csqcpirce", getPriceData)
+    // console.log("csqcpirce", getPriceData)
 
     let showPrice2 = 0;
     if (csqcpirce && csqcpirce.length > 0) {
@@ -507,7 +539,7 @@ const ProdDetail = () => {
     const jsonData = JSON.parse(storedData);
     const filteredData = jsonData.filter(item => item.autocode === autoCode);
 
-    console.log('filteredData', filteredData);
+    // console.log('filteredData', filteredData);
 
     if (filteredData.length > 0) {
       const num = filteredData[0].designsetuniqueno;
@@ -553,7 +585,6 @@ const ProdDetail = () => {
       return;
     }
     const filteredData = storedData.filter(item => item.autocode === autoCode);
-    console.log('filteredDatafilteredDatafilteredDatafilteredData', filteredData)
     setColorImageData(filteredData)
   }
 
@@ -575,16 +606,28 @@ const ProdDetail = () => {
   }
 
   useEffect(() => {
+    let localProductData = JSON.parse(localStorage.getItem('srProductsData'))
+    const storedData3 = JSON.parse(localStorage.getItem('MetalColorData'));
+    if (storedData3) {
+      setMetalColorData(storedData3);
+    }
     let uploadPath = localStorage.getItem('UploadLogicalPath');
     const storedDataAll = localStorage.getItem('storeInit');
     const data = JSON.parse(storedDataAll);
     setShowEcateDesign(data?.IsEcatDesignset);
     setIsProductCuFlag(data?.IsProductWebCustomization)
 
-    console.log('selselectedColorselectedColorselectedColorselectedColor', selectedColor);
-    if (data.IsColorWiseImages === 1) {
+    const storedData = JSON.parse(localStorage.getItem('colorDataImages'));
+    if (!storedData) {
+      return;
+    }
+    const filteredDataN = storedData.filter(item => item.autocode === localProductData.autocode);
+    let colorName = selectedColor ? selectedColor : storedData3[0]?.metalcolorname;
 
-      const filteredData = colorImageData?.filter(item => item?.colorname?.toLowerCase() === selectedColor?.toLowerCase());
+    if (data.IsColorWiseImages === 1) {
+      const filteredData = filteredDataN?.filter(item => item?.colorname?.toLowerCase() === colorName?.toLowerCase());
+
+
       if (filteredData.length > 0) {
         const correctedData = [];
         Promise.all(filteredData?.map(async (item) => {
@@ -602,6 +645,8 @@ const ProdDetail = () => {
     }
   }, [selectedColor])
 
+  console.log('undteddddddddddddd', updatedColorImage);
+
   const handleColorSelection = (color) => {
     setmtColorName(color)
     let uploadPath = localStorage.getItem('UploadLogicalPath');
@@ -612,11 +657,15 @@ const ProdDetail = () => {
       setSelectedColor(selectedColor);
       const filteredData = colorImageData?.filter(item => item?.colorname.toLowerCase() === selectedColor?.toLowerCase());
 
+      console.log('item11', filteredData);
       if (filteredData?.length > 0) {
         const correctedData = filteredData?.map(item => {
+          console.log('item11', item);
           return {
             ...item,
-            imagepath: uploadPath + '/' + data.ukey + convertPath(item.imagepath)
+
+            // globImagePath + productData?.DesignFolderName + '/' + imageSize?.ImgOr + '/' + productData?.DefaultImageName
+            imagepath: globImagePath + productData?.DesignFolderName + '/' + imageSize?.ImgOr + '/' + convertPath(item.imagepath)
           };
         });
         setUpdateColorImage(correctedData);
@@ -1265,16 +1314,16 @@ const ProdDetail = () => {
 
   }, [mtrdData, dqcData, csqcData, sizeMarkup, metalUpdatedPrice, diaUpdatedPrice, colUpdatedPrice])
 
-  console.log("pricedata", (((mtrdData?.V ?? 0) / currData?.CurrencyRate) + (mtrdData?.W ?? 0) + (mtrdData?.X ?? 0)), dqcData, csqcData, sizeMarkup, metalUpdatedPrice(), diaUpdatedPrice(), colUpdatedPrice())
-  console.log("pricedatacv", ((((mtrdData?.V ?? 0) / currData?.CurrencyRate) + (mtrdData?.W ?? 0) + (mtrdData?.X ?? 0)) +
-    (dqcData ?? 0) +
-    (csqcData ?? 0) +
-    (sizeMarkup ?? 0) +
-    (metalUpdatedPrice() ?? 0) +
-    (diaUpdatedPrice() ?? 0) +
-    (colUpdatedPrice() ?? 0)))
+  // console.log("pricedata", (((mtrdData?.V ?? 0) / currData?.CurrencyRate) + (mtrdData?.W ?? 0) + (mtrdData?.X ?? 0)), dqcData, csqcData, sizeMarkup, metalUpdatedPrice(), diaUpdatedPrice(), colUpdatedPrice())
+  // console.log("pricedatacv", ((((mtrdData?.V ?? 0) / currData?.CurrencyRate) + (mtrdData?.W ?? 0) + (mtrdData?.X ?? 0)) +
+  //   (dqcData ?? 0) +
+  //   (csqcData ?? 0) +
+  //   (sizeMarkup ?? 0) +
+  //   (metalUpdatedPrice() ?? 0) +
+  //   (diaUpdatedPrice() ?? 0) +
+  //   (colUpdatedPrice() ?? 0)))
 
-  console.log("currData?.CurrencyRate", currData?.CurrencyRate)
+  // console.log("currData?.CurrencyRate", currData?.CurrencyRate)
 
   const decodeEntities = (html) => {
     var txt = document.createElement("textarea");
@@ -1283,7 +1332,7 @@ const ProdDetail = () => {
   }
 
   const PriceWithMarkupFunction = (pmu, pPrice, curr, swp = 0) => {
-    console.log("pricewithmarkup", pmu, pPrice)
+    // console.log("pricewithmarkup", pmu, pPrice)
     if (pPrice <= 0) {
       return 0
     }
@@ -1324,28 +1373,24 @@ const ProdDetail = () => {
         (diaUpdatedPrice() ?? 0) +
         (colUpdatedPrice() ?? 0)
       )
-      console.log("finalPrice", CalcPrice, percentMarkupPlus);
+      // console.log("finalPrice", CalcPrice, percentMarkupPlus);
       return PriceWithMarkupFunction(percentMarkupPlus, CalcPrice, currData?.CurrencyRate)
     }
   }
 
-  console.log("daimondFilterData", daimondFilterData)
-  console.log("updatedColorImage", updatedColorImage)
-  console.log("updatedColorImage", updatedColorImage[0])
-  console.log("productData?.ThumbImagePath", productData?.ThumbImagePath)
-
 
   useEffect(() => {
     const storeInit = JSON.parse(localStorage.getItem('storeInit'))
-    if(storeInit) {
-    // setGlobImagepath(storeInit?.DesignImageFol)
-    // setProdPageSize(storeInit?.PageSize)
-    setStoreInitData(storeInit)
+    if (storeInit) {
+      // setGlobImagepath(storeInit?.DesignImageFol)
+      // setProdPageSize(storeInit?.PageSize)
+      setStoreInitData(storeInit)
     }
   }, [])
 
   console.log("mtPurity",mtPurity)
 
+  console.log('fullProdDatafullProdData', fullProdData);
   return (
     <div
       className='paddingTopMobileSet'
@@ -1411,9 +1456,11 @@ const ProdDetail = () => {
                   //     :
                   //     notFound
                   // }
-                  
+
                   src={
-                    globImagePath + productData?.DesignFolderName + '/' + imageSize?.ImgOr + '/' + productData?.DefaultImageName
+                    updatedColorImage?.length !== 0 ?
+                      updatedColorImage[0]?.imagepath :
+                      globImagePath + productData?.DesignFolderName + '/' + imageSize?.ImgOr + '/' + (thumbImg?.length ? thumbImg : productData?.DefaultImageName)
                   }
 
                   alt={""}
@@ -1431,18 +1478,20 @@ const ProdDetail = () => {
               }
               {updatedColorImage?.length === 0 ?
                 <>
-                  {productData?.ImageName && <div className="srthumb_images">
-                    {productData?.ImageName?.split(",").map((data, i) => (
-                      <img
-                        src={globImagePath + productData?.DesignFolderName + '/' + imageSize?.ImgOr + '/' + data}
-                        alt={""}
-                        className="srthumb_images_el"
-                        onClick={() => setThumbImg(i)}
-                      />
-                      
-                    ))}
+                  {productThumImg &&
+                    <div className="srthumb_images">
+                      {productThumImg.map((data, i) => (
+                        <img
+                          src={data?.imagepath}
+                          alt={""}
+                          className="srthumb_images_el"
+                          // onClick={() => console.log('data....',(data?.imagepath)?.split('/')[(data?.imagepath)?.split('/').length-1])}
+                          onClick={() => setThumbImg((data?.imagepath)?.split('/')[(data?.imagepath)?.split('/').length - 1])}
+                        />
 
-                  </div>}
+                      ))}
+
+                    </div>}
                 </>
                 :
                 <div>
@@ -1523,8 +1572,8 @@ const ProdDetail = () => {
                       Metal Purity :
                       <span style={{ fontWeight: 'bold', letterSpacing: '2px' }}>
                         <>
-                        {console.log('mtTypeOptionId',mtTypeOptionId)}
-                        {mtPurity ? mtPurity : mtTypeOption ? mtTypeOption?.split(" ")[1] : productData?.MetalPurity}
+                          {console.log('mtTypeOptionId', mtTypeOptionId)}
+                          {mtPurity ? mtPurity : mtTypeOption ? mtTypeOption?.split(" ")[1] : productData?.MetalPurity}
                         </>
                       </span>
                     </span>
@@ -1534,7 +1583,7 @@ const ProdDetail = () => {
                         color: "rgb(66, 66, 66)",
                       }}
                     >
-                      Metal Color : <span style={{ fontWeight: 'bold', letterSpacing: '2px' }}>{mtColorName? mtColorName : selectedColor ? selectedColor : productData?.updMC}</span>
+                      Metal Color : <span style={{ fontWeight: 'bold', letterSpacing: '2px' }}>{mtColorName ? mtColorName : selectedColor ? selectedColor : productData?.updMC}</span>
                     </sapn>
                     <sapn
                       style={{
@@ -2253,7 +2302,7 @@ const ProdDetail = () => {
                 alignItems: "center",
                 width: "100%",
                 flexDirection: "column",
-                marginBottom:'60px'
+                marginBottom: '60px'
               }}
             >
               <p
@@ -2265,7 +2314,7 @@ const ProdDetail = () => {
               >
                 Product Details
               </p>
-              <div style={{ width: '60%' }} className='tellmeMoreMain'>
+              <div style={{ width: '60%', marginBottom: '60px' }} className='tellmeMoreMain'>
 
                 {fullProdData?.rd1?.length !== 0 &&
                   <div className='tellmeMoreMainMobileDiv'>
@@ -2273,6 +2322,17 @@ const ProdDetail = () => {
                       margin: '0px 0px 3px 0px'
                     }}>
                       <li style={{ fontWeight: 600 }}>{`Diamond Detail(${fullProdData?.rd1?.reduce((accumulator, data) => accumulator + data.M, 0)}/${fullProdData?.rd1?.reduce((accumulator, data) => accumulator + data?.N, 0).toFixed(2)}ct)`}</li>
+                    </ul>
+                    <ul style={{
+                      display: 'flex',
+                      textDecoration: 'none',
+                      listStyle: 'none',
+                      margin: '0px 0px 3px 0px'
+                    }}>
+                      <li className='proDeatilList'>Shape</li>
+                      <li className='proDeatilList'>Clarity</li>
+                      <li className='proDeatilList'>Color</li>
+                      <li className='proDeatilList'>Pcs/Wt</li>
                     </ul>
                     {
                       fullProdData?.rd1?.map((data) => (
@@ -2292,63 +2352,59 @@ const ProdDetail = () => {
                   </div>
                 }
 
-                {/* {fullProdData?.rd2?.map((dataa) => (dataa?.D === "COLOR STONE" && ( */}
-                <div className='tellmeMoreMainMobileDiv'>
-                  <ul style={{
-                    margin: '0px 0px 3px 0px'
-                  }}>
-                    <li style={{ fontWeight: 600 }}>Color Stone Detail(21/1.299ct)</li>
-                  </ul>
-                  {
-                    fullProdData?.rd2?.map((data) => (
-                      data?.D === "COLOR STONE" && (
-                        <ul style={{
-                          display: 'flex',
-                          textDecoration: 'none',
-                          listStyle: 'none',
-                          margin: '0px 0px 3px 0px'
-                        }}>
-                          <li className='proDeatilList1'>{data?.F}</li>
-                          <li className='proDeatilList2'>{data?.H}</li>
-                          <li className='proDeatilList3'>{data?.J}</li>
-                          <li className='proDeatilList4'>{data.M}/{data?.N}</li>
-                        </ul>
-                      )
-                    ))
-                  }
-                </div>
-                {/* )
-                ))
-                } */}
-
-                {/* {fullProdData?.rd2?.map((dataa) => (dataa?.D === "MIS vbC" && ( */}
-                  <div className='tellmeMoreMainMobileDiv'>
-                    <ul style={{
-                      margin: '0px 0px 3px 0px'
-                    }}>
-                      <li style={{ fontWeight: 600 }}>Misc. Detail(21/1.022ct)</li>
-                    </ul>
-                    {
-                      fullProdData?.rd2?.map((data) => (
-                        data?.D === "MISC" && (
-                          <ul style={{
-                            display: 'flex',
-                            textDecoration: 'none',
-                            listStyle: 'none',
-                            margin: '0px 0px 3px 0px'
-                          }}>
+                <div className='tellmeMoreMainMobileDiv' style={{ marginTop: '25px' }}>
+                  {fullProdData?.rd2?.some(data => data?.D === "COLOR STONE") && (
+                    <>
+                      <ul style={{ margin: '0px 0px 3px 0px' }}>
+                        <li style={{ fontWeight: 600 }}>{`Color Stone Detail(${fullProdData?.rd2?.reduce((accumulator, data) => accumulator + data.M, 0)}/${fullProdData?.rd2?.reduce((accumulator, data) => accumulator + data?.N, 0).toFixed(2)}ct)`}</li>
+                      </ul>
+                      <ul style={{ display: 'flex', textDecoration: 'none', listStyle: 'none', margin: '0px 0px 3px 0px' }}>
+                        <li className='proDeatilList'>Shape</li>
+                        <li className='proDeatilList'>Clarity</li>
+                        <li className='proDeatilList'>Color</li>
+                        <li className='proDeatilList'>Pcs/Wt</li>
+                      </ul>
+                      {fullProdData?.rd2?.map((data) => (
+                        data?.D === "COLOR STONE" && (
+                          <ul style={{ display: 'flex', textDecoration: 'none', listStyle: 'none', margin: '0px 0px 3px 0px' }}>
                             <li className='proDeatilList1'>{data?.F}</li>
                             <li className='proDeatilList2'>{data?.H}</li>
                             <li className='proDeatilList3'>{data?.J}</li>
                             <li className='proDeatilList4'>{data.M}/{data?.N}</li>
                           </ul>
                         )
-                      ))
-                    }
-                  </div>
-                {/* )
-                ))
-                } */}
+                      ))}
+                    </>
+                  )}
+                </div>
+
+
+                <div className='tellmeMoreMainMobileDiv' style={{ marginTop: '25px' }}>
+                  {fullProdData?.rd2?.some(data => data?.D === "MISC") && (
+                    <>
+                      <ul style={{ margin: '0px 0px 3px 0px' }}>
+                        <li style={{ fontWeight: 600 }}>{`Misc. Detail(${fullProdData?.rd2?.reduce((accumulator, data) => accumulator + data.M, 0)}/${fullProdData?.rd2?.reduce((accumulator, data) => accumulator + data?.N, 0).toFixed(2)}ct)`}(21/1.022ct)</li>
+                      </ul>
+                      <ul style={{ display: 'flex', textDecoration: 'none', listStyle: 'none', margin: '0px 0px 3px 0px' }}>
+                        <li className='proDeatilList'>Shape</li>
+                        <li className='proDeatilList'>Clarity</li>
+                        <li className='proDeatilList'>Color</li>
+                        <li className='proDeatilList'>Pcs/Wt</li>
+                      </ul>
+                      {fullProdData?.rd2?.map((data) => (
+                        data?.D === "MISC" && (
+                          <ul style={{ display: 'flex', textDecoration: 'none', listStyle: 'none', margin: '0px 0px 3px 0px' }}>
+                            <li className='proDeatilList1'>{data?.F}</li>
+                            <li className='proDeatilList2'>{data?.H}</li>
+                            <li className='proDeatilList3'>{data?.J}</li>
+                            <li className='proDeatilList4'>{data.M}/{data?.N}</li>
+                          </ul>
+                        )
+                      ))}
+                    </>
+                  )}
+                </div>
+
               </div>
               <ul
                 className="srAccul"
