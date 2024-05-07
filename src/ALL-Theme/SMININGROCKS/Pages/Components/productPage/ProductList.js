@@ -403,9 +403,8 @@ const ProductList = () => {
           csCid = ""
         }
         // console.log("priceprod", product?.designno, metalrd, diard1, csrd2);
-        return {
-          ...product, price, markup, metalrd, diard1, csrd2, updNWT, updGWT,
-          updDWT, updDPCS, updCWT, updCPCS, updMT, updMC,
+        return { ...product, price, markup, metalrd, diard1, csrd2, updNWT, updGWT, 
+          updDWT, updDPCS, updCWT, updCPCS, updMT, updMC, 
           diaQ, diaQid,
           diaC, diaCid, csQ, csQid, csC, csCid
         }
@@ -1398,7 +1397,7 @@ const ProductList = () => {
           "Designid": Number(`${product?.Designid ?? 0}`)
         }
 
-        // console.log("product", finalJSON)
+      // console.log("product", finalJSON)
 
 
         const encodedCombinedValue = btoa(JSON.stringify(finalJSON));
@@ -1704,7 +1703,7 @@ const ProductList = () => {
     }
   };
 
-  // console.log("prod_img", hoveredImageUrls);
+// console.log("prod_img", hoveredImageUrls);
 
   const handleMouseLeave = (index) => {
     setHoveredImageUrls(prevState => {
