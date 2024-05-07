@@ -220,7 +220,7 @@
 .mainCartContainer {
     display: flex;
     gap: 30px;
-    margin-bottom: -150px;
+    /* margin-bottom: -150px; */
 }
 
 .resproDet {
