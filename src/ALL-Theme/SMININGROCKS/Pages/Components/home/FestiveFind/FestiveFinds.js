@@ -17,7 +17,7 @@ export default function FestiveFinds() {
     }
 
     return (
-        <div>
+        <div id='elveeGiftMainId'>
             <p className='gorGiftBoxMainTitleMobile'>Gifting Made Easy</p>
             <div className='gorGiftMain'>
                 <div className='gorGiftBox1'>

@@ -38,6 +38,7 @@
 
 .smilingSavedAddressMain {
     border: 1px solid #e1e1e1;
+    margin-bottom: 20px;
 }
 
 
@@ -106,6 +107,7 @@
 
 .smlingAccountTabWebView button.Mui-selected{
     color: #3b3c3d;
+    text-decoration: underline;
 }
 
 .smlingAccountTabWebView span.MuiTabs-indicator{
