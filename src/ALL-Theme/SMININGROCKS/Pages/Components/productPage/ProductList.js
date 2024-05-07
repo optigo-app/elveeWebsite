@@ -1702,7 +1702,7 @@ const ProductList = () => {
       if (availableImage) {
         const formedImgData = { [index]: availableImage.imagePath };
         setUpdateColorImage(formedImgData);
-        console.log('formedImgData',formedImgData)
+        console.log('formedImgData', formedImgData)
         return availableImage;
       } else {
         console.log('No available image found');
@@ -1814,11 +1814,18 @@ const ProductList = () => {
                         className='netWtSecSlider'
                         getAriaLabel={() => 'Minimum distance'}
                         value={value1}
-                        onChange={handleChange1}
+                        min={minPrice}
+                        max={maxPrice}
+                        size="small"
+                        onChange={handlePriceChange}
                         valueLabelDisplay="auto"
                         getAriaValueText={valuetext}
                         disableSwap
                       />
+                      <div className="d-flex w-100 justify-content-between align-items-center mt-1">
+                        <input value={value1[0]} className="minmaxvalpl" disabled />
+                        <input value={value1[1]} className="minmaxvalpl" disabled />
+                      </div>
                     </div>}
 
                   {ele.label === "CENTERSTONE" &&
@@ -2618,7 +2625,7 @@ const ProductList = () => {
                             </div>
                           </div>
                           <div>
-                            <p className="property-type" style={{margin: '0px 0px 10px 8px'}}>
+                            <p className="property-type" style={{ margin: '0px 0px 10px 8px' }}>
                               {isMetalTCShow === 1 && <span>
                                 {products?.updMC} -
                                 {products?.updMT}
