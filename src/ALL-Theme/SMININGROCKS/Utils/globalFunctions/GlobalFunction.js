@@ -238,6 +238,17 @@ export function findCsQcId(param){
     return item
 }
 
+export function findCsQcIdDiff(param){
+
+    let CsQCArr = JSON.parse(localStorage.getItem("ColorStoneQualityColor"))
+    let quality = param.split("_")[0]
+    let color = param.split("_")[1]
+
+    let item = CsQCArr?.filter(ele => ele?.Quality == quality && ele?.color == color)
+    console.log("param",item);
+    return item
+}
+
 export function findValueFromId(param1,param2) {
 
     let output;

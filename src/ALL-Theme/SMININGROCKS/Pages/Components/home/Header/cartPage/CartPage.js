@@ -33,6 +33,8 @@ import "./CartPage.css";
 import { ToastContainer, toast } from "react-toastify";
 import { Card, CardHeader, Col, Container, Row } from "react-bootstrap";
 import noFoundImage from "../../../../assets/image-not-found.png"
+import { FullProInfoAPI } from "../../../../../Utils/API/FullProInfoAPI";
+import { findCsQcIdDiff, findDiaQcId, findMetalTypeId } from "../../../../../Utils/globalFunctions/GlobalFunction";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -109,36 +111,26 @@ export default function CartPage() {
   const [catSizeData, setCatSizeData] = useState([]);
   const [diaqcData, setDiaQcData] = useState([]);
   const [csData, setCsData] = useState([])
+  const [fullprodData,setFullProdData] = useState();
 
-  // const handelCurrencyData = () => {
-  //   let currencyData = JSON.parse(localStorage.getItem('CURRENCYCOMBO'));
-  //   let loginData = JSON.parse(localStorage.getItem('loginUserDetail'));
-  //   console.log("param", loginData);
 
-  //   if (currencyData && loginData) {
-  //     const filterData = currencyData?.filter((cd) => cd?.Currencyid === loginData?.CurrencyCodeid)[0]
-  //     console.log("currencyData", filterData);
-  //     if (filterData) {
-  //       setCurrData(filterData)
-  //     }
-  //     else {
-  //       let DefaultObj = {
-  //         "Currencyid": 42,
-  //         "Currencycode": "INR",
-  //         "Currencyname": "Rupees",
-  //         "Currencysymbol": "₹",
-  //         "CurrencyRate": 1.00000,
-  //         "IsDefault": 1
-  //       }
-  //       const DefaultObjData = currencyData?.filter((cd) => cd?.IsDefault == 1)
-  //       if (DefaultObjData.length > 0) {
-  //         setCurrData(DefaultObjData[0])
-  //       } else {
-  //         setCurrData(DefaultObj);
-  //       }
-  //     }
-  //   }
-  // }
+
+  const setProdFullInfo = async(paramDesignno) => {
+    await FullProInfoAPI(paramDesignno).then(res => {
+      if (res) {
+        // getProdFullInfo();
+        setFullProdData(res)
+      }
+    })
+  }
+
+  useEffect(()=>{
+    if(cartListData?.length > 0){
+      setProdFullInfo(cartListData[0]?.designno)
+    }
+  },[cartListData])
+
+
 
   useEffect(() => {
     // handelCurrencyData();
@@ -173,7 +165,6 @@ export default function CartPage() {
     }
   }, [])
 
-  console.log("dddd", { metalFilterData, daimondFilterData });
 
   const getCountFunc = async () => {
     await GetCount().then((res) => {
@@ -192,7 +183,6 @@ export default function CartPage() {
   }, [cartListData, cartSelectData]);
 
   // console.log('getPriceDatagetPriceData', getPriceData);
-  console.log('getPriceDatagetPriceData', mtTypeOption);
 
   // useEffect(() => {
   //   console.log('getPriceDatagetPriceData', getPriceData);
@@ -283,7 +273,6 @@ export default function CartPage() {
     if (metalFilterData && metalFilterData.length && mtrdData?.AE === 1) {
 
       let CalcNetwt = ((srProductsData?.netwt ?? 0) + (metalFilterData?.Weight ?? 0) ?? 0)
-      console.log("CalcNetwt", CalcNetwt)
 
       let fprice = ((mtrdData?.AD ?? 0) * CalcNetwt) + ((mtrdData?.AC ?? 0) * CalcNetwt)
 
@@ -295,25 +284,32 @@ export default function CartPage() {
 
   }
 
-  console.log("mtTypeOption", mtTypeOption)
 
   useEffect(() => {
     let srProductsData = JSON.parse(localStorage.getItem('srProductsData'));
     const storeInit = JSON.parse(localStorage.getItem('storeInit'));
 
-    let mtrd = getPriceData?.rd?.filter((ele) =>
+    // let mtrd = fullprodData?.rd?.filter((ele) =>
+    //   storeInit?.IsMetalCustomization === 1
+    //     ?
+    //     ele?.A === cartSelectData?.autocode &&
+    //     ele?.B === cartSelectData?.designno &&
+    //     ele?.D === mtTypeOption
+    //     :
+    //     ele?.A === cartSelectData?.autocode &&
+    //     ele?.B === cartSelectData?.designno
+
+    // );
+
+    let mtrd = fullprodData?.rd?.filter((ele) =>
       storeInit?.IsMetalCustomization === 1
         ?
-        ele?.A === cartSelectData?.autocode &&
-        ele?.B === cartSelectData?.designno &&
-        ele?.D === mtTypeOption
+        ele?.A == cartSelectData?.autocode &&
+        ele?.C == findMetalTypeId(mtTypeOption)[0]?.Metalid
         :
-        ele?.A === cartSelectData?.autocode &&
-        ele?.B === cartSelectData?.designno
-
+        ele?.A == cartSelectData?.autocode
     );
 
-    console.log("mtrd", mtrd);
 
     let showPrice = 0;
     if (mtrd && mtrd.length > 0) {
@@ -324,20 +320,30 @@ export default function CartPage() {
       setMtrdData([]);
     }
 
-    let diaqcprice = getPriceData?.rd1?.filter((ele) =>
+    // let diaqcprice = fullprodData?.rd1?.filter((ele) =>
+    //   storeInit?.IsDiamondCustomization === 1
+    //     ?
+    //     ele.A === cartSelectData?.autocode &&
+    //     ele.B === cartSelectData?.designno &&
+    //     ele.H === diaQColOpt?.split("#")[0] &&
+    //     ele.J === diaQColOpt?.split("#")[1]
+    //     :
+    //     ele.A === cartSelectData?.autocode &&
+    //     ele.B === cartSelectData?.designno
+
+    // )
+
+    let diaqcprice = fullprodData?.rd1?.filter((ele) =>
       storeInit?.IsDiamondCustomization === 1
         ?
-        ele.A === cartSelectData?.autocode &&
-        ele.B === cartSelectData?.designno &&
-        ele.H === diaQColOpt?.split("#")[0] &&
-        ele.J === diaQColOpt?.split("#")[1]
+        ele.A == cartSelectData?.autocode &&
+        ele.G == findDiaQcId(diaQColOpt)[0]?.QualityId &&
+        ele.I == findDiaQcId(diaQColOpt)[0]?.ColorId
         :
-        ele.A === cartSelectData?.autocode &&
-        ele.B === cartSelectData?.designno
+        ele.A == cartSelectData?.autocode
 
     )
 
-    console.log("diaqcprice", diaqcprice)
 
     let showPrice1 = 0;
     if (diaqcprice && diaqcprice.length > 0) {
@@ -357,20 +363,30 @@ export default function CartPage() {
       setDqcData(0)
     }
 
-    let csqcpirce = getPriceData?.rd2?.filter((ele) =>
+    // let csqcpirce = fullprodData?.rd2?.filter((ele) =>
+    //   storeInit?.IsCsCustomization === 1
+    //     ?
+    //     ele.A === cartSelectData?.autocode &&
+    //     ele.B === cartSelectData?.designno &&
+    //     ele.H === cSQopt?.split("_")[0] &&
+    //     ele.J === cSQopt?.split("_")[1]
+    //     :
+    //     ele.A === cartSelectData?.autocode &&
+    //     ele.B === cartSelectData?.designno
+
+    // );
+
+    let csqcpirce = fullprodData?.rd2?.filter((ele) =>
       storeInit?.IsCsCustomization === 1
         ?
-        ele.A === cartSelectData?.autocode &&
-        ele.B === cartSelectData?.designno &&
-        ele.H === cSQopt?.split("_")[0] &&
-        ele.J === cSQopt?.split("_")[1]
+        ele.A == srProductsData?.autocode &&
+        ele.H == findCsQcIdDiff(cSQopt)[0]?.QualityId  &&
+        ele.J == findCsQcIdDiff(cSQopt)[0]?.ColorId
         :
-        ele.A === cartSelectData?.autocode &&
-        ele.B === cartSelectData?.designno
+        ele.A == srProductsData?.autocode
 
     );
 
-    console.log("csqcpirce1", csqcpirce)
 
     let showPrice2 = 0;
     if (csqcpirce && csqcpirce.length > 0) {
@@ -388,10 +404,9 @@ export default function CartPage() {
       setCsqcRate(0)
       setCsqcSettRate(0)
     }
-    console.log("csqcpirce", csqcpirce)
     // let gt = showPrice + showPrice1 + showPrice2;
     // setGrandTotal(gt ?? 0);
-  }, [getPriceData, mtTypeOption, diaQColOpt, cSQopt, cartSelectData])
+  }, [fullprodData, mtTypeOption, diaQColOpt, cSQopt, cartSelectData])
 
   useEffect(() => {
 
@@ -405,7 +420,6 @@ export default function CartPage() {
 
     setSelectedColor(cartSelectData?.metalcolorname)
 
-    console.log("cartSelectDataDCOLOR", cartSelectData?.diamondcolor);
 
     setSizeOption(cartSelectData?.detail_ringsize)
 
@@ -806,7 +820,6 @@ export default function CartPage() {
 
   useEffect(() => {
     const selectedSize = sizeData.find((size) => size.sizename === (sizeOption))
-    console.log("condition", (selectedSize && (sizeData?.length !== 0 || (productData?.DefaultSize && productData.DefaultSize.length !== 0))) !== undefined)
 
     if (selectedSize) {
       setSizeMarkup(selectedSize?.MarkUp)
@@ -869,10 +882,10 @@ export default function CartPage() {
   //     }
   // };
 
-  console.log('cartListData', cartListData);
-  console.log('dqcData', dqcData);
-  console.log('csqcData', csqcData);
-  console.log('mtrdData', mtrdData);
+  // console.log('cartListData', cartListData);
+  // console.log('dqcData', dqcData);
+  // console.log('csqcData', csqcData);
+  // console.log('mtrdData', mtrdData);
 
   const getCartAndWishListData = async () => {
 
@@ -1025,7 +1038,7 @@ export default function CartPage() {
       return res
     }).then(async (prevRes) => {
       if (prevRes?.Data?.rd[0]?.stat_msg === "success") {
-        console.log("prevRes?.Data?.rd[0]?.stat_msg", prevRes?.Data?.rd[0]?.stat_msg);
+        // console.log("prevRes?.Data?.rd[0]?.stat_msg", prevRes?.Data?.rd[0]?.stat_msg);
         // await getCartAndWishListData()
         // getCountFunc()
 
@@ -1096,11 +1109,11 @@ export default function CartPage() {
   //   handleLoad();
   // }, [])
 
-  console.log('cartsele----------', cartSelectData);
-  console.log('order remark--------', remarksApires)
+  // console.log('cartsele----------', cartSelectData);
+  // console.log('order remark--------', remarksApires)
 
   const PriceWithMarkupFunction = (pmu, pPrice, curr) => {
-    console.log("pricewithmarkup", pmu, pPrice)
+    // console.log("pricewithmarkup", pmu, pPrice)
     if (pPrice <= 0) {
       return 0
     }
@@ -1824,6 +1837,7 @@ export default function CartPage() {
                               className={`smiling-cartPageBoxMain ${cartSelectData && cartSelectData.id === item.id ? 'selected' : ''}`}
                               onClick={() => {
                                 setCartSelectData(item);
+                                setProdFullInfo(item.designno)
                                 getSizeData(item.autocode);
                                 window.innerWidth <= 1080 &&
                                   setDialogOpen(true);
