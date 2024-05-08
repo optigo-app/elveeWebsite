@@ -193,8 +193,8 @@ export function formatAmount(amount) {
 
 export function storImagePath(){
     let storeinit = JSON.parse(localStorage.getItem("storeInit"))
-    // return `${storeinit?.UploadLogicalPath}/${storeinit?.ukey}/${storeinit?.ufcc}`
-    return 'https://cdnfs.optigoapps.com/content-global3/elveesterKGYLM5CREI9H2XBNT/elveester'
+    return `${storeinit?.UploadLogicalPath}/${storeinit?.ukey}/${storeinit?.ufcc}`
+    // return 'https://cdnfs.optigoapps.com/content-global3/elveesterKGYLM5CREI9H2XBNT/elveester'
 }
 
 export function findMetalType(paramId) {
@@ -232,6 +232,17 @@ export function findCsQcId(param){
     let CsQCArr = JSON.parse(localStorage.getItem("ColorStoneQualityColor"))
     let quality = param.split("-")[0]
     let color = param.split("-")[1]
+
+    let item = CsQCArr?.filter(ele => ele?.Quality == quality && ele?.color == color)
+    console.log("param",item);
+    return item
+}
+
+export function findCsQcIdDiff(param){
+
+    let CsQCArr = JSON.parse(localStorage.getItem("ColorStoneQualityColor"))
+    let quality = param.split("_")[0]
+    let color = param.split("_")[1]
 
     let item = CsQCArr?.filter(ele => ele?.Quality == quality && ele?.color == color)
     console.log("param",item);
