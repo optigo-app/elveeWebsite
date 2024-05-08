@@ -1,6 +1,6 @@
 import { CommonAPI } from "./CommonAPI";
 
-export const getDesignPriceList = async (param,page=1,obj) => {
+export const getDesignPriceList = async (param,page=1,obj,filterObj) => {
 
   
 
@@ -8,7 +8,7 @@ export const getDesignPriceList = async (param,page=1,obj) => {
   const loginUserDetail = JSON.parse(localStorage.getItem("loginUserDetail"));
   const UserEmail = localStorage.getItem("registerEmail")
 
-  let mtid = `${obj?.mt}` ?? loginUserDetail?.MetalId
+  let mtid = `${obj?.metalTypeId}` ?? loginUserDetail?.MetalId
   let diaqcId = obj?.dqc?.length ? `${obj?.dqc[0]},${obj?.dqc[1]}` :loginUserDetail?.cmboDiaQCid
   let csqcId = obj?.csqc?.length ? `${obj?.csqc[0]},${obj?.csqc[1]}` :loginUserDetail?.cmboCSQCid
 
@@ -29,7 +29,23 @@ export const getDesignPriceList = async (param,page=1,obj) => {
     "Metalid":`${mtid}`,
     "DiaQCid":`${diaqcId}`,
     "CsQCid":`${csqcId}`,
-    "IsFromDesDet":"0"
+    "IsFromDesDet":"0",
+    "Collectionid": `${filterObj?.Collectionid ?? ""}`,
+    "Categoryid": `${filterObj?.Categoryid ?? ""}`,
+    "SubCategoryid": `${filterObj?.SubCategoryid ?? ""}`,
+    "Brandid": `${filterObj?.Brandid ?? ""}`,
+    "Genderid": `${filterObj?.Genderid ?? ""}`,
+    "Ocassionid": `${filterObj?.Ocassionid ?? ""}`,
+    "Themeid": `${filterObj?.Themeid ?? ""}`,
+    "Min_DiaWeight": '',
+    "Max_DiaWeight": '',
+    "Min_GrossWeight": '',
+    "Max_GrossWeight": '',
+    "Max_NetWt": '',
+    "Min_NetWt": '',
+    "Max_Price": '',
+    "Min_Price": '',
+    "Producttypeid": `${filterObj?.Producttypeid ?? ""}`
   }
 
   const GetPriceReq = {

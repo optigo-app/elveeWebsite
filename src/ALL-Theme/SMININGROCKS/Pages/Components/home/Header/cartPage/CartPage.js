@@ -409,10 +409,10 @@ export default function CartPage() {
   }, [fullprodData, mtTypeOption, diaQColOpt, cSQopt, cartSelectData])
 
   useEffect(() => {
-    let finalmetal = `${cartSelectData?.metaltypename} ${cartSelectData?.Purity}`
-    console.log("finalmetal",finalmetal)
+    let finalmetalTypeName = cartSelectData?.metaltypename?.length > 4 ? `${cartSelectData?.metaltypename?.split(" ")[0]}`: `${cartSelectData?.metaltypename}`
+    let finalMetal = `${finalmetalTypeName} ${cartSelectData?.Purity}`
 
-    setmtTypeOption(finalmetal);
+    setmtTypeOption(finalMetal);
 
     let qualityColor = `${cartSelectData?.diamondquality}#${cartSelectData?.diamondcolor}`;
     setDiaQColOpt(qualityColor);
@@ -420,14 +420,14 @@ export default function CartPage() {
     let csQualColor = `${cartSelectData?.colorstonequality}#${cartSelectData?.colorstonecolor}`;
     setCSQOpt(csQualColor);
 
-    setSelectedColor(cartSelectData?.metalcolorname)
+    setSelectedColor(cartSelectData?.metalcolorname)            
 
 
     setSizeOption(cartSelectData?.detail_ringsize)
 
   }, [cartSelectData])
 
-  // console.log(cartSelectData);
+  console.log("cartSelectData",cartSelectData);
 
   useEffect(() => {
     getCountFunc();
