@@ -637,11 +637,12 @@
 .muilist2ndSubMenutext span {
     color: #7d7f85 !important;
 }
-.HeaderMenuItemMainDiv{
-   width: 70%;
-   display: flex;
-   align-items: center;
-   height: 100% !important; 
+
+.HeaderMenuItemMainDiv {
+    width: 70%;
+    display: flex;
+    align-items: center;
+    height: 100% !important;
 }
 
 @media (max-width:1640px) {
@@ -875,12 +876,14 @@
 .css-19kzrtu {
     padding: 0px !important;
 }
+
 @media (min-width: 768px) and (max-width: 1440px) {
     .MainlogogMobileImage {
         width: 70% !important;
         margin-top: -21px
     }
 }
+
 @media (min-width: 600px) and (max-width: 769px) {
     .MainlogogMobileImage {
         width: 70% !important;
@@ -892,6 +895,10 @@
     .MainlogogMobileImage {
         width: 70% !important;
         /* margin-top: -11px */
+    }
+
+    .searchiconInMobile {
+        display: none;
     }
 
     /* .mobileHeaderSmining {
