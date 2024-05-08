@@ -17,7 +17,7 @@ import LocalMallIcon from '@mui/icons-material/LocalMall';
 import { CommonAPI } from "../../../Utils/API/CommonAPI";
 import axios from "axios";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { CartListCounts, HeaderData, HeaderData2, WishListCounts, colorstoneQualityColorG, diamondQualityColorG, metalTypeG, newMenuData, newTestProdData, priceData, productDataNew, searchData } from "../../../../../Recoil/atom";
+import { CartListCounts, HeaderData, HeaderData2, WishListCounts, colorstoneQualityColorG, diamondQualityColorG, menuTransfData, metalTypeG, newMenuData, newTestProdData, priceData, productDataNew, searchData } from "../../../../../Recoil/atom";
 import { GetCount } from "../../../Utils/API/GetCount";
 import notFound from "../../assets/image-not-found.png";
 import { productListApiCall } from "../../../Utils/API/ProductListAPI";
@@ -132,6 +132,11 @@ const ProductList = () => {
   const [prodCount, setProdCount] = useState(0)
   const [storeInitData, setStoreInitData] = useState({})
   const [currentPage, setCurrentPage] = useState(1)
+
+  const getMenuTransData = useRecoilValue(menuTransfData)
+
+
+  let location = useLocation();
 
   // console.log("mttypeoption", mtTypeOption, diaQColOpt, cSQopt);
 
@@ -326,18 +331,23 @@ const ProductList = () => {
     const data = JSON.parse(localStorage.getItem("getPriceData"));
     setpriceDataApi(data)
   }
+  
+  // let menuparams11;
+   
+  // console.log("menuparams11",JSON.parse(localStorage.getItem("menuparams")))
+
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("allproductlist"));
     const prodCount = JSON.parse(localStorage.getItem("allproductcount"));
     if (data) setProductApiData2(data)
     if (prodCount) setProdCount(prodCount)
-  }, [])
+  }, [getMenuTransData])
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("getPriceData"));
     setpriceDataApi(data)
-  }, [])
+  }, [getMenuTransData])
 
 
   useEffect(() => {
@@ -1007,6 +1017,16 @@ const ProductList = () => {
       if (res) {
         getProductData()
       }
+    })
+
+    let metalTypeId = findMetalTypeId(mtTypeOption)[0]?.Metalid
+    let DiaQCid = [findDiaQcId(diaQColOpt)[0]?.QualityId, findDiaQcId(diaQColOpt)[0]?.ColorId]
+    let CsQcid = [findCsQcId(cSQopt)[0]?.QualityId, findCsQcId(cSQopt)[0]?.ColorId]
+
+    let obj = { metalTypeId, DiaQCid, CsQcid }
+
+    await getDesignPriceList(param, currentPage, obj  ,output).then(res => {
+      getProdPriceData()
     })
   }
 
@@ -2045,6 +2065,8 @@ const ProductList = () => {
 
     let obj = { metalTypeId, DiaQCid, CsQcid }
 
+    console.log("obj",obj);
+
     let param = JSON.parse(localStorage.getItem("menuparams"))
     await getDesignPriceList(param, currentPage, obj).then(res => {
       getProdPriceData()
@@ -2366,12 +2388,15 @@ const ProductList = () => {
               >
                 <div className="smilingWebProductListSideBar" style={{ transition: "1s ease", width: `19%`, left: `${isShowfilter ? "0" : "-500%"}` }}>
                   <ul className="d-flex" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', padding: '0px 20px 0px 0px' }}>
-                    <li className="finejwelery me-4" id="finejwelery" style={{ fontSize: '14px' }}>Filters{newProData.length > 0 ? ` (${newProData.length}/${ProductApiData2?.length}) ` : null}</li>
+                    <li className="finejwelery me-4" id="finejwelery" style={{ fontSize: '14px' }}>
+                      Filters
+                      {/* {newProData.length > 0 ? ` (${newProData.length}/${ProductApiData2?.length}) ` : null} */}
+                      </li>
                     <li className="finejwelery" id="finejwelery"
                       onClick={() => handlePageReload()}
                       style={{ cursor: 'pointer', fontSize: '14px' }}>
                       {
-                        (Object.values(filterChecked)).filter(fc => fc.checked !== false).filter(fc => fc.checked !== undefined).length ?
+                        (Object.values(filterChecked)).filter(fc => fc.checked !== false).filter(fc => fc.checked !== undefined).length  ?
                           "Clear All"
                           :
                           `Product: ${ProductApiData2?.length}`

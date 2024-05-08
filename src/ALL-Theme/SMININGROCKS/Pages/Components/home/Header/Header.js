@@ -11,7 +11,7 @@ import { RiArrowDropDownLine } from "react-icons/ri";
 import { PiStarFourThin } from "react-icons/pi";
 import { IoClose } from "react-icons/io5";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { CartListCounts, HeaderData, HeaderData2, WishListCounts, loginState, newMenuData, openSignInModal, searchData } from "../../../../../../Recoil/atom";
+import { CartListCounts, HeaderData, HeaderData2, WishListCounts, loginState, menuTransfData, newMenuData, openSignInModal, searchData } from "../../../../../../Recoil/atom";
 import { CommonAPI } from "../../../../Utils/API/CommonAPI";
 import Cart from "./Cart";
 // import titleImg from "../../../assets/title/sonasons.png"
@@ -30,6 +30,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { List, ListItem, ListItemText, Button, IconButton } from '@mui/material';
+import { FilterAPI, FilterListAPI } from "../../../../Utils/API/FilterListAPI";
 
 export default function Header() {
   const navigation = useNavigate();
@@ -53,6 +54,7 @@ export default function Header() {
   const getWishListCount = useRecoilValue(WishListCounts)
   const setHeaderData = useSetRecoilState(HeaderData)
   const setHeaderData2 = useSetRecoilState(HeaderData2)
+  const setMenutransData = useSetRecoilState(menuTransfData)
 
   const [menul0data, setMenul0data] = useState([])
   const [menul1data, setMenul1data] = useState([])
@@ -543,9 +545,13 @@ export default function Header() {
     console.log('finalData', finalData);
 
     if (finalData) {
+      let resData;
+      await FilterListAPI(finalData)
       await productListApiCall(finalData).then((res) => {
         if (res) {
+          resData = res;
           console.log("res", res);
+          setMenutransData(res)
           localStorage.setItem("allproductlist", JSON.stringify(res))
         }
       })
