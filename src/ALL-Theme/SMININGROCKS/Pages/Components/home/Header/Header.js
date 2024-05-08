@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import './Header.css'
 import Tooltip from '@mui/material/Tooltip';
 import { Badge, Dialog, Divider, Drawer, SwipeableDrawer, Tabs, TextField } from "@mui/material";
@@ -34,6 +34,7 @@ import { FilterAPI, FilterListAPI } from "../../../../Utils/API/FilterListAPI";
 
 export default function Header() {
   const navigation = useNavigate();
+  const location = useLocation();
   const dropdownRef = useRef(null);
   const [inputValue, setInputValue] = useState(1);
   const [serachsShowOverlay, setSerachShowOverlay] = useState(false);
@@ -691,7 +692,9 @@ export default function Header() {
         <>
           <div className="smlingSearchoverlay">
             <div className="smlingTopSerachOver">
-              <IoSearchOutline style={{ height: "15px", width: "15px", marginRight: "10px" }} />
+              {location?.pathname == '/productpage' &&
+                <IoSearchOutline style={{ height: "15px", width: "15px", marginRight: "10px" }} />
+              }
               <input
                 type="text"
                 placeholder="Enter Design Number End Click Enter"
@@ -715,7 +718,9 @@ export default function Header() {
 
           <div className={`smlingSearchoverlayNew ${isHeaderFixedDropShow ? "fixed" : ""}`}>
             <div className="smlingTopSerachOver-Fixed">
-              <IoSearchOutline style={{ height: "15px", width: "15px", marginRight: "10px" }} />
+              {location?.pathname == '/productpage' &&
+                <IoSearchOutline style={{ height: "15px", width: "15px", marginRight: "10px" }} />
+              }
               <input
                 type="text"
                 placeholder="Enter Design Number End Click Enter"
@@ -993,9 +998,11 @@ export default function Header() {
             >
               <ul className="nav-ul-shop" style={{ marginTop: '24px' }}>
                 <>
-                  <li style={{ cursor: "pointer", textDecoration: 'none' }} onClick={toggleOverlay}>
-                    <IoSearch color="#7D7F85" fontSize='25px' />
-                  </li>
+                  {location?.pathname == '/productpage' &&
+                    <li style={{ cursor: "pointer", textDecoration: 'none' }} onClick={toggleOverlay}>
+                      <IoSearch color="#7D7F85" fontSize='25px' />
+                    </li>
+                  }
                   <Badge
                     badgeContent={getWishListCount}
                     max={1000}
@@ -1151,7 +1158,7 @@ export default function Header() {
               >
                 <div
                   style={{
-                    width: "60%",
+                    width: "80%",
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center'
@@ -1167,9 +1174,11 @@ export default function Header() {
                     gap: '20px'
                   }}
                 >
-                  <li onClick={toggleOverlay} style={{ listStyle: 'none', width: '40px', textAlign: 'center', cursor: 'pointer' }}>
-                    <IoSearch color="#7D7F85" fontSize='30px' />
-                  </li>
+                  {location?.pathname == '/productpage' &&
+                    <li className="searchiconInMobile" onClick={toggleOverlay} style={{ listStyle: 'none', width: '40px', textAlign: 'center', cursor: 'pointer' }}>
+                      <IoSearch color="#7D7F85" fontSize='30px' />
+                    </li>
+                  }
                   <Badge
                     badgeContent={getWishListCount}
                     max={1000}
@@ -1208,7 +1217,7 @@ export default function Header() {
                     style={{ cursor: "pointer", textDecoration: 'none' }}
                     onClick={() => navigation("/account")}
                   >
-                    <IoPersonOutline color="#7D7F85" fontSize='30px' style={{marginTop:'-10px'}}/>
+                    <IoPersonOutline color="#7D7F85" fontSize='30px' style={{ marginTop: '-10px' }} />
                   </li>
                 </div>
               </div>
