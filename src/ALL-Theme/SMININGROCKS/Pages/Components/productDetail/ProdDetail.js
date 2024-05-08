@@ -1459,8 +1459,10 @@ const ProdDetail = () => {
 
                   src={
                     updatedColorImage?.length !== 0 ?
+
                       updatedColorImage[0]?.imagepath :
-                      globImagePath + productData?.DesignFolderName + '/' + imageSize?.ImgOr + '/' + (thumbImg?.length ? thumbImg : productData?.DefaultImageName)
+
+                      globImagePath + productData?.DesignFolderName + '/' + imageSize?.ImgOr + '/' + (thumbImg?.length ? thumbImg : productData?.DefaultImageName) ?? notFound 
                   }
 
                   alt={""}
