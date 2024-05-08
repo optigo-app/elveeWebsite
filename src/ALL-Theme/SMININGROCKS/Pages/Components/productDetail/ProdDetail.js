@@ -445,7 +445,7 @@ const ProdDetail = () => {
         ele?.A === srProductsData?.autocode
     );
 
-    // console.log("mtrdData2222", mtrd)
+    console.log("mtrdData2222", mtrd)
 
     let showPrice = 0;
     if (mtrd && mtrd.length > 0) {
@@ -465,7 +465,7 @@ const ProdDetail = () => {
 
     )
 
-    // console.log("diaQColOpt", diaQColOpt);
+    console.log("diaQColOpt", diaQColOpt);
 
     let showPrice1 = 0;
     if (diaqcprice && diaqcprice.length > 0) {
@@ -492,7 +492,7 @@ const ProdDetail = () => {
 
     );
 
-    // console.log("csqcpirce", getPriceData)
+    console.log("csqcpirce", getPriceData)
 
     let showPrice2 = 0;
     if (csqcpirce && csqcpirce.length > 0) {
