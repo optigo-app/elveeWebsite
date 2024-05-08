@@ -2703,7 +2703,11 @@ const ProductList = () => {
                             {/* {console.log("imagePath", `${storeInitData?.DesignImageFol}${products?.DesignFolderName}/${storeInitData?.ImgMe}/${products?.DefaultImageName}`)} */}
                             <div>
                               <img
-                                className="prod_img"
+                                className={`${isShowfilter ? "prod_img" : "prod_imgFiletrHide"}
+                                ${show2ImagesView ? 
+                                  isShowfilter ? 
+                                  "prod_img2" : "prod_img2FiletrHider" : ""}
+                                ${show4ImagesView ? "prod_img4" : ""}`}
                                 src={
                                   hoveredImageUrls[i] ? hoveredImageUrls[i] : updatedColorImage[i] ? updatedColorImage[i] :
                                     (storeInitData ?
