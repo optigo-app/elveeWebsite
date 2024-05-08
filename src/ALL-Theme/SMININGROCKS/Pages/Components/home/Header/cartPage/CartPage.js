@@ -409,8 +409,10 @@ export default function CartPage() {
   }, [fullprodData, mtTypeOption, diaQColOpt, cSQopt, cartSelectData])
 
   useEffect(() => {
+    let finalmetal = `${cartSelectData?.metaltypename} ${cartSelectData?.Purity}`
+    console.log("finalmetal",finalmetal)
 
-    setmtTypeOption(cartSelectData?.metal);
+    setmtTypeOption(finalmetal);
 
     let qualityColor = `${cartSelectData?.diamondquality}#${cartSelectData?.diamondcolor}`;
     setDiaQColOpt(qualityColor);
@@ -425,6 +427,7 @@ export default function CartPage() {
 
   }, [cartSelectData])
 
+  // console.log(cartSelectData);
 
   useEffect(() => {
     getCountFunc();
