@@ -332,9 +332,9 @@ const ProductList = () => {
     const data = JSON.parse(localStorage.getItem("getPriceData"));
     setpriceDataApi(data)
   }
-  
+
   // let menuparams11;
-   
+
   // console.log("menuparams11",JSON.parse(localStorage.getItem("menuparams")))
 
   // console.log("priceDataApi",priceDataApi);
@@ -421,8 +421,9 @@ const ProductList = () => {
           csCid = ""
         }
         // console.log("priceprod", product?.designno, metalrd, diard1, csrd2);
-        return { ...product, price, markup, metalrd, diard1, csrd2, updNWT, updGWT, 
-          updDWT, updDPCS, updCWT, updCPCS, updMT, updMC, 
+        return {
+          ...product, price, markup, metalrd, diard1, csrd2, updNWT, updGWT,
+          updDWT, updDPCS, updCWT, updCPCS, updMT, updMC,
           diaQ, diaQid,
           diaC, diaCid, csQ, csQid, csC, csCid
         }
@@ -1437,7 +1438,7 @@ const ProductList = () => {
           "Designid": Number(`${product?.Designid ?? 0}`)
         }
 
-      // console.log("product", finalJSON)
+        // console.log("product", finalJSON)
 
 
         const encodedCombinedValue = btoa(JSON.stringify(finalJSON));
@@ -1711,6 +1712,7 @@ const ProductList = () => {
   };
 
   const handlePageReload = () => {
+    window.location.reload();
     // setRangeProData([])
     // setFilterChecked({})
     // setNewProData(ProductApiData2);  
@@ -1743,7 +1745,7 @@ const ProductList = () => {
     }
   };
 
-// console.log("prod_img", hoveredImageUrls);
+  // console.log("prod_img", hoveredImageUrls);
 
   const handleMouseLeave = (index) => {
     setHoveredImageUrls(prevState => {
@@ -2333,6 +2335,7 @@ const ProductList = () => {
                     onChange={(e) => {
                       setmtTypeOption(e.target.value)
                     }}
+                    style={{ color: '#7b7b7b', fontSize: '12px', fontWeight: 400, cursor: 'pointer' }}
                   >
                     {metalType.map((data, index) => (
                       <option key={index} value={data.metalType}>
@@ -2359,6 +2362,7 @@ const ProductList = () => {
                       className='menuitemSelectoreMain'
                       defaultValue={diaQColOpt}
                       onChange={(e) => setDiaQColOpt(e.target.value)}
+                      style={{ color: '#7b7b7b', fontSize: '12px', fontWeight: 400, cursor: 'pointer' }}
                     >
                       {colorData?.map((colorItem) => (
                         <option key={colorItem.ColorId} value={`${colorItem.Quality}#${colorItem.color}`}>
@@ -2382,13 +2386,13 @@ const ProductList = () => {
                       paddingTop: '10px',
                       gap: '5px',
                       borderTop: '1px solid rgba(66, 66, 66, 0.2)'
-
                     }}
                   >
                     <select
                       className='menuitemSelectoreMain'
                       onChange={(e) => setCSQOpt(e.target.value)}
                       defaultValue={cSQopt}
+                      style={{ color: '#7b7b7b', fontSize: '12px', fontWeight: 400, cursor: 'pointer' }}
                     >
                       {DaimondQualityColor.map((data, index) => (
                         <option
@@ -2422,12 +2426,12 @@ const ProductList = () => {
                     <li className="finejwelery me-4" id="finejwelery" style={{ fontSize: '14px' }}>
                       Filters
                       {/* {newProData.length > 0 ? ` (${newProData.length}/${ProductApiData2?.length}) ` : null} */}
-                      </li>
+                    </li>
                     <li className="finejwelery" id="finejwelery"
                       onClick={() => handlePageReload()}
                       style={{ cursor: 'pointer', fontSize: '14px' }}>
                       {
-                        (Object.values(filterChecked)).filter(fc => fc.checked !== false).filter(fc => fc.checked !== undefined).length  ?
+                        (Object.values(filterChecked)).filter(fc => fc.checked !== false).filter(fc => fc.checked !== undefined).length ?
                           "Clear All"
                           :
                           `Product: ${ProductApiData2?.length}`
@@ -2664,8 +2668,9 @@ const ProductList = () => {
 
                         <div className="part thirdfilteDiv" style={{ flex: '60%', justifyContent: 'end' }}>
                           <div className="part-content">
-                            <GridViewIcon onClick={() => handle2ImageShow()} />
-                            <AppsIcon />
+                            <IoGrid style={{ height: '18px', width: '18px', opacity: 0.7, color: '#7b7b7b' }} onClick={() => handle2ImageShow()} />
+                            <AppsIcon style={{ height: '22px', width: '22px', opacity: 0.8, color: '#1f1919' }} onClick={() => handle3ImageShow()} />
+                            {/* <TfiLayoutGrid4Alt style={{ height: '17px', width: '17px', opacity: 0.6 }} onClick={() => handle4ImageShow()} /> */}
                           </div>
                         </div>
                       </div>
@@ -2734,7 +2739,11 @@ const ProductList = () => {
                             {/* {console.log("imagePath", `${storeInitData?.DesignImageFol}${products?.DesignFolderName}/${storeInitData?.ImgMe}/${products?.DefaultImageName}`)} */}
                             <div>
                               <img
-                                className="prod_img"
+                                className={`${isShowfilter ? "prod_img" : "prod_imgFiletrHide"}
+                                ${show2ImagesView ?
+                                    isShowfilter ?
+                                      "prod_img2" : "prod_img2FiletrHider" : ""}
+                                ${show4ImagesView ? "prod_img4" : ""}`}
                                 src={
                                   hoveredImageUrls[i] ? hoveredImageUrls[i] : updatedColorImage[i] ? updatedColorImage[i] :
                                     (storeInitData ?

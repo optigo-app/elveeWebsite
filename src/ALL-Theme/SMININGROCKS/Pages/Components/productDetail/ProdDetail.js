@@ -239,7 +239,7 @@ const ProdDetail = () => {
     } else {
       setmtTypeOption(MetalTypeData[0]?.metaltype)
       setmtTypeOptionId(MetalTypeData[0]?.Metalid)
-      setmtPurity(MetalTypeData[0]?.metaltype)  
+      setmtPurity(MetalTypeData[0]?.metaltype)
 
     }
 
@@ -429,8 +429,8 @@ const ProdDetail = () => {
   }
   const loginUserDetail = JSON.parse(localStorage.getItem('loginUserDetail'));
 
-  
-  console.log("fullprodData",fullProdData);
+
+  console.log("fullprodData", fullProdData);
 
   useEffect(() => {
     let srProductsData = JSON.parse(localStorage.getItem('srProductsData'));
@@ -795,19 +795,19 @@ const ProdDetail = () => {
 
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     let FilterWishData = WishData.filter(item => item?.autocode === productData?.autocode)
-    if(FilterWishData?.length){
+    if (FilterWishData?.length) {
       setWishListFlag(true)
-    }else{
+    } else {
       setWishListFlag(false)
     }
-  },[WishData,productData])
-  
+  }, [WishData, productData])
+
 
   useEffect(() => {
     handelCart()
-}, [addToCartFlag])
+  }, [addToCartFlag])
 
 
   useEffect(() => {
@@ -816,11 +816,11 @@ const ProdDetail = () => {
 
   useEffect(() => {
     let FilterData = cartData.filter(item => item?.autocode === productData?.autocode)
-    console.log("filterData1212",FilterData);
+    console.log("filterData1212", FilterData);
     if (FilterData?.length) {
       setAddToCartFlag(true)
     }
-  }, [productData,cartData])
+  }, [productData, cartData])
 
   const handelCart = async (event) => {
 
@@ -947,19 +947,19 @@ const ProdDetail = () => {
           "DColor": `${JSON.parse(localStorage.getItem("loginUserDetail"))?.cmboDiaQualityColor.split("#@#")[1]}`,
           "cmboMetalType": `${product?.updMT}`,
           "AdditionalValWt": Number(`${product?.AdditionalValWt ?? 0}`),
-          "BrandName": `${findValueFromId("brand",product?.Brandid)?.BrandName}`,
+          "BrandName": `${findValueFromId("brand", product?.Brandid)?.BrandName}`,
           "Brandid": Number(`${product?.Brandid}`),
-          "CategoryName": `${findValueFromId("cate",product?.Categoryid)?.CategoryName}`,
+          "CategoryName": `${findValueFromId("cate", product?.Categoryid)?.CategoryName}`,
           "Categoryid": Number(`${product?.Categoryid}`),
           "CenterStoneId": Number(`${product?.CenterStoneId}`),
           "CenterStonePieces": Number(`${product?.updCPCS}`),
-          "CollectionName": `${findValueFromId("collect",product?.Collectionid)?.CollectionName}`,
+          "CollectionName": `${findValueFromId("collect", product?.Collectionid)?.CollectionName}`,
           "Collectionid": Number(`${product?.Collectionid}`),
           "ColorWiseRollOverImageName": `${product?.ColorWiseRollOverImageName}`,
           "DefaultImageName": `${product?.DefaultImageName}`,
           "DisplayOrder": Number(`${product?.DisplayOrder}`),
           "FrontEnd_OrderCnt": Number(`${product?.FrontEnd_OrderCnt}`),
-          "GenderName": `${findValueFromId("gender",product?.Genderid)?.GenderName}`,
+          "GenderName": `${findValueFromId("gender", product?.Genderid)?.GenderName}`,
           "Genderid": Number(`${product?.Genderid}`),
           "Grossweight": Number(`${product?.updGWT}`),
           "InReadyStockCnt": Number(`${product?.InReadyStockCnt}`),
@@ -978,14 +978,14 @@ const ProdDetail = () => {
           "MetalTypeName": `${product?.updMT.split(" ")[0]}`,
           "MetalTypeid": Number(`${product?.IsInReadyStock}`),
           "MetalWeight": Number(`${product?.updNWT}`),
-          "OcassionName": `${findValueFromId("ocass",product?.Ocassionid)?.OcassionName}`,
+          "OcassionName": `${findValueFromId("ocass", product?.Ocassionid)?.OcassionName}`,
           "Ocassionid": Number(`${product?.Ocassionid}`),
-          "ProducttypeName": `${findValueFromId("prodtype",product?.Producttypeid)?.ProducttypeName}`,
+          "ProducttypeName": `${findValueFromId("prodtype", product?.Producttypeid)?.ProducttypeName}`,
           "Producttypeid": Number(`${product?.Producttypeid}`),
           "RollOverImageName": `${product?.RollOverImageName}`,
-          "SubCategoryName": `${findValueFromId("subcate",product?.SubCategoryid)?.SubCategoryName}`,
+          "SubCategoryName": `${findValueFromId("subcate", product?.SubCategoryid)?.SubCategoryName}`,
           "SubCategoryid": Number(`${product?.SubCategoryid}`),
-          "ThemeName": `${findValueFromId("theme",product?.Themeid)?.ThemeName}`,
+          "ThemeName": `${findValueFromId("theme", product?.Themeid)?.ThemeName}`,
           "Themeid": Number(`${product?.Themeid}`),
           "TitleLine": `${product?.TitleLine}`,
           "UnitCost": Number(`${product?.price === "Not Available" ? 0 : product?.price}`),
@@ -1007,7 +1007,7 @@ const ProdDetail = () => {
           "storyline_html": `${product?.storyline_html ?? ""}`,
           "storyline_video": `${product?.storyline_video ?? ""}`,
           "thumbimage": `${product?.ThumbImagePath ?? ''}`,
-          "totaladditionalvalueweight": Number(`${product?.totaladditionalvalueweigt ?? 0}`) ,
+          "totaladditionalvalueweight": Number(`${product?.totaladditionalvalueweigt ?? 0}`),
           "totalcolorstoneweight": Number(`${product?.updCWT}`),
           "totaldiamondweight": Number(`${product?.updDWT}`),
           "updatedate": `${product?.UpdateDate ?? 0}`,
@@ -1098,7 +1098,7 @@ const ProdDetail = () => {
 
     try {
       setWishListFlag(event.target.checked)
-      
+
       if (event.target.checked === true) {
 
         const storeInit = JSON.parse(localStorage.getItem("storeInit"))
@@ -1121,19 +1121,19 @@ const ProdDetail = () => {
           "cmboDiaQualityColor": `${JSON.parse(localStorage.getItem("loginUserDetail"))?.cmboDiaQualityColor ?? ""}`,
           "cmboMetalType": `${mtPurity}`,
           "AdditionalValWt": Number(`${product?.AdditionalValWt ?? 0}`),
-          "BrandName": `${findValueFromId("brand",product?.Brandid)?.BrandName}`,
+          "BrandName": `${findValueFromId("brand", product?.Brandid)?.BrandName}`,
           "Brandid": Number(`${product?.Brandid}`),
-          "CategoryName": `${findValueFromId("cate",product?.Categoryid)?.CategoryName}`,
+          "CategoryName": `${findValueFromId("cate", product?.Categoryid)?.CategoryName}`,
           "Categoryid": Number(`${product?.Categoryid}`),
           "CenterStoneId": Number(`${product?.CenterStoneId}`),
           "CenterStonePieces": Number(`${product?.updCPCS}`),
-          "CollectionName": `${findValueFromId("collect",product?.Collectionid)?.CollectionName}`,
+          "CollectionName": `${findValueFromId("collect", product?.Collectionid)?.CollectionName}`,
           "Collectionid": Number(`${product?.Collectionid}`),
           "ColorWiseRollOverImageName": `${product?.ColorWiseRollOverImageName}`,
           "DefaultImageName": `${product?.DefaultImageName}`,
           "DisplayOrder": Number(`${product?.DisplayOrder}`),
           "FrontEnd_OrderCnt": Number(`${product?.FrontEnd_OrderCnt}`),
-          "GenderName": `${findValueFromId("gender",product?.Genderid)?.GenderName}`,
+          "GenderName": `${findValueFromId("gender", product?.Genderid)?.GenderName}`,
           "Genderid": Number(`${product?.Genderid}`),
           "Grossweight": Number(`${product?.updGWT}`),
           "InReadyStockCnt": Number(`${product?.InReadyStockCnt}`),
@@ -1149,21 +1149,21 @@ const ProdDetail = () => {
           "MetalColorid": Number(`${product?.MetalColorid}`),
           "MetalPurity": `${JSON.stringify(product?.mtPurity)?.split(" ")[1] ?? '18K'}`,
           "MetalPurityid": Number(`${product?.MetalTypeid}`),
-          "MetalTypeName":`${JSON?.stringify(product?.mtPurity)?.split(" ")[0] ?? 'GOLD'}`,
+          "MetalTypeName": `${JSON?.stringify(product?.mtPurity)?.split(" ")[0] ?? 'GOLD'}`,
           "MetalTypeid": Number(`${product?.IsInReadyStock}`),
           "MetalWeight": Number(`${product?.updNWT}`),
-          "OcassionName": `${findValueFromId("ocass",product?.Ocassionid)?.OcassionName}`,
+          "OcassionName": `${findValueFromId("ocass", product?.Ocassionid)?.OcassionName}`,
           "Ocassionid": Number(`${product?.Ocassionid}`),
-          "ProducttypeName":`${findValueFromId("prodtype",product?.Producttypeid)?.ProducttypeName}`,
+          "ProducttypeName": `${findValueFromId("prodtype", product?.Producttypeid)?.ProducttypeName}`,
           "Producttypeid": Number(`${product?.Producttypeid}`),
           "RollOverImageName": `${product?.RollOverImageName}`,
-          "SubCategoryName": `${findValueFromId("subcate",product?.SubCategoryid)?.SubCategoryName}`,
+          "SubCategoryName": `${findValueFromId("subcate", product?.SubCategoryid)?.SubCategoryName}`,
           "SubCategoryid": Number(`${product?.SubCategoryid}`),
-          "ThemeName":`${findValueFromId("theme",product?.Themeid)?.ThemeName}`,
+          "ThemeName": `${findValueFromId("theme", product?.Themeid)?.ThemeName}`,
           "Themeid": Number(`${product?.Themeid}`),
           "TitleLine": `${product?.TitleLine}`,
           // "UnitCost": `${product?.price === "Not Available" ? 0 : product?.price}`,
-          "UnitCost":  Number(`${product?.price === "Not Available" ? 0 : product?.price}`),
+          "UnitCost": Number(`${product?.price === "Not Available" ? 0 : product?.price}`),
           // "UnitCostWithmarkup": (`${(product?.price === "Not Available" ? 0 : product?.price) + (product?.markup ?? 0)}`),
           "UnitCostWithmarkup": Number(`${(product?.price === "Not Available" ? 0 : product?.price) + (product?.markup ?? 0)}`),
           "autocode": `${product?.autocode}`,
@@ -1186,14 +1186,14 @@ const ProdDetail = () => {
           "storyline_html": `${product?.storyline_html ?? ""}`,
           "storyline_video": `${product?.storyline_video ?? ""}`,
           "thumbimage": `${product?.ThumbImagePath ?? ''}`,
-          "totaladditionalvalueweight":  Number(`${product?.totaladditionalvalueweigt ?? 0}`) ,
+          "totaladditionalvalueweight": Number(`${product?.totaladditionalvalueweigt ?? 0}`),
           "totalcolorstoneweight": Number(`${product?.updCWT}`),
           "totaldiamondweight": Number(`${product?.updDWT}`),
           "updatedate": `${product?.UpdateDate ?? 0}`,
           "videoname": `${product?.videoname ?? ""}`,
           "FrontEnd_RegNo": `${storeInit?.FrontEnd_RegNo}`,
-          "Customerid":  Number(`${Customer_id?.id}`),
-          "PriceMastersetid":  Number(`${product?.PriceMastersetid ?? 0}`),
+          "Customerid": Number(`${Customer_id?.id}`),
+          "PriceMastersetid": Number(`${product?.PriceMastersetid ?? 0}`),
           "DQuality": `${JSON.parse(localStorage.getItem("loginUserDetail"))?.cmboDiaQualityColor.split("#@#")[0]}`,
           "DColor": `${JSON.parse(localStorage.getItem("loginUserDetail"))?.cmboDiaQualityColor.split("#@#")[1]}`,
           "UploadLogicalPath": `${product?.UploadLogicalPath ?? ""}`,
@@ -1208,9 +1208,9 @@ const ProdDetail = () => {
           p: encodedCombinedValue,
         };
 
-        console.log("event",event?.target.checked)
+        console.log("event", event?.target.checked)
         await CommonAPI(body).then(async (res) => {
-          
+
 
           if (res?.Data?.rd[0]?.msg === "success") {
 
@@ -1388,9 +1388,17 @@ const ProdDetail = () => {
     }
   }, [])
 
-  console.log("mtPurity",mtPurity)
 
-  console.log('fullProdDatafullProdData', fullProdData);
+  // useEffect(async() =>{
+
+  //   let url = (globImagePath + productData?.DesignFolderName + '/' + imageSize?.ImgOr + '/' + (thumbImg?.length ? thumbImg : productData?.DefaultImageName));
+  //   const isAvailable = await checkImageAvailability(url);
+    
+  //   console.log('isAvailableisAvailable', isAvailable);
+  // },[])
+
+  // console.log("mtPurity", mtPurity)
+
   return (
     <div
       className='paddingTopMobileSet'
@@ -1413,17 +1421,29 @@ const ProdDetail = () => {
             <div className="srprodetail1">
               {/* {!imgLoading */}
 
+              {/* // src={
+                  //   (productData?.OriginalImagePath) ?
+                  //     updatedColorImage?.length !== 0 ?
+                  //       updatedColorImage[0]?.imagepath
+                  //       :
+                  //       (
+                  //         selectedImagePath == '' ?
+                  //           globImagePath + productData?.DesignFolderName + '/' + imageSize?.ImgOr + '/' + (!handelmainImg()?.length ? productData?.ImageName?.split(",")[0]
+                  //             :
+                  //             handelmainImg()
+                  //           )
+                  //           :
+                  //           selectedImagePath)
+                  //     :
+                  //     notFound
+                  // } */}
+
               {imgLoading == 'false' && (
                 <Skeleton
                   sx={{
                     width: "100%",
-                    // zindex: 11111,
-                    // position: "relative",
-                    // objectFit: "cover",
                     marginLeft: "120px",
-                    // marginTop: "5%",
                     height: "90%",
-                    // display: !imgLoading ? "none": "block"
                   }}
                   variant="rounded"
                 />
@@ -1440,28 +1460,12 @@ const ProdDetail = () => {
                 }} />
                 :
                 <img
-                  // src={
-                  //   (productData?.OriginalImagePath) ?
-                  //     updatedColorImage?.length !== 0 ?
-                  //       updatedColorImage[0]?.imagepath
-                  //       :
-                  //       (
-                  //         selectedImagePath == '' ?
-                  //           globImagePath + productData?.DesignFolderName + '/' + imageSize?.ImgOr + '/' + (!handelmainImg()?.length ? productData?.ImageName?.split(",")[0]
-                  //             :
-                  //             handelmainImg()
-                  //           )
-                  //           :
-                  //           selectedImagePath)
-                  //     :
-                  //     notFound
-                  // }
-
                   src={
                     updatedColorImage?.length !== 0 ?
                       updatedColorImage[0]?.imagepath :
                       globImagePath + productData?.DesignFolderName + '/' + imageSize?.ImgOr + '/' + (thumbImg?.length ? thumbImg : productData?.DefaultImageName)
                   }
+
 
                   alt={""}
                   style={{
@@ -1679,8 +1683,8 @@ const ProdDetail = () => {
                         defaultValue={mtTypeOption}
                         onChange={(e) => {
                           let findMTtypeID = findMetalTypeId(e.target.value)[0]?.Metalid
-                          console.log("findMTtypeID",findMTtypeID);
-                          {setmtTypeOptionId(findMTtypeID); setmtPurity(e.target.value); setmtTypeOption(e.target.value)}
+                          console.log("findMTtypeID", findMTtypeID);
+                          { setmtTypeOptionId(findMTtypeID); setmtPurity(e.target.value); setmtTypeOption(e.target.value) }
                         }}
                       >
                         {metalType.map((data, index) => (
@@ -1763,12 +1767,12 @@ const ProdDetail = () => {
                       <select
                         className='menuitemSelectoreMain'
                         defaultValue={diaQColOpt}
-                        onChange={(e) =>{
+                        onChange={(e) => {
                           let findDCqc = findDiaQcId(e.target.value);
-                          console.log("findDCqc",findDCqc);
+                          console.log("findDCqc", findDCqc);
                           setDiaQColOpt(e.target.value);
-                          setDiaQColOptId([findDCqc[0]?.QualityId,findDCqc[0]?.ColorId])
-                         }}
+                          setDiaQColOptId([findDCqc[0]?.QualityId, findDCqc[0]?.ColorId])
+                        }}
                       >
                         {colorData?.map((colorItem) => (
                           <option key={colorItem.ColorId} value={`${colorItem.Quality}#${colorItem.color}`}>
@@ -2085,9 +2089,9 @@ const ProdDetail = () => {
                 )}
 
                 <div style={{ display: 'flex', gap: '12px', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div className='addtocartcont' onClick={()=> setAddToCartFlag(!addToCartFlag)}>
+                  <div className='addtocartcont' onClick={() => setAddToCartFlag(!addToCartFlag)}>
                     <span className='addtocarttxt'>
-                    {addToCartFlag ? "REMOVE FROM CART" : "ADD TO CART"}
+                      {addToCartFlag ? "REMOVE FROM CART" : "ADD TO CART"}
                     </span>
                   </div>
 

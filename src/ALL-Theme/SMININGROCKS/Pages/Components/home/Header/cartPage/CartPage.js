@@ -1259,7 +1259,7 @@ export default function CartPage() {
                         flexDirection: "column",
                         justifyContent: "center",
                         alignItems: "center",
-                        marginTop: "150px",
+                        marginBlock: "150px",
                       }}
                     >
                       <p
@@ -1300,7 +1300,8 @@ export default function CartPage() {
                               style={{
                                 border: "1px solid #e1e1e1",
                                 borderRadius: "12px",
-                                width: "35%",
+                                width: "350px",
+                                height: "350px"
                               }}
                               onError={(e) => {
                                 e.target.src = noFoundImage;
