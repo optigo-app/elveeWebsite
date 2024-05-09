@@ -37,6 +37,42 @@
     background-position: center;
     transition: all 0.7s ease;
 }
+.prod_imgFiletrHide{
+    width: 100%;
+    min-height: 412px;
+    height: 500px;
+    background-size: cover;
+    background-position: center;
+    transition: all 0.7s ease;
+}
+
+.prod_img2 {
+    /* background-image: url('https://smilingrocks.com/cdn/shop/products/Lab-grown-diamond-white-gold-ring-srr00363wht_11c94dae-c1d2-45e8-ae46-d16152c77f45_800x800.jpg?v=1613627318'); */
+    width: 100%;
+    min-height: 412px;
+    height: 600px;
+    background-size: cover;
+    background-position: center;
+    transition: all 0.7s ease;
+}
+.prod_img2FiletrHider{
+    width: 100%;
+    min-height: 412px;
+    height: 700px;
+    background-size: cover;
+    background-position: center;
+    transition: all 0.7s ease;
+}
+.prod_img3 {
+    /* background-image: url('https://smilingrocks.com/cdn/shop/products/Lab-grown-diamond-white-gold-ring-srr00363wht_11c94dae-c1d2-45e8-ae46-d16152c77f45_800x800.jpg?v=1613627318'); */
+    width: 100%;
+    min-height: 412px;
+    height: 412px;
+    background-size: cover;
+    background-position: center;
+    transition: all 0.7s ease;
+}
+
 
 .prod_img:hover {
     /* background-image: url('https://images.accentuate.io/?c_options=w_320,dpr_2.0&image=https://cdn.accentuate.io/3245609615460/5977841664100/SRR-00363WHT.jpg?2048x1950'); */
@@ -134,7 +170,7 @@
     height: 100%;
     display: flex;
     flex-wrap: wrap;
-    gap: 5px;
+    gap: 4px;
 }
 
 .smilingProductSubMain {
@@ -353,7 +389,7 @@
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 8px;
 }
 
 .main-ProdcutListConatiner {
@@ -375,7 +411,7 @@
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: 6px;
+    gap: 4px;
 }
 
 
@@ -531,7 +567,7 @@
     }
 
     .smilingProductImageMain {
-        padding: 0px 0px 0px 17px;
+        padding: 0px!important;
     }
 
     .main-ProdcutListConatiner {
@@ -550,14 +586,38 @@
         display: flex !important;
         flex-direction: row !important;
         flex-wrap: wrap;
-        margin: 10px;
+        margin: 10px 0px 0px 0px;
         gap: 2px;
     }
 
+    .smilingAllProductDataMainMobileShow2Image {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    .main-ProdcutListConatiner2ImageShow {
+        width: 49.5%;
+    }
     .smilingProductMain {
         margin-inline: 0%;
     }
-
+    .filterListMobileData{
+        margin-inline: 0px!important;
+    }
+    .bg-image{
+        margin: 10px 0px 10px 0px !important;
+    }
+    .smilingAllProductDataMainMobileShow4Image {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 4px;
+    }
 
 
     .listing-card {

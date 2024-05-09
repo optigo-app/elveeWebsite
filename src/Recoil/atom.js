@@ -70,6 +70,16 @@ export const newTestProdData = atom({
   default:[]
 })
 
+export const menuTransfData =  atom({
+  key:'menuTransfData',
+  default:[]
+})
+
+export const menuTransfData =  atom({
+  key:'menuTransfData',
+  default:[]
+})
+
 export const companyLogo = atom({
   key:'companyLogo',
   default:[]

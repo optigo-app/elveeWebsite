@@ -17,7 +17,7 @@ import LocalMallIcon from '@mui/icons-material/LocalMall';
 import { CommonAPI } from "../../../Utils/API/CommonAPI";
 import axios from "axios";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { CartListCounts, HeaderData, HeaderData2, WishListCounts, colorstoneQualityColorG, diamondQualityColorG, metalTypeG, newMenuData, newTestProdData, priceData, productDataNew, searchData } from "../../../../../Recoil/atom";
+import { CartListCounts, HeaderData, HeaderData2, WishListCounts, colorstoneQualityColorG, diamondQualityColorG, menuTransfData, metalTypeG, newMenuData, newTestProdData, priceData, productDataNew, searchData } from "../../../../../Recoil/atom";
 import { GetCount } from "../../../Utils/API/GetCount";
 import notFound from "../../assets/image-not-found.png";
 import { productListApiCall } from "../../../Utils/API/ProductListAPI";
@@ -132,6 +132,11 @@ const ProductList = () => {
   const [prodCount, setProdCount] = useState(0)
   const [storeInitData, setStoreInitData] = useState({})
   const [currentPage, setCurrentPage] = useState(1)
+
+  const getMenuTransData = useRecoilValue(menuTransfData)
+
+
+  let location = useLocation();
 
   // console.log("mttypeoption", mtTypeOption, diaQColOpt, cSQopt);
 
@@ -327,17 +332,22 @@ const ProductList = () => {
     setpriceDataApi(data)
   }
 
+  // let menuparams11;
+
+  // console.log("menuparams11",JSON.parse(localStorage.getItem("menuparams")))
+
+
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("allproductlist"));
     const prodCount = JSON.parse(localStorage.getItem("allproductcount"));
     if (data) setProductApiData2(data)
     if (prodCount) setProdCount(prodCount)
-  }, [])
+  }, [getMenuTransData])
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("getPriceData"));
     setpriceDataApi(data)
-  }, [])
+  }, [getMenuTransData])
 
 
   useEffect(() => {
@@ -403,8 +413,9 @@ const ProductList = () => {
           csCid = ""
         }
         // console.log("priceprod", product?.designno, metalrd, diard1, csrd2);
-        return { ...product, price, markup, metalrd, diard1, csrd2, updNWT, updGWT, 
-          updDWT, updDPCS, updCWT, updCPCS, updMT, updMC, 
+        return {
+          ...product, price, markup, metalrd, diard1, csrd2, updNWT, updGWT,
+          updDWT, updDPCS, updCWT, updCPCS, updMT, updMC,
           diaQ, diaQid,
           diaC, diaCid, csQ, csQid, csC, csCid
         }
@@ -1008,6 +1019,16 @@ const ProductList = () => {
         getProductData()
       }
     })
+
+    let metalTypeId = findMetalTypeId(mtTypeOption)[0]?.Metalid
+    let DiaQCid = [findDiaQcId(diaQColOpt)[0]?.QualityId, findDiaQcId(diaQColOpt)[0]?.ColorId]
+    let CsQcid = [findCsQcId(cSQopt)[0]?.QualityId, findCsQcId(cSQopt)[0]?.ColorId]
+
+    let obj = { metalTypeId, DiaQCid, CsQcid }
+
+    await getDesignPriceList(param, currentPage, obj, output).then(res => {
+      getProdPriceData()
+    })
   }
 
   useEffect(() => {
@@ -1397,7 +1418,7 @@ const ProductList = () => {
           "Designid": Number(`${product?.Designid ?? 0}`)
         }
 
-      // console.log("product", finalJSON)
+        // console.log("product", finalJSON)
 
 
         const encodedCombinedValue = btoa(JSON.stringify(finalJSON));
@@ -1703,7 +1724,7 @@ const ProductList = () => {
     }
   };
 
-// console.log("prod_img", hoveredImageUrls);
+  // console.log("prod_img", hoveredImageUrls);
 
   const handleMouseLeave = (index) => {
     setHoveredImageUrls(prevState => {
@@ -2045,6 +2066,8 @@ const ProductList = () => {
 
     let obj = { metalTypeId, DiaQCid, CsQcid }
 
+    console.log("obj", obj);
+
     let param = JSON.parse(localStorage.getItem("menuparams"))
     await getDesignPriceList(param, currentPage, obj).then(res => {
       getProdPriceData()
@@ -2366,7 +2389,10 @@ const ProductList = () => {
               >
                 <div className="smilingWebProductListSideBar" style={{ transition: "1s ease", width: `19%`, left: `${isShowfilter ? "0" : "-500%"}` }}>
                   <ul className="d-flex" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', padding: '0px 20px 0px 0px' }}>
-                    <li className="finejwelery me-4" id="finejwelery" style={{ fontSize: '14px' }}>Filters{newProData.length > 0 ? ` (${newProData.length}/${ProductApiData2?.length}) ` : null}</li>
+                    <li className="finejwelery me-4" id="finejwelery" style={{ fontSize: '14px' }}>
+                      Filters
+                      {/* {newProData.length > 0 ? ` (${newProData.length}/${ProductApiData2?.length}) ` : null} */}
+                    </li>
                     <li className="finejwelery" id="finejwelery"
                       onClick={() => handlePageReload()}
                       style={{ cursor: 'pointer', fontSize: '14px' }}>
@@ -2608,8 +2634,9 @@ const ProductList = () => {
 
                         <div className="part thirdfilteDiv" style={{ flex: '60%', justifyContent: 'end' }}>
                           <div className="part-content">
-                            <GridViewIcon onClick={() => handle2ImageShow()} />
-                            <AppsIcon />
+                            <IoGrid style={{ height: '18px', width: '18px', opacity: 0.7, color: '#7b7b7b' }} onClick={() => handle2ImageShow()} />
+                            <AppsIcon style={{ height: '22px', width: '22px', opacity: 0.8, color: '#1f1919' }} onClick={() => handle3ImageShow()} />
+                            {/* <TfiLayoutGrid4Alt style={{ height: '17px', width: '17px', opacity: 0.6 }} onClick={() => handle4ImageShow()} /> */}
                           </div>
                         </div>
                       </div>
@@ -2678,7 +2705,11 @@ const ProductList = () => {
                             {/* {console.log("imagePath", `${storeInitData?.DesignImageFol}${products?.DesignFolderName}/${storeInitData?.ImgMe}/${products?.DefaultImageName}`)} */}
                             <div>
                               <img
-                                className="prod_img"
+                                className={`${isShowfilter ? "prod_img" : "prod_imgFiletrHide"}
+                                ${show2ImagesView ?
+                                    isShowfilter ?
+                                      "prod_img2" : "prod_img2FiletrHider" : ""}
+                                ${show4ImagesView ? "prod_img4" : ""}`}
                                 src={
                                   hoveredImageUrls[i] ? hoveredImageUrls[i] : updatedColorImage[i] ? updatedColorImage[i] :
                                     (storeInitData ?
