@@ -93,9 +93,9 @@
 }
 @media screen and (max-width: 1200px) {
 
-    .smling-forgot-main-Color{
+    /* .smling-forgot-main-Color{
         padding-top: 20%;
-    }
+    } */
     .smling-forgot-main{
         width: 70%;
     }
@@ -131,9 +131,9 @@
 
     }
    
-    .smling-forgot-main-Color {
+    /* .smling-forgot-main-Color {
         padding-top: 30%;
-    }
+    } */
 
     .smling-forgot-main {
         width: 85%;
