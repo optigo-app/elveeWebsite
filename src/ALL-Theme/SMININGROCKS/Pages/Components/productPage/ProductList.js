@@ -1692,6 +1692,7 @@ const ProductList = () => {
   };
 
   const handlePageReload = () => {
+    window.location.reload();
     // setRangeProData([])
     // setFilterChecked({})
     // setNewProData(ProductApiData2);  
@@ -2303,6 +2304,7 @@ const ProductList = () => {
                     onChange={(e) => {
                       setmtTypeOption(e.target.value)
                     }}
+                    style={{ color: '#7b7b7b', fontSize: '12px', fontWeight: 400, cursor: 'pointer' }}
                   >
                     {metalType.map((data, index) => (
                       <option key={index} value={data.metalType}>
@@ -2329,6 +2331,7 @@ const ProductList = () => {
                       className='menuitemSelectoreMain'
                       defaultValue={diaQColOpt}
                       onChange={(e) => setDiaQColOpt(e.target.value)}
+                      style={{ color: '#7b7b7b', fontSize: '12px', fontWeight: 400, cursor: 'pointer' }}
                     >
                       {colorData?.map((colorItem) => (
                         <option key={colorItem.ColorId} value={`${colorItem.Quality}#${colorItem.color}`}>
@@ -2352,13 +2355,13 @@ const ProductList = () => {
                       paddingTop: '10px',
                       gap: '5px',
                       borderTop: '1px solid rgba(66, 66, 66, 0.2)'
-
                     }}
                   >
                     <select
                       className='menuitemSelectoreMain'
                       onChange={(e) => setCSQOpt(e.target.value)}
                       defaultValue={cSQopt}
+                      style={{ color: '#7b7b7b', fontSize: '12px', fontWeight: 400, cursor: 'pointer' }}
                     >
                       {DaimondQualityColor.map((data, index) => (
                         <option
