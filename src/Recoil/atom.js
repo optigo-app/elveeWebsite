@@ -69,3 +69,8 @@ export const newTestProdData = atom({
   key:'newTestProdData',
   default:[]
 })
+
+export const companyLogo = atom({
+  key:'companyLogo',
+  default:[]
+})

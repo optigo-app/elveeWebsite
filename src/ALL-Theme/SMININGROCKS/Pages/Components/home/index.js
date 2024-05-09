@@ -29,12 +29,15 @@ import CompanyData from './ComapnayData/CompanyData';
 import CountdownTimer from './CountDownTimer/CountDownTimer';
 import AffiliationData from './PromoComponent/BrandsComponent/AffiliationData';
 import SocialMedia from './Gallery/SocialMediaSlider';
-import { useRecoilValue } from 'recoil';
-import { loginState } from '../../../../../Recoil/atom';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { companyLogo, loginState } from '../../../../../Recoil/atom';
+import { Helmet } from 'react-helmet';
 
 export default function Home() {
   const islogin = useRecoilValue(loginState);
-
+  const [companyTitleLogo, setCompanyTitleLogo] = useRecoilState(companyLogo)
+  const [title, setTitle] = useState();
+  const [favicon, setFavIcon] = useState();
   const location = useLocation();
 
   useEffect(() => {
@@ -70,6 +73,12 @@ export default function Home() {
           localStorage.setItem('UploadLogicalPath', response.data.Data.rd[0].UploadLogicalPath);
           localStorage.setItem('storeInit', JSON.stringify(response.data.Data.rd[0]));
           localStorage.setItem('myAccountFlags', JSON.stringify(response.data.Data.rd1));
+          let title = response?.data?.Data?.rd[0]?.companyname
+          let favIcon = response?.data?.Data?.rd[0]?.favicon
+          let companyLogo = response?.data?.Data?.rd[0]?.companylogo
+          setTitle(title);
+          setFavIcon(favIcon)
+          setCompanyTitleLogo(companyLogo)
         }
       } catch (error) {
         console.error('Error:', error);
@@ -288,15 +297,30 @@ export default function Home() {
     }
   }, [])
 
-console.log('islogin',islogin);
+  console.log('islogin', islogin);
   //  let domainName =  `((window.location.hostname === 'localhost' || window.location.hostname === 'zen') ? 'astore.orail.co.in' : window.location.hostname)/ufcc/image/`
+  
+  // const [title, setTitle] = useState();
+  // const [favicon, setFavIcon] = useState();
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     const storeInit = JSON.parse(localStorage.getItem('storeInit')) ?? "";
+  //     if (storeInit) {
+  //       setTitle(storeInit?.companyname)
+  //       setFavIcon(storeInit?.favicon)
+  //     }
+  //   }, 100);
+  // }, [islogin == 'true', islogin == 'false'])
 
-
-
+console.log();
 
   return (
     <div className='paddingTopMobileSet' style={{ backgroundColor: 'white', paddingTop: '0px' }}>
       <div className='homeMain'>
+        <Helmet>
+          <title>{title}</title>
+          <link rel="icon" type="image/png" href={favicon} sizes="16x16" />
+        </Helmet>
         {islogin == 'true' ? (
           <>
             <Video />
