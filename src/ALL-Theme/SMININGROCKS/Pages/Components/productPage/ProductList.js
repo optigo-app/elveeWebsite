@@ -306,6 +306,7 @@ const ProductList = () => {
   useEffect(() => {
     let pdDataCalling = async () => {
       await productListApiCall().then((res) => {
+        console.log("call1");
         setPdData(res)
       })
     }
@@ -336,17 +337,24 @@ const ProductList = () => {
    
   // console.log("menuparams11",JSON.parse(localStorage.getItem("menuparams")))
 
+  // console.log("priceDataApi",priceDataApi);
+
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("allproductlist"));
     const prodCount = JSON.parse(localStorage.getItem("allproductcount"));
-    if (data) setProductApiData2(data)
-    if (prodCount) setProdCount(prodCount)
+    if(!data?.length){
+       setProductApiData2(data)
+    }
+    if (!prodCount?.length) setProdCount(prodCount)
   }, [getMenuTransData])
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("getPriceData"));
-    setpriceDataApi(data)
+
+    if(!data?.length){
+      setpriceDataApi(data)
+    }
   }, [getMenuTransData])
 
 
@@ -995,6 +1003,7 @@ const ProductList = () => {
   // }, [filterChecked])
 
   let filterFunction = async () => {
+    
     let param = JSON.parse(localStorage.getItem("menuparams"))
     const activeFilters = Object.values(filterChecked).filter(ele => ele.checked);
 
@@ -1013,27 +1022,38 @@ const ProductList = () => {
 
     // console.log("activeFilters",output)
 
-    await productListApiCall(param, currentPage, output).then(res => {
-      if (res) {
-        getProductData()
-      }
-    })
+    console.log("priceDataApi",priceDataApi);
+
+    if(param && output){
+      await productListApiCall(param, 1, output).then(res => {
+        if (res) {
+          getProductData()
+        }
+      })
+    }
 
     let metalTypeId = findMetalTypeId(mtTypeOption)[0]?.Metalid
     let DiaQCid = [findDiaQcId(diaQColOpt)[0]?.QualityId, findDiaQcId(diaQColOpt)[0]?.ColorId]
     let CsQcid = [findCsQcId(cSQopt)[0]?.QualityId, findCsQcId(cSQopt)[0]?.ColorId]
 
-    let obj = { metalTypeId, DiaQCid, CsQcid }
+    let obj = { mt: metalTypeId, dqc: DiaQCid, csqc: CsQcid  }
 
-    await getDesignPriceList(param, currentPage, obj  ,output).then(res => {
-      getProdPriceData()
-    })
+    if(param && output && metalTypeId && DiaQCid && CsQcid){
+      await getDesignPriceList(param,1,obj ,output).then(res => {
+        if(res) {
+          getProdPriceData()
+          console.log("priceCall1",res);
+        }
+      })
+    }
+
   }
 
   useEffect(() => {
     // let filteredData = ProductApiData2;
-    filterFunction();
-
+      filterFunction()
+      console.log("apiCalling")
+    
     //   {
     //     "checked": true,
     //     "value": 22,
@@ -2063,18 +2083,28 @@ const ProductList = () => {
     let DiaQCid = [findDiaQcId(diaQColOpt)[0]?.QualityId, findDiaQcId(diaQColOpt)[0]?.ColorId]
     let CsQcid = [findCsQcId(cSQopt)[0]?.QualityId, findCsQcId(cSQopt)[0]?.ColorId]
 
-    let obj = { metalTypeId, DiaQCid, CsQcid }
+    let obj = { mt: metalTypeId, dqc: DiaQCid, csqc: CsQcid }
 
-    console.log("obj",obj);
+    console.log("obj11",obj);
 
     let param = JSON.parse(localStorage.getItem("menuparams"))
-    await getDesignPriceList(param, currentPage, obj).then(res => {
-      getProdPriceData()
-    })
+
+    if(param && currentPage && metalTypeId && DiaQCid && CsQcid){
+      await getDesignPriceList(param, currentPage, obj).then(res => {
+        if(res){
+          getProdPriceData()
+          console.log("priceCall1",res)
+        }
+      })
+    }
   }
 
   useEffect(() => {
-    ShortcutComboFunc()
+    // if(JSON.parse(localStorage.getItem("getPriceData")) !== priceDataApi && location?.state.menuFlag !== true){
+   
+      ShortcutComboFunc()
+      console.log("apiCalling")
+    
   }, [mtTypeOption, diaQColOpt, cSQopt])
 
 
@@ -2093,6 +2123,7 @@ const ProductList = () => {
       return res
     }).then(async (res) => {
       if (res) {
+        console.log("priceCall1");
         await getDesignPriceList(param, value, obj)
         return res
       }

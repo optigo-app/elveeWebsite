@@ -46,7 +46,7 @@ export default function Home() {
 
       const header = {
         Authorization: 'Bearer optigo_json_api',
-        domain: (window.location.hostname === 'localhost' || window.location.hostname === 'zen') ? 'astore.orail.co.in' : window.location.hostname,
+        domain: (window.location.hostname === 'localhost' || window.location.hostname === 'zen') ? 'estore.orail.co.in' : window.location.hostname,
         version: 'Live',
         sp: "1"
         // domain: 'zen',

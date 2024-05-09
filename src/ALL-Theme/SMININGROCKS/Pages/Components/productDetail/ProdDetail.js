@@ -510,7 +510,7 @@ const ProdDetail = () => {
     let gt = showPrice + showPrice1 + showPrice2;
     setGrandTotal(gt ?? 0);
 
-  }, [getPriceData, mtTypeOption, diaQColOpt, cSQopt, mtTypeOptionId, diaQColOptId, cSQoptId])
+  }, [getPriceData,fullProdData, mtTypeOption, diaQColOpt, cSQopt, mtTypeOptionId, diaQColOptId, cSQoptId])
 
 
   useEffect(() => {
