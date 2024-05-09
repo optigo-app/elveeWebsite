@@ -11,11 +11,11 @@ import { RiArrowDropDownLine } from "react-icons/ri";
 import { PiStarFourThin } from "react-icons/pi";
 import { IoClose } from "react-icons/io5";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { CartListCounts, HeaderData, HeaderData2, WishListCounts, loginState, menuTransfData, newMenuData, openSignInModal, searchData } from "../../../../../../Recoil/atom";
+import { CartListCounts, HeaderData, HeaderData2, WishListCounts, companyLogo, loginState, menuTransfData, newMenuData, openSignInModal, searchData } from "../../../../../../Recoil/atom";
 import { CommonAPI } from "../../../../Utils/API/CommonAPI";
 import Cart from "./Cart";
 // import titleImg from "../../../assets/title/sonasons.png"
-import titleImg from "../../../assets/Logo1.png";
+// import titleImg from "../../../assets/Logo1.png";
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { ScrollToView, storImagePath } from "../../../../Utils/globalFunctions/GlobalFunction";
 import { productListApiCall } from "../../../../Utils/API/ProductListAPI";
@@ -33,6 +33,7 @@ import { List, ListItem, ListItemText, Button, IconButton } from '@mui/material'
 import { FilterAPI, FilterListAPI } from "../../../../Utils/API/FilterListAPI";
 
 export default function Header() {
+  // const [titleImg, setTitleImg ] = useState() 
   const navigation = useNavigate();
   const location = useLocation();
   const dropdownRef = useRef(null);
@@ -325,6 +326,7 @@ export default function Header() {
 
 
   const [islogin, setislogin] = useRecoilState(loginState);
+  const titleImg =  useRecoilValue(companyLogo);
   const [isB2bFlag, setIsB2BFlag] = useState('');
   const fetchData = () => {
     const value = localStorage.getItem('LoginUser');
@@ -336,12 +338,17 @@ export default function Header() {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    const storeInit = JSON.parse(localStorage.getItem('storeInit')) ?? "";
-    const { IsB2BWebsite } = storeInit;
-    setIsB2BFlag(1);
-    // setIsB2BFlag(IsB2BWebsite);
-  }, [])
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     const storeInit = JSON.parse(localStorage.getItem('storeInit')) ?? "";
+  //     if(storeInit){
+  //       setTitleImg(titleImge)
+  //     }
+  //     const { IsB2BWebsite } = storeInit;
+  //     setIsB2BFlag(1);
+  //     // setIsB2BFlag(IsB2BWebsite);
+  //   }, 300);
+  // }, [])
 
   const getMenuApi = async () => {
 
