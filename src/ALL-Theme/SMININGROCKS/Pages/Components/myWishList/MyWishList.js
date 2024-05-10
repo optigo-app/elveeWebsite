@@ -286,7 +286,7 @@ export default function MyWishList() {
             <div className="smilingListTopButton">
               {/* <button className='smiTopShareBtn'>SHARE WISHLIST</button> */}
               <button
-                className="smiTopClearBtn"
+                className="smiTopAddAllBtn"
                 onClick={handleRemoveAllWishList}
               >
                 CLEAR ALL
