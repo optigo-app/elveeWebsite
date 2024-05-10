@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './HistoryPage.css';
 import Footer from '../../Components/home/Footer/Footer';
 import { storImagePath } from '../../../Utils/globalFunctions/GlobalFunction';
 
 function History() {
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div>
     <div className="hsitroymainbanner">

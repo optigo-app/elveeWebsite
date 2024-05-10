@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import "./AboutUs.css"
 import Footer from '../../Components/home/Footer/Footer';
 import { storImagePath } from '../../../Utils/globalFunctions/GlobalFunction';
@@ -9,6 +9,9 @@ function AboutUs() {
   const checkDetail = (tabIndex) => {
     setActiveTab(tabIndex);
   };
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
 
   const renderTabContent = () => {

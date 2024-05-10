@@ -20,8 +20,12 @@ export default function Footer() {
         const newslater = storeInit?.newslatter;
         console.log('newsletter', newslater);
         if (newslater) {
+            const requestOptions = {
+                method: "GET",
+                redirect: "follow"
+            };
             const newsletterUrl = `${newslater}${email}`;
-            fetch(newsletterUrl)
+            fetch(newsletterUrl, requestOptions)
                 .then((response) => response.text())
                 .then((result) => console.log(result))
                 .catch((error) => console.error(error));
