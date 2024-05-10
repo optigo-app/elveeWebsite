@@ -326,7 +326,7 @@ export default function Header() {
 
 
   const [islogin, setislogin] = useRecoilState(loginState);
-  const titleImg =  useRecoilValue(companyLogo);
+  const titleImg = useRecoilValue(companyLogo);
   const [isB2bFlag, setIsB2BFlag] = useState('');
   const fetchData = () => {
     const value = localStorage.getItem('LoginUser');
@@ -1021,7 +1021,9 @@ export default function Header() {
                       overlap={"rectangular"}
                       color="secondary"
                     >
-                      <Tooltip title="WishList">
+                      <Tooltip title="WishList"
+                        className="toolTip"
+                      >
                         <li style={{ cursor: "pointer", textDecoration: 'none' }} onClick={() => navigation("/myWishList")}>
                           <GoHeart color="#7D7F85" fontSize='25px' />
                         </li>

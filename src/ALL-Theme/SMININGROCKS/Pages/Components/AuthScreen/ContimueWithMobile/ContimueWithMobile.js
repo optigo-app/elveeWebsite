@@ -91,7 +91,6 @@ export default function ContimueWithMobile() {
                         <p style={{
                             textAlign: 'center',
                             paddingBlock: '60px',
-                            marginTop: '15px',
                             fontSize: '25px',
                             fontFamily: 'PT Sans, sans-serif'
                         }}
@@ -129,7 +128,7 @@ export default function ContimueWithMobile() {
                             <button className='submitBtnForgot' onClick={handleSubmit}>
                                 SUBMIT
                             </button>
-                            <Button style={{ marginTop: '10px', color: 'gray' }} onClick={() => navigation('/LoginOption')}>CANCEL</Button>
+                            <Button style={{ marginTop: '10px', color: 'gray',marginBottom:'50px' }} onClick={() => navigation('/LoginOption')}>CANCEL</Button>
                         </div>
                     </div>
                 </div>

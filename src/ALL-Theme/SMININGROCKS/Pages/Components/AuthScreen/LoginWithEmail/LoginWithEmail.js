@@ -217,7 +217,6 @@ export default function LoginWithEmail() {
                         <p style={{
                             textAlign: 'center',
                             paddingBlock: '60px',
-                            marginTop: '15px',
                             fontSize: '25px',
                             fontFamily: 'PT Sans, sans-serif'
                         }}
@@ -273,7 +272,7 @@ export default function LoginWithEmail() {
                             <button type='submit' className='submitBtnForgot' onClick={handleNavigation}>Login With a Code instead on email</button>
                             <p style={{ textAlign: 'center' }}>Go passwordless! we'll send you an email.</p>
 
-                            <p style={{ color: 'blue', cursor: 'pointer' }} onClick={handleForgotPassword}>Forgot Password ?</p>
+                            <p style={{ color: 'blue', cursor: 'pointer' ,marginBottom: '40px' }} onClick={handleForgotPassword}>Forgot Password ?</p>
                         </div>
                     </div>
                 </div>
