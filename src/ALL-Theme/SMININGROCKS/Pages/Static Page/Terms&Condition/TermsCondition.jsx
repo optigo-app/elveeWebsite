@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import "./TermsCondition.css";
 import { storImagePath } from '../../../Utils/globalFunctions/GlobalFunction';
 import logo from '../../assets/Logo1.png'
 import Footer from '../../Components/home/Footer/Footer';
 
 function TermsAndConditions() {
+  
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div>
       <div className="tncbannerpart">

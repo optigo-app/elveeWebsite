@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import './Styles.css';
 import featherImg from '../../../assets/LV Feather.png';
+import { useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
+import { loginState } from '../../../../../../Recoil/atom';
 
 const TwoPartDiv = () => {
+    const navigation = useNavigate();
+    const [showTimer, setShowTimer] = useState(true);
+    const setIsLoginState = useSetRecoilState(loginState)
     const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0 });
     const [startDateData, setStartDateData] = useState();
     const [endDateData, setEndDateData] = useState();
@@ -49,36 +55,65 @@ const TwoPartDiv = () => {
         setCountdown(calculateCountdown(startDate, endDate));
     }
 
+    useEffect(() => {
+        if (countdown.days == 0 && countdown.hours == 0 && countdown.minutes == 0) {
+            setShowTimer(false);
+            // handleLogout();
+        }
+    }, [countdown]);
+
+    const handleLogout = () => {
+        setIsLoginState('false')
+        localStorage.clear();
+        localStorage.setItem('LoginUser', 'false');
+        localStorage.removeItem('storeInit');
+        localStorage.removeItem('loginUserDetail');
+        localStorage.removeItem('remarks');
+        localStorage.removeItem('selectedAddressId');
+        localStorage.removeItem('orderNumber');
+        localStorage.removeItem('registerEmail');
+        localStorage.removeItem('UploadLogicalPath');
+        localStorage.removeItem('remarks');
+        localStorage.removeItem('registerMobile');
+        navigation('/')
+        window.location.reload();
+    };
+
+
     return (
-        <div className="Timercontainer">
-            <div className="part1">
-                <p className='part1p1'>COUNTDOWN IS ON</p>
-                <p className='part1p2'>Shop Before It Ends</p>
-                <p className='part1p1'>THE LIMITED TIME</p>
-            </div>
-            <div
-                className="part2"
-                style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-            >
-                <span className='spanData'>
-                    <p className='ptitle'>{countdown.days}</p>
-                    <p className='pcontent'>Days</p>
-                </span>
-                <span className='spanData'>
-                    <p className='ptitle'>{countdown.hours}</p>
-                    <p className='pcontent'>Hours</p>
-                </span>
-                <span className='spanData lastspanData'>
-                    <p className='ptitle'>{countdown.minutes}</p>
-                    <p className='pcontent'>Minutes</p>
-                </span>
-                <span className='Logo'>
-                    <p className='ptitle'>
-                        <img className='featherImg' src={featherImg} style={{ width: '100%', height: '20vh', objectFit: 'cover' }} alt="feather"/>
-                    </p>
-                </span>
-            </div>
-        </div>
+        <>
+            {showTimer &&
+                <div className="Timercontainer">
+                    <div className="part1">
+                        <p className='part1p1'>COUNTDOWN IS ON</p>
+                        <p className='part1p2'>Shop Before It Ends</p>
+                        <p className='part1p1'>THE LIMITED TIME</p>
+                    </div>
+                    <div
+                        className="part2"
+                        style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                    >
+                        <span className='spanData'>
+                            <p className='ptitle'>{countdown.days}</p>
+                            <p className='pcontent'>Days</p>
+                        </span>
+                        <span className='spanData'>
+                            <p className='ptitle'>{countdown.hours}</p>
+                            <p className='pcontent'>Hours</p>
+                        </span>
+                        <span className='spanData lastspanData'>
+                            <p className='ptitle'>{countdown.minutes}</p>
+                            <p className='pcontent'>Minutes</p>
+                        </span>
+                        <span className='Logo'>
+                            <p className='ptitle'>
+                                <img className='featherImg' src={featherImg} style={{ width: '100%', height: '20vh', objectFit: 'cover' }} alt="feather" />
+                            </p>
+                        </span>
+                    </div>
+                </div>
+            }
+        </>
     );
 };
 

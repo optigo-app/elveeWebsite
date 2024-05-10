@@ -521,10 +521,11 @@ export default function Header() {
     setHoveredIndex(index);
     setExpandedMenu(index);
     setSelectedData(menuItems[index] || []);
-
-  };
+    document.body.style.overflow = 'hidden';
+};
   const handleMouseLeave = (index) => {
     setExpandedMenu(null);
+    document.body.style.overflow = 'auto';
   };
 
   const handleMenuClick = async (param1Item, param2Item) => {
@@ -945,7 +946,7 @@ export default function Header() {
                 <li
                   className="nav-li-smining"
                   style={{ cursor: "pointer" }}
-                  onClick={() => navigation("/contact")}
+                  // onClick={() => navigation("/contact")}
                 >
                   Contact
                 </li>
@@ -986,7 +987,10 @@ export default function Header() {
                     key={index}
                     label={item.menuname}
                     onMouseEnter={() => handleMouseEnter(index, item)}
-                    onMouseLeave={() => setLeval0Data(item)}
+                    onMouseLeave={() => {
+                      setLeval0Data(item);
+                      handleMouseLeave();
+                  }}                    
                     onClick={() => handleMenuClick(item)}
                   >
                     {item.menuname}
@@ -1040,6 +1044,7 @@ export default function Header() {
                       </li>
                     </Tooltip>
                   </Badge></>
+                  <Tooltip title="Account">
                 <li
                   className="nav-li-smining"
                   style={{ cursor: "pointer", textDecoration: 'none' }}
@@ -1047,6 +1052,7 @@ export default function Header() {
                 >
                   <IoPersonOutline color="#7D7F85" fontSize='25px' />
                 </li>
+                  </Tooltip>
                 <li
                   className="nav-li-smining"
                   style={{ cursor: "pointer" }}
