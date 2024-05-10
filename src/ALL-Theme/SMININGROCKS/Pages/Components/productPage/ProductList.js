@@ -2779,8 +2779,8 @@ const ProductList = () => {
                             </div>
                           </div>
                           <div className={show4ImagesView ? 'listing4-details' : "listing-details"} onClick={() => handelProductSubmit(products)}>
-                            <p className={show4ImagesView ? "productDetails property4-type" : "productDetails property-type"} style={{textAlign: 'center' , margin: '5px'}}>
-                              {products?.TitleLine} 
+                            <p className={show4ImagesView ? "productDetails property4-type" : "productDetails property-type"} style={{ textAlign: 'center', margin: '5px' }}>
+                              {products?.TitleLine}
                             </p>
                             <div>
                               {/* {isPriceShow === 1 &&
@@ -2804,10 +2804,20 @@ const ProductList = () => {
                               {ismetalWShow === 1 &&
                                 <div className={show4ImagesView ? "feature4" : 'feature'}>
                                   <p>
-                                    <span className="feature-count">NWT : </span> {parseFloat(products?.updNWT).toFixed(2)}
+                                    <span className="feature-count">NWT :
+                                    </span> {parseFloat(products?.updNWT).toFixed(2)}
                                   </p>
                                 </div>
                               }
+
+                              {(isDaaimongWShow === 1 && (products?.diamondweight !== 0 || products?.diamondpcs !== 0)) &&
+                                <div className={show4ImagesView ? "feature4" : 'feature'}>
+                                  <p>
+                                    <span className="feature-count">DWT : </span>
+                                    {(isDaaimongWShow === 1 && products?.diamondweight !== 0) && products?.updDWT + '/'}  {(isDaaimonPShow === 1 && products?.diamondpcs !== 0) && products?.updDPCS}</p>
+                                </div>
+                              }
+
                               {isGrossWShow === 1 &&
                                 <div className={show4ImagesView ? "feature4" : 'feature'}>
                                   <p style={{ margin: '0px 0px 0px 8px' }}>
@@ -2816,10 +2826,15 @@ const ProductList = () => {
                                 </div>
                               }
                             </div>
+                            {/* <div className="mobileDeatilDiv2" style={{ display: 'flex', justifyContent: 'center', height: '20px' }}> */}
+
+
                             {/* <div className="mobileDeatilDiv2" style={{ display: 'flex', justifyContent: 'center', height: '20px' }}>
                               {((isDaaimongWShow || isDaaimongWShow) === 1 && (products?.diamondweight !== 0 || products?.diamondpcs !== 0)) && <div>
                                 <p style={{ margin: '0px', fontSize: '13px' }}>DWT : <span style={{ fontWeight: 600, marginRight: '10px' }}>{(isDaaimongWShow === 1 && products?.diamondweight !== 0) && products?.updDWT + '/'}  {(isDaaimonPShow === 1 && products?.diamondpcs !== 0) && products?.updDPCS}</span></p>
-                              </div>}
+                              </div>
+                            
+                            }
 
                               {((isStoneWShow || isStonePShow) === 1 && (products?.totalcolorstoneweight !== 0 || products?.totalcolorstonepcs !== 0)) && <div>
                                 <p style={{ margin: '0px', fontSize: '13px' }}>CWT : <span style={{ fontWeight: 600, marginRight: '10px' }}>{(isStoneWShow === 1 && products?.totalcolorstoneweight !== 0) && products?.updCWT + '/'}  {(isStonePShow === 1 && products?.totalcolorstonepcs !== 0) && products?.updCPCS}</span></p>

@@ -83,7 +83,7 @@ export default function ContinueWithEmail() {
 
     return (
         <div className='paddingTopMobileSet' style={{ backgroundColor: 'rgba(66, 66, 66, 0.05)' }}>
-            <ToastContainer />
+            <ToastContainer style={{zIndex: '11111111111'}}/>
 
             {isLoading && (
                 <div className="loader-overlay">
