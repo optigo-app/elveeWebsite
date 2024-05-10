@@ -326,7 +326,7 @@ export default function Header() {
 
 
   const [islogin, setislogin] = useRecoilState(loginState);
-  const titleImg =  useRecoilValue(companyLogo);
+  const titleImg = useRecoilValue(companyLogo);
   const [isB2bFlag, setIsB2BFlag] = useState('');
   const fetchData = () => {
     const value = localStorage.getItem('LoginUser');
@@ -441,8 +441,10 @@ export default function Header() {
   function searchDataFucn(e) {
     if (e.key === 'Enter') {
       let ProductApiData2 = JSON.parse(localStorage.getItem("allproductlist"));
+      console.log('ProductApiData2', ProductApiData2);
       if (ProductApiData2) {
         let searchText = e.target.value.toLowerCase();
+        console.log('searchhhhhhh', searchText);
         let data = ProductApiData2.filter((pd) => {
           for (const key in pd) {
             if (pd.hasOwnProperty(key) && pd[key]?.toString().toLowerCase().includes(searchText)) {
@@ -451,6 +453,7 @@ export default function Header() {
           }
           return false;
         });
+        console.log('searchhhhhhhdddddddddd', data);
         if (data.length > 0) {
           setGSearch(data);
           navigation('/productpage');
@@ -561,6 +564,7 @@ export default function Header() {
           console.log("res", res);
           setMenutransData(res)
           localStorage.setItem("allproductlist", JSON.stringify(res))
+          localStorage.setItem("finalAllData", JSON.stringify(res))
         }
       })
       await getDesignPriceList(finalData)
@@ -893,65 +897,66 @@ export default function Header() {
         </>
       )}
 
-      <div className="sminingHeaderWeb ">
-        {islogin == 'false' ?
-          <div className="Smining-Top-Header ">
-            <div
-              style={{
-                width: "90%",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <ul className="nav-ul-shop" style={{ listStyle: "none", padding: 0 }}>
-                <li
-                  className="nav-li-smining"
-                  style={{ cursor: "pointer" }}
-                  onClick={() => ScrollToView('brandsComponentID')}
-                >
-                  Our Brands
-                </li>
-                <li
-                  className="nav-li-smining"
-                  style={{ cursor: "pointer" }}
-                  onClick={() => ScrollToView('elveeGiftMainId')}
-                >
-                  Product
-                </li>
-                <li
-                  className="nav-li-smining"
-                  style={{ cursor: "pointer" }}
-                  onClick={() => ScrollToView('craftmenshipId')}
-                >
-                  Our Craftsmanship
-                </li>
-                <a href="/" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '-25px' }}>
-                  <img src={titleImg} alt="Title" className="logoImage1" />
-                </a>
-                <li
-                  className="nav-li-smining"
-                  style={{ cursor: "pointer" }}
-                  onClick={() => ScrollToView('mainGalleryConatinerID')}
-                >
-                  Gallery
-                </li>
-                <li
-                  className="nav-li-smining"
-                  style={{ cursor: "pointer" }}
-                  onClick={() => ScrollToView('mainSocialMediaConatinerID')}
-                >
-                  Social Media
-                </li>
-                <li
-                  className="nav-li-smining"
-                  style={{ cursor: "pointer" }}
-                  // onClick={() => navigation("/contact")}
-                >
-                  Contact
-                </li>
-              </ul>
-            </div>
+      {!serachsShowOverlay &&
+        <div className="sminingHeaderWeb ">
+          {islogin == 'false' ?
+            <div className="Smining-Top-Header ">
+              <div
+                style={{
+                  width: "90%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <ul className="nav-ul-shop" style={{ listStyle: "none", padding: 0 }}>
+                  <li
+                    className="nav-li-smining"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => ScrollToView('brandsComponentID')}
+                  >
+                    Our Brands
+                  </li>
+                  <li
+                    className="nav-li-smining"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => ScrollToView('elveeGiftMainId')}
+                  >
+                    Product
+                  </li>
+                  <li
+                    className="nav-li-smining"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => ScrollToView('craftmenshipId')}
+                  >
+                    Our Craftsmanship
+                  </li>
+                  <a href="/" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '-25px' }}>
+                    <img src={titleImg} alt="Title" className="logoImage1" />
+                  </a>
+                  <li
+                    className="nav-li-smining"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => ScrollToView('mainGalleryConatinerID')}
+                  >
+                    Gallery
+                  </li>
+                  <li
+                    className="nav-li-smining"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => ScrollToView('mainSocialMediaConatinerID')}
+                  >
+                    Social Media
+                  </li>
+                  <li
+                    className="nav-li-smining"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => navigation("/contact")}
+                  >
+                    Contact
+                  </li>
+                </ul>
+              </div>
 
             <div
               style={{
@@ -987,10 +992,7 @@ export default function Header() {
                     key={index}
                     label={item.menuname}
                     onMouseEnter={() => handleMouseEnter(index, item)}
-                    onMouseLeave={() => {
-                      setLeval0Data(item);
-                      handleMouseLeave();
-                  }}                    
+                    onMouseLeave={() => setLeval0Data(item)}
                     onClick={() => handleMenuClick(item)}
                   >
                     {item.menuname}
@@ -1044,7 +1046,6 @@ export default function Header() {
                       </li>
                     </Tooltip>
                   </Badge></>
-                  <Tooltip title="Account">
                 <li
                   className="nav-li-smining"
                   style={{ cursor: "pointer", textDecoration: 'none' }}
@@ -1052,7 +1053,6 @@ export default function Header() {
                 >
                   <IoPersonOutline color="#7D7F85" fontSize='25px' />
                 </li>
-                  </Tooltip>
                 <li
                   className="nav-li-smining"
                   style={{ cursor: "pointer" }}
@@ -1094,16 +1094,16 @@ export default function Header() {
                 </div>
               </div>
 
-              <div style={{ display: 'flex', gap: '15px' }}>
-                <img src={`${storImagePath()}/images/Menu/Menu1.jpg`} alt="#" className="menuImages" />
-                <img src={`${storImagePath()}/images/Menu/Menu2.jpg`} alt="#" className="menuImages" />
+                <div style={{ display: 'flex', gap: '15px' }}>
+                  <img src={`${storImagePath()}/images/Menu/Menu1.jpg`} alt="#" className="menuImages" />
+                  <img src={`${storImagePath()}/images/Menu/Menu2.jpg`} alt="#" className="menuImages" />
+                </div>
+
               </div>
-
             </div>
-          </div>
-        </>
-      </div >
-
+          </>
+        </div >
+      }
       <div
         style={{
           top: 0,

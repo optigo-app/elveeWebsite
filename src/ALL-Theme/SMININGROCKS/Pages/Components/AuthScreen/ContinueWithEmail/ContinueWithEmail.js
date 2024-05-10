@@ -93,22 +93,20 @@ export default function ContinueWithEmail() {
             <div className='smling-forgot-main-Color'>
                 <div className='smling-forgot-main'>
                     <p style={{
-                            textAlign: 'center',
-                            paddingBlock: '60px',
-                            marginTop: '15px',
-                            fontSize: '25px',
-                            // color: '#7d7f85',
-                            fontFamily: 'PT Sans, sans-serif'
-                        }}
+                        textAlign: 'center',
+                        paddingBlock: '60px',
+                        fontSize: '25px',
+                        fontFamily: 'PT Sans, sans-serif'
+                    }}
                         className='AuthScreenMainTitle'
                     >Continue With Email</p>
                     <p style={{
-                            textAlign: 'center',
-                            marginTop: '-70px',
-                            fontSize: '15px',
-                            // color: '#7d7f85',
-                            fontFamily: 'PT Sans, sans-serif'
-                        }}
+                        textAlign: 'center',
+                        marginTop: '-70px',
+                        fontSize: '15px',
+                        // color: '#7d7f85',
+                        fontFamily: 'PT Sans, sans-serif'
+                    }}
 
                         className='AuthScreenSubTitle'
                     >We'll check if you have an account, and help create one if you don't.</p>
@@ -143,7 +141,7 @@ export default function ContinueWithEmail() {
                         </button> */}
 
                         <button type='submit' className='submitBtnForgot' onClick={handleSubmit}>SUBMIT</button>
-                        <Button style={{ marginTop: '10px', color: 'gray' }} onClick={() => navigation('/LoginOption')}>CANCEL</Button>
+                        <Button style={{ marginTop: '10px', color: 'gray', marginBottom: '50px' }} onClick={() => navigation('/LoginOption')}>CANCEL</Button>
                     </div>
                 </div>
             </div>

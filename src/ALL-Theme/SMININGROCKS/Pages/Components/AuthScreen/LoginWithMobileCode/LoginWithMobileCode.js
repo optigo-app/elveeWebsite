@@ -129,7 +129,6 @@ export default function LoginWithMobileCode() {
                         <p style={{
                             textAlign: 'center',
                             paddingBlock: '60px',
-                            marginTop: '15px',
                             fontSize: '25px',
                             fontFamily: 'PT Sans, sans-serif'
                         }}
@@ -165,7 +164,7 @@ export default function LoginWithMobileCode() {
 
                             <button className='submitBtnForgot' onClick={handleSubmit}>Login</button>
                             <p style={{ marginTop: '10px' }}>Didn't get the code ? {resendTimer === 0 ? <span style={{ fontWeight: 500, color: 'blue', textDecoration: 'underline', cursor: 'pointer' }} onClick={handleResendCode}>Resend Code</span> : <span>Resend in {Math.floor(resendTimer / 60).toString().padStart(2, '0')}:{(resendTimer % 60).toString().padStart(2, '0')}</span>}</p>
-                            <Button style={{ marginTop: '10px', color: 'gray' }} onClick={() => navigation('/LoginOption')}>CANCEL</Button>
+                            <Button style={{ marginTop: '10px', color: 'gray' ,marginBottom: '40px' }} onClick={() => navigation('/LoginOption')}>CANCEL</Button>
                         </div>
 
                     </div>
