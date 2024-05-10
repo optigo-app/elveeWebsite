@@ -313,13 +313,34 @@ export function findValueFromId(param1,param2) {
     
 }
 
-export function ScrollToView(param){
-    const element = document?.getElementById(param);
-    if (!element) {
+// export function ScrollToView(param){
+//     const element = document?.getElementById(param);
+//     if (!element) {
+//         window.location.href = '/';
+//         return;
+//     }
+//     element?.scrollIntoView({behavior:'smooth', block:'center', inline:'nearest'});
+// }
+
+export function ScrollToView(param) {
+    if (window.location.pathname !== '/') {
+        localStorage.setItem('scrollParam', param);
         window.location.href = '/';
         return;
     }
-    element?.scrollIntoView({behavior:'smooth', block:'center', inline:'nearest'});
+
+    const element = document?.getElementById(param);
+    if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
+    }
 }
 
-  
+export function handleHomePageLoad() {
+    const scrollParam = localStorage.getItem('scrollParam');
+    if (scrollParam) {
+        ScrollToView(scrollParam);
+        // localStorage.removeItem('scrollParam');
+    }
+}
+
+

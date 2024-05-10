@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import "./CustomerService.css"; // Assuming you have a CSS file for styling
 import { storImagePath } from '../../../Utils/globalFunctions/GlobalFunction';
 import Footer from '../../Components/home/Footer/Footer';
 
 function CustomerService() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div>
       <div>

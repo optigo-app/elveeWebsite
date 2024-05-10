@@ -3,11 +3,10 @@
     position: sticky;
     width: 100%;
     top: 0;
-    z-index: 1111111;
+    z-index: 11;
     font-family: "PT Sans", sans-serif !important;
     background: white;
 }
-
 
 .smilingCartRemoveBtn {
     height: 40px;
@@ -234,6 +233,9 @@
 .nav-li-smining {
     font-weight: 500;
     text-transform: capitalize;
+}
+.nav-li-smining:hover{ 
+    font-weight: 600 !important;
 }
 
 .nav-li {

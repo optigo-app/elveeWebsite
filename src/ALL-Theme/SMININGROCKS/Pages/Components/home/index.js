@@ -19,7 +19,7 @@ import { FaMobileAlt } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { CommonAPI } from '../../../Utils/API/CommonAPI';
-import { storImagePath } from '../../../Utils/globalFunctions/GlobalFunction';
+import { handleHomePageLoad, storImagePath } from '../../../Utils/globalFunctions/GlobalFunction';
 import PromoComponent1 from './PromoComponent/PromoComponent/PromoComponent1';
 import PromoComponent2 from './PromoComponent/PromoComponent/PromoComponent2';
 import BrandsComponent from './PromoComponent/BrandsComponent/BrandsComponent';
@@ -312,6 +312,11 @@ export default function Home() {
   // }, [islogin == 'true', islogin == 'false'])
 
 console.log();
+
+useEffect(() => {
+  handleHomePageLoad(); // Call handleHomePageLoad when the component is mounted
+}, []);
+
 
   return (
     <div className='paddingTopMobileSet' style={{ backgroundColor: 'white', paddingTop: '0px' }}>

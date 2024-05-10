@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import "./customize.css";
 import { storImagePath } from '../../../Utils/globalFunctions/GlobalFunction';
 import Footer from '../../Components/home/Footer/Footer';
 
 function Customize() {
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div>
       <div>
