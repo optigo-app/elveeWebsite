@@ -73,6 +73,11 @@
 
 @media screen and (max-width: 700px) {
 
+    
+    .smling-register-main {
+        width: 90%;
+    }
+    
     .AuthScreenRegisterMainTitle {
         padding-block: 10px !important;
         padding-bottom: 0px !important;
@@ -86,7 +91,7 @@
     }
 
     .createBtnRegister {
-        width: 80%;
+        width: 90%;
     }
 
     .smling-register-main {

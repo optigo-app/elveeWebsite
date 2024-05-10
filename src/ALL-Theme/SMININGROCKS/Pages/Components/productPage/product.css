@@ -504,6 +504,7 @@
     opacity: 0.7;
     font-family: "PT Sans", sans-serif;
     color: #1f1919;
+    height: 40px;
 }
 
 .property4-type {
@@ -514,6 +515,7 @@
     letter-spacing: 0.025em;
     opacity: 0.7;
     color: #1f1919;
+    height: 35px;
 }
 
 .listing-features {

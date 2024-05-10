@@ -2377,7 +2377,7 @@ const ProductList = () => {
               }
               {isCColrStoneCustFlag === 1 &&
                 <div className="divider"></div>}
-              <div className="part" style={{ flex: '60%', justifyContent: 'end' }}>
+              <div className="part" style={{ flex: '20%', justifyContent: 'end' }}>
                 <div className="part-content">
                   <IoGrid style={{ height: '18px', width: '18px', opacity: 0.7, color: '#7b7b7b' }} onClick={() => handle2ImageShow()} />
                   <AppsIcon style={{ height: '22px', width: '22px', opacity: 0.8, color: '#1f1919' }} onClick={() => handle3ImageShow()} />
@@ -2779,8 +2779,8 @@ const ProductList = () => {
                             </div>
                           </div>
                           <div className={show4ImagesView ? 'listing4-details' : "listing-details"} onClick={() => handelProductSubmit(products)}>
-                            <p className={show4ImagesView ? "productDetails property4-type" : "productDetails property-type"}>
-                              {products?.TitleLine}
+                            <p className={show4ImagesView ? "productDetails property4-type" : "productDetails property-type"} style={{textAlign: 'center' , margin: '5px'}}>
+                              {products?.TitleLine} 
                             </p>
                             <div>
                               {/* {isPriceShow === 1 &&

@@ -225,19 +225,19 @@ export default function Register() {
   };
 
   return (
-    <div className='paddingTopMobileSet' style={{ paddingTop: '110px', backgroundColor: 'rgba(66, 66, 66, 0.05)' }}>
+    <div className='paddingTopMobileSet' style={{ backgroundColor: 'rgba(66, 66, 66, 0.05)' }}>
       {isLoading && (
         <div className="loader-overlay">
           <CircularProgress className='loadingBarManage' />
         </div>
       )}
-        <div className='smling-forgot-main-Color' style={{ padding: '5% 0px 5% 0px' }}>
+      <div className='smling-forgot-main-Color' style={{ padding: '5% 0px 5% 0px' }}>
         <div className='smling-register-main'>
           <p style={{
             textAlign: 'center',
-            marginTop: '15px',
             fontSize: '25px',
-            fontFamily: 'PT Sans, sans-serif'
+            fontFamily: 'PT Sans, sans-serif',
+            marginTop: '20px'
           }}
             className='AuthScreenRegisterMainTitle'
           >Register</p>
@@ -371,7 +371,7 @@ export default function Register() {
               <input type='checkbox' />
               <p style={{ margin: '5px' }}>Subscribe to our newsletter</p>
             </div> */}
-            <Button style={{ marginTop: '10px', color: 'gray' }} onClick={() => navigation('/LoginOption')}>BACK</Button>
+            <Button style={{ marginTop: '10px', color: 'gray', marginBottom: '20px' }} onClick={() => navigation('/LoginOption')}>BACK</Button>
           </div>
         </div>
       </div>
