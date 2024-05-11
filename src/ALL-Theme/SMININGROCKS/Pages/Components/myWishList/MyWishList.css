@@ -34,17 +34,6 @@
     border: 1px solid #7d7f85;
 }
 
-.smiTopClearBtn {
-    height: 60px;
-    width: 150px;
-    background-color: white;
-    border: 1px solid black;
-    font-size: 13px;
-    cursor: pointer;
-    font-weight: 500;
-    font-family: 'PT Sans', sans-serif;
-    margin: 10px;
-}
 .smiTopClearBtn:hover{
     background-color: rgba(66, 66, 66, 0.05);
 }
@@ -147,12 +136,6 @@
     .smiTopShareBtn {
         width: 100%;
         margin: 0px;
-    }
-
-    .smiTopClearBtn {
-        width: 100%;
-        margin: 0px;
-        margin-top: 15px;
     }
 
     .smiTopAddAllBtn {

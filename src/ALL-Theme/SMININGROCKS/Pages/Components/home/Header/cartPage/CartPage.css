@@ -48,6 +48,32 @@
     border-bottom: 1px solid #e1e1e1;
 }
 
+
+.cartPageTopBtn {
+    height: 60px;
+    width: 150px;
+    background-color: white;
+    border: 1px solid black;
+    font-size: 13px;
+    cursor: pointer;
+    font-weight: 500;
+    font-family: 'PT Sans', sans-serif;
+    margin: 10px;
+}
+
+.activec {
+    height: 60px;
+    width: 150px;
+    background-color: #7d7f85;
+    color: white;
+    border: 1px solid black;
+    font-size: 13px;
+    cursor: pointer;
+    font-weight: 500;
+    font-family: 'PT Sans', sans-serif;
+    margin: 10px;
+}
+
 .smilingCartPageDataMain {
     display: flex;
     flex-wrap: wrap;
@@ -494,6 +520,12 @@
         width: 100%;
         margin-top: 10px;
         height: 50px !important;
+    }
+
+    .cartPageTopBtn {
+        width: 100%;
+        margin: 0px;
+        margin-top: 15px;
     }
 
     .YourCartPageMainRemkarBox {

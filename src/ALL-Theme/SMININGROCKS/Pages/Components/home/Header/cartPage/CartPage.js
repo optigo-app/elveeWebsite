@@ -699,7 +699,10 @@ export default function CartPage() {
 
   const handleInputChange = (event) => {
     let { value } = event.target;
-    setLastEnteredQuantity(value);
+    value = value.replace(/[^0-9.]/g, '');
+    const intValue = parseInt(value);
+    const positiveIntValue = intValue >= 0 ? intValue : 0;
+    setLastEnteredQuantity(positiveIntValue.toString());
   };
 
 
@@ -1189,25 +1192,25 @@ export default function CartPage() {
                   style={{ marginTop: "0px" }}
                 >
                   <button
-                    className={`smiTopClearBtn ${value === 0 ? "active" : ""}`}
+                    className={`cartPageTopBtn ${value === 0 ? "activec" : ""}`}
                     onClick={() => handleChange(0)}
                   >
                     List View
                   </button>
                   <button
-                    className={`smiTopClearBtn ${value === 1 ? "active" : ""}`}
+                    className={`cartPageTopBtn ${value === 1 ? "activec" : ""}`}
                     onClick={() => handleChange(1)}
                   >
                     Image View
                   </button>
                   <button
-                    className={`smiTopClearBtn ${value === 2 ? "active" : ""}`}
+                    className={`cartPageTopBtn ${value === 2 ? "activec" : ""}`}
                     onClick={handleRemoveAllWishList}
                   >
-                    CLEAR ALL
+                    Clear All
                   </button>
                   <button
-                    className={`smiTopClearBtn ${value === 3 ? "active" : ""}`}
+                    className={`cartPageTopBtn ${value === 3 ? "activec" : ""}`}
                     onClick={() => navigation("/productpage")}
                   >
                     Show ProductList
@@ -1231,7 +1234,7 @@ export default function CartPage() {
                   }}
                 >
                   <button
-                    className="smiTopClearBtn"
+                    className="cartPageTopBtn"
                     onClick={(event) => {
                       navigation("/Delivery");
                     }}
