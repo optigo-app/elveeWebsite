@@ -121,10 +121,6 @@
     padding-inline: 2%;
 }
 
-
-
-
-
 .Smining-Top-Header-fixed {
     display: flex;
     background-color: transparent !important;
@@ -139,7 +135,7 @@
     list-style: none;
     display: flex;
     /* align-items: center; */
-    gap: 28px;
+    gap: 30px;
     text-transform: uppercase;
     color: black;
     font-size: 13px;
@@ -827,8 +823,8 @@
     }
 
     .MainlogogMobileImage {
-        width: 76% !important;
-        margin-top: -30px;
+        width: 70% !important;
+        margin-top: -25px;
     }
 }
 

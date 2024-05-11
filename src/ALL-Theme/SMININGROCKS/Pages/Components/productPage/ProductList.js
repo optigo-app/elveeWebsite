@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import Footer from "../home/Footer/Footer";
 import SmilingRock from "../home/smiling_Rock/SmilingRock";
 import "./product.css";
+import featherImg from '../../assets/LV Feather.png';
 import { json, useFetcher, useLocation, useNavigate } from "react-router-dom";
 import prodListData from "../../jsonFile/Productlist_4_95oztttesi0o50vr.json";
 // import prodListData from "../../jsonFile/testingFile/Productlist_4_95oztttesi0o50vr_Original.json";
@@ -137,6 +138,8 @@ const ProductList = () => {
 
 
   let location = useLocation();
+
+  console.log('menuaname--', location);
 
   // console.log("mttypeoption", mtTypeOption, diaQColOpt, cSQopt);
 
@@ -326,7 +329,6 @@ const ProductList = () => {
     if (data) setProductApiData2(data)
     if (prodCount) setProdCount(prodCount)
   }
-
   const getProdPriceData = () => {
     const data = JSON.parse(localStorage.getItem("getPriceData"));
     setpriceDataApi(data)
@@ -2250,7 +2252,19 @@ const ProductList = () => {
             <div class="bg-image">
               <div class="overlay"></div>
               <div class="text-container">
-                <h1>All</h1>
+                <div className='textContainerData'>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <p style={{ fontSize: '20px', fontWeight: '500', letterSpacing:'1px', textTransform:'uppercase' }}>
+                      {location?.state?.filtervalue?.FilterVal2 ? location?.state?.filtervalue?.FilterVal2 : location?.state?.filtervalue?.FilterVal1 ? location?.state?.filtervalue?.FilterVal1 : location?.state?.filtervalue?.menuname}
+                      {' '}
+                      {prodCount} <span style={{textTransform:'capitalize'}}>Designs</span>
+                      <br />
+                      <span style={{ fontSize: '10px' }}>{`${location?.state?.filtervalue?.menuname || ''}${location?.state?.filtervalue?.FilterVal1 ? ` > ${location?.state?.filtervalue?.FilterVal1}` : ''}${location?.state?.filtervalue?.FilterVal2 ? ` > ${location?.state?.filtervalue?.FilterVal2}` : ''}`}</span>
+                    </p>
+                  </div>
+                  <img src={featherImg} className='featherImage' />
+                </div>
+
               </div>
             </div>
             <div className="filterDivcontainer">
@@ -2779,8 +2793,8 @@ const ProductList = () => {
                             </div>
                           </div>
                           <div className={show4ImagesView ? 'listing4-details' : "listing-details"} onClick={() => handelProductSubmit(products)}>
-                            <p className={show4ImagesView ? "productDetails property4-type" : "productDetails property-type"} style={{textAlign: 'center' , margin: '5px'}}>
-                              {products?.TitleLine} 
+                            <p className={show4ImagesView ? "productDetails property4-type" : "productDetails property-type"} style={{ textAlign: 'center', margin: '5px' }}>
+                              {products?.TitleLine}
                             </p>
                             <div>
                               {/* {isPriceShow === 1 &&

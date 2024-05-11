@@ -1,12 +1,17 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './Footer.css'
 import { useNavigate } from 'react-router-dom';
 import { IoLocationOutline } from "react-icons/io5";
 import { IoMdCall } from "react-icons/io";
 import { IoMdMail } from "react-icons/io";
 import axios from 'axios';
+import { FaFacebookF } from "react-icons/fa";
+import { FaTwitter } from "react-icons/fa";
+import { AiFillInstagram } from "react-icons/ai";
+import { FaYoutube } from "react-icons/fa";
 
 export default function Footer() {
+    const [storeInitData, setStoreInitData] = useState();
     const [email, setEmail] = useState();
     const [selectedFooteVal, setSelectedVal] = useState(0);
     const navigation = useNavigate();
@@ -36,6 +41,11 @@ export default function Footer() {
         navigation(navigateUrl)
     }
 
+    useEffect(() => {
+        const storeInit = JSON.parse(localStorage.getItem("storeInit")) ?? ""
+        setStoreInitData(storeInit);
+    }, [])
+    
     return (
         <div>
             <div className='ElveFooterMain'>
@@ -45,6 +55,29 @@ export default function Footer() {
                         <input type='text' placeholder='Enter Your Email' className='eleBox1InputBox' value={email} onChange={handleEmailChange} />
                         <button className='elevBox1Btn' onClick={handleSubmitNewlater}>Subscribe</button>
                     </div>
+                    <div className='footerIconMain'>
+                        <a href="https://twitter.com">
+                            <div className='footerSocialIcon'>
+                                <FaTwitter style={{ fontSize: '20px', color: '#7d7f85' }} />
+                            </div>
+                        </a>
+                        <a href="https://facebook.com">
+                            <div className='footerSocialIcon'>
+                                <FaFacebookF style={{ fontSize: '20px', color: '#7d7f85' }} />
+                            </div>
+                        </a>
+                        <a href="https://youtube.com">
+                            <div className='footerSocialIcon'>
+                                <FaYoutube style={{ fontSize: '20px', color: '#7d7f85' }} />
+                            </div>
+                        </a>
+                        <a href="https://instagram.com">
+                            <div className='footerSocialIcon'>
+                                <AiFillInstagram style={{ fontSize: '20px', color: '#7d7f85' }} />
+                            </div>
+                        </a>
+                    </div>
+
                 </div>
                 <div className='ElveFooter2'>
                     <p className='ElevFooterBoxTitle'>Our Company</p>
