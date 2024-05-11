@@ -84,7 +84,7 @@ export default function Home() {
         console.error('Error:', error);
       }
     }
-
+    console.log("favicon", favicon);
 
     const getMetalTypeData = async () => {
       try {
@@ -298,7 +298,7 @@ export default function Home() {
 
   console.log('islogin', islogin);
   //  let domainName =  `((window.location.hostname === 'localhost' || window.location.hostname === 'zen') ? 'astore.orail.co.in' : window.location.hostname)/ufcc/image/`
-  
+
   // const [title, setTitle] = useState();
   // const [favicon, setFavIcon] = useState();
   // useEffect(() => {
@@ -311,11 +311,11 @@ export default function Home() {
   //   }, 100);
   // }, [islogin == 'true', islogin == 'false'])
 
-console.log();
+  console.log();
 
-useEffect(() => {
-  handleHomePageLoad(); // Call handleHomePageLoad when the component is mounted
-}, []);
+  useEffect(() => {
+    handleHomePageLoad();
+  }, []);
 
 
   return (

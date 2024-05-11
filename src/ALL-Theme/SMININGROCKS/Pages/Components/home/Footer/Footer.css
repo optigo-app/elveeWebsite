@@ -70,6 +70,27 @@
     cursor: pointer;
 }
 
+.footerIconMain {
+    display: flex;
+    margin-top: 30px;
+}
+
+.footerSocialIcon {
+    height: 45px;
+    width: 45px;
+    border: 1px solid #e1e1e1;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-inline: 5px;
+}
+
+.footerSocialIcon:hover {
+    border-color: #7d7f85;
+}
+
 @media screen and (max-width:1500px) {
 
     .ElevFooterBoxTitle {
