@@ -49,6 +49,7 @@ import Customize from './Pages/Static Page/Customize/Customize'
 import History from './Pages/Static Page/History/HistoryPage'
 import TermsAndConditions from './Pages/Static Page/Terms&Condition/TermsCondition'
 import PrivateRoutes from './PrivateRoutes'
+import ProductListSkeleton from './Pages/Components/productPage/ProductListSkelton'
 
 export default function SMININGROCKS_App() {
     const isLoginStatus = useRecoilValue(loginState);
@@ -136,6 +137,7 @@ export default function SMININGROCKS_App() {
                             <Route path="/accountledgercredit" element={<CreditVoucher />} />
                         </Route>
                         <Route path="/CurrentVersion" element={<CurrentVersion />} />
+                        <Route path="/skelton" element={<ProductListSkeleton />} />
                     </Routes>
                 </div>
             </div>

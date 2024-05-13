@@ -25,6 +25,7 @@ export const GetCount = async() => {
     
     
          await CommonAPI(body).then((res)=>{
+          if(res?.Data){
             if(res?.Data?.rd[0]?.stat_msg === "success"){
               const CountCart = res?.Data?.rd[0]?.cartcount ?? 0
               const WishCount = res?.Data?.rd[0]?.wishcount ?? 0
@@ -35,6 +36,7 @@ export const GetCount = async() => {
               // setWishCount(WishCount)
       
             }
+          }
         });
 
         
