@@ -9,8 +9,10 @@ export const getDesignPriceList = async (param,page=1,obj,filterObj={}) => {
   const UserEmail = localStorage.getItem("registerEmail")
   
   let mtid = `${obj?.mt}` ?? loginUserDetail?.MetalId
-  let diaqcId = obj?.dqc?.length ? `${obj?.dqc[0]},${obj?.dqc[1]}` :loginUserDetail?.cmboDiaQCid
-  let csqcId = obj?.csqc?.length ? `${obj?.csqc[0]},${obj?.csqc[1]}` :loginUserDetail?.cmboCSQCid
+  let diaqcId = obj?.dqc?.length > 0  && obj?.dqc[0] !== undefined && obj?.dqc[1] !== undefined ? `${obj?.dqc[0]},${obj?.dqc[1]}` :loginUserDetail?.cmboDiaQCid
+  let csqcId = obj?.csqc?.length > 0 && obj?.csqc[0] !== undefined && obj?.csqc[1] !== undefined ? `${obj?.csqc[0]},${obj?.csqc[1]}` :loginUserDetail?.cmboCSQCid
+
+  console.log("mtid",mtid)
   
   
   let encodedFilter = {

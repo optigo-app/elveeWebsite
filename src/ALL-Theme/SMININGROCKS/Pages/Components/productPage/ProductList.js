@@ -232,18 +232,19 @@ const ProductList = () => {
       setDiaQColOpt(qualityColor)
     }
     else {
-      if (colorData && colorData?.length) {
-        setDiaQColOpt(`${colorData[0]?.Quality}#${colorData[0]?.color}`)
+      if (DimondQualityColor && DimondQualityColor?.length) {
+        setDiaQColOpt(`${DimondQualityColor[0]?.Quality}#${DimondQualityColor[0]?.color}`)
       }
     }
 
+    let csQCVar = ColorStoneQualityColor?.find(item => item?.QualityId === loginData?.cmboCSQCid?.split(',')[0] && item?.ColorId === loginData?.cmboCSQCid?.split(',')[1])
     if (loginData?.cmboCSQCid !== "0,0") {
-      let csQCVar = ColorStoneQualityColor?.find(item => item?.QualityId === loginData?.cmboCSQCid?.split(',')[0] && item?.ColorId === loginData?.cmboCSQCid?.split(',')[1])
       let csQualColor = `${csQCVar?.QualityId}-${csQCVar?.ColorId}`
       setCSQOpt(csQualColor)
     } else {
-      let ref = `${ColorStoneQualityColor[0].Quality}-${ColorStoneQualityColor[0].color}`
-      setCSQOpt(ref)
+      if(ColorStoneQualityColor && ColorStoneQualityColor?.length){
+        setCSQOpt(`${ColorStoneQualityColor[0].Quality}-${ColorStoneQualityColor[0].color}`)
+      }
     }
 
     let obj = { "CurrencyRate": loginData?.CurrencyRate, "Currencysymbol": loginData?.Currencysymbol }
@@ -1045,17 +1046,18 @@ const ProductList = () => {
       await getDesignPriceList(param,1,obj ,output).then(res => {
         if(res) {
           getProdPriceData()
-          console.log("priceCall1",res);
         }
       })
     }
 
   }
+  console.log("apiCalling",filterChecked)
 
   useEffect(() => {
     // let filteredData = ProductApiData2;
+    if(Object.keys(filterChecked).length > 0){
       filterFunction()
-      console.log("apiCalling")
+    }
     
     //   {
     //     "checked": true,
@@ -1714,9 +1716,9 @@ const ProductList = () => {
   };
 
   const handlePageReload = () => {
-    window.location.reload();
+    // window.location.reload();
     // setRangeProData([])
-    // setFilterChecked({})
+    setFilterChecked({})
     // setNewProData(ProductApiData2);  
     setMinPrice(0)
     setMaxPrice(maxPrice)
@@ -2082,34 +2084,41 @@ const ProductList = () => {
     setShow4ImageView(true)
   }
 
-  const ShortcutComboFunc = async () => {
-    let metalTypeId = findMetalTypeId(mtTypeOption)[0]?.Metalid
-    let DiaQCid = [findDiaQcId(diaQColOpt)[0]?.QualityId, findDiaQcId(diaQColOpt)[0]?.ColorId]
-    let CsQcid = [findCsQcId(cSQopt)[0]?.QualityId, findCsQcId(cSQopt)[0]?.ColorId]
+  const ShortcutComboFunc = async (event,type) => {
+
+  
+    if(type === "metal") setmtTypeOption(event)
+    if(type === "dia") setDiaQColOpt(event)
+    if(type === "cs") setCSQOpt(event)
+
+
+    let metalTypeId = type === "metal" ? findMetalTypeId(`${event}`)[0]?.Metalid : findMetalTypeId(mtTypeOption)[0]?.Metalid 
+    // let metalTypeId = findMetalTypeId(mtTypeOption)[0]?.Metalid 
+    let DiaQCid = type === "dia" ? [findDiaQcId(event)[0]?.QualityId, findDiaQcId(event)[0]?.ColorId] :[findDiaQcId(diaQColOpt)[0]?.QualityId, findDiaQcId(diaQColOpt)[0]?.ColorId] 
+    let CsQcid = type === "cs" ? [findCsQcId(event)[0]?.QualityId, findCsQcId(event)[0]?.ColorId] : [findCsQcId(cSQopt)[0]?.QualityId, findCsQcId(cSQopt)[0]?.ColorId]
 
     let obj = { mt: metalTypeId, dqc: DiaQCid, csqc: CsQcid }
 
-    console.log("obj11",obj);
+    console.log("obj11",obj)
 
     let param = JSON.parse(localStorage.getItem("menuparams"))
 
-    if(param && currentPage && metalTypeId && DiaQCid && CsQcid){
+    // if(param && currentPage && metalTypeId && DiaQCid && CsQcid){
       await getDesignPriceList(param, currentPage, obj).then(res => {
         if(res){
           getProdPriceData()
-          console.log("priceCall1",res)
         }
       })
-    }
+    // }
   }
 
-  useEffect(() => {
-    // if(JSON.parse(localStorage.getItem("getPriceData")) !== priceDataApi && location?.state.menuFlag !== true){
+  // useEffect(() => {
+  //   // if(JSON.parse(localStorage.getItem("getPriceData")) !== priceDataApi && location?.state.menuFlag !== true){
    
-      ShortcutComboFunc()
-      console.log("apiCalling")
+  //     ShortcutComboFunc()
+  //     console.log("apiCalling")
     
-  }, [mtTypeOption, diaQColOpt, cSQopt])
+  // }, [mtTypeOption, diaQColOpt, cSQopt])
 
 
   const handlePageChange = async (event, value) => {
@@ -2211,8 +2220,10 @@ const ProductList = () => {
                 >
                   <select
                     className='menuitemSelectoreMain'
-                    defaultValue={diaQColOpt}
-                    onChange={(e) => setDiaQColOpt(e.target.value)}
+                    value={diaQColOpt}
+                    onChange={(e) =>{ 
+                      setDiaQColOpt(e.target.value)
+                    }}
                   >
                     {colorData?.map((colorItem) => (
                       <option key={colorItem.ColorId} value={`${colorItem.Quality}#${colorItem.color}`}>
@@ -2347,7 +2358,9 @@ const ProductList = () => {
                     className='menuitemSelectoreMain'
                     defaultValue={mtTypeOption}
                     onChange={(e) => {
-                      setmtTypeOption(e.target.value)
+                      // setmtTypeOption(e.target.value)
+                      ShortcutComboFunc(e.target.value , "metal")
+                      // console.log("event222",e.target.value)
                     }}
                     style={{ color: '#7b7b7b', fontSize: '12px', fontWeight: 400, cursor: 'pointer' }}
                   >
@@ -2374,8 +2387,13 @@ const ProductList = () => {
                   >
                     <select
                       className='menuitemSelectoreMain'
-                      defaultValue={diaQColOpt}
-                      onChange={(e) => setDiaQColOpt(e.target.value)}
+                      value={diaQColOpt}
+                      onChange={(e) => {
+                        // setDiaQColOpt(e.target.value) 
+                        ShortcutComboFunc(e.target.value,"dia")
+                        // console.log("event444",e.target.value);
+                        
+                      }}
                       style={{ color: '#7b7b7b', fontSize: '12px', fontWeight: 400, cursor: 'pointer' }}
                     >
                       {colorData?.map((colorItem) => (
@@ -2404,7 +2422,10 @@ const ProductList = () => {
                   >
                     <select
                       className='menuitemSelectoreMain'
-                      onChange={(e) => setCSQOpt(e.target.value)}
+                      onChange={(e) => 
+                        // setCSQOpt(e.target.value)
+                        ShortcutComboFunc(e.target.value,"cs")
+                      }
                       defaultValue={cSQopt}
                       style={{ color: '#7b7b7b', fontSize: '12px', fontWeight: 400, cursor: 'pointer' }}
                     >
