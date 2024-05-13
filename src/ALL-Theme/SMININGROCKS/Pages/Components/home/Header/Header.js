@@ -144,9 +144,16 @@ export default function Header() {
         console.log("res", res);
         localStorage.setItem("allproductlist", JSON.stringify(res))
       }
+      return res
+    }).then(async(res)=>{
+      if(res){
+        let autoCodeList = JSON.parse(localStorage.getItem("autoCodeList"))
+        console.log("autoCodeList",autoCodeList)
+        await getDesignPriceList(param,1,{},{},autoCodeList)
+        navigation("/productpage", { state: { menuFlag: true }})
+      }
+
     })
-    await getDesignPriceList(param)
-    navigation("/productpage", { state: { menuFlag: true } })
   }
 
 
@@ -574,13 +581,18 @@ export default function Header() {
           localStorage.setItem("allproductlist", JSON.stringify(res))
           localStorage.setItem("finalAllData", JSON.stringify(res))
         }
+        return res
+      }).then(async(res)=>{
+        if(res){
+          let autoCodeList = JSON.parse(localStorage.getItem("autoCodeList"))
+          await getDesignPriceList(finalData,1,{},{},autoCodeList)
+          navigation("/productpage", { state: { menuFlag: true, filtervalue: finalData } })
+          setTimeout(() => {
+            setDrawerOpen(false);
+            handleMouseLeave();
+          }, 100)
+        }
       })
-      await getDesignPriceList(finalData)
-      navigation("/productpage", { state: { menuFlag: true, filtervalue: finalData } })
-      setTimeout(() => {
-        setDrawerOpen(false);
-        handleMouseLeave();
-      }, 100)
     }
 
     console.log('menuData', finalData);
