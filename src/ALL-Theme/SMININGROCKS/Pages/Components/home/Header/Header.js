@@ -326,6 +326,7 @@ export default function Header() {
 
 
   const [islogin, setislogin] = useRecoilState(loginState);
+  const [companyTitleLogo, setCompanyTitleLogo] = useRecoilState(companyLogo)
   const titleImg = useRecoilValue(companyLogo);
   const [isB2bFlag, setIsB2BFlag] = useState('');
   const fetchData = () => {
@@ -338,6 +339,12 @@ export default function Header() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (titleImg.length == 0) {
+      const storeInit = JSON.parse(localStorage.getItem('storeInit'));
+      setCompanyTitleLogo(storeInit?.companylogo);
+    }
+  }, []);
   // useEffect(() => {
   //   setTimeout(() => {
   //     const storeInit = JSON.parse(localStorage.getItem('storeInit')) ?? "";
@@ -1090,9 +1097,9 @@ export default function Header() {
                     {selectedData?.param1?.map((param1Item, param1Index) => (
                       <div key={param1Index}>
                         <span onClick={() => handleMenuClick(param1Item)} className="level1MenuData" key={param1Index} style={{ fontSize: '15px', marginBottom: '10px', fontFamily: '"PT Sans", sans-serif', textAlign: 'start', letterSpacing: 1, fontWeight: 600, cursor: 'pointer' }} > {param1Item?.param1dataname}</span>
-                        <div style={{height:'300px', display: 'flex', flexWrap: 'wrap',flexDirection: 'column' }}>
+                        <div style={{ height: '300px', display: 'flex', flexWrap: 'wrap', flexDirection: 'column' }}>
                           {param1Item?.param2?.map((param2Item, param2Index) => (
-                            <p key={param2Index} onClick={() => handleMenuClick(param1Item, param2Item)} style={{ fontSize: '13.5px', margin: '6px 15px 6px 0px', fontFamily: '"PT Sans", sans-serif', letterSpacing: 0.4, textAlign: 'start', cursor: 'pointer', textTransform: 'capitalize', borderRight: param2Item.param2dataname.length > 10 ? '1px solid #999797' : 'none', paddingRight: '15px' }}>
+                            <p key={param2Index} onClick={() => handleMenuClick(param1Item, param2Item)} style={{ fontSize: '13.5px', margin: '6px 15px 6px 0px', fontFamily: '"PT Sans", sans-serif', letterSpacing: 0.4, textAlign: 'start', cursor: 'pointer', textTransform: 'capitalize', paddingRight: '15px' }}>
                               {param2Item?.param2dataname}
                             </p>
                           ))}

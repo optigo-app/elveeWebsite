@@ -317,7 +317,6 @@ export default function Home() {
     handleHomePageLoad();
   }, []);
 
-
   return (
     <div className='paddingTopMobileSet' style={{ backgroundColor: 'white', paddingTop: '0px' }}>
       <div className='homeMain'>

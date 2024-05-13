@@ -145,7 +145,7 @@ export default function Register() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e?.preventDefault();
 
     const errors = {};
     if (!firstName.trim()) {

@@ -55,7 +55,7 @@ export default function SearchResult() {
                         <p style={{ fontSize: '12px' }}>{product.MetalColorName} / ${product.UnitCost}</p>
                     </div>
                 ))}
-                <SmilingRock />
+                {/* <SmilingRock /> */}
                 <Footer />
             </div>
             <div style={{ display: 'flex', justifyContent: 'center', paddingBlock: '30px' }}>
