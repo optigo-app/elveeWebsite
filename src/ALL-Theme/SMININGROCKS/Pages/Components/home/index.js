@@ -19,7 +19,7 @@ import { FaMobileAlt } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { CommonAPI } from '../../../Utils/API/CommonAPI';
-import { storImagePath } from '../../../Utils/globalFunctions/GlobalFunction';
+import { handleHomePageLoad, storImagePath } from '../../../Utils/globalFunctions/GlobalFunction';
 import PromoComponent1 from './PromoComponent/PromoComponent/PromoComponent1';
 import PromoComponent2 from './PromoComponent/PromoComponent/PromoComponent2';
 import BrandsComponent from './PromoComponent/BrandsComponent/BrandsComponent';
@@ -84,7 +84,7 @@ export default function Home() {
         console.error('Error:', error);
       }
     }
-
+    console.log("favicon", favicon);
 
     const getMetalTypeData = async () => {
       try {
@@ -298,7 +298,7 @@ export default function Home() {
 
   console.log('islogin', islogin);
   //  let domainName =  `((window.location.hostname === 'localhost' || window.location.hostname === 'zen') ? 'astore.orail.co.in' : window.location.hostname)/ufcc/image/`
-  
+
   // const [title, setTitle] = useState();
   // const [favicon, setFavIcon] = useState();
   // useEffect(() => {
@@ -311,7 +311,12 @@ export default function Home() {
   //   }, 100);
   // }, [islogin == 'true', islogin == 'false'])
 
-console.log();
+  console.log();
+
+  useEffect(() => {
+    handleHomePageLoad();
+  }, []);
+
 
   return (
     <div className='paddingTopMobileSet' style={{ backgroundColor: 'white', paddingTop: '0px' }}>

@@ -44,7 +44,7 @@ export const checkMonth = (val) => {
         default:
             break;
     }
-  
+
     return month;
 };
 
@@ -62,23 +62,23 @@ export const checkDates = (fromDates, toDates, cutDates) => {
         alldata: false
     }
 
-    if(cutDate !== undefined){
+    if (cutDate !== undefined) {
         // if(fromDates && toDates && moment(fromdates).isSameOrBefore(moment(todates))){
         if (!fromdates?.includes(undefined) && !todates?.includes(undefined)) {
             let fromdat = moment(fromdates);
             let todat = moment(todates);
             let cutDat = moment(cutDate);
-            if(moment(fromdat).isSameOrBefore(todat)){
+            if (moment(fromdat).isSameOrBefore(todat)) {
                 const isBetween = cutDat.isBetween(fromdat, todat);
                 if (isBetween || cutDat.isSame(fromdat) || cutDat.isSame(todat)) {
                     flags.dateTo = true;
                     flags.dateFrom = true;
                 }
             }
-            else{
+            else {
                 flags.alldata = true
             }
-            
+
         } else if (fromdates?.includes(undefined) && !todates?.includes(undefined)) {
             // let todat = new Date(todates);
             // let cutDat = new Date(cutDate);
@@ -89,7 +89,7 @@ export const checkDates = (fromDates, toDates, cutDates) => {
             flags.dateTo = true;
             flags.dateFrom = true;
             flags.alldata = false;
-    
+
         } else if (!fromdates?.includes(undefined) && todates?.includes(undefined)) {
             // let fromdat = new Date(fromdates);
             // let cutDat = new Date(cutDate);
@@ -105,7 +105,7 @@ export const checkDates = (fromDates, toDates, cutDates) => {
             flags.dateFrom = true;
             flags.alldata = false;
         }
-       } 
+    }
     // }
 
     return flags;
@@ -184,17 +184,17 @@ export const accountDetailPages = () => {
 }
 export function formatAmount(amount) {
     const formattedAmount = parseFloat(+amount).toLocaleString('en-IN', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
     });
-  
-    return formattedAmount;
-  }
 
-export function storImagePath(){
-    let storeinit = JSON.parse(localStorage.getItem("storeInit"))
-    return `${storeinit?.UploadLogicalPath}/${storeinit?.ukey}/${storeinit?.ufcc}`
-    // return 'https://cdnfs.optigoapps.com/content-global3/elveesterKGYLM5CREI9H2XBNT/elveester'
+    return formattedAmount;
+}
+
+export function storImagePath() {
+        let storeinit = JSON.parse(localStorage.getItem("storeInit"))
+        // return `${storeinit?.UploadLogicalPath}/${storeinit?.ukey}/${storeinit?.ufcc}`
+        return 'https://cdnfs.optigoapps.com/content-global3/elveesterKGYLM5CREI9H2XBNT/elveester'
 }
 
 export function findMetalType(paramId) {
@@ -208,48 +208,48 @@ export function findMetalColor(paramId) {
     let item = metalColorArr.filter(item => item?.id === paramId)
     return item
 }
-  
+
 export function findMetalTypeId(param) {
     let metalTypeArr = JSON.parse(localStorage.getItem("MetalTypeData"))
     let item = metalTypeArr.filter(item => item?.metaltype === param)
-    console.log("param",item);
+    console.log("param", item);
     return item
 }
 
-export function findDiaQcId(param){
+export function findDiaQcId(param) {
 
     let diaQCArr = JSON.parse(localStorage.getItem("QualityColor"))
     let quality = param.split("#")[0]
     let color = param.split("#")[1]
-    
-    let item = diaQCArr?.filter(ele => ele?.Quality == quality && ele?.color == color)
-    console.log("param",item);
-    return item
- }
 
-export function findCsQcId(param){
+    let item = diaQCArr?.filter(ele => ele?.Quality == quality && ele?.color == color)
+    console.log("param", item);
+    return item
+}
+
+export function findCsQcId(param) {
 
     let CsQCArr = JSON.parse(localStorage.getItem("ColorStoneQualityColor"))
     let quality = param.split("-")[0]
     let color = param.split("-")[1]
 
     let item = CsQCArr?.filter(ele => ele?.Quality == quality && ele?.color == color)
-    console.log("param",item);
+    console.log("param", item);
     return item
 }
 
-export function findCsQcIdDiff(param){
+export function findCsQcIdDiff(param) {
 
     let CsQCArr = JSON.parse(localStorage.getItem("ColorStoneQualityColor"))
     let quality = param.split("_")[0]
     let color = param.split("_")[1]
 
     let item = CsQCArr?.filter(ele => ele?.Quality == quality && ele?.color == color)
-    console.log("param",item);
+    console.log("param", item);
     return item
 }
 
-export function findValueFromId(param1,param2) {
+export function findValueFromId(param1, param2) {
 
     let output;
 
@@ -262,64 +262,87 @@ export function findValueFromId(param1,param2) {
     let ThemeFilter = JSON.parse(localStorage.getItem("ThemeFilter"))
     let SubCategoryFilter = JSON.parse(localStorage.getItem("SubCategoryFilter"))
 
-    if(param1 === "cate"){
+    if (param1 === "cate") {
         let data = categoryFilter?.filter(item => item?.Categoryid == param2)
-        console.log("cate",data);
+        console.log("cate", data);
         output = data[0]
         return output;
     }
-    if(param1 === "brand"){
+    if (param1 === "brand") {
         let data = BrandFilter?.filter(item => item?.Brandid == param2)
-        console.log("brand",data);
+        console.log("brand", data);
         output = data[0]
         return output;
     }
-    if(param1 === "prodtype"){
+    if (param1 === "prodtype") {
         let data = ProductTypeFilter?.filter(item => item?.Producttypeid == param2)
-        console.log("prodtype",data);
+        console.log("prodtype", data);
         output = data[0]
         return output;
     }
-    if(param1 === "collect"){
+    if (param1 === "collect") {
         let data = CollectionFilter?.filter(item => item?.Collectionid == param2)
-        console.log("collect",data);
+        console.log("collect", data);
         output = data[0]
         return output;
     }
-    if(param1 === "theme"){
+    if (param1 === "theme") {
         let data = ThemeFilter?.filter(item => item?.Themeid == param2)
-        console.log("theme",data);
+        console.log("theme", data);
         output = data[0]
         return output;
     }
-    if(param1 === "gender"){
+    if (param1 === "gender") {
         let data = GenderFilter?.filter(item => item?.Genderid == param2)
-        console.log("gender",data);
+        console.log("gender", data);
         output = data[0]
         return output;
     }
-    if(param1 === "subcate"){
+    if (param1 === "subcate") {
         let data = SubCategoryFilter?.filter(item => item?.SubCategoryid == param2)
-        console.log("subcate",data);
+        console.log("subcate", data);
         output = data[0]
         return output;
     }
-    if(param1 === "ocass"){
+    if (param1 === "ocass") {
         let data = OcassionFilter?.filter(item => item?.Ocassionid == param2)
-        console.log("ocass",data);
+        console.log("ocass", data);
         output = data[0]
         return output;
     }
-    
+
 }
 
-export function ScrollToView(param){
-    const element = document?.getElementById(param);
-    if (!element) {
+// export function ScrollToView(param){
+//     const element = document?.getElementById(param);
+//     if (!element) {
+//         window.location.href = '/';
+//         return;
+//     }
+//     element?.scrollIntoView({behavior:'smooth', block:'center', inline:'nearest'});
+// }
+
+export function ScrollToView(param) {
+    if (window.location.pathname !== '/') {
+        localStorage.setItem('scrollParam', param);
         window.location.href = '/';
         return;
     }
-    element?.scrollIntoView({behavior:'smooth', block:'center', inline:'nearest'});
+
+    const element = document?.getElementById(param);
+    if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
+    }
 }
 
-  
+export function handleHomePageLoad() {
+    const scrollParam = localStorage.getItem('scrollParam');
+    if (scrollParam) {
+        ScrollToView(scrollParam);
+        setTimeout(() => {
+            localStorage.removeItem('scrollParam');
+        }, 5000);
+    }
+}
+
+

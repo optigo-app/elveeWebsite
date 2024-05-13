@@ -326,7 +326,7 @@ export default function Header() {
 
 
   const [islogin, setislogin] = useRecoilState(loginState);
-  const titleImg =  useRecoilValue(companyLogo);
+  const titleImg = useRecoilValue(companyLogo);
   const [isB2bFlag, setIsB2BFlag] = useState('');
   const fetchData = () => {
     const value = localStorage.getItem('LoginUser');
@@ -524,10 +524,11 @@ export default function Header() {
     setHoveredIndex(index);
     setExpandedMenu(index);
     setSelectedData(menuItems[index] || []);
-
+    document.body.style.overflow = 'hidden';
   };
   const handleMouseLeave = (index) => {
     setExpandedMenu(null);
+    document.body.style.overflow = 'auto';
   };
 
   const handleMenuClick = async (param1Item, param2Item) => {
@@ -544,6 +545,7 @@ export default function Header() {
     console.log('menuDataWithoutParam1', menuDataWithoutParam1);
 
     let finalData = {
+      menuname: (leval0Data && leval0Data?.menuname) || (menuDataWithoutParam1 && menuDataWithoutParam1?.menuname) || "",
       FilterKey: (leval0Data && leval0Data.param0name) || (menuDataWithoutParam1 && menuDataWithoutParam1.param0name) || "",
       FilterVal: (leval0Data && leval0Data.param0dataname) || (menuDataWithoutParam1 && menuDataWithoutParam1.param0dataname) || "",
       FilterKey1: menuDataWithoutParam1?.param1name ?? "",
@@ -567,7 +569,7 @@ export default function Header() {
         }
       })
       await getDesignPriceList(finalData)
-      navigation("/productpage", { state: { menuFlag: true } })
+      navigation("/productpage", { state: { menuFlag: true, filtervalue: finalData } })
       setTimeout(() => {
         setDrawerOpen(false);
         handleMouseLeave();
@@ -950,7 +952,7 @@ export default function Header() {
                   <li
                     className="nav-li-smining"
                     style={{ cursor: "pointer" }}
-                    onClick={() => navigation("/contact")}
+                  // onClick={() => navigation("/contact")}
                   >
                     Contact
                   </li>
@@ -991,7 +993,10 @@ export default function Header() {
                       key={index}
                       label={item.menuname}
                       onMouseEnter={() => handleMouseEnter(index, item)}
-                      onMouseLeave={() => setLeval0Data(item)}
+                      onMouseLeave={() => {
+                        setLeval0Data(item);
+                        handleMouseLeave();
+                      }}
                       onClick={() => handleMenuClick(item)}
                     >
                       {item.menuname}
@@ -1022,7 +1027,7 @@ export default function Header() {
                       color="secondary"
                     >
                       <Tooltip title="WishList">
-                        <li style={{ cursor: "pointer", textDecoration: 'none' }} onClick={() => navigation("/myWishList")}>
+                        <li style={{ cursor: "pointer", textDecoration: 'none', marginTop: '0px' }} onClick={() => navigation("/myWishList")}>
                           <GoHeart color="#7D7F85" fontSize='25px' />
                         </li>
                       </Tooltip>
@@ -1045,16 +1050,18 @@ export default function Header() {
                         </li>
                       </Tooltip>
                     </Badge></>
+                  <Tooltip title="Account">
+                    <li
+                      className="nav-li-smining"
+                      style={{ cursor: "pointer", textDecoration: 'none', marginTop: "-4px" }}
+                      onClick={() => navigation("/account")}
+                    >
+                      <IoPersonOutline color="#7D7F85" fontSize='25px' />
+                    </li>
+                  </Tooltip>
                   <li
                     className="nav-li-smining"
-                    style={{ cursor: "pointer", textDecoration: 'none' }}
-                    onClick={() => navigation("/account")}
-                  >
-                    <IoPersonOutline color="#7D7F85" fontSize='25px' />
-                  </li>
-                  <li
-                    className="nav-li-smining"
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: "pointer", marginTop: "-4px" }}
                     onClick={handleLogout}
                   >
                     <FaPowerOff style={{ fontSize: '25px' }} />
@@ -1083,11 +1090,13 @@ export default function Header() {
                     {selectedData?.param1?.map((param1Item, param1Index) => (
                       <div key={param1Index}>
                         <span onClick={() => handleMenuClick(param1Item)} className="level1MenuData" key={param1Index} style={{ fontSize: '15px', marginBottom: '10px', fontFamily: '"PT Sans", sans-serif', textAlign: 'start', letterSpacing: 1, fontWeight: 600, cursor: 'pointer' }} > {param1Item?.param1dataname}</span>
-                        {param1Item?.param2?.map((param2Item, param2Index) => (
-                          <p key={param2Index} onClick={() => handleMenuClick(param1Item, param2Item)} style={{ fontSize: '13.5px', margin: '6px 0px 6px 0px', fontFamily: '"PT Sans", sans-serif', letterSpacing: 0.4, textAlign: 'start', cursor: 'pointer', textTransform: 'capitalize' }}>
-                            {param2Item?.param2dataname}
-                          </p>
-                        ))}
+                        <div style={{height:'300px', display: 'flex', flexWrap: 'wrap',flexDirection: 'column' }}>
+                          {param1Item?.param2?.map((param2Item, param2Index) => (
+                            <p key={param2Index} onClick={() => handleMenuClick(param1Item, param2Item)} style={{ fontSize: '13.5px', margin: '6px 15px 6px 0px', fontFamily: '"PT Sans", sans-serif', letterSpacing: 0.4, textAlign: 'start', cursor: 'pointer', textTransform: 'capitalize', borderRight: param2Item.param2dataname.length > 10 ? '1px solid #999797' : 'none', paddingRight: '15px' }}>
+                              {param2Item?.param2dataname}
+                            </p>
+                          ))}
+                        </div>
                       </div>
                     ))}
                   </div>

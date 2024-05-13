@@ -128,12 +128,11 @@ export default function Video() {
           >
             <source src={`${storImagePath()}/images/HomePage/MainBanner/videos/HomepageMainBannerVideo.mp4`} type="video/mp4" />
           </video>
-          <CountdownTimer />
         </>
       ) :
         <>
-          <img src={`${storImagePath()}/images/HomePage/MainBanner/image/HomepageMainBannerVideo.png`} style={{width:'100%'}}/>
-          <CountdownTimer />
+          <img src={`${storImagePath()}/images/HomePage/MainBanner/image/HomepageMainBannerVideo.png`} style={{ width: '100%' }} />
+            <CountdownTimer />
         </>
       }
     </div>

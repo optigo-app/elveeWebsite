@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import Footer from "../home/Footer/Footer";
 import SmilingRock from "../home/smiling_Rock/SmilingRock";
 import "./product.css";
+import featherImg from '../../assets/LV Feather.png';
 import { json, useFetcher, useLocation, useNavigate } from "react-router-dom";
 import prodListData from "../../jsonFile/Productlist_4_95oztttesi0o50vr.json";
 // import prodListData from "../../jsonFile/testingFile/Productlist_4_95oztttesi0o50vr_Original.json";
@@ -137,6 +138,8 @@ const ProductList = () => {
 
 
   let location = useLocation();
+
+  console.log('menuaname--', location);
 
   // console.log("mttypeoption", mtTypeOption, diaQColOpt, cSQopt);
 
@@ -327,7 +330,6 @@ const ProductList = () => {
     if (data) setProductApiData2(data)
     if (prodCount) setProdCount(prodCount)
   }
-
   const getProdPriceData = () => {
     const data = JSON.parse(localStorage.getItem("getPriceData"));
     setpriceDataApi(data)
@@ -2281,7 +2283,19 @@ const ProductList = () => {
             <div class="bg-image">
               <div class="overlay"></div>
               <div class="text-container">
-                <h1>All</h1>
+                <div className='textContainerData'>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <p style={{ fontSize: '20px', fontWeight: '500', letterSpacing:'1px', textTransform:'uppercase' }}>
+                      {location?.state?.filtervalue?.FilterVal2 ? location?.state?.filtervalue?.FilterVal2 : location?.state?.filtervalue?.FilterVal1 ? location?.state?.filtervalue?.FilterVal1 : location?.state?.filtervalue?.menuname}
+                      {' '}
+                      {prodCount} <span style={{textTransform:'capitalize'}}>Designs</span>
+                      <br />
+                      <span style={{ fontSize: '10px' }}>{`${location?.state?.filtervalue?.menuname || ''}${location?.state?.filtervalue?.FilterVal1 ? ` > ${location?.state?.filtervalue?.FilterVal1}` : ''}${location?.state?.filtervalue?.FilterVal2 ? ` > ${location?.state?.filtervalue?.FilterVal2}` : ''}`}</span>
+                    </p>
+                  </div>
+                  <img src={featherImg} className='featherImage' />
+                </div>
+
               </div>
             </div>
             <div className="filterDivcontainer">
@@ -2408,7 +2422,7 @@ const ProductList = () => {
               }
               {isCColrStoneCustFlag === 1 &&
                 <div className="divider"></div>}
-              <div className="part" style={{ flex: '60%', justifyContent: 'end' }}>
+              <div className="part" style={{ flex: '20%', justifyContent: 'end' }}>
                 <div className="part-content">
                   <IoGrid style={{ height: '18px', width: '18px', opacity: 0.7, color: '#7b7b7b' }} onClick={() => handle2ImageShow()} />
                   <AppsIcon style={{ height: '22px', width: '22px', opacity: 0.8, color: '#1f1919' }} onClick={() => handle3ImageShow()} />
@@ -2810,7 +2824,7 @@ const ProductList = () => {
                             </div>
                           </div>
                           <div className={show4ImagesView ? 'listing4-details' : "listing-details"} onClick={() => handelProductSubmit(products)}>
-                            <p className={show4ImagesView ? "productDetails property4-type" : "productDetails property-type"}>
+                            <p className={show4ImagesView ? "productDetails property4-type" : "productDetails property-type"} style={{ textAlign: 'center', margin: '5px' }}>
                               {products?.TitleLine}
                             </p>
                             <div>
@@ -2835,10 +2849,20 @@ const ProductList = () => {
                               {ismetalWShow === 1 &&
                                 <div className={show4ImagesView ? "feature4" : 'feature'}>
                                   <p>
-                                    <span className="feature-count">NWT : </span> {parseFloat(products?.updNWT).toFixed(2)}
+                                    <span className="feature-count">NWT :
+                                    </span> {parseFloat(products?.updNWT).toFixed(2)}
                                   </p>
                                 </div>
                               }
+
+                              {(isDaaimongWShow === 1 && (products?.diamondweight !== 0 || products?.diamondpcs !== 0)) &&
+                                <div className={show4ImagesView ? "feature4" : 'feature'}>
+                                  <p>
+                                    <span className="feature-count">DWT : </span>
+                                    {(isDaaimongWShow === 1 && products?.diamondweight !== 0) && products?.updDWT + '/'}  {(isDaaimonPShow === 1 && products?.diamondpcs !== 0) && products?.updDPCS}</p>
+                                </div>
+                              }
+
                               {isGrossWShow === 1 &&
                                 <div className={show4ImagesView ? "feature4" : 'feature'}>
                                   <p style={{ margin: '0px 0px 0px 8px' }}>
@@ -2847,10 +2871,15 @@ const ProductList = () => {
                                 </div>
                               }
                             </div>
+                            {/* <div className="mobileDeatilDiv2" style={{ display: 'flex', justifyContent: 'center', height: '20px' }}> */}
+
+
                             {/* <div className="mobileDeatilDiv2" style={{ display: 'flex', justifyContent: 'center', height: '20px' }}>
                               {((isDaaimongWShow || isDaaimongWShow) === 1 && (products?.diamondweight !== 0 || products?.diamondpcs !== 0)) && <div>
                                 <p style={{ margin: '0px', fontSize: '13px' }}>DWT : <span style={{ fontWeight: 600, marginRight: '10px' }}>{(isDaaimongWShow === 1 && products?.diamondweight !== 0) && products?.updDWT + '/'}  {(isDaaimonPShow === 1 && products?.diamondpcs !== 0) && products?.updDPCS}</span></p>
-                              </div>}
+                              </div>
+                            
+                            }
 
                               {((isStoneWShow || isStonePShow) === 1 && (products?.totalcolorstoneweight !== 0 || products?.totalcolorstonepcs !== 0)) && <div>
                                 <p style={{ margin: '0px', fontSize: '13px' }}>CWT : <span style={{ fontWeight: 600, marginRight: '10px' }}>{(isStoneWShow === 1 && products?.totalcolorstoneweight !== 0) && products?.updCWT + '/'}  {(isStonePShow === 1 && products?.totalcolorstonepcs !== 0) && products?.updCPCS}</span></p>
