@@ -1,18 +1,19 @@
 import { CommonAPI } from "./CommonAPI";
 
-export const getDesignPriceList = async (param,page=1,obj,filterObj) => {
+export const getDesignPriceList = async (param,page=1,obj,filterObj={}) => {
 
   
-
+  
   const storeInit = JSON.parse(localStorage.getItem("storeInit"))
   const loginUserDetail = JSON.parse(localStorage.getItem("loginUserDetail"));
   const UserEmail = localStorage.getItem("registerEmail")
+  
+  let mtid = `${obj?.mt}` ?? loginUserDetail?.MetalId
+  let diaqcId = obj?.dqc?.length > 0  && obj?.dqc[0] !== undefined && obj?.dqc[1] !== undefined ? `${obj?.dqc[0]},${obj?.dqc[1]}` :loginUserDetail?.cmboDiaQCid
+  let csqcId = obj?.csqc?.length > 0 && obj?.csqc[0] !== undefined && obj?.csqc[1] !== undefined ? `${obj?.csqc[0]},${obj?.csqc[1]}` :loginUserDetail?.cmboCSQCid
 
-  let mtid = `${obj?.metalTypeId}` ?? loginUserDetail?.MetalId
-  let diaqcId = obj?.dqc?.length ? `${obj?.dqc[0]},${obj?.dqc[1]}` :loginUserDetail?.cmboDiaQCid
-  let csqcId = obj?.csqc?.length ? `${obj?.csqc[0]},${obj?.csqc[1]}` :loginUserDetail?.cmboCSQCid
-
-  // console.log("log",obj?.dqc[0]);
+  console.log("mtid",mtid)
+  
   
   let encodedFilter = {
     "DesignNo":"",
@@ -47,6 +48,8 @@ export const getDesignPriceList = async (param,page=1,obj,filterObj) => {
     "Min_Price": '',
     "Producttypeid": `${filterObj?.Producttypeid ?? ""}`
   }
+
+  console.log("log11",encodedFilter)
 
   const GetPriceReq = {
     "CurrencyRate": `${loginUserDetail?.CurrencyRate}`,

@@ -234,18 +234,19 @@ const ProductList = () => {
       setDiaQColOpt(qualityColor)
     }
     else {
-      if (colorData && colorData?.length) {
-        setDiaQColOpt(`${colorData[0]?.Quality}#${colorData[0]?.color}`)
+      if (DimondQualityColor && DimondQualityColor?.length) {
+        setDiaQColOpt(`${DimondQualityColor[0]?.Quality}#${DimondQualityColor[0]?.color}`)
       }
     }
 
+    let csQCVar = ColorStoneQualityColor?.find(item => item?.QualityId === loginData?.cmboCSQCid?.split(',')[0] && item?.ColorId === loginData?.cmboCSQCid?.split(',')[1])
     if (loginData?.cmboCSQCid !== "0,0") {
-      let csQCVar = ColorStoneQualityColor?.find(item => item?.QualityId === loginData?.cmboCSQCid?.split(',')[0] && item?.ColorId === loginData?.cmboCSQCid?.split(',')[1])
       let csQualColor = `${csQCVar?.QualityId}-${csQCVar?.ColorId}`
       setCSQOpt(csQualColor)
     } else {
-      let ref = `${ColorStoneQualityColor[0]?.Quality}-${ColorStoneQualityColor[0]?.color}`
-      setCSQOpt(ref)
+      if(ColorStoneQualityColor && ColorStoneQualityColor?.length){
+        setCSQOpt(`${ColorStoneQualityColor[0].Quality}-${ColorStoneQualityColor[0].color}`)
+      }
     }
 
     let obj = { "CurrencyRate": loginData?.CurrencyRate, "Currencysymbol": loginData?.Currencysymbol }
@@ -311,6 +312,7 @@ const ProductList = () => {
   useEffect(() => {
     let pdDataCalling = async () => {
       await productListApiCall().then((res) => {
+        console.log("call1");
         setPdData(res)
       })
     }
@@ -340,17 +342,24 @@ const ProductList = () => {
 
   // console.log("menuparams11",JSON.parse(localStorage.getItem("menuparams")))
 
+  // console.log("priceDataApi",priceDataApi);
+
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("allproductlist"));
     const prodCount = JSON.parse(localStorage.getItem("allproductcount"));
-    if (data) setProductApiData2(data)
-    if (prodCount) setProdCount(prodCount)
+    if(!data?.length){
+       setProductApiData2(data)
+    }
+    if (!prodCount?.length) setProdCount(prodCount)
   }, [getMenuTransData])
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("getPriceData"));
-    setpriceDataApi(data)
+
+    if(!data?.length){
+      setpriceDataApi(data)
+    }
   }, [getMenuTransData])
 
 
@@ -1000,6 +1009,7 @@ const ProductList = () => {
   // }, [filterChecked])
 
   let filterFunction = async () => {
+    
     let param = JSON.parse(localStorage.getItem("menuparams"))
     const activeFilters = Object.values(filterChecked).filter(ele => ele.checked);
 
@@ -1018,27 +1028,39 @@ const ProductList = () => {
 
     // console.log("activeFilters",output)
 
-    await productListApiCall(param, currentPage, output).then(res => {
-      if (res) {
-        getProductData()
-      }
-    })
+    console.log("priceDataApi",priceDataApi);
+
+    if(param && output){
+      await productListApiCall(param, 1, output).then(res => {
+        if (res) {
+          getProductData()
+        }
+      })
+    }
 
     let metalTypeId = findMetalTypeId(mtTypeOption)[0]?.Metalid
     let DiaQCid = [findDiaQcId(diaQColOpt)[0]?.QualityId, findDiaQcId(diaQColOpt)[0]?.ColorId]
     let CsQcid = [findCsQcId(cSQopt)[0]?.QualityId, findCsQcId(cSQopt)[0]?.ColorId]
 
-    let obj = { metalTypeId, DiaQCid, CsQcid }
+    let obj = { mt: metalTypeId, dqc: DiaQCid, csqc: CsQcid  }
 
-    await getDesignPriceList(param, currentPage, obj, output).then(res => {
-      getProdPriceData()
-    })
+    if(param && output && metalTypeId && DiaQCid && CsQcid){
+      await getDesignPriceList(param,1,obj ,output).then(res => {
+        if(res) {
+          getProdPriceData()
+        }
+      })
+    }
+
   }
+  console.log("apiCalling",filterChecked)
 
   useEffect(() => {
     // let filteredData = ProductApiData2;
-    filterFunction();
-
+    if(Object.keys(filterChecked).length > 0){
+      filterFunction()
+    }
+    
     //   {
     //     "checked": true,
     //     "value": 22,
@@ -1696,9 +1718,9 @@ const ProductList = () => {
   };
 
   const handlePageReload = () => {
-    window.location.reload();
+    // window.location.reload();
     // setRangeProData([])
-    // setFilterChecked({})
+    setFilterChecked({})
     // setNewProData(ProductApiData2);  
     setMinPrice(0)
     setMaxPrice(maxPrice)
@@ -2069,24 +2091,41 @@ const ProductList = () => {
     setShow4ImageView(true)
   }
 
-  const ShortcutComboFunc = async () => {
-    let metalTypeId = findMetalTypeId(mtTypeOption)[0]?.Metalid
-    let DiaQCid = [findDiaQcId(diaQColOpt)[0]?.QualityId, findDiaQcId(diaQColOpt)[0]?.ColorId]
-    let CsQcid = [findCsQcId(cSQopt)[0]?.QualityId, findCsQcId(cSQopt)[0]?.ColorId]
+  const ShortcutComboFunc = async (event,type) => {
 
-    let obj = { metalTypeId, DiaQCid, CsQcid }
+  
+    if(type === "metal") setmtTypeOption(event)
+    if(type === "dia") setDiaQColOpt(event)
+    if(type === "cs") setCSQOpt(event)
 
-    console.log("obj", obj);
+
+    let metalTypeId = type === "metal" ? findMetalTypeId(`${event}`)[0]?.Metalid : findMetalTypeId(mtTypeOption)[0]?.Metalid 
+    // let metalTypeId = findMetalTypeId(mtTypeOption)[0]?.Metalid 
+    let DiaQCid = type === "dia" ? [findDiaQcId(event)[0]?.QualityId, findDiaQcId(event)[0]?.ColorId] :[findDiaQcId(diaQColOpt)[0]?.QualityId, findDiaQcId(diaQColOpt)[0]?.ColorId] 
+    let CsQcid = type === "cs" ? [findCsQcId(event)[0]?.QualityId, findCsQcId(event)[0]?.ColorId] : [findCsQcId(cSQopt)[0]?.QualityId, findCsQcId(cSQopt)[0]?.ColorId]
+
+    let obj = { mt: metalTypeId, dqc: DiaQCid, csqc: CsQcid }
+
+    console.log("obj11",obj)
 
     let param = JSON.parse(localStorage.getItem("menuparams"))
-    await getDesignPriceList(param, currentPage, obj).then(res => {
-      getProdPriceData()
-    })
+
+    // if(param && currentPage && metalTypeId && DiaQCid && CsQcid){
+      await getDesignPriceList(param, currentPage, obj).then(res => {
+        if(res){
+          getProdPriceData()
+        }
+      })
+    // }
   }
 
-  useEffect(() => {
-    ShortcutComboFunc()
-  }, [mtTypeOption, diaQColOpt, cSQopt])
+  // useEffect(() => {
+  //   // if(JSON.parse(localStorage.getItem("getPriceData")) !== priceDataApi && location?.state.menuFlag !== true){
+   
+  //     ShortcutComboFunc()
+  //     console.log("apiCalling")
+    
+  // }, [mtTypeOption, diaQColOpt, cSQopt])
 
 
   const handlePageChange = async (event, value) => {
@@ -2104,6 +2143,7 @@ const ProductList = () => {
       return res
     }).then(async (res) => {
       if (res) {
+        console.log("priceCall1");
         await getDesignPriceList(param, value, obj)
         return res
       }
@@ -2187,8 +2227,10 @@ const ProductList = () => {
                 >
                   <select
                     className='menuitemSelectoreMain'
-                    defaultValue={diaQColOpt}
-                    onChange={(e) => setDiaQColOpt(e.target.value)}
+                    value={diaQColOpt}
+                    onChange={(e) =>{ 
+                      setDiaQColOpt(e.target.value)
+                    }}
                   >
                     {colorData?.map((colorItem) => (
                       <option key={colorItem.ColorId} value={`${colorItem.Quality}#${colorItem.color}`}>
@@ -2311,148 +2353,158 @@ const ProductList = () => {
                   </div>
                   <div className="divider"></div>
 
-                  <div className="part" style={{ flex: '20%' }}>
-                    {isMetalCutoMizeFlag == 1 && <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        width: '95%',
-                        gap: '5px'
+              <div className="part" style={{ flex: '20%' }}>
+                {isMetalCutoMizeFlag == 1 && <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    width: '95%',
+                    gap: '5px'
+                  }}
+                >
+                  <select
+                    className='menuitemSelectoreMain'
+                    defaultValue={mtTypeOption}
+                    onChange={(e) => {
+                      // setmtTypeOption(e.target.value)
+                      ShortcutComboFunc(e.target.value , "metal")
+                      // console.log("event222",e.target.value)
+                    }}
+                    style={{ color: '#7b7b7b', fontSize: '12px', fontWeight: 400, cursor: 'pointer' }}
+                  >
+                    {metalType.map((data, index) => (
+                      <option key={index} value={data.metalType}>
+                        {data.metaltype}
+                      </option>
+                    ))}
+                  </select>
+                </div>}
+              </div>
+              {isMetalCutoMizeFlag == 1 && <div className="divider"></div>}
+              {((isDaimondCstoFlag == 1) && (productData?.diamondweight !== 0 || productData?.diamondpcs !== 0)) &&
+                <div className="part" style={{ flex: '20%' }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      width: '95%',
+                      paddingTop: '10px',
+                      marginBottom: '15px',
+                      gap: '5px',
+                    }}
+                  >
+                    <select
+                      className='menuitemSelectoreMain'
+                      value={diaQColOpt}
+                      onChange={(e) => {
+                        // setDiaQColOpt(e.target.value) 
+                        ShortcutComboFunc(e.target.value,"dia")
+                        // console.log("event444",e.target.value);
+                        
                       }}
+                      style={{ color: '#7b7b7b', fontSize: '12px', fontWeight: 400, cursor: 'pointer' }}
                     >
-                      <select
-                        className='menuitemSelectoreMain'
-                        defaultValue={mtTypeOption}
-                        onChange={(e) => {
-                          setmtTypeOption(e.target.value)
-                        }}
-                        style={{ color: '#7b7b7b', fontSize: '12px', fontWeight: 400, cursor: 'pointer' }}
-                      >
-                        {metalType.map((data, index) => (
-                          <option key={index} value={data.metalType}>
-                            {data.metaltype}
-                          </option>
-                        ))}
-                      </select>
-                    </div>}
-                  </div>
-                  {isMetalCutoMizeFlag == 1 && <div className="divider"></div>}
-                  {((isDaimondCstoFlag == 1) && (productData?.diamondweight !== 0 || productData?.diamondpcs !== 0)) &&
-                    <div className="part" style={{ flex: '20%' }}>
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "column",
-                          width: '95%',
-                          paddingTop: '10px',
-                          marginBottom: '15px',
-                          gap: '5px',
-                        }}
-                      >
-                        <select
-                          className='menuitemSelectoreMain'
-                          defaultValue={diaQColOpt}
-                          onChange={(e) => setDiaQColOpt(e.target.value)}
-                          style={{ color: '#7b7b7b', fontSize: '12px', fontWeight: 400, cursor: 'pointer' }}
-                        >
-                          {colorData?.map((colorItem) => (
-                            <option key={colorItem.ColorId} value={`${colorItem.Quality}#${colorItem.color}`}>
-                              {`${colorItem.Quality}#${colorItem.color}`}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                    </div>
-                  }
-                  {((isDaimondCstoFlag == 1) && (productData?.diamondweight !== 0 || productData?.diamondpcs !== 0)) &&
-                    <div className="divider"></div>}
-
-                  {isCColrStoneCustFlag === 1 &&
-                    <div className="part" style={{ flex: '20%' }}>
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "column",
-                          width: '95%',
-                          paddingTop: '10px',
-                          gap: '5px',
-                          borderTop: '1px solid rgba(66, 66, 66, 0.2)'
-                        }}
-                      >
-                        <select
-                          className='menuitemSelectoreMain'
-                          onChange={(e) => setCSQOpt(e.target.value)}
-                          defaultValue={cSQopt}
-                          style={{ color: '#7b7b7b', fontSize: '12px', fontWeight: 400, cursor: 'pointer' }}
-                        >
-                          {DaimondQualityColor.map((data, index) => (
-                            <option
-                              key={index}
-                              value={`${data.Quality}_${data.color}`}
-                            >
-                              {`${data.Quality}_${data.color}`}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                    </div>
-                  }
-                  {isCColrStoneCustFlag === 1 &&
-                    <div className="divider"></div>}
-                  <div className="part" style={{ flex: '20%', justifyContent: 'end' }}>
-                    <div className="part-content">
-                      <IoGrid style={{ height: '18px', width: '18px', opacity: 0.7, color: '#7b7b7b' }} onClick={() => handle2ImageShow()} />
-                      <AppsIcon style={{ height: '22px', width: '22px', opacity: 0.8, color: '#1f1919' }} onClick={() => handle3ImageShow()} />
-                      <TfiLayoutGrid4Alt style={{ height: '17px', width: '17px', opacity: 0.6 }} onClick={() => handle4ImageShow()} />
-                    </div>
+                      {colorData?.map((colorItem) => (
+                        <option key={colorItem.ColorId} value={`${colorItem.Quality}#${colorItem.color}`}>
+                          {`${colorItem.Quality}#${colorItem.color}`}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
-                <div className="smilingProductMain" id="smilingProductMain">
+              }
+              {((isDaimondCstoFlag == 1) && (productData?.diamondweight !== 0 || productData?.diamondpcs !== 0)) &&
+                <div className="divider"></div>}
+
+              {isCColrStoneCustFlag === 1 &&
+                <div className="part" style={{ flex: '20%' }}>
                   <div
-                    className="smilingProductSubMain"
-                    style={{ width: "100%", display: "flex", position: "relative" }}
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      width: '95%',
+                      paddingTop: '10px',
+                      gap: '5px',
+                      borderTop: '1px solid rgba(66, 66, 66, 0.2)'
+                    }}
                   >
-                    <div className="smilingWebProductListSideBar" style={{ transition: "1s ease", width: `19%`, left: `${isShowfilter ? "0" : "-500%"}` }}>
-                      <ul className="d-flex" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', padding: '0px 20px 0px 0px' }}>
-                        <li className="finejwelery me-4" id="finejwelery" style={{ fontSize: '14px' }}>
-                          Filters
-                          {/* {newProData.length > 0 ? ` (${newProData.length}/${ProductApiData2?.length}) ` : null} */}
-                        </li>
-                        <li className="finejwelery" id="finejwelery"
-                          onClick={() => handlePageReload()}
-                          style={{ cursor: 'pointer', fontSize: '14px' }}>
-                          {
-                            (Object.values(filterChecked)).filter(fc => fc.checked !== false).filter(fc => fc.checked !== undefined).length ?
-                              "Clear All"
-                              :
-                              `Product: ${ProductApiData2?.length}`
-                          }
-                        </li>
-                      </ul>
-                      <div>
-                        {NewFilterData1().map((ele, index) => (
-                          <>
-                            <Accordion
-                              elevation={0}
-                              sx={{
-                                borderBottom: "1px solid #c7c8c9",
-                                borderRadius: 0,
-                                "&.MuiPaper-root.MuiAccordion-root:last-of-type": {
-                                  borderBottomLeftRadius: "0px",
-                                  borderBottomRightRadius: "0px",
-                                },
-                                "&.MuiPaper-root.MuiAccordion-root:before": {
-                                  background: "none",
-                                },
-                              }}
-                            >
-                              <AccordionSummary
-                                expandIcon={<ExpandMoreIcon sx={{ width: "20px" }} />}
-                                aria-controls="panel1-content"
-                                id="panel1-header"
-                                sx={{
-                                  color: "#7f7d85",
-                                  borderRadius: 0,
+                    <select
+                      className='menuitemSelectoreMain'
+                      onChange={(e) => 
+                        // setCSQOpt(e.target.value)
+                        ShortcutComboFunc(e.target.value,"cs")
+                      }
+                      defaultValue={cSQopt}
+                      style={{ color: '#7b7b7b', fontSize: '12px', fontWeight: 400, cursor: 'pointer' }}
+                    >
+                      {DaimondQualityColor.map((data, index) => (
+                        <option
+                          key={index}
+                          value={`${data.Quality}_${data.color}`}
+                        >
+                          {`${data.Quality}_${data.color}`}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              }
+              {isCColrStoneCustFlag === 1 &&
+                <div className="divider"></div>}
+              <div className="part" style={{ flex: '20%', justifyContent: 'end' }}>
+                <div className="part-content">
+                  <IoGrid style={{ height: '18px', width: '18px', opacity: 0.7, color: '#7b7b7b' }} onClick={() => handle2ImageShow()} />
+                  <AppsIcon style={{ height: '22px', width: '22px', opacity: 0.8, color: '#1f1919' }} onClick={() => handle3ImageShow()} />
+                  <TfiLayoutGrid4Alt style={{ height: '17px', width: '17px', opacity: 0.6 }} onClick={() => handle4ImageShow()} />
+                </div>
+              </div>
+            </div>
+            <div className="smilingProductMain" id="smilingProductMain">
+              <div
+                className="smilingProductSubMain"
+                style={{ width: "100%", display: "flex", position: "relative" }}
+              >
+                <div className="smilingWebProductListSideBar" style={{ transition: "1s ease", width: `19%`, left: `${isShowfilter ? "0" : "-500%"}` }}>
+                  <ul className="d-flex" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', padding: '0px 20px 0px 0px' }}>
+                    <li className="finejwelery me-4" id="finejwelery" style={{ fontSize: '14px' }}>
+                      Filters
+                      {/* {newProData.length > 0 ? ` (${newProData.length}/${ProductApiData2?.length}) ` : null} */}
+                    </li>
+                    <li className="finejwelery" id="finejwelery"
+                      onClick={() => handlePageReload()}
+                      style={{ cursor: 'pointer', fontSize: '14px' }}>
+                      {
+                        (Object.values(filterChecked)).filter(fc => fc.checked !== false).filter(fc => fc.checked !== undefined).length ?
+                          "Clear All"
+                          :
+                          `Product: ${ProductApiData2?.length}`
+                      }
+                    </li>
+                  </ul>
+                  <div>
+                    {NewFilterData1().map((ele, index) => (
+                      <>
+                        <Accordion
+                          elevation={0}
+                          sx={{
+                            borderBottom: "1px solid #c7c8c9",
+                            borderRadius: 0,
+                            "&.MuiPaper-root.MuiAccordion-root:last-of-type": {
+                              borderBottomLeftRadius: "0px",
+                              borderBottomRightRadius: "0px",
+                            },
+                            "&.MuiPaper-root.MuiAccordion-root:before": {
+                              background: "none",
+                            },
+                          }}
+                        >
+                          <AccordionSummary
+                            expandIcon={<ExpandMoreIcon sx={{ width: "20px" }} />}
+                            aria-controls="panel1-content"
+                            id="panel1-header"
+                            sx={{
+                              color: "#7f7d85",
+                              borderRadius: 0,
 
                                   "&.MuiAccordionSummary-root": {
                                     padding: 0,
