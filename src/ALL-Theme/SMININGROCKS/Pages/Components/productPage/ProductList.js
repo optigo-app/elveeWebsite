@@ -34,7 +34,9 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { getDesignPriceList } from "../../../Utils/API/PriceDataApi";
 import { findCsQcId, findDiaQcId, findMetalColor, findMetalType, findMetalTypeId, findValueFromId } from "../../../Utils/globalFunctions/GlobalFunction";
 import ProductListSkeleton from "./ProductListSkelton";
+
 import { Card } from "react-bootstrap";
+import ProductFilterSkelton from "./ProductFilterSkelton";
 
 function valuetext(value) {
   return `${value}°C`;
@@ -115,6 +117,7 @@ const ProductList = () => {
   const [isPriceShow, setIsPriceShow] = useState('');
   const [globImagePath, setGlobImagepath] = useState();
   const [IsProdLoading, setIsProdLoading] = useState(false);
+  const [filterProdLoding, setFilterProdLoding] = useState(false);
   const [currData, setCurrData] = useState()
   const [isFilterData, setIsFilterData] = useState(false)
   const [rangeProData, setRangeProData] = useState([])
@@ -244,7 +247,7 @@ const ProductList = () => {
       let csQualColor = `${csQCVar?.QualityId}-${csQCVar?.ColorId}`
       setCSQOpt(csQualColor)
     } else {
-      if(ColorStoneQualityColor && ColorStoneQualityColor?.length){
+      if (ColorStoneQualityColor && ColorStoneQualityColor?.length) {
         setCSQOpt(`${ColorStoneQualityColor[0].Quality}-${ColorStoneQualityColor[0].color}`)
       }
     }
@@ -348,8 +351,8 @@ const ProductList = () => {
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("allproductlist"));
     const prodCount = JSON.parse(localStorage.getItem("allproductcount"));
-    if(!data?.length){
-       setProductApiData2(data)
+    if (!data?.length) {
+      setProductApiData2(data)
     }
     if (!prodCount?.length) setProdCount(prodCount)
   }, [getMenuTransData])
@@ -357,7 +360,7 @@ const ProductList = () => {
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("getPriceData"));
 
-    if(!data?.length){
+    if (!data?.length) {
       setpriceDataApi(data)
     }
   }, [getMenuTransData])
@@ -436,10 +439,14 @@ const ProductList = () => {
 
       localStorage.setItem("allproductlist", JSON.stringify(updatedData));
       setProductApiData2(updatedData);
+      return true;
     };
 
     // console.log("calling");
-    fetchData();
+    fetchData().then((res) => {
+      setFilterProdLoding(false);
+    });
+
   }, [priceDataApi, mtTypeOption]);
 
 
@@ -1009,7 +1016,7 @@ const ProductList = () => {
   // }, [filterChecked])
 
   let filterFunction = async () => {
-    
+    setFilterProdLoding(true);
     let param = JSON.parse(localStorage.getItem("menuparams"))
     const activeFilters = Object.values(filterChecked).filter(ele => ele.checked);
 
@@ -1028,9 +1035,9 @@ const ProductList = () => {
 
     // console.log("activeFilters",output)
 
-    console.log("priceDataApi",priceDataApi);
+    console.log("priceDataApi", priceDataApi);
 
-    if(param && output){
+    if (param && output) {
       await productListApiCall(param, 1, output).then(res => {
         if (res) {
           getProductData()
@@ -1062,14 +1069,14 @@ const ProductList = () => {
     
 
   }
-  console.log("apiCalling",filterChecked)
+  console.log("apiCalling", filterChecked)
 
   useEffect(() => {
     // let filteredData = ProductApiData2;
-    if(Object.keys(filterChecked).length > 0){
+    if (Object.keys(filterChecked).length > 0) {
       filterFunction()
     }
-    
+
     //   {
     //     "checked": true,
     //     "value": 22,
@@ -2026,16 +2033,20 @@ const ProductList = () => {
   };
   console.log('newprodata--', newProData, ProductApiData2);
 
-    useEffect(() => {
-    const isDataAvailable = (newProData?.length || ProductApiData2?.length) > 0;
-    setIsProdLoading(isDataAvailable);
-    if (!isDataAvailable && prodCount === 0) {
-      const timeoutId = setTimeout(() => {
+  useEffect(() => {
+    if ((newProData?.length != 0 || ProductApiData2?.length != 0)) {
+      setIsProdLoading(true)
+      console.log('first');
+    } else {
+      if (newProData?.length == 0 || ProductApiData2?.length == 0) {
+        setTimeout(() => {
+          setIsProdLoading(true);
+        }, 1000);
+      } else {
         setIsProdLoading(false);
-      }, 1000);
-      return () => clearTimeout(timeoutId);
+      }
     }
-  }, [newProData, ProductApiData2, prodCount]);
+  }, [newProData, ProductApiData2])
 
   console.log('proDcount--', prodCount);
 
@@ -2100,22 +2111,22 @@ const ProductList = () => {
     setShow4ImageView(true)
   }
 
-  const ShortcutComboFunc = async (event,type) => {
-
-  
-    if(type === "metal") setmtTypeOption(event)
-    if(type === "dia") setDiaQColOpt(event)
-    if(type === "cs") setCSQOpt(event)
+  const ShortcutComboFunc = async (event, type) => {
 
 
-    let metalTypeId = type === "metal" ? findMetalTypeId(`${event}`)[0]?.Metalid : findMetalTypeId(mtTypeOption)[0]?.Metalid 
+    if (type === "metal") setmtTypeOption(event)
+    if (type === "dia") setDiaQColOpt(event)
+    if (type === "cs") setCSQOpt(event)
+
+
+    let metalTypeId = type === "metal" ? findMetalTypeId(`${event}`)[0]?.Metalid : findMetalTypeId(mtTypeOption)[0]?.Metalid
     // let metalTypeId = findMetalTypeId(mtTypeOption)[0]?.Metalid 
-    let DiaQCid = type === "dia" ? [findDiaQcId(event)[0]?.QualityId, findDiaQcId(event)[0]?.ColorId] :[findDiaQcId(diaQColOpt)[0]?.QualityId, findDiaQcId(diaQColOpt)[0]?.ColorId] 
+    let DiaQCid = type === "dia" ? [findDiaQcId(event)[0]?.QualityId, findDiaQcId(event)[0]?.ColorId] : [findDiaQcId(diaQColOpt)[0]?.QualityId, findDiaQcId(diaQColOpt)[0]?.ColorId]
     let CsQcid = type === "cs" ? [findCsQcId(event)[0]?.QualityId, findCsQcId(event)[0]?.ColorId] : [findCsQcId(cSQopt)[0]?.QualityId, findCsQcId(cSQopt)[0]?.ColorId]
 
     let obj = { mt: metalTypeId, dqc: DiaQCid, csqc: CsQcid }
 
-    console.log("obj11",obj)
+    console.log("obj11", obj)
 
     let param = JSON.parse(localStorage.getItem("menuparams"))
     let autoCodeList = JSON.parse(localStorage.getItem("autoCodeList"))
@@ -2131,10 +2142,10 @@ const ProductList = () => {
 
   // useEffect(() => {
   //   // if(JSON.parse(localStorage.getItem("getPriceData")) !== priceDataApi && location?.state.menuFlag !== true){
-   
+
   //     ShortcutComboFunc()
   //     console.log("apiCalling")
-    
+
   // }, [mtTypeOption, diaQColOpt, cSQopt])
 
 
@@ -2239,7 +2250,7 @@ const ProductList = () => {
                   <select
                     className='menuitemSelectoreMain'
                     value={diaQColOpt}
-                    onChange={(e) =>{ 
+                    onChange={(e) => {
                       setDiaQColOpt(e.target.value)
                     }}
                   >
@@ -2308,7 +2319,7 @@ const ProductList = () => {
             }}
             className='paddingTopMobileSet mainProduct'
           >
-            {prodCount != 0 ? (
+            {newProData?.length != 0 || ProductApiData2?.length != 0 ? (
               <div style={{ width: '100%' }}>
                 <div class="bg-image">
                   <div class="overlay"></div>
@@ -2364,158 +2375,158 @@ const ProductList = () => {
                   </div>
                   <div className="divider"></div>
 
-              <div className="part" style={{ flex: '20%' }}>
-                {isMetalCutoMizeFlag == 1 && <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    width: '95%',
-                    gap: '5px'
-                  }}
-                >
-                  <select
-                    className='menuitemSelectoreMain'
-                    defaultValue={mtTypeOption}
-                    onChange={(e) => {
-                      // setmtTypeOption(e.target.value)
-                      ShortcutComboFunc(e.target.value , "metal")
-                      // console.log("event222",e.target.value)
-                    }}
-                    style={{ color: '#7b7b7b', fontSize: '12px', fontWeight: 400, cursor: 'pointer' }}
-                  >
-                    {metalType.map((data, index) => (
-                      <option key={index} value={data.metalType}>
-                        {data.metaltype}
-                      </option>
-                    ))}
-                  </select>
-                </div>}
-              </div>
-              {isMetalCutoMizeFlag == 1 && <div className="divider"></div>}
-              {((isDaimondCstoFlag == 1) && (productData?.diamondweight !== 0 || productData?.diamondpcs !== 0)) &&
-                <div className="part" style={{ flex: '20%' }}>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      width: '95%',
-                      paddingTop: '10px',
-                      marginBottom: '15px',
-                      gap: '5px',
-                    }}
-                  >
-                    <select
-                      className='menuitemSelectoreMain'
-                      value={diaQColOpt}
-                      onChange={(e) => {
-                        // setDiaQColOpt(e.target.value) 
-                        ShortcutComboFunc(e.target.value,"dia")
-                        // console.log("event444",e.target.value);
-                        
+                  <div className="part" style={{ flex: '20%' }}>
+                    {isMetalCutoMizeFlag == 1 && <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        width: '95%',
+                        gap: '5px'
                       }}
-                      style={{ color: '#7b7b7b', fontSize: '12px', fontWeight: 400, cursor: 'pointer' }}
                     >
-                      {colorData?.map((colorItem) => (
-                        <option key={colorItem.ColorId} value={`${colorItem.Quality}#${colorItem.color}`}>
-                          {`${colorItem.Quality}#${colorItem.color}`}
-                        </option>
-                      ))}
-                    </select>
+                      <select
+                        className='menuitemSelectoreMain'
+                        defaultValue={mtTypeOption}
+                        onChange={(e) => {
+                          // setmtTypeOption(e.target.value)
+                          ShortcutComboFunc(e.target.value, "metal")
+                          // console.log("event222",e.target.value)
+                        }}
+                        style={{ color: '#7b7b7b', fontSize: '12px', fontWeight: 400, cursor: 'pointer' }}
+                      >
+                        {metalType.map((data, index) => (
+                          <option key={index} value={data.metalType}>
+                            {data.metaltype}
+                          </option>
+                        ))}
+                      </select>
+                    </div>}
                   </div>
-                </div>
-              }
-              {((isDaimondCstoFlag == 1) && (productData?.diamondweight !== 0 || productData?.diamondpcs !== 0)) &&
-                <div className="divider"></div>}
+                  {isMetalCutoMizeFlag == 1 && <div className="divider"></div>}
+                  {((isDaimondCstoFlag == 1) && (productData?.diamondweight !== 0 || productData?.diamondpcs !== 0)) &&
+                    <div className="part" style={{ flex: '20%' }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          width: '95%',
+                          paddingTop: '10px',
+                          marginBottom: '15px',
+                          gap: '5px',
+                        }}
+                      >
+                        <select
+                          className='menuitemSelectoreMain'
+                          value={diaQColOpt}
+                          onChange={(e) => {
+                            // setDiaQColOpt(e.target.value) 
+                            ShortcutComboFunc(e.target.value, "dia")
+                            // console.log("event444",e.target.value);
 
-              {isCColrStoneCustFlag === 1 &&
-                <div className="part" style={{ flex: '20%' }}>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      width: '95%',
-                      paddingTop: '10px',
-                      gap: '5px',
-                      borderTop: '1px solid rgba(66, 66, 66, 0.2)'
-                    }}
-                  >
-                    <select
-                      className='menuitemSelectoreMain'
-                      onChange={(e) => 
-                        // setCSQOpt(e.target.value)
-                        ShortcutComboFunc(e.target.value,"cs")
-                      }
-                      defaultValue={cSQopt}
-                      style={{ color: '#7b7b7b', fontSize: '12px', fontWeight: 400, cursor: 'pointer' }}
-                    >
-                      {DaimondQualityColor.map((data, index) => (
-                        <option
-                          key={index}
-                          value={`${data.Quality}_${data.color}`}
+                          }}
+                          style={{ color: '#7b7b7b', fontSize: '12px', fontWeight: 400, cursor: 'pointer' }}
                         >
-                          {`${data.Quality}_${data.color}`}
-                        </option>
-                      ))}
-                    </select>
+                          {colorData?.map((colorItem) => (
+                            <option key={colorItem.ColorId} value={`${colorItem.Quality}#${colorItem.color}`}>
+                              {`${colorItem.Quality}#${colorItem.color}`}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                  }
+                  {((isDaimondCstoFlag == 1) && (productData?.diamondweight !== 0 || productData?.diamondpcs !== 0)) &&
+                    <div className="divider"></div>}
+
+                  {isCColrStoneCustFlag === 1 &&
+                    <div className="part" style={{ flex: '20%' }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          width: '95%',
+                          paddingTop: '10px',
+                          gap: '5px',
+                          borderTop: '1px solid rgba(66, 66, 66, 0.2)'
+                        }}
+                      >
+                        <select
+                          className='menuitemSelectoreMain'
+                          onChange={(e) =>
+                            // setCSQOpt(e.target.value)
+                            ShortcutComboFunc(e.target.value, "cs")
+                          }
+                          defaultValue={cSQopt}
+                          style={{ color: '#7b7b7b', fontSize: '12px', fontWeight: 400, cursor: 'pointer' }}
+                        >
+                          {DaimondQualityColor.map((data, index) => (
+                            <option
+                              key={index}
+                              value={`${data.Quality}_${data.color}`}
+                            >
+                              {`${data.Quality}_${data.color}`}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                  }
+                  {isCColrStoneCustFlag === 1 &&
+                    <div className="divider"></div>}
+                  <div className="part" style={{ flex: '20%', justifyContent: 'end' }}>
+                    <div className="part-content">
+                      <IoGrid style={{ height: '18px', width: '18px', opacity: 0.7, color: '#7b7b7b' }} onClick={() => handle2ImageShow()} />
+                      <AppsIcon style={{ height: '22px', width: '22px', opacity: 0.8, color: '#1f1919' }} onClick={() => handle3ImageShow()} />
+                      <TfiLayoutGrid4Alt style={{ height: '17px', width: '17px', opacity: 0.6 }} onClick={() => handle4ImageShow()} />
+                    </div>
                   </div>
                 </div>
-              }
-              {isCColrStoneCustFlag === 1 &&
-                <div className="divider"></div>}
-              <div className="part" style={{ flex: '20%', justifyContent: 'end' }}>
-                <div className="part-content">
-                  <IoGrid style={{ height: '18px', width: '18px', opacity: 0.7, color: '#7b7b7b' }} onClick={() => handle2ImageShow()} />
-                  <AppsIcon style={{ height: '22px', width: '22px', opacity: 0.8, color: '#1f1919' }} onClick={() => handle3ImageShow()} />
-                  <TfiLayoutGrid4Alt style={{ height: '17px', width: '17px', opacity: 0.6 }} onClick={() => handle4ImageShow()} />
-                </div>
-              </div>
-            </div>
-            <div className="smilingProductMain" id="smilingProductMain">
-              <div
-                className="smilingProductSubMain"
-                style={{ width: "100%", display: "flex", position: "relative" }}
-              >
-                <div className="smilingWebProductListSideBar" style={{ transition: "1s ease", width: `19%`, left: `${isShowfilter ? "0" : "-500%"}` }}>
-                  <ul className="d-flex" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', padding: '0px 20px 0px 0px' }}>
-                    <li className="finejwelery me-4" id="finejwelery" style={{ fontSize: '14px' }}>
-                      Filters
-                      {/* {newProData.length > 0 ? ` (${newProData.length}/${ProductApiData2?.length}) ` : null} */}
-                    </li>
-                    <li className="finejwelery" id="finejwelery"
-                      onClick={() => handlePageReload()}
-                      style={{ cursor: 'pointer', fontSize: '14px' }}>
-                      {
-                        (Object.values(filterChecked)).filter(fc => fc.checked !== false).filter(fc => fc.checked !== undefined).length ?
-                          "Clear All"
-                          :
-                          `Product: ${ProductApiData2?.length}`
-                      }
-                    </li>
-                  </ul>
-                  <div>
-                    {NewFilterData1().map((ele, index) => (
-                      <>
-                        <Accordion
-                          elevation={0}
-                          sx={{
-                            borderBottom: "1px solid #c7c8c9",
-                            borderRadius: 0,
-                            "&.MuiPaper-root.MuiAccordion-root:last-of-type": {
-                              borderBottomLeftRadius: "0px",
-                              borderBottomRightRadius: "0px",
-                            },
-                            "&.MuiPaper-root.MuiAccordion-root:before": {
-                              background: "none",
-                            },
-                          }}
-                        >
-                          <AccordionSummary
-                            expandIcon={<ExpandMoreIcon sx={{ width: "20px" }} />}
-                            aria-controls="panel1-content"
-                            id="panel1-header"
-                            sx={{
-                              color: "#7f7d85",
-                              borderRadius: 0,
+                <div className="smilingProductMain" id="smilingProductMain">
+                  <div
+                    className="smilingProductSubMain"
+                    style={{ width: "100%", display: "flex", position: "relative" }}
+                  >
+                    <div className="smilingWebProductListSideBar" style={{ transition: "1s ease", width: `19%`, left: `${isShowfilter ? "0" : "-500%"}` }}>
+                      <ul className="d-flex" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', padding: '0px 20px 0px 0px' }}>
+                        <li className="finejwelery me-4" id="finejwelery" style={{ fontSize: '14px' }}>
+                          Filters
+                          {/* {newProData.length > 0 ? ` (${newProData.length}/${ProductApiData2?.length}) ` : null} */}
+                        </li>
+                        <li className="finejwelery" id="finejwelery"
+                          onClick={() => handlePageReload()}
+                          style={{ cursor: 'pointer', fontSize: '14px' }}>
+                          {
+                            (Object.values(filterChecked)).filter(fc => fc.checked !== false).filter(fc => fc.checked !== undefined).length ?
+                              "Clear All"
+                              :
+                              `Product: ${ProductApiData2?.length}`
+                          }
+                        </li>
+                      </ul>
+                      <div>
+                        {NewFilterData1().map((ele, index) => (
+                          <>
+                            <Accordion
+                              elevation={0}
+                              sx={{
+                                borderBottom: "1px solid #c7c8c9",
+                                borderRadius: 0,
+                                "&.MuiPaper-root.MuiAccordion-root:last-of-type": {
+                                  borderBottomLeftRadius: "0px",
+                                  borderBottomRightRadius: "0px",
+                                },
+                                "&.MuiPaper-root.MuiAccordion-root:before": {
+                                  background: "none",
+                                },
+                              }}
+                            >
+                              <AccordionSummary
+                                expandIcon={<ExpandMoreIcon sx={{ width: "20px" }} />}
+                                aria-controls="panel1-content"
+                                id="panel1-header"
+                                sx={{
+                                  color: "#7f7d85",
+                                  borderRadius: 0,
 
                                   "&.MuiAccordionSummary-root": {
                                     padding: 0,
@@ -2731,6 +2742,7 @@ const ProductList = () => {
                         </div>
                       </div>
                     </div>
+
                     <div
                       style={{
                         // width: isShowfilter ? "80%" : "100%",
@@ -2772,103 +2784,105 @@ const ProductList = () => {
                       <option value="PRICE LOW TO HIGH">PRICE LOW TO HIGH</option>
                     </select>
                   </div> */}
-
-                      <div className={`smilingAllProductDataMainMobile
+                      {filterProdLoding ? (
+                        <ProductFilterSkelton />
+                      ) :
+                        <div className={`smilingAllProductDataMainMobile
                                     ${show2ImagesView ? "smilingAllProductDataMainMobileShow2Image" : ""}
                                     ${show4ImagesView ? "smilingAllProductDataMainMobileShow4Image" : ""}`}>
-                        {/* RollOverImageName */}
-                        {/* {(newProData.length ? newProData : finalDataOfDisplaying())?.map((products, i) => ( */}
-                        {(rangeProData.length ? rangeProData : (newProData?.length ? newProData : ProductApiData2))?.map((products, i) => (
-                          <div className={`main-ProdcutListConatiner
+                          {/* RollOverImageName */}
+                          {/* {(newProData.length ? newProData : finalDataOfDisplaying())?.map((products, i) => ( */}
+                          {(rangeProData.length ? rangeProData : (newProData?.length ? newProData : ProductApiData2))?.map((products, i) => (
+                            <div className={`main-ProdcutListConatiner
                       ${show2ImagesView ? "main-ProdcutListConatiner2ImageShow" : ""}
                       ${show4ImagesView ? "main-ProdcutListConatiner4ImageShow" : ""}`}
-                          >
-                            <div className={`listing-card
+                            >
+                              <div className={`listing-card
                           ${show2ImagesView ? "listing-cardShow2Image" : ""}
                           ${show4ImagesView ? "listing-cardShow4Image" : ""}`} >
-                              <div className="listing-image">
-                                {products?.designno === "S24705E" && <p id="labelTag_0002388" className="instockP">IN STOCK</p>}
-                                {products?.designno === "S24705" && <p id="labelTag_0002388" className="instockP">IN STOCK</p>}
-                                {products?.designno === "MCJ2" && <p id="labelTag_0002388" className="instockP">IN STOCK</p>}
-                                {/* {console.log("imagePath", `${storeInitData?.DesignImageFol}${products?.DesignFolderName}/${storeInitData?.ImgMe}/${products?.DefaultImageName}`)} */}
-                                <div>
-                                  <img
-                                    className={`${isShowfilter ? "prod_img" : "prod_imgFiletrHide"}
+                                <div className="listing-image">
+                                  {products?.designno === "S24705E" && <p id="labelTag_0002388" className="instockP">IN STOCK</p>}
+                                  {products?.designno === "S24705" && <p id="labelTag_0002388" className="instockP">IN STOCK</p>}
+                                  {products?.designno === "MCJ2" && <p id="labelTag_0002388" className="instockP">IN STOCK</p>}
+                                  {/* {console.log("imagePath", `${storeInitData?.DesignImageFol}${products?.DesignFolderName}/${storeInitData?.ImgMe}/${products?.DefaultImageName}`)} */}
+                                  <div>
+                                    <img
+                                      className={`${isShowfilter ? "prod_img" : "prod_imgFiletrHide"}
                                 ${show2ImagesView ?
-                                        isShowfilter ?
-                                          "prod_img2" : "prod_img2FiletrHider" : ""}
+                                          isShowfilter ?
+                                            "prod_img2" : "prod_img2FiletrHider" : ""}
                                 ${show4ImagesView ? "prod_img4" : ""}`}
-                                    src={
-                                      hoveredImageUrls[i] ? hoveredImageUrls[i] : updatedColorImage[i] ? updatedColorImage[i] :
-                                        (storeInitData ?
-                                          `${storeInitData?.DesignImageFol}${products?.DesignFolderName}/${storeInitData?.ImgMe}/${products?.DefaultImageName}`
-                                          :
-                                          notFound)
-                                    }
-                                    // src={
-                                    //   hoveredImageUrls[i] ? hoveredImageUrls[i] : updatedColorImage[i] ? updatedColorImage[i] :
-                                    //     (products?.MediumImagePath ?
-                                    //       (globImagePath + products?.MediumImagePath?.split(",")[0])
-                                    //       :
-                                    //       notFound)
-                                    // }
-                                    onMouseEnter={() => handleHoverImageShow(i, storeInitData?.DesignImageFol, products?.DesignFolderName, storeInitData?.ImgMe, products?.RollOverImageName)}
-                                    // onMouseEnter={() => handleHoverImageShow(products?.MediumImagePath?.split(",")[0], i, products?.RollOverImageName, globImagePath)}
-                                    // onMouseEnter={() => handleHoverImageShow(products?.MediumImagePath?.split(",")[0], i, isColorWiseImageShow === 1 ? products?.ColorWiseRollOverImageName : products?.RollOverImageName, products?.imagepath)}
-                                    onMouseLeave={() => handleMouseLeave(i)}
-                                    style={{ objectFit: 'cover' }}
-                                    alt="#"
-                                    onError={(e) => {
-                                      e.target.src = notFound;
-                                    }}
-                                    onClick={() => handelProductSubmit(products)}
-                                  />
-                                  <div className="cart-icon">
-                                    <Checkbox
-                                      icon={
-                                        <LocalMallOutlinedIcon
-                                          sx={{ fontSize: "22px", color: "#1f1919", opacity: '.7' }}
-                                        />
+                                      src={
+                                        hoveredImageUrls[i] ? hoveredImageUrls[i] : updatedColorImage[i] ? updatedColorImage[i] :
+                                          (storeInitData ?
+                                            `${storeInitData?.DesignImageFol}${products?.DesignFolderName}/${storeInitData?.ImgMe}/${products?.DefaultImageName}`
+                                            :
+                                            notFound)
                                       }
-                                      checkedIcon={
-                                        <LocalMallIcon
-                                          sx={{ fontSize: "22px", color: "#f0d85e" }}
-                                        />
-                                      }
-                                      disableRipple={true}
-                                      sx={{ padding: "5px" }}
-
-                                      checked={products?.checkFlag}
-                                      onChange={(e) => handelCartList(e, products)}
+                                      // src={
+                                      //   hoveredImageUrls[i] ? hoveredImageUrls[i] : updatedColorImage[i] ? updatedColorImage[i] :
+                                      //     (products?.MediumImagePath ?
+                                      //       (globImagePath + products?.MediumImagePath?.split(",")[0])
+                                      //       :
+                                      //       notFound)
+                                      // }
+                                      onMouseEnter={() => handleHoverImageShow(i, storeInitData?.DesignImageFol, products?.DesignFolderName, storeInitData?.ImgMe, products?.RollOverImageName)}
+                                      // onMouseEnter={() => handleHoverImageShow(products?.MediumImagePath?.split(",")[0], i, products?.RollOverImageName, globImagePath)}
+                                      // onMouseEnter={() => handleHoverImageShow(products?.MediumImagePath?.split(",")[0], i, isColorWiseImageShow === 1 ? products?.ColorWiseRollOverImageName : products?.RollOverImageName, products?.imagepath)}
+                                      onMouseLeave={() => handleMouseLeave(i)}
+                                      style={{ objectFit: 'cover' }}
+                                      alt="#"
+                                      onError={(e) => {
+                                        e.target.src = notFound;
+                                      }}
+                                      onClick={() => handelProductSubmit(products)}
                                     />
-                                  </div>
-                                  <div className="wishlist-icon">
-                                    <Checkbox
-                                      icon={
-                                        <FavoriteBorderIcon
-                                          sx={{ fontSize: "22px", color: "#1f1919", opacity: '.7' }}
-                                        />
-                                      }
-                                      checkedIcon={
-                                        <FavoriteIcon
-                                          sx={{ fontSize: "22px", color: "#e31b23" }}
-                                        />
-                                      }
-                                      disableRipple={true}
-                                      sx={{ padding: "5px" }}
+                                    <div className="cart-icon">
+                                      <Checkbox
+                                        icon={
+                                          <LocalMallOutlinedIcon
+                                            sx={{ fontSize: "22px", color: "#1f1919", opacity: '.7' }}
+                                          />
+                                        }
+                                        checkedIcon={
+                                          <LocalMallIcon
+                                            sx={{ fontSize: "22px", color: "#f0d85e" }}
+                                          />
+                                        }
+                                        disableRipple={true}
+                                        sx={{ padding: "5px" }}
 
-                                      checked={products?.wishCheck}
-                                      onChange={(e) => handelWishList(e, products)}
-                                    />
+                                        checked={products?.checkFlag}
+                                        onChange={(e) => handelCartList(e, products)}
+                                      />
+                                    </div>
+                                    <div className="wishlist-icon">
+                                      <Checkbox
+                                        icon={
+                                          <FavoriteBorderIcon
+                                            sx={{ fontSize: "22px", color: "#1f1919", opacity: '.7' }}
+                                          />
+                                        }
+                                        checkedIcon={
+                                          <FavoriteIcon
+                                            sx={{ fontSize: "22px", color: "#e31b23" }}
+                                          />
+                                        }
+                                        disableRipple={true}
+                                        sx={{ padding: "5px" }}
+
+                                        checked={products?.wishCheck}
+                                        onChange={(e) => handelWishList(e, products)}
+                                      />
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
-                              <div className={show4ImagesView ? 'listing4-details' : "listing-details"} onClick={() => handelProductSubmit(products)}>
-                                <p className={show4ImagesView ? "productDetails property4-type" : "productDetails property-type"} style={{ textAlign: 'center', margin: '5px' }}>
-                                  {products?.TitleLine}
-                                </p>
-                                <div>
-                                  {/* {isPriceShow === 1 &&
+                                <div className={show4ImagesView ? 'listing4-details' : "listing-details"} onClick={() => handelProductSubmit(products)}>
+                                  <p className={show4ImagesView ? "productDetails property4-type" : "productDetails property-type"} style={{ textAlign: 'center', margin: '5px' }}>
+                                    {products?.TitleLine}
+                                  </p>
+                                  <div>
+                                    {/* {isPriceShow === 1 &&
                                 <p className={show4ImagesView ? "productDetails price4" : "productDetails price"}>{currencySym?.Currencysymbol}
                                   {((products?.UnitCost ?? 0) + (products?.price ?? 0) + (products?.markup ?? 0)).toFixed(2)}</p>
                               }
@@ -2882,39 +2896,39 @@ const ProductList = () => {
                                 />
                                 <p className="productDetails address"> {isMetalTCShow === 1 && products?.MetalTypeName}-{products?.MetalColorName}{products?.MetalPurity}</p>
                               </span> */}
+                                  </div>
                                 </div>
-                              </div>
-                              <div className={show4ImagesView ? "listing-features4" : "listing-features"}>
-                                <div>
-                                  {ismetalWShow === 1 &&
-                                    <div className={show4ImagesView ? "feature4" : 'feature'}>
-                                      <p>
-                                        <span className="feature-count">NWT :
-                                        </span> {parseFloat(products?.updNWT).toFixed(2)}
-                                      </p>
-                                    </div>
-                                  }
+                                <div className={show4ImagesView ? "listing-features4" : "listing-features"}>
+                                  <div>
+                                    {ismetalWShow === 1 &&
+                                      <div className={show4ImagesView ? "feature4" : 'feature'}>
+                                        <p>
+                                          <span className="feature-count">NWT :
+                                          </span> {parseFloat(products?.updNWT).toFixed(2)}
+                                        </p>
+                                      </div>
+                                    }
 
-                                  {(isDaaimongWShow === 1 && (products?.diamondweight !== 0 || products?.diamondpcs !== 0)) &&
-                                    <div className={show4ImagesView ? "feature4" : 'feature'}>
-                                      <p>
-                                        <span className="feature-count">DWT : </span>
-                                        {(isDaaimongWShow === 1 && products?.diamondweight !== 0) && products?.updDWT + '/'}  {(isDaaimonPShow === 1 && products?.diamondpcs !== 0) && products?.updDPCS}</p>
-                                    </div>
-                                  }
+                                    {(isDaaimongWShow === 1 && (products?.diamondweight !== 0 || products?.diamondpcs !== 0)) &&
+                                      <div className={show4ImagesView ? "feature4" : 'feature'}>
+                                        <p>
+                                          <span className="feature-count">DWT : </span>
+                                          {(isDaaimongWShow === 1 && products?.diamondweight !== 0) && products?.updDWT + '/'}  {(isDaaimonPShow === 1 && products?.diamondpcs !== 0) && products?.updDPCS}</p>
+                                      </div>
+                                    }
 
-                                  {isGrossWShow === 1 &&
-                                    <div className={show4ImagesView ? "feature4" : 'feature'}>
-                                      <p style={{ margin: '0px 0px 0px 8px' }}>
-                                        <span className="feature-count">GWT : </span> {parseFloat(products?.updGWT).toFixed(2)}
-                                      </p>
-                                    </div>
-                                  }
-                                </div>
-                                {/* <div className="mobileDeatilDiv2" style={{ display: 'flex', justifyContent: 'center', height: '20px' }}> */}
+                                    {isGrossWShow === 1 &&
+                                      <div className={show4ImagesView ? "feature4" : 'feature'}>
+                                        <p style={{ margin: '0px 0px 0px 8px' }}>
+                                          <span className="feature-count">GWT : </span> {parseFloat(products?.updGWT).toFixed(2)}
+                                        </p>
+                                      </div>
+                                    }
+                                  </div>
+                                  {/* <div className="mobileDeatilDiv2" style={{ display: 'flex', justifyContent: 'center', height: '20px' }}> */}
 
 
-                                {/* <div className="mobileDeatilDiv2" style={{ display: 'flex', justifyContent: 'center', height: '20px' }}>
+                                  {/* <div className="mobileDeatilDiv2" style={{ display: 'flex', justifyContent: 'center', height: '20px' }}>
                               {((isDaaimongWShow || isDaaimongWShow) === 1 && (products?.diamondweight !== 0 || products?.diamondpcs !== 0)) && <div>
                                 <p style={{ margin: '0px', fontSize: '13px' }}>DWT : <span style={{ fontWeight: 600, marginRight: '10px' }}>{(isDaaimongWShow === 1 && products?.diamondweight !== 0) && products?.updDWT + '/'}  {(isDaaimonPShow === 1 && products?.diamondpcs !== 0) && products?.updDPCS}</span></p>
                               </div>
@@ -2926,40 +2940,40 @@ const ProductList = () => {
                               </div>}
                             </div> */}
 
-                                <div>
-                                  <div className={show4ImagesView ? "feature4" : 'feature'}>
-                                    <p>
-                                      <span className="feature-count">{products?.designno}</span>
-                                    </p>
-                                  </div>
-                                  <p style={{ display: 'flex', margin: '0px' }}>
-                                    {/* {products?.MetalTypeName} - */}
-                                    {/* {isMetalTCShow === 1 && <span>
+                                  <div>
+                                    <div className={show4ImagesView ? "feature4" : 'feature'}>
+                                      <p>
+                                        <span className="feature-count">{products?.designno}</span>
+                                      </p>
+                                    </div>
+                                    <p style={{ display: 'flex', margin: '0px' }}>
+                                      {/* {products?.MetalTypeName} - */}
+                                      {/* {isMetalTCShow === 1 && <span>
                                   {products?.updMC} -
                                   {products?.updMT} /
                                 </span>} */}
-                                    {isPriceShow === 1 &&
-                                      <div className={show4ImagesView ? "feature4" : 'feature'}>
-                                        <p>
-                                          <span className="feature-count" style={{ display: 'flex' }}>
-                                            <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />
-                                            {PriceWithMarkupFunction(products?.markup, products?.price, currData?.CurrencyRate)?.toFixed(2)}</span>
-                                        </p>
-                                      </div>
-                                    }
+                                      {isPriceShow === 1 &&
+                                        <div className={show4ImagesView ? "feature4" : 'feature'}>
+                                          <p>
+                                            <span className="feature-count" style={{ display: 'flex' }}>
+                                              <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />
+                                              {PriceWithMarkupFunction(products?.markup, products?.price, currData?.CurrencyRate)?.toFixed(2)}</span>
+                                          </p>
+                                        </div>
+                                      }
 
+                                    </p>
+                                  </div>
+                                </div>
+                                <div>
+                                  <p className="property-type" style={{ margin: '0px 0px 10px 8px' }}>
+                                    {isMetalTCShow === 1 && <span>
+                                      {products?.updMC} -
+                                      {products?.updMT}
+                                    </span>}
                                   </p>
                                 </div>
-                              </div>
-                              <div>
-                                <p className="property-type" style={{ margin: '0px 0px 10px 8px' }}>
-                                  {isMetalTCShow === 1 && <span>
-                                    {products?.updMC} -
-                                    {products?.updMT}
-                                  </span>}
-                                </p>
-                              </div>
-                              {/* <div style={{ position: "absolute", zIndex: 999999, top: 0, right: 0, display: 'flex' }}>
+                                {/* <div style={{ position: "absolute", zIndex: 999999, top: 0, right: 0, display: 'flex' }}>
                             <div>
                               <Checkbox
                                 icon={
@@ -3002,53 +3016,54 @@ const ProductList = () => {
                               />
                             </div>
                           </div> */}
-                              {isColorWiseImageShow == 1 && (
-                                <div
-                                  style={{
-                                    display: "flex",
-                                    gap: "8px",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    marginBottom: "12px",
-                                  }}
-                                >
+                                {isColorWiseImageShow == 1 && (
                                   <div
                                     style={{
-                                      width: "9px",
-                                      height: "9px",
-                                      backgroundColor: "#c8c8c8",
-                                      borderRadius: "50%",
-                                      cursor: 'pointer'
+                                      display: "flex",
+                                      gap: "8px",
+                                      justifyContent: "center",
+                                      alignItems: "center",
+                                      marginBottom: "12px",
                                     }}
-                                    onClick={() => handleColorSelection(products, i, 'WHITE GOLD')}
-                                  ></div>
-                                  <div
-                                    style={{
-                                      width: "9px",
-                                      height: "9px",
-                                      backgroundColor: "#ffcfbc",
-                                      borderRadius: "50%",
-                                      cursor: 'pointer'
-                                    }}
-                                    onClick={(e) => handleColorSelection(products, i, 'ROSE GOLD')}
-                                  ></div>
-                                  <div
-                                    style={{
-                                      width: "9px",
-                                      height: "9px",
-                                      backgroundColor: "#e0be77",
-                                      borderRadius: "50%",
-                                      cursor: 'pointer'
-                                    }}
-                                    onClick={(e) => handleColorSelection(products, i, 'YELLOW GOLD')}
                                   >
+                                    <div
+                                      style={{
+                                        width: "9px",
+                                        height: "9px",
+                                        backgroundColor: "#c8c8c8",
+                                        borderRadius: "50%",
+                                        cursor: 'pointer'
+                                      }}
+                                      onClick={() => handleColorSelection(products, i, 'WHITE GOLD')}
+                                    ></div>
+                                    <div
+                                      style={{
+                                        width: "9px",
+                                        height: "9px",
+                                        backgroundColor: "#ffcfbc",
+                                        borderRadius: "50%",
+                                        cursor: 'pointer'
+                                      }}
+                                      onClick={(e) => handleColorSelection(products, i, 'ROSE GOLD')}
+                                    ></div>
+                                    <div
+                                      style={{
+                                        width: "9px",
+                                        height: "9px",
+                                        backgroundColor: "#e0be77",
+                                        borderRadius: "50%",
+                                        cursor: 'pointer'
+                                      }}
+                                      onClick={(e) => handleColorSelection(products, i, 'YELLOW GOLD')}
+                                    >
+                                    </div>
                                   </div>
-                                </div>
-                              )}
+                                )}
+                              </div>
                             </div>
-                          </div>
-                        ))}
-                      </div>
+                          ))}
+                        </div>
+                      }
                     </div>
                     {/* :
                   <div style={{
@@ -3063,7 +3078,7 @@ const ProductList = () => {
                   </div>
                 } */}
                   </div>
-                  <div style={{ display: 'flex', width: '100%', justifyContent: 'center', marginTop: '100px', marginBottom:'50px' }}>
+                  <div style={{ display: 'flex', width: '100%', justifyContent: 'center', marginTop: '100px', marginBottom: '50px' }}>
                     <Pagination count={Math.ceil(prodCount / prodPageSize)} onChange={handlePageChange} />
                   </div>
                   {/* <SmilingRock /> */}
@@ -3071,12 +3086,14 @@ const ProductList = () => {
                 </div>
               </div>
             ) :
-              <div className="" style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
-                <Card>
+              <div className="" style={{ margin: '50px 0px 50px 0px' }}>
+                <Card style={{ boxShadow: 'none' }}>
                   <CardContent>
-                    <Typography variant="body1" align="center">
-                      No Products Found
-                    </Typography>
+                    <div style={{ display: 'flex', justifyContent: 'center' }}>
+                      <img src="https://i.gifer.com/7jM3.gif" alt="No Products Found" style={{ maxWidth: '100%', height: 'auto' }} />
+                    </div>
+                    <Typography sx={{ color: '#a2a2a2' }} variant="h3" align="center">No Products Found</Typography>
+                    <Typography sx={{ color: '#a2a2a2' }} variant="h6" align="center">Your search did not match any products. Please try again.</Typography>
                   </CardContent>
                 </Card>
               </div>
