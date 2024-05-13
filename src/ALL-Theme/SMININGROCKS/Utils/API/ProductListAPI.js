@@ -149,9 +149,11 @@ export const productListApiCall = async(param,page=1,filterObj={}) =>{
 
 
     let prodCount;
+    let autoCodeList;
     await CommonAPI(body).then((res) => {
         let pdData = res?.Data.rd;
         prodCount = res?.Data?.rd1[0]?.designcount
+        autoCodeList = res?.Data?.rd1[0]?.AutoCodeList
         pdData?.forEach(p => {
             const mergedItem = {};
             for (let key in p) {
@@ -177,6 +179,7 @@ export const productListApiCall = async(param,page=1,filterObj={}) =>{
     
     localStorage.setItem("allproductlist", JSON.stringify(pdList));
     localStorage.setItem("allproductcount", JSON.stringify(prodCount));
+    localStorage.setItem("autoCodeList", JSON.stringify(autoCodeList));
     // localStorage.setItem("CategoryFilter",JSON.stringify(CategoryFilter));
     // localStorage.setItem("ProductTypeFilter",JSON.stringify(ProductTypeFilter));
     // localStorage.setItem("GenderFilter",JSON.stringify(GenderFilter));

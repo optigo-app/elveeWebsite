@@ -1035,22 +1035,31 @@ const ProductList = () => {
         if (res) {
           getProductData()
         }
-      })
-    }
+        return res
+      }).then(async(res)=>{
+        if(res){
+          console.log("resProduct",res?.map((item)=>item?.autocode))
+          let autoCodeList = JSON.parse(localStorage.getItem("autoCodeList"))
+          let metalTypeId = findMetalTypeId(mtTypeOption)[0]?.Metalid
+          let DiaQCid = [findDiaQcId(diaQColOpt)[0]?.QualityId, findDiaQcId(diaQColOpt)[0]?.ColorId]
+          let CsQcid = [findCsQcId(cSQopt)[0]?.QualityId, findCsQcId(cSQopt)[0]?.ColorId]
+      
+          let obj = { mt: metalTypeId, dqc: DiaQCid, csqc: CsQcid }
 
-    let metalTypeId = findMetalTypeId(mtTypeOption)[0]?.Metalid
-    let DiaQCid = [findDiaQcId(diaQColOpt)[0]?.QualityId, findDiaQcId(diaQColOpt)[0]?.ColorId]
-    let CsQcid = [findCsQcId(cSQopt)[0]?.QualityId, findCsQcId(cSQopt)[0]?.ColorId]
-
-    let obj = { mt: metalTypeId, dqc: DiaQCid, csqc: CsQcid  }
-
-    if(param && output && metalTypeId && DiaQCid && CsQcid){
-      await getDesignPriceList(param,1,obj ,output).then(res => {
-        if(res) {
-          getProdPriceData()
+         console.log("autoCodeList",typeof(autoCodeList))
+      
+          
+            await getDesignPriceList(param,1,obj ,output,autoCodeList).then(resp => {
+              if(resp) {
+                getProdPriceData()
+              }
+            })
+          
         }
       })
     }
+
+    
 
   }
   console.log("apiCalling",filterChecked)
@@ -2109,9 +2118,10 @@ const ProductList = () => {
     console.log("obj11",obj)
 
     let param = JSON.parse(localStorage.getItem("menuparams"))
+    let autoCodeList = JSON.parse(localStorage.getItem("autoCodeList"))
 
     // if(param && currentPage && metalTypeId && DiaQCid && CsQcid){
-      await getDesignPriceList(param, currentPage, obj).then(res => {
+      await getDesignPriceList(param, currentPage, obj,{},autoCodeList).then(res => {
         if(res){
           getProdPriceData()
         }
@@ -2143,8 +2153,9 @@ const ProductList = () => {
       return res
     }).then(async (res) => {
       if (res) {
+        let autoCodeList = JSON.parse(localStorage.getItem("autoCodeList"))
         console.log("priceCall1");
-        await getDesignPriceList(param, value, obj)
+        await getDesignPriceList(param, value, obj,{},autoCodeList)
         return res
       }
     }).then((res) => {
