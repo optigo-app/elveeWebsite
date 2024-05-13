@@ -1,7 +1,8 @@
 import { CommonAPI } from "./CommonAPI";
 
-export const getDesignPriceList = async (param,page=1,obj,filterObj={}) => {
+export const getDesignPriceList = async (param,page=1,obj={},filterObj={},autocodeList) => {
 
+  // console.log("mtid",param,page,obj,filterObj,autocodeList)
   
   
   const storeInit = JSON.parse(localStorage.getItem("storeInit"))
@@ -12,7 +13,6 @@ export const getDesignPriceList = async (param,page=1,obj,filterObj={}) => {
   let diaqcId = obj?.dqc?.length > 0  && obj?.dqc[0] !== undefined && obj?.dqc[1] !== undefined ? `${obj?.dqc[0]},${obj?.dqc[1]}` :loginUserDetail?.cmboDiaQCid
   let csqcId = obj?.csqc?.length > 0 && obj?.csqc[0] !== undefined && obj?.csqc[1] !== undefined ? `${obj?.csqc[0]},${obj?.csqc[1]}` :loginUserDetail?.cmboCSQCid
 
-  console.log("mtid",mtid)
   
   
   let encodedFilter = {
@@ -46,7 +46,8 @@ export const getDesignPriceList = async (param,page=1,obj,filterObj={}) => {
     "Min_NetWt": '',
     "Max_Price": '',
     "Min_Price": '',
-    "Producttypeid": `${filterObj?.Producttypeid ?? ""}`
+    "Producttypeid": `${filterObj?.Producttypeid ?? ""}`,
+    "AutoCodeList":`${autocodeList}`
   }
 
   console.log("log11",encodedFilter)
