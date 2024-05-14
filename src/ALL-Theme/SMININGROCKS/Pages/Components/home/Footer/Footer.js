@@ -56,26 +56,26 @@ export default function Footer() {
                         <button className='elevBox1Btn' onClick={handleSubmitNewlater}>Subscribe</button>
                     </div>
                     <div className='footerIconMain'>
-                        <a href="https://twitter.com">
+                        {/* <a href="#"> */}
                             <div className='footerSocialIcon'>
                                 <FaTwitter style={{ fontSize: '20px', color: '#7d7f85' }} />
                             </div>
-                        </a>
-                        <a href="https://facebook.com">
+                        {/* </a> */}
+                        {/* <a href="#"> */}
                             <div className='footerSocialIcon'>
                                 <FaFacebookF style={{ fontSize: '20px', color: '#7d7f85' }} />
                             </div>
-                        </a>
-                        <a href="https://youtube.com">
+                        {/* </a> */}
+                        {/* <a href="#"> */}
                             <div className='footerSocialIcon'>
                                 <FaYoutube style={{ fontSize: '20px', color: '#7d7f85' }} />
                             </div>
-                        </a>
-                        <a href="https://instagram.com">
+                        {/* </a> */}
+                        {/* <a href="#"> */}
                             <div className='footerSocialIcon'>
                                 <AiFillInstagram style={{ fontSize: '20px', color: '#7d7f85' }} />
                             </div>
-                        </a>
+                        {/* </a> */}
                     </div>
 
                 </div>
