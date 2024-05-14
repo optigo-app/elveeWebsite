@@ -2611,7 +2611,8 @@ const ProductList = () => {
                                   flexDirection: "column",
                                   gap: "4px",
                                   // ...(ele.label.length > 10 && {
-                                  height: '300px',
+                                  minHeight: 'fit-content',
+                                  maxHeight: '300px',
                                   overflow: 'auto',
                                   // }),
                                 }}
