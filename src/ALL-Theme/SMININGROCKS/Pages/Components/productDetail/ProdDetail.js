@@ -20,7 +20,7 @@ import playVidoe from '../../assets/paly.png'
 import { IoIosPlayCircle } from "react-icons/io";
 import { getDesignPriceList } from '../../../Utils/API/PriceDataApi'
 import { FullProInfoAPI } from '../../../Utils/API/FullProInfoAPI'
-import { findDiaQcId, findMetalTypeId, findValueFromId } from '../../../Utils/globalFunctions/GlobalFunction'
+import { findCsQcId, findDiaQcId, findMetalTypeId, findValueFromId } from '../../../Utils/globalFunctions/GlobalFunction'
 
 const ProdDetail = () => {
 
@@ -100,6 +100,7 @@ const ProdDetail = () => {
 
   const [storeInitData, setStoreInitData] = useState({})
   const [productThumImg, setProductThumImg] = useState([]);
+  const [srProdPriceData,setSrProdPriceData] = useState();
 
 
   useEffect(() => {
@@ -136,6 +137,13 @@ const ProdDetail = () => {
   }, [mtColorName]);
 
   console.log('mtPurity', mtPurity);
+
+  useEffect(()=>{
+    setTimeout(()=>{
+      let srpriceDataInfo = JSON.parse(localStorage.getItem("srProdPriceInfo"))
+      setSrProdPriceData(srpriceDataInfo)
+    },100)
+  },[])
 
   //   const handelCurrencyData = () =>{
   //     let currencyData = JSON.parse(localStorage.getItem('CURRENCYCOMBO'));
@@ -222,16 +230,35 @@ const ProdDetail = () => {
   }, [])
 
 
+  console.log("srProdPriceData",srProdPriceData)
+  
+  // function findDiaQcIdhere(param) {
+  //   console.log("findDiaQcIdhere", param);
+
+  //   let diaQCArr = JSON.parse(localStorage.getItem("QualityColor"))
+  //   let quality = param.split("#")[0]
+  //   let color = param.split("#")[1]
+
+  //   let item = diaQCArr?.filter(ele => ele?.Quality == quality && ele?.color == color)
+    
+  //   return item
+  //  }
+
+  console.log("metalType",mtTypeOption)
 
   useEffect(() => {
 
+    console.log("findDiaQCId",findDiaQcId(diaQColOpt)[0]?.QualityId)
+    
     let loginInfo = JSON.parse(localStorage.getItem("loginUserDetail"))
     let ColorStoneQualityColor = JSON.parse(localStorage.getItem("ColorStoneQualityColor"))
     let DimondQualityColor = JSON.parse(localStorage.getItem("QualityColor"))
     let MetalTypeData = JSON.parse(localStorage.getItem("MetalTypeData"))
 
-    if (loginInfo?.MetalId !== 0) {
-      let metalType = MetalTypeData?.find(item => item?.Metalid == loginInfo?.MetalId)
+    if (srProdPriceData?.mtTypeOption) {
+      let metalType = MetalTypeData?.find(item => item?.Metalid == findMetalTypeId(srProdPriceData?.mtTypeOption)[0]?.Metalid)
+
+      
 
       setmtTypeOption(metalType?.metaltype)
       setmtTypeOptionId(metalType?.Metalid)
@@ -243,8 +270,8 @@ const ProdDetail = () => {
 
     }
 
-    let diaQCVar = DimondQualityColor?.find(item => item.QualityId == loginInfo?.cmboDiaQCid?.split(',')[0] && item.ColorId == loginInfo?.cmboDiaQCid?.split(',')[1]);
-    if (loginInfo?.cmboDiaQCid !== "0,0") {
+    if (srProdPriceData?.diaQColOpt) {
+      let diaQCVar = DimondQualityColor?.find(item => (item.QualityId == findDiaQcId(srProdPriceData?.diaQColOpt)[0]?.QualityId) && (item.ColorId == findDiaQcId(srProdPriceData?.diaQColOpt)[0]?.ColorId));
       // let qualityColor = `${loginInfo?.cmboDiaQualityColor.split("#@#")[0]?.toUpperCase()}#${loginInfo?.cmboDiaQualityColor.split("#@#")[1]?.toUpperCase()}`
       let qualityColor = `${diaQCVar?.Quality}#${diaQCVar?.color}`
       setDiaQColOpt(qualityColor)
@@ -261,8 +288,8 @@ const ProdDetail = () => {
 
     // let dqcc = ColorStoneQualityColor?.find((dqc) => `${dqc.Quality}-${dqc.color}` === csQualColor)
 
-    if (loginInfo?.cmboCSQCid !== "0,0") {
-      let csQCVar = ColorStoneQualityColor?.find(item => item?.QualityId === loginInfo?.cmboCSQCid?.split(',')[0] && item?.ColorId === loginInfo?.cmboCSQCid?.split(',')[1])
+    if (srProdPriceData?.cSQopt) {
+      let csQCVar = ColorStoneQualityColor?.find(item => item?.QualityId === findCsQcId(srProdPriceData?.cSQopt)[0]?.QualityId && item?.ColorId === findCsQcId(srProdPriceData?.cSQopt)[0]?.ColorId)
       let csQualColor = `${csQCVar?.QualityId}-${csQCVar?.ColorId}`
       setCSQOpt(csQualColor)
       setCSQOptId([csQCVar?.QualityId, csQCVar?.ColorId])
@@ -280,7 +307,7 @@ const ProdDetail = () => {
 
     // setSizeOption(sizeData[1]?.id)
 
-  }, [colorData, sizeData])
+  }, [colorData, sizeData,srProdPriceData])
 
   // console.log("info", mtTypeOption, diaQColOpt, cSQopt);
 
@@ -1680,7 +1707,7 @@ const ProdDetail = () => {
                       :
                       <select
                         className='menuitemSelectoreMain'
-                        defaultValue={mtTypeOption}
+                        value={mtTypeOption}
                         onChange={(e) => {
                           let findMTtypeID = findMetalTypeId(e.target.value)[0]?.Metalid
                           console.log("findMTtypeID", findMTtypeID);
@@ -1766,7 +1793,7 @@ const ProdDetail = () => {
                       :
                       <select
                         className='menuitemSelectoreMain'
-                        defaultValue={diaQColOpt}
+                        value={diaQColOpt}
                         onChange={(e) => {
                           let findDCqc = findDiaQcId(e.target.value);
                           console.log("findDCqc", findDCqc);
@@ -1822,7 +1849,7 @@ const ProdDetail = () => {
                           <select
                             className='menuitemSelectoreMain'
                             onChange={(e) => setCSQOpt(e.target.value)}
-                            defaultValue={cSQopt}
+                            value={cSQopt}
                           >
                             {DaimondQualityColor.map((data, index) => (
                               <option
@@ -1902,7 +1929,7 @@ const ProdDetail = () => {
                         color: "#7d7f85",
                         fontSize: "12.5px",
                       }}
-                      defaultValue={mtTypeOption}
+                      value={mtTypeOption}
                       onChange={(e) => setmtTypeOption(e.target.value)}
                     >
                       {metalType.map((data, index) => (
@@ -1937,6 +1964,7 @@ const ProdDetail = () => {
                           fontSize: "12.5px",
                         }}
                         onChange={(e) => handleColorSelection(e.target.value)}
+                        defaultValue={mtrdData?.F}
                       >
                         {metalColorData.map((colorItem) => (
                           <option key={colorItem.ColorId} value={colorItem.metalcolorname}>
@@ -1969,7 +1997,7 @@ const ProdDetail = () => {
                         color: "#7d7f85",
                         fontSize: "12.5px",
                       }}
-                      defaultValue={diaQColOpt}
+                      value={diaQColOpt}
                       onChange={(e) => setDiaQColOpt(e.target.value)}
                     >
                       {colorData?.map((colorItem) => (
@@ -2004,7 +2032,7 @@ const ProdDetail = () => {
                           fontSize: "12.5px",
                         }}
                         onChange={(e) => setCSQOpt(e.target.value)}
-                        defaultValue={cSQopt}
+                        value={cSQopt}
                       >
                         {DaimondQualityColor.map((data, index) => (
                           <option key={index} value={`${data.Quality}-${data.color}`} >

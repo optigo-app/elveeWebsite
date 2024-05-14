@@ -193,8 +193,8 @@ export function formatAmount(amount) {
 
 export function storImagePath() {
         let storeinit = JSON.parse(localStorage.getItem("storeInit"))
-        // return `${storeinit?.UploadLogicalPath}/${storeinit?.ukey}/${storeinit?.ufcc}`
-        return 'https://cdnfs.optigoapps.com/content-global3/elveesterKGYLM5CREI9H2XBNT/elveester'
+        return `${storeinit?.UploadLogicalPath}/${storeinit?.ukey}/${storeinit?.ufcc}`
+        // return 'https://cdnfs.optigoapps.com/content-global3/elveesterKGYLM5CREI9H2XBNT/elveester'
 }
 
 export function findMetalType(paramId) {
@@ -223,7 +223,7 @@ export function findDiaQcId(param) {
     let color = param.split("#")[1]
 
     let item = diaQCArr?.filter(ele => ele?.Quality == quality && ele?.color == color)
-    console.log("param", item);
+    
     return item
 }
 

@@ -56,26 +56,26 @@ export default function Footer() {
                         <button className='elevBox1Btn' onClick={handleSubmitNewlater}>Subscribe</button>
                     </div>
                     <div className='footerIconMain'>
-                        <a href="https://twitter.com">
+                        {/* <a href="#"> */}
                             <div className='footerSocialIcon'>
                                 <FaTwitter style={{ fontSize: '20px', color: '#7d7f85' }} />
                             </div>
-                        </a>
-                        <a href="https://facebook.com">
+                        {/* </a> */}
+                        {/* <a href="#"> */}
                             <div className='footerSocialIcon'>
                                 <FaFacebookF style={{ fontSize: '20px', color: '#7d7f85' }} />
                             </div>
-                        </a>
-                        <a href="https://youtube.com">
+                        {/* </a> */}
+                        {/* <a href="#"> */}
                             <div className='footerSocialIcon'>
                                 <FaYoutube style={{ fontSize: '20px', color: '#7d7f85' }} />
                             </div>
-                        </a>
-                        <a href="https://instagram.com">
+                        {/* </a> */}
+                        {/* <a href="#"> */}
                             <div className='footerSocialIcon'>
                                 <AiFillInstagram style={{ fontSize: '20px', color: '#7d7f85' }} />
                             </div>
-                        </a>
+                        {/* </a> */}
                     </div>
 
                 </div>
@@ -98,7 +98,7 @@ export default function Footer() {
                     <p className='ElevFooterBoxTitle'>Office</p>
                     <div style={{ display: 'flex' }}>
                         <p className='ElevBox4Title' onClick={() => setSelectedVal(0)} style={{ textDecoration: selectedFooteVal === 0 && 'underline' }}>INDIA</p>
-                        <p className='ElevBox4Title' onClick={() => setSelectedVal(1)} style={{ textDecoration: selectedFooteVal === 1 && 'underline', marginLeft: '50px' }}>USA</p>
+                        {/* <p className='ElevBox4Title' onClick={() => setSelectedVal(1)} style={{ textDecoration: selectedFooteVal === 1 && 'underline', marginLeft: '50px' }}>USA</p> */}
                     </div>
                     {
                         selectedFooteVal === 0 ?
