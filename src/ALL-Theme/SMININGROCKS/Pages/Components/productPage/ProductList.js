@@ -146,7 +146,7 @@ const ProductList = () => {
 
   console.log('diaQColOpt', diaQColOpt);
 
-  // console.log("mttypeoption", mtTypeOption, diaQColOpt, cSQopt);
+  console.log("mttypeoption", mtTypeOption, diaQColOpt, cSQopt);
 
 
   //   const handelCurrencyData = () =>{
@@ -857,6 +857,9 @@ const ProductList = () => {
 
   const handelProductSubmit = (product) => {
     localStorage.setItem("srProductsData", JSON.stringify(product));
+    if(mtTypeOption && diaQColOpt && cSQopt){
+      localStorage.setItem("srProdPriceInfo",JSON.stringify({mtTypeOption, diaQColOpt, cSQopt}))
+    }
     navigate("/productdetail");
   };
 
