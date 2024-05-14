@@ -11,7 +11,9 @@ export default function Confirmation() {
     useEffect(() => {
         let orderNum = localStorage.getItem('orderNumber');
         setOrderNumber(orderNum);
+        window.scrollTo(0, 0);
     }, [])
+
 
     return (
         <div className='paddingTopMobileSet'>

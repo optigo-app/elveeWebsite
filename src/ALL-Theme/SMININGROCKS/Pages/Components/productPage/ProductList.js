@@ -138,6 +138,7 @@ const ProductList = () => {
   const [prodCount, setProdCount] = useState(0)
   const [storeInitData, setStoreInitData] = useState({})
   const [currentPage, setCurrentPage] = useState(1)
+  const [addToCartFlag, setAddToCartFlag] = useState(false)
 
   const getMenuTransData = useRecoilValue(menuTransfData)
 
@@ -1267,7 +1268,7 @@ const ProductList = () => {
           "UnitCostWithmarkup": Number(`${(product?.price === "Not Available" ? 0 : product?.price) + (product?.markup ?? 0)}`),
           "autocode": `${product?.autocode}`,
           "colorstonecolorname": `${cSQopt?.split('-')[1] ?? ""}`,
-          "colorstonequality": `${cSQopt?.split('-')[0]?? ""}`,
+          "colorstonequality": `${cSQopt?.split('-')[0] ?? ""}`,
           "designno": `${product?.designno}`,
           "diamondcolorname": `${diaQColOpt.split("#")[1]}`,
           "diamondpcs": Number(`${product?.updDPCS}`),
@@ -1423,7 +1424,7 @@ const ProductList = () => {
           "UnitCost": Number(`${product?.price === "Not Available" ? 0 : product?.price}`),
           "UnitCostWithmarkup": Number(`${(product?.price === "Not Available" ? 0 : product?.price) + (product?.markup ?? 0)}`),
           "colorstonecolorname": `${cSQopt?.split('-')[1] ?? ""}`,
-          "colorstonequality": `${cSQopt?.split('-')[0]?? ""}`,
+          "colorstonequality": `${cSQopt?.split('-')[0] ?? ""}`,
           "diamondcolorname": `${JSON.parse(localStorage.getItem("loginUserDetail"))?.cmboDiaQualityColor.split("#@#")[1]}`,
           "diamondpcs": Number(`${product?.updDPCS}`),
           "diamondquality": `${JSON.parse(localStorage.getItem("loginUserDetail"))?.cmboDiaQualityColor.split("#@#")[0]}`,
@@ -1743,23 +1744,23 @@ const ProductList = () => {
         getProductData()
       }
       return res
-    }).then(async(res)=>{
-      if(res){
-        console.log("resProduct",res?.map((item)=>item?.autocode))
+    }).then(async (res) => {
+      if (res) {
+        console.log("resProduct", res?.map((item) => item?.autocode))
         let autoCodeList = JSON.parse(localStorage.getItem("autoCodeList"))
         let metalTypeId = findMetalTypeId(mtTypeOption)[0]?.Metalid
         let DiaQCid = [findDiaQcId(diaQColOpt)[0]?.QualityId, findDiaQcId(diaQColOpt)[0]?.ColorId]
         let CsQcid = [findCsQcId(cSQopt)[0]?.QualityId, findCsQcId(cSQopt)[0]?.ColorId]
-    
+
         let obj = { mt: metalTypeId, dqc: DiaQCid, csqc: CsQcid }
-    
-        
-          await getDesignPriceList(param,1,obj ,{},autoCodeList).then(resp => {
-            if(resp) {
-              getProdPriceData()
-            }
-          })
-        
+
+
+        await getDesignPriceList(param, 1, obj, {}, autoCodeList).then(resp => {
+          if (resp) {
+            getProdPriceData()
+          }
+        })
+
       }
     })
     // setNewProData(ProductApiData2);  
@@ -1882,7 +1883,7 @@ const ProductList = () => {
 
   const list = (anchor) => (
     <Box
-      sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 , marginInline: '10px' }}
+      sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250, marginInline: '10px' }}
       role="presentation"
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
@@ -2046,7 +2047,6 @@ const ProductList = () => {
                         style={{
                           fontFamily: 'TT Commons, sans-serif',
                           color: '#7f7d85',
-                          textTransform: 'lowercase',
                         }}
                       >
                         {flist.label}
@@ -2601,8 +2601,10 @@ const ProductList = () => {
                                   display: "flex",
                                   flexDirection: "column",
                                   gap: "4px",
+                                  // ...(ele.label.length > 10 && {
                                   height: '300px',
-                                  overflow: 'auto'
+                                  overflow: 'auto',
+                                  // }),
                                 }}
                               >
                                 {/* {ele.label === "PRICE" &&
@@ -2703,7 +2705,6 @@ const ProductList = () => {
                                       style={{
                                         fontFamily: "TT Commons, sans-serif",
                                         color: "#7f7d85",
-                                        textTransform: "lowercase",
                                       }}
                                     >
                                       {flist.label}
@@ -2943,20 +2944,6 @@ const ProductList = () => {
                                     {products?.TitleLine}
                                   </p>
                                   <div>
-                                    {/* {isPriceShow === 1 &&
-                                <p className={show4ImagesView ? "productDetails price4" : "productDetails price"}>{currencySym?.Currencysymbol}
-                                  {((products?.UnitCost ?? 0) + (products?.price ?? 0) + (products?.markup ?? 0)).toFixed(2)}</p>
-                              }
-                              <span className={show4ImagesView ? "productDesignDetails4" : "productDesignDetails"}>
-                                <p className="productDetails address">{products?.designno}</p>
-                                <Divider
-                                  className="dividerLine"
-                                  orientation="vertical"
-                                  variant="middle"
-                                  flexItem
-                                />
-                                <p className="productDetails address"> {isMetalTCShow === 1 && products?.MetalTypeName}-{products?.MetalColorName}{products?.MetalPurity}</p>
-                              </span> */}
                                   </div>
                                 </div>
                                 <div className={show4ImagesView ? "listing-features4" : "listing-features"}>
@@ -3034,94 +3021,7 @@ const ProductList = () => {
                                     </span>}
                                   </p>
                                 </div>
-                                {/* <div style={{ position: "absolute", zIndex: 999999, top: 0, right: 0, display: 'flex' }}>
-                            <div>
-                              <Checkbox
-                                icon={
-                                  <StarBorderIcon
-                                    sx={{ fontSize: "22px", color: "#ffd200" }}
-                                  />
-                                }
-                                checkedIcon={
-                                  <StarIcon
-                                    sx={{ fontSize: "22px", color: "#ffd200" }}
-                                  />
-                                }
-                                disableRipple={true}
-                                sx={{ padding: "5px" }}
-
-                                // checked={wishFlag[products?.designno] ?? products?.wishCheck}
-                                checked={wishFlag[products?.designno] ?? products?.wishCheck}
-                                onChange={(e) => handelWishList(e, products)}
-                              />
-                            </div>
-                            <div>
-                              <Checkbox
-                                icon={
-                                  <LocalMallOutlinedIcon
-                                    sx={{ fontSize: "22px", color: "#ffd200" }}
-                                  />
-                                }
-                                checkedIcon={
-                                  <LocalMallIcon
-                                    sx={{ fontSize: "22px", color: "#ffd200" }}
-                                  />
-                                }
-                                disableRipple={true}
-                                sx={{ padding: "5px" }}
-
-                                // checked={cartFlag[products?.designno] ?? products?.checkFlag}
-                                checked={cartFlag[products?.designno] ?? products?.checkFlag}
-                                onChange={(e) => handelCartList(e, products)}
-                              // disabled={disablecartBtn}
-                              />
-                            </div>
-                          </div> */}
-
-                          
-                                {/* {isColorWiseImageShow == 1 && (
-                                  <div
-                                    style={{
-                                      display: "flex",
-                                      gap: "8px",
-                                      justifyContent: "center",
-                                      alignItems: "center",
-                                      marginBottom: "12px",
-                                    }}
-                                  >
-                                    <div
-                                      style={{
-                                        width: "9px",
-                                        height: "9px",
-                                        backgroundColor: "#c8c8c8",
-                                        borderRadius: "50%",
-                                        cursor: 'pointer'
-                                      }}
-                                      onClick={() => handleColorSelection(products, i, 'WHITE GOLD')}
-                                    ></div>
-                                    <div
-                                      style={{
-                                        width: "9px",
-                                        height: "9px",
-                                        backgroundColor: "#ffcfbc",
-                                        borderRadius: "50%",
-                                        cursor: 'pointer'
-                                      }}
-                                      onClick={(e) => handleColorSelection(products, i, 'ROSE GOLD')}
-                                    ></div>
-                                    <div
-                                      style={{
-                                        width: "9px",
-                                        height: "9px",
-                                        backgroundColor: "#e0be77",
-                                        borderRadius: "50%",
-                                        cursor: 'pointer'
-                                      }}
-                                      onClick={(e) => handleColorSelection(products, i, 'YELLOW GOLD')}
-                                    >
-                                    </div>
-                                  </div>
-                                )} */}
+                                {/* <button onClick={() => console.log('porducttttttt',prod)}> ADD TO CART</button> */}
                               </div>
                             </div>
                           ))}
