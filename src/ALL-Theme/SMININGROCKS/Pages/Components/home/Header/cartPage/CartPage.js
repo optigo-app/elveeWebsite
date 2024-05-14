@@ -1263,11 +1263,11 @@ export default function CartPage() {
                   className="smilingListCartTopButtonMobile"
                   style={{ marginTop: "0px" }}
                 >
-                  <div style={{ position: 'absolute', top: '18%', left: '10px' }}>
+                  <div style={{ position: 'absolute', top: '19%', left: '10px' }}>
                     <IoArrowBackOutline style={{ height: '30px', width: '30px' }} onClick={() => navigation("/productpage")} />
                   </div>
 
-                  <div style={{ position: 'absolute', top: '18%', right: '10px' }}>
+                  <div style={{ position: 'absolute', top: '19%', right: '10px' }}>
                     <p style={{ fontWeight: 600, textDecoration: 'underline', cursor: 'pointer' }} onClick={handleClickOpen}>Clear All</p>
                   </div>
 
