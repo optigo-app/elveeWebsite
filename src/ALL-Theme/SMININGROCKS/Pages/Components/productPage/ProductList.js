@@ -2872,12 +2872,12 @@ const ProductList = () => {
                                       <Checkbox
                                         icon={
                                           <LocalMallOutlinedIcon
-                                            sx={{ fontSize: "22px", color: "#1f1919", opacity: '.7' }}
+                                            sx={{ fontSize: "22px", color: "#7d7f85", opacity: '.7' }}
                                           />
                                         }
                                         checkedIcon={
                                           <LocalMallIcon
-                                            sx={{ fontSize: "22px", color: "#f0d85e" }}
+                                            sx={{ fontSize: "22px", color: "#009500" }}
                                           />
                                         }
                                         disableRipple={true}
@@ -2891,7 +2891,7 @@ const ProductList = () => {
                                       <Checkbox
                                         icon={
                                           <FavoriteBorderIcon
-                                            sx={{ fontSize: "22px", color: "#1f1919", opacity: '.7' }}
+                                            sx={{ fontSize: "22px", color: "#7d7f85", opacity: '.7' }}
                                           />
                                         }
                                         checkedIcon={
