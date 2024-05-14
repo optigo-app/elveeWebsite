@@ -528,6 +528,14 @@
     .smilingListCartTopButtonMobile {
         display: none !important;
     }
+
+    .backErrorMobile {
+        display: none !important;
+    }
+
+    .ClreareAllMobilee {
+        display: none !important;
+    }
 }
 
 @media screen and (max-width: 600px) {
@@ -591,8 +599,12 @@
         margin: 20px;
     }
 
-    .SmiWishListTitle{
-        padding-top: 0px!important;
+    .SmiWishListTitle {
+        padding-top: 0px !important;
+    }
+
+    .SmiWishListTitle {
+        font-size: 30px;
     }
 }
 

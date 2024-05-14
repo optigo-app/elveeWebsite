@@ -1193,7 +1193,7 @@ export default function CartPage() {
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>Are You Sure To Delete Alll This Item?</DialogTitle>
 
-          <div style={{ display: 'flex' , justifyContent:'flex-end' , marginBottom: '10px'}}>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' }}>
             <Button onClick={handleClose} color="primary">
               NO
             </Button>
@@ -1210,9 +1210,20 @@ export default function CartPage() {
               zIndex: "111",
             }}
           >
-            <p className="SmiWishListTitle" style={{ paddingTop: "30px" }}>
-              My Cart
-            </p>
+
+            <div style={{display: 'flex' , justifyContent: 'space-between', alignItems: 'center'}}>
+              <div className="backErrorMobile">
+                <IoArrowBackOutline style={{ height: '30px', width: '30px' }} onClick={() => navigation("/productpage")} />
+              </div>
+              <p className="SmiWishListTitle" style={{ paddingTop: "30px" }}>
+                My Cart
+              </p>
+              <div className="ClreareAllMobilee">
+                <p style={{ fontWeight: 600, textDecoration: 'underline',width:'80px', cursor: 'pointer' }} onClick={handleClickOpen}>Clear All</p>
+              </div>
+            </div>
+
+
 
             {cartListData?.length !== 0 && (
               <div>
@@ -1263,13 +1274,6 @@ export default function CartPage() {
                   className="smilingListCartTopButtonMobile"
                   style={{ marginTop: "0px" }}
                 >
-                  <div style={{ position: 'absolute', top: '19%', left: '10px' }}>
-                    <IoArrowBackOutline style={{ height: '30px', width: '30px' }} onClick={() => navigation("/productpage")} />
-                  </div>
-
-                  <div style={{ position: 'absolute', top: '19%', right: '10px' }}>
-                    <p style={{ fontWeight: 600, textDecoration: 'underline', cursor: 'pointer' }} onClick={handleClickOpen}>Clear All</p>
-                  </div>
 
                   {/* <button
                     className={`cartPageTopBtn ${value === 3 ? "activec" : ""}`}
