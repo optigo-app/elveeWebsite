@@ -34,6 +34,10 @@ export default function Delivery() {
     const [editId, setEditId] = useState('');
     const navigation = useNavigate();
 
+
+    useEffect(() => {
+    }, []);
+
     const handleOpen = (item, addressIndex = null) => {
         setIsEditMode(addressIndex !== null);
         if (addressIndex !== null && addressData.length > addressIndex) {
@@ -401,6 +405,7 @@ export default function Delivery() {
     const handleContinue = () => {
         if (selectedAddressId) {
             navigation('/Payment');
+            window.scrollTo(0, 0);
         } else {
             alert('Please select an address before continuing.');
         }
@@ -560,8 +565,12 @@ export default function Delivery() {
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <p style={{ fontSize: '30px', fontWeight: 500, color: 'gray', fontFamily: 'PT Sans, sans-serif' }}>Delivery</p>
                             <button className='smilingAddToAddressBtn' onClick={handleOpen}>Add New Address</button>
+
                         </div>
                         <p style={{ fontFamily: 'PT Sans, sans-serif' }}>Order Will be delivered to selected address</p>
+                        <div className='smilingMobileDeliveryBtnMainMobilee'>
+                            <button className='smilingAddToAddressMBtn' onClick={handleOpen}>Add New Address</button>
+                        </div>
                         <div className='smilingDeliveyAddressMain' style={{ display: 'flex', flexWrap: 'wrap' }}>
                             {
                                 addressData?.map((item, index) => (
@@ -586,9 +595,11 @@ export default function Delivery() {
                                 ))
                             }
                         </div>
-                        {!isLoading && <div className='smilingMobileDeliveryBtnMain'>
-                            <button style={{ marginInline: '20px' }} className='smilingAddToAddressBtn' onClick={handleContinue}>Continue</button>
-                        </div>}
+                        {!isLoading &&
+                            <div className='smilingMobileDeliveryBtnMain'>
+                                <button style={{ marginInline: '20px' }} className='smilingAddToAddressBtn' onClick={handleContinue}>Continue</button>
+                            </div>
+                        }
 
 
                     </div>
@@ -599,10 +610,11 @@ export default function Delivery() {
                 </div>
             </div>
             <Footer />
-            {!isLoading && <div className='smilingMobileDeliveryBtnMainMobile'>
-                <button className='smilingAddToAddressMBtn' onClick={handleOpen}>Add New Address</button>
-                <button className='smilingAddToAddressMBtn' onClick={handleContinue}>Continue</button>
-            </div>}
+            {!isLoading &&
+                <div className='smilingMobileDeliveryBtnMainMobile'>
+                    <button className='smilingAddToAddressMBtn' onClick={handleContinue}>Continue</button>
+                </div>
+            }
         </div>
     )
 }
