@@ -1058,7 +1058,6 @@ const ProductList = () => {
 
           console.log("autoCodeList", typeof (autoCodeList))
 
-
           await getDesignPriceList(param, 1, obj, output, autoCodeList).then(resp => {
             if (resp) {
               getProdPriceData()

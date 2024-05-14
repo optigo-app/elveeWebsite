@@ -265,7 +265,7 @@ export function findValueFromId(param1, param2) {
     if (param1 === "cate") {
         let data = categoryFilter?.filter(item => item?.Categoryid == param2)
         console.log("cate", data);
-        output = data[0]
+        output = data
         return output;
     }
     if (param1 === "brand") {
