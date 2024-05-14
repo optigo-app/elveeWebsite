@@ -1143,7 +1143,7 @@ export default function Header() {
           style={{
             display: "flex",
             justifyContent: "space-between",
-            padding: "20px",
+            // padding: "20px",
           }}
           className="smilingMobileSubDiv"
         >
@@ -1166,8 +1166,7 @@ export default function Header() {
           <div
             className="mobileViewFirstDiv2"
           >
-            { }
-            <a href="/">
+            <a href="/" className="mobileViewFirstDiv2">
               <img src={titleImg} className="MainlogogMobileImage" style={islogin == 'true' ? containerStyle : alternateStyle} />
             </a>
           </div>
@@ -1198,19 +1197,9 @@ export default function Header() {
               >
                 <div
                   style={{
-                    width: "80%",
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                  }}
-                >
-                </div>
-                <div
-                  style={{
                     display: "flex",
                     alignItems: "center",
                     width: "20%",
-                    justifyContent: "flex-end",
                     gap: '20px'
                   }}
                 >
@@ -1249,7 +1238,7 @@ export default function Header() {
                         marginTop: "0px",
                       }}
                     >
-                      <HiOutlineShoppingBag color="#7D7F85" fontSize='30px' />
+                      <HiOutlineShoppingBag color="#7D7F85" fontSize='30px' className="mobileViewSmilingTop2Icone"/>
                     </li>
                   </Badge>
                   <li
@@ -1257,7 +1246,7 @@ export default function Header() {
                     style={{ cursor: "pointer", textDecoration: 'none' }}
                     onClick={() => navigation("/account")}
                   >
-                    <IoPersonOutline color="#7D7F85" fontSize='30px' style={{ marginTop: '-10px' }} />
+                    <IoPersonOutline color="#7D7F85" fontSize='30px' style={{ marginTop: '-5px' }} className="mobileViewSmilingTop3Icone"/>
                   </li>
                 </div>
               </div>

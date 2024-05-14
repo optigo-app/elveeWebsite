@@ -3,11 +3,13 @@ import CloseIcon from "@mui/icons-material/Close";
 import {
   Avatar,
   Box,
+  Button,
   CardActions,
   CardContent,
   CardMedia,
   CircularProgress,
   Dialog,
+  DialogTitle,
   Divider,
   Drawer,
   Grid,
@@ -35,6 +37,7 @@ import { Card, CardHeader, Col, Container, Row } from "react-bootstrap";
 import noFoundImage from "../../../../assets/image-not-found.png"
 import { FullProInfoAPI } from "../../../../../Utils/API/FullProInfoAPI";
 import { findCsQcIdDiff, findDiaQcId, findMetalTypeId } from "../../../../../Utils/globalFunctions/GlobalFunction";
+import { IoArrowBackOutline } from "react-icons/io5";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -111,12 +114,12 @@ export default function CartPage() {
   const [catSizeData, setCatSizeData] = useState([]);
   const [diaqcData, setDiaQcData] = useState([]);
   const [csData, setCsData] = useState([])
-  const [fullprodData,setFullProdData] = useState();
+  const [fullprodData, setFullProdData] = useState();
   const [cartPageLoding, setCartPageloding] = useState(false);
 
 
 
-  const setProdFullInfo = async(paramDesignno) => {
+  const setProdFullInfo = async (paramDesignno) => {
     await FullProInfoAPI(paramDesignno).then(res => {
       if (res) {
         // getProdFullInfo();
@@ -125,11 +128,11 @@ export default function CartPage() {
     })
   }
 
-  useEffect(()=>{
-    if(cartListData?.length > 0){
+  useEffect(() => {
+    if (cartListData?.length > 0) {
       setProdFullInfo(cartListData[0]?.designno)
     }
-  },[cartListData])
+  }, [cartListData])
 
 
 
@@ -381,7 +384,7 @@ export default function CartPage() {
       storeInit?.IsCsCustomization === 1
         ?
         ele.A == srProductsData?.autocode &&
-        ele.H == findCsQcIdDiff(cSQopt)[0]?.QualityId  &&
+        ele.H == findCsQcIdDiff(cSQopt)[0]?.QualityId &&
         ele.J == findCsQcIdDiff(cSQopt)[0]?.ColorId
         :
         ele.A == srProductsData?.autocode
@@ -410,7 +413,7 @@ export default function CartPage() {
   }, [fullprodData, mtTypeOption, diaQColOpt, cSQopt, cartSelectData])
 
   useEffect(() => {
-    let finalmetalTypeName = cartSelectData?.metaltypename?.length > 4 ? `${cartSelectData?.metaltypename?.split(" ")[0]}`: `${cartSelectData?.metaltypename}`
+    let finalmetalTypeName = cartSelectData?.metaltypename?.length > 4 ? `${cartSelectData?.metaltypename?.split(" ")[0]}` : `${cartSelectData?.metaltypename}`
     let finalMetal = `${finalmetalTypeName} ${cartSelectData?.Purity}`
 
     setmtTypeOption(finalMetal);
@@ -421,14 +424,14 @@ export default function CartPage() {
     let csQualColor = `${cartSelectData?.colorstonequality}#${cartSelectData?.colorstonecolor}`;
     setCSQOpt(csQualColor);
 
-    setSelectedColor(cartSelectData?.metalcolorname)            
+    setSelectedColor(cartSelectData?.metalcolorname)
 
 
     setSizeOption(cartSelectData?.detail_ringsize)
 
   }, [cartSelectData])
 
-  console.log("cartSelectData",cartSelectData);
+  console.log("cartSelectData", cartSelectData);
 
   useEffect(() => {
     getCountFunc();
@@ -1162,6 +1165,20 @@ export default function CartPage() {
       return PriceWithMarkupFunction(percentMarkupPlus, CalcPrice, currData?.CurrencyRate).toFixed(2)
     }
   }
+
+
+
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+
   return (
     <>
       <div
@@ -1173,7 +1190,18 @@ export default function CartPage() {
           </div>
         )}
         <ToastContainer />
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>Are You Sure To Delete Alll This Item?</DialogTitle>
 
+          <div style={{ display: 'flex' , justifyContent:'flex-end' , marginBottom: '10px'}}>
+            <Button onClick={handleClose} color="primary">
+              NO
+            </Button>
+            <Button onClick={handleRemoveAllWishList} color="primary">
+              YES
+            </Button>
+          </div>
+        </Dialog>
         <div className="smilingCartPageMain">
           <div
             style={{
@@ -1189,21 +1217,26 @@ export default function CartPage() {
             {cartListData?.length !== 0 && (
               <div>
                 <div
-                  className="smilingListTopButton"
+                  className="smilingListCartTopButton"
                   style={{ marginTop: "0px" }}
                 >
+                  {/* <div style={{ display: 'flex' }}> */}
                   <button
                     className={`cartPageTopBtn ${value === 0 ? "activec" : ""}`}
                     onClick={() => handleChange(0)}
+                    style={{ margin: '5px' }}
                   >
                     List View
                   </button>
                   <button
                     className={`cartPageTopBtn ${value === 1 ? "activec" : ""}`}
                     onClick={() => handleChange(1)}
+                    style={{ margin: '5px' }}
                   >
                     Image View
                   </button>
+                  {/* </div> */}
+
                   <button
                     className={`cartPageTopBtn ${value === 2 ? "activec" : ""}`}
                     onClick={handleRemoveAllWishList}
@@ -1225,6 +1258,60 @@ export default function CartPage() {
                     Place Order
                   </button>
                 </div>
+
+                <div
+                  className="smilingListCartTopButtonMobile"
+                  style={{ marginTop: "0px" }}
+                >
+                  <div style={{ position: 'absolute', top: '18%', left: '10px' }}>
+                    <IoArrowBackOutline style={{ height: '30px', width: '30px' }} onClick={() => navigation("/productpage")} />
+                  </div>
+
+                  <div style={{ position: 'absolute', top: '18%', right: '10px' }}>
+                    <p style={{ fontWeight: 600, textDecoration: 'underline', cursor: 'pointer' }} onClick={handleClickOpen}>Clear All</p>
+                  </div>
+
+                  {/* <button
+                    className={`cartPageTopBtn ${value === 3 ? "activec" : ""}`}
+                    onClick={() => navigation("/productpage")}
+                  >
+                    Show ProductList
+                  </button> */}
+
+                  <div style={{ display: 'flex' }}>
+                    <button
+                      className={`cartPageTopBtn ${value === 0 ? "activec" : ""}`}
+                      onClick={() => handleChange(0)}
+                      style={{ margin: '5px' }}
+                    >
+                      List View
+                    </button>
+                    <button
+                      className={`cartPageTopBtn ${value === 1 ? "activec" : ""}`}
+                      onClick={() => handleChange(1)}
+                      style={{ margin: '5px' }}
+                    >
+                      Image View
+                    </button>
+                  </div>
+
+                  {/* <button
+                    className={`cartPageTopBtn ${value === 2 ? "activec" : ""}`}
+                    onClick={handleRemoveAllWishList}
+                  >
+                    Clear All
+                  </button> */}
+
+                  <button
+                    className="placeOrderCartPageBtnMobile"
+                    onClick={(event) => {
+                      navigation("/Delivery");
+                      window.scrollTo(0, 0);
+                    }}
+                  >
+                    Place Order
+                  </button>
+                </div>
                 <div
                   className="smilingCartPagePlaceOrderBtnMainWeb"
                   style={{
@@ -1238,6 +1325,7 @@ export default function CartPage() {
                     className="cartPageTopBtn"
                     onClick={(event) => {
                       navigation("/Delivery");
+                      window.scrollTo(0, 0);
                     }}
                   >
                     Place Order
@@ -1253,6 +1341,7 @@ export default function CartPage() {
                 paddingInline: "10px",
                 display: "flex",
               }}
+              className="cartPageMobileSet"
             >
               <div className="smilingCartDeatilSub2">
                 {cartListData?.length === 0 ? (
@@ -2154,7 +2243,10 @@ export default function CartPage() {
             </div>
           </CustomTabPanel>
         </div>
-        <Footer />
+
+        <div className="mobileFootreCs">
+          <Footer />
+        </div>
       </div>
       <Dialog
         onClose={() => setDialogOpen(false)}
