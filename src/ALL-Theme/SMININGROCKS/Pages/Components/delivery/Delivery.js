@@ -317,7 +317,7 @@ export default function Delivery() {
                     };
                     const response = await CommonAPI(body);
                     if (response.Data.rd[0].stat === 1) {
-                        toast.success('Add success');
+                        toast.success('Address added successfully');
                         let updatedAddressData = [...addressData];
                         const newAddress = {
                             shippingfirstname: formData.firstName,
@@ -447,7 +447,8 @@ export default function Delivery() {
 
             <Dialog
                 open={open}
-            //  onClose={handleClose}
+                //  onClose={handleClose}
+                className='neeeeeeeeeeeeeee'
             >
                 <div className='smilingAddressPopupMain'>
                     <DialogTitle style={{ textAlign: 'center', textDecoration: 'underline' }}>Add Shipping Info</DialogTitle>
@@ -457,7 +458,7 @@ export default function Delivery() {
                             label="First Name"
                             variant="outlined"
                             className="labgrowRegister"
-                            style={{ margin: '15px' }}
+                            style={{ margin: '8px' }}
                             value={formData.firstName}
                             onChange={(e) => handleInputChange(e, 'firstName')}
                             error={!!errors.firstName}
@@ -468,7 +469,7 @@ export default function Delivery() {
                             label="Last Name"
                             variant="outlined"
                             className="labgrowRegister"
-                            style={{ margin: '15px' }}
+                            style={{ margin: '8px' }}
                             value={formData.lastName}
                             onChange={(e) => handleInputChange(e, 'lastName')}
                             error={!!errors.lastName}
@@ -479,7 +480,7 @@ export default function Delivery() {
                             label="Address"
                             variant="outlined"
                             className="labgrowRegister"
-                            style={{ margin: '15px' }}
+                            style={{ margin: '8px' }}
                             value={formData.address}
                             onChange={(e) => handleInputChange(e, 'address')}
                             error={!!errors.address}
@@ -490,7 +491,7 @@ export default function Delivery() {
                             label="Country"
                             variant="outlined"
                             className="labgrowRegister"
-                            style={{ margin: '15px' }}
+                            style={{ margin: '8px' }}
                             value={formData.country}
                             onChange={(e) => handleInputChange(e, 'country')}
                             error={!!errors.country}
@@ -501,7 +502,7 @@ export default function Delivery() {
                             label="State"
                             variant="outlined"
                             className="labgrowRegister"
-                            style={{ margin: '15px' }}
+                            style={{ margin: '8px' }}
                             value={formData.state}
                             onChange={(e) => handleInputChange(e, 'state')}
                             error={!!errors.state}
@@ -512,7 +513,7 @@ export default function Delivery() {
                             label="City"
                             variant="outlined"
                             className="labgrowRegister"
-                            style={{ margin: '15px' }}
+                            style={{ margin: '8px' }}
                             value={formData.city}
                             onChange={(e) => handleInputChange(e, 'city')}
                             error={!!errors.city}
@@ -523,7 +524,7 @@ export default function Delivery() {
                             label="ZIP Code"
                             variant="outlined"
                             className="labgrowRegister"
-                            style={{ margin: '15px' }}
+                            style={{ margin: '8px' }}
                             value={formData.zipCode}
                             onChange={(e) => handleInputChange(e, 'zipCode')}
                             error={!!errors.zipCode}
@@ -534,7 +535,7 @@ export default function Delivery() {
                             label="Mobile No."
                             variant="outlined"
                             className="labgrowRegister"
-                            style={{ margin: '15px' }}
+                            style={{ margin: '8px' }}
                             value={formData.mobileNo}
                             onChange={(e) => handleInputChange(e, 'mobileNo')}
                             error={!!errors.mobileNo}
@@ -588,6 +589,8 @@ export default function Delivery() {
                         {!isLoading && <div className='smilingMobileDeliveryBtnMain'>
                             <button style={{ marginInline: '20px' }} className='smilingAddToAddressBtn' onClick={handleContinue}>Continue</button>
                         </div>}
+
+
                     </div>
                     {/* <div className='smilingdeliverBox2'> */}
                     {/* <p style={{ fontSize: '30px', fontWeight: 500, color: 'gray' }}>Order Summary</p>
@@ -596,6 +599,10 @@ export default function Delivery() {
                 </div>
             </div>
             <Footer />
+            {!isLoading && <div className='smilingMobileDeliveryBtnMainMobile'>
+                <button className='smilingAddToAddressMBtn' onClick={handleOpen}>Add New Address</button>
+                <button className='smilingAddToAddressMBtn' onClick={handleContinue}>Continue</button>
+            </div>}
         </div>
     )
 }

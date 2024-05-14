@@ -18,7 +18,7 @@ export default function Confirmation() {
             <div className='simlimgCofirmationMain'>
                 <div className='confritmSubmain'>
                     <img src='https://gstore.orail.co.in/assets/newfolder/images/account/thankyou.svg' className='SmilingthanksImg' />
-                    <p style={{marginTop: '-30px' , textAlign: 'center'}}>Your Order number is <span style={{fontWeight: 500}}>{orderNumber}</span></p>
+                    <p style={{marginTop: '-30px' , textAlign: 'center' , color: 'gray'}}>Your Order number is <span style={{fontWeight: 600 , color: 'black' , fontSize: '17px'}}>{orderNumber}</span></p>
                     <button className='contiShopiBtn' onClick={() => navigation('/productpage')}>Continue Shopping</button>
                 </div>
             </div>

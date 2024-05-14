@@ -1882,7 +1882,7 @@ const ProductList = () => {
 
   const list = (anchor) => (
     <Box
-      sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
+      sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 , marginInline: '10px' }}
       role="presentation"
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
@@ -1990,40 +1990,68 @@ const ProductList = () => {
                   }
 
                   {ele?.filterList?.map((flist, i) => (
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "12px",
-                      }}
-                      key={i}
+                    // <div
+                    //   style={{
+                    //     display: "flex",
+                    //     alignItems: "center",
+                    //     gap: "12px",
+                    //     width: 'fit-content'
+                    //   }}
+                    //   key={i}
+                    //   onClick={(e) =>
+                    //     handleCheckboxChange(e, ele, flist.id)
+                    //   }
+                    //   checked={
+                    //     filterChecked[`checkbox${index + 1}${i + 1}`]
+                    //       ?.checked
+                    //   }
+                    // >
+                    //   <Checkbox
+                    //     name={`checkbox${index + 1}${i + 1}`}
+                    //     checked={
+                    //       filterChecked[`checkbox${index + 1}${i + 1}`]
+                    //         ?.checked
+                    //     }
+                    //     style={{
+                    //       color: "#7f7d85",
+                    //       padding: 0,
+                    //       width: "10px",
+                    //     }}
+                    //     size="small"
+                    //   />
+                    //   <small
+                    //     style={{
+                    //       fontFamily: "TT Commons, sans-serif",
+                    //       color: "#7f7d85",
+                    //       textTransform: "lowercase",
+                    //     }}
+                    //   >
+                    //     {flist.label}
+                    //   </small>
+                    // </div>
+                    <label
+                      htmlFor={`checkbox${index + 1}${i + 1}`}
+                      style={{ display: 'flex', alignItems: 'center', gap: '12px', width: 'fit-content' }}
+                      onClick={(e) => handleCheckboxChange(e, ele, flist.id)}
                     >
                       <Checkbox
+                        id={`checkbox${index + 1}${i + 1}`}
                         name={`checkbox${index + 1}${i + 1}`}
-                        checked={
-                          filterChecked[`checkbox${index + 1}${i + 1}`]
-                            ?.checked
-                        }
-                        style={{
-                          color: "#7f7d85",
-                          padding: 0,
-                          width: "10px",
-                        }}
-                        onClick={(e) =>
-                          handleCheckboxChange(e, ele, flist.id)
-                        }
+                        checked={filterChecked[`checkbox${index + 1}${i + 1}`]?.checked}
+                        onChange={(e) => handleCheckboxChange(e, ele, flist.id)}
+                        style={{ color: '#7f7d85', padding: 0, width: '10px' }}
                         size="small"
                       />
                       <small
                         style={{
-                          fontFamily: "TT Commons, sans-serif",
-                          color: "#7f7d85",
-                          textTransform: "lowercase",
+                          fontFamily: 'TT Commons, sans-serif',
+                          color: '#7f7d85',
+                          textTransform: 'lowercase',
                         }}
                       >
                         {flist.label}
                       </small>
-                    </div>
+                    </label>
                   ))}
                 </AccordionDetails>
               </Accordion>
@@ -2573,6 +2601,8 @@ const ProductList = () => {
                                   display: "flex",
                                   flexDirection: "column",
                                   gap: "4px",
+                                  height: '300px',
+                                  overflow: 'auto'
                                 }}
                               >
                                 {/* {ele.label === "PRICE" &&
@@ -2950,7 +2980,7 @@ const ProductList = () => {
 
                                     {isGrossWShow === 1 &&
                                       <div className={show4ImagesView ? "feature4" : 'feature'}>
-                                        <p style={{ margin: '0px 0px 0px 8px' }}>
+                                        <p>
                                           <span className="feature-count">GWT : </span> {parseFloat(products?.updGWT).toFixed(2)}
                                         </p>
                                       </div>
@@ -3047,7 +3077,9 @@ const ProductList = () => {
                               />
                             </div>
                           </div> */}
-                                {isColorWiseImageShow == 1 && (
+
+                          
+                                {/* {isColorWiseImageShow == 1 && (
                                   <div
                                     style={{
                                       display: "flex",
@@ -3089,7 +3121,7 @@ const ProductList = () => {
                                     >
                                     </div>
                                   </div>
-                                )}
+                                )} */}
                               </div>
                             </div>
                           ))}

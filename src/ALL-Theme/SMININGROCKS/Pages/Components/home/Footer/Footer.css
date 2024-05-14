@@ -151,3 +151,19 @@
     }
 
 }
+
+@media screen and (max-width: 600px) {
+
+    .ElveFooter1Input{
+        width: 100%;
+    }
+
+    .eleBox1InputBox{
+        width: 60%!important;
+    }
+
+    .elevBox1Btn{
+        width: 30%;
+        font-size: 15px;
+    }
+}
