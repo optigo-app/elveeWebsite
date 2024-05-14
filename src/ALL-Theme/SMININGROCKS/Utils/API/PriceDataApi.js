@@ -2,25 +2,26 @@ import { CommonAPI } from "./CommonAPI";
 
 export const getDesignPriceList = async (param,page=1,obj={},filterObj={},autocodeList) => {
 
-  // console.log("mtid",param,page,obj,filterObj,autocodeList)
+  
   
   
   const storeInit = JSON.parse(localStorage.getItem("storeInit"))
   const loginUserDetail = JSON.parse(localStorage.getItem("loginUserDetail"));
   const UserEmail = localStorage.getItem("registerEmail")
   
-  let mtid = `${obj?.mt}` ?? loginUserDetail?.MetalId
+  let mtid = loginUserDetail?.MetalId
   let diaqcId = obj?.dqc?.length > 0  && obj?.dqc[0] !== undefined && obj?.dqc[1] !== undefined ? `${obj?.dqc[0]},${obj?.dqc[1]}` :loginUserDetail?.cmboDiaQCid
   let csqcId = obj?.csqc?.length > 0 && obj?.csqc[0] !== undefined && obj?.csqc[1] !== undefined ? `${obj?.csqc[0]},${obj?.csqc[1]}` :loginUserDetail?.cmboCSQCid
-
+  
+  console.log("mtid",mtid,diaqcId,csqcId)
   
   
   let encodedFilter = {
     "DesignNo":"",
-    // "FilterKey":`${param?.FilterKey}`,
-    // "FilterVal":`${param?.FilterVal}`,
-    "FilterKey":'',
-    "FilterVal":'',
+    "FilterKey":`${param?.FilterKey}`,
+    "FilterVal":`${param?.FilterVal}`,
+    // "FilterKey":'',
+    // "FilterVal":'',
     "FilterKey1":`${param?.FilterKey1}`,
     "FilterVal1":`${param?.FilterVal1}`,
     "FilterKey2":`${param?.FilterKey2}`,

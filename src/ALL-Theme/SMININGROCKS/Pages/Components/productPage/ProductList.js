@@ -141,7 +141,7 @@ const ProductList = () => {
 
   let location = useLocation();
 
-  console.log('menuaname--', location);
+  console.log('diaQColOpt', diaQColOpt);
 
   // console.log("mttypeoption", mtTypeOption, diaQColOpt, cSQopt);
 
@@ -309,15 +309,15 @@ const ProductList = () => {
     }
   }, [])
 
-  useEffect(() => {
-    let pdDataCalling = async () => {
-      await productListApiCall().then((res) => {
-        console.log("call1");
-        setPdData(res)
-      })
-    }
-    pdDataCalling()
-  }, [])
+  // useEffect(() => {
+  //   let pdDataCalling = async () => {
+  //     await productListApiCall().then((res) => {
+  //       console.log("call1");
+  //       setPdData(res)
+  //     })
+  //   }
+  //   pdDataCalling()
+  // }, [])
 
   useEffect(() => {
     setTimeout(() => {
@@ -1210,7 +1210,7 @@ const ProductList = () => {
           "sizeamountpersentage": "",
           "stockno": "",
           "is_show_stock_website": "0",
-          "cmboDiaQualityColor": `${JSON.parse(localStorage.getItem("loginUserDetail"))?.cmboDiaQualityColor ?? ""}`,
+          "cmboDiaQualityColor": `${diaQColOpt?.split("#") ?? ""}`,
           "cmboMetalType": `${product?.updMT}`,
           "AdditionalValWt": Number(`${product?.AdditionalValWt ?? 0}`),
           "BrandName": `${findValueFromId("brand", product?.Brandid)?.BrandName}`,
@@ -1259,12 +1259,12 @@ const ProductList = () => {
           // "UnitCostWithmarkup": (`${(product?.price === "Not Available" ? 0 : product?.price) + (product?.markup ?? 0)}`),
           "UnitCostWithmarkup": Number(`${(product?.price === "Not Available" ? 0 : product?.price) + (product?.markup ?? 0)}`),
           "autocode": `${product?.autocode}`,
-          "colorstonecolorname": `${product?.colorstonecolorname}`,
-          "colorstonequality": `${product?.colorstonequality}`,
+          "colorstonecolorname": `${cSQopt?.split('-')[1] ?? ""}`,
+          "colorstonequality": `${cSQopt?.split('-')[0]?? ""}`,
           "designno": `${product?.designno}`,
-          "diamondcolorname": `${JSON.parse(localStorage.getItem("loginUserDetail"))?.cmboDiaQualityColor.split("#@#")[1]}`,
+          "diamondcolorname": `${diaQColOpt.split("#")[1]}`,
           "diamondpcs": Number(`${product?.updDPCS}`),
-          "diamondquality": `${JSON.parse(localStorage.getItem("loginUserDetail"))?.cmboDiaQualityColor.split("#@#")[0]}`,
+          "diamondquality": `${diaQColOpt.split("#")[0]}`,
           "diamondsetting": `${product?.diamondsetting}`,
           "diamondshape": `${product?.diamondshape}`,
           "diamondweight": Number(`${product?.updDWT}`),
@@ -1286,8 +1286,8 @@ const ProductList = () => {
           "FrontEnd_RegNo": `${storeInit?.FrontEnd_RegNo}`,
           "Customerid": Number(`${Customer_id?.id}`),
           "PriceMastersetid": Number(`${product?.PriceMastersetid ?? 0}`),
-          "DQuality": `${JSON.parse(localStorage.getItem("loginUserDetail"))?.cmboDiaQualityColor.split("#@#")[0]}`,
-          "DColor": `${JSON.parse(localStorage.getItem("loginUserDetail"))?.cmboDiaQualityColor.split("#@#")[1]}`,
+          "DQuality": `${diaQColOpt.split("#")[0]}`,
+          "DColor": `${diaQColOpt.split("#")[1]}`,
           "UploadLogicalPath": `${product?.UploadLogicalPath ?? ""}`,
           "ukey": `${storeInit?.ukey}`
         }
@@ -1368,8 +1368,8 @@ const ProductList = () => {
           "metalcolorid": Number(`${product?.MetalColorid}`),
           "stockno": "",
           // "DQuality": `${product?.diamondquality?.split(",")[0]}`,
-          "DQuality": `${JSON.parse(localStorage.getItem("loginUserDetail"))?.cmboDiaQualityColor.split("#@#")[0]}`,
-          "DColor": `${JSON.parse(localStorage.getItem("loginUserDetail"))?.cmboDiaQualityColor.split("#@#")[1]}`,
+          "DQuality": `${diaQColOpt.split("#")[0]}`,
+          "DColor": `${diaQColOpt.split("#")[1]}`,
           "cmboMetalType": `${product?.updMT}`,
           "AdditionalValWt": Number(`${product?.AdditionalValWt ?? 0}`),
           "BrandName": `${findValueFromId("brand", product?.Brandid)?.BrandName}`,
@@ -1415,8 +1415,8 @@ const ProductList = () => {
           "TitleLine": `${product?.TitleLine}`,
           "UnitCost": Number(`${product?.price === "Not Available" ? 0 : product?.price}`),
           "UnitCostWithmarkup": Number(`${(product?.price === "Not Available" ? 0 : product?.price) + (product?.markup ?? 0)}`),
-          "colorstonecolorname": `${product?.colorstonecolorname ?? ""}`,
-          "colorstonequality": `${product?.colorstonequality ?? ""}`,
+          "colorstonecolorname": `${cSQopt?.split('-')[1] ?? ""}`,
+          "colorstonequality": `${cSQopt?.split('-')[0]?? ""}`,
           "diamondcolorname": `${JSON.parse(localStorage.getItem("loginUserDetail"))?.cmboDiaQualityColor.split("#@#")[1]}`,
           "diamondpcs": Number(`${product?.updDPCS}`),
           "diamondquality": `${JSON.parse(localStorage.getItem("loginUserDetail"))?.cmboDiaQualityColor.split("#@#")[0]}`,
@@ -1726,10 +1726,35 @@ const ProductList = () => {
     setRangeProData(filteredData)
   };
 
-  const handlePageReload = () => {
+  const handlePageReload = async () => {
     // window.location.reload();
     // setRangeProData([])
     setFilterChecked({})
+    let param = JSON.parse(localStorage.getItem("menuparams"))
+    await productListApiCall(param, 1).then(res => {
+      if (res) {
+        getProductData()
+      }
+      return res
+    }).then(async(res)=>{
+      if(res){
+        console.log("resProduct",res?.map((item)=>item?.autocode))
+        let autoCodeList = JSON.parse(localStorage.getItem("autoCodeList"))
+        let metalTypeId = findMetalTypeId(mtTypeOption)[0]?.Metalid
+        let DiaQCid = [findDiaQcId(diaQColOpt)[0]?.QualityId, findDiaQcId(diaQColOpt)[0]?.ColorId]
+        let CsQcid = [findCsQcId(cSQopt)[0]?.QualityId, findCsQcId(cSQopt)[0]?.ColorId]
+    
+        let obj = { mt: metalTypeId, dqc: DiaQCid, csqc: CsQcid }
+    
+        
+          await getDesignPriceList(param,1,obj ,{},autoCodeList).then(resp => {
+            if(resp) {
+              getProdPriceData()
+            }
+          })
+        
+      }
+    })
     // setNewProData(ProductApiData2);  
     setMinPrice(0)
     setMaxPrice(maxPrice)
@@ -1743,6 +1768,7 @@ const ProductList = () => {
     setMinDiamondWt(0)
     setMaxDiamondWt(maxDiamondWt)
     setValue4([0, maxDiamondWt])
+
   }
 
   const [hoveredImageUrls, setHoveredImageUrls] = useState({});
