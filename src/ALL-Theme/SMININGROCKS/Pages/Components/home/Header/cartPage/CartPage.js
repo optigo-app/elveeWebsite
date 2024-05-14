@@ -112,6 +112,7 @@ export default function CartPage() {
   const [diaqcData, setDiaQcData] = useState([]);
   const [csData, setCsData] = useState([])
   const [fullprodData,setFullProdData] = useState();
+  const [cartPageLoding, setCartPageloding] = useState(false);
 
 
 
