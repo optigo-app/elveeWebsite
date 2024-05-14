@@ -1277,7 +1277,7 @@ const ProductList = () => {
           "UnitCostWithmarkup": Number(`${(product?.price === "Not Available" ? 0 : product?.price) + (product?.markup ?? 0)}`),
           "autocode": `${product?.autocode}`,
           "colorstonecolorname": `${cSQopt?.split('-')[1] ?? ""}`,
-          "colorstonequality": `${cSQopt?.split('-')[0]  ?? ""}`,
+          "colorstonequality": `${cSQopt?.split('-')[0] ?? ""}`,
           "designno": `${product?.designno}`,
           "diamondcolorname": `${diaQColOpt.split("#")[1]}`,
           "diamondpcs": Number(`${product?.updDPCS}`),
@@ -1433,7 +1433,7 @@ const ProductList = () => {
           "UnitCost": Number(`${product?.price === "Not Available" ? 0 : product?.price}`),
           "UnitCostWithmarkup": Number(`${(product?.price === "Not Available" ? 0 : product?.price) + (product?.markup ?? 0)}`),
           "colorstonecolorname": `${cSQopt?.split('-')[1] ?? ""}`,
-          "colorstonequality": `${cSQopt?.split('-')[0]  ?? ""}`,
+          "colorstonequality": `${cSQopt?.split('-')[0] ?? ""}`,
           "diamondcolorname": `${JSON.parse(localStorage.getItem("loginUserDetail"))?.cmboDiaQualityColor.split("#@#")[1]}`,
           "diamondpcs": Number(`${product?.updDPCS}`),
           "diamondquality": `${JSON.parse(localStorage.getItem("loginUserDetail"))?.cmboDiaQualityColor.split("#@#")[0]}`,
@@ -1753,9 +1753,9 @@ const ProductList = () => {
         getProductData()
       }
       return res
-    }).then(async(res)=>{
-      if(res){
-        console.log("resProduct",res?.map((item)=>item?.autocode))
+    }).then(async (res) => {
+      if (res) {
+        console.log("resProduct", res?.map((item) => item?.autocode))
         let autoCodeList = JSON.parse(localStorage.getItem("autoCodeList"))
         let metalTypeId = findMetalTypeId(mtTypeOption)[0]?.Metalid
         let DiaQCid = [findDiaQcId(diaQColOpt)[0]?.QualityId, findDiaQcId(diaQColOpt)[0]?.ColorId]
@@ -2595,27 +2595,28 @@ const ProductList = () => {
                                 color: "#7f7d85",
                                 borderRadius: 0,
 
-                                  "&.MuiAccordionSummary-root": {
-                                    padding: 0,
-                                  },
-                                }}
-                              >
-                                <span className="filtercategoryLable">
-                                  {ele.label}
-                                </span>
-                              </AccordionSummary>
-                              <AccordionDetails
-                                sx={{
-                                  display: "flex",
-                                  flexDirection: "column",
-                                  gap: "4px",
-                                  // ...(ele.label.length > 10 && {
-                                  height: '300px',
-                                  overflow: 'auto',
-                                  // }),
-                                }}
-                              >
-                                {/* {ele.label === "PRICE" &&
+                                "&.MuiAccordionSummary-root": {
+                                  padding: 0,
+                                },
+                              }}
+                            >
+                              <span className="filtercategoryLable">
+                                {ele.label}
+                              </span>
+                            </AccordionSummary>
+                            <AccordionDetails
+                              sx={{
+                                display: "flex",
+                                flexDirection: "column",
+                                gap: "4px",
+                                // ...(ele.label.length > 10 && {
+                                minHeight: 'fit-content',
+                                  maxHeight: '300px',
+                                overflow: 'auto',
+                                // }),
+                              }}
+                            >
+                              {/* {ele.label === "PRICE" &&
                               <div>
                                 <Slider
                                   className='netWtSecSlider'
@@ -2709,55 +2710,55 @@ const ProductList = () => {
                                   key={i}
                                 >
 
-                                    <small
-                                      style={{
-                                        fontFamily: "TT Commons, sans-serif",
-                                        color: "#7f7d85",
-                                      }}
-                                    >
-                                      {flist.label}
-                                    </small>
-                                    <Checkbox
-                                      name={`checkbox${index + 1}${i + 1}`}
-                                      checked={
-                                        filterChecked[`checkbox${index + 1}${i + 1}`]
-                                          ? filterChecked[`checkbox${index + 1}${i + 1}`]?.checked
-                                          : false
-                                      }
-                                      style={{
-                                        color: "#7f7d85",
-                                        padding: 0,
-                                        width: "10px",
-                                      }}
-                                      onClick={(e) =>
-                                        handleCheckboxChange(e, ele, flist.id)
-                                      }
-                                      size="small"
-                                    />
-                                  </div>
-                                ))}
-                              </AccordionDetails>
-                            </Accordion>
-                          </>
-                        ))}
-                      </div>
+                                  <small
+                                    style={{
+                                      fontFamily: "TT Commons, sans-serif",
+                                      color: "#7f7d85",
+                                    }}
+                                  >
+                                    {flist.label}
+                                  </small>
+                                  <Checkbox
+                                    name={`checkbox${index + 1}${i + 1}`}
+                                    checked={
+                                      filterChecked[`checkbox${index + 1}${i + 1}`]
+                                        ? filterChecked[`checkbox${index + 1}${i + 1}`]?.checked
+                                        : false
+                                    }
+                                    style={{
+                                      color: "#7f7d85",
+                                      padding: 0,
+                                      width: "10px",
+                                    }}
+                                    onClick={(e) =>
+                                      handleCheckboxChange(e, ele, flist.id)
+                                    }
+                                    size="small"
+                                  />
+                                </div>
+                              ))}
+                            </AccordionDetails>
+                          </Accordion>
+                        </>
+                      ))}
                     </div>
-                    {/* for mobile */}
-                    <div className="smilingMobileProductListSideBar">
-                      <div className="filterListMobileData" style={{ display: "flex", marginInline: "15px" }}>
-                        <div style={{ width: "100%" }} onClick={toggleDrawerOverlay}>
-                          <Drawer
-                            anchor="left"
-                            open={isOpenDetail}
-                            onClose={toggleDetailDrawer}
-                          >
-                            {list("left")}
-                          </Drawer>
-                          <div className="filterMobileDivcontainer">
-                            <div className="part firstfilteDiv" style={{ flex: '20%' }}>
-                              <div className="part-content" onClick={toggleDetailDrawer}>
-                                Filter
-                                <FilterListIcon />
+                  </div>
+                  {/* for mobile */}
+                  <div className="smilingMobileProductListSideBar">
+                    <div className="filterListMobileData" style={{ display: "flex", marginInline: "15px" }}>
+                      <div style={{ width: "100%" }} onClick={toggleDrawerOverlay}>
+                        <Drawer
+                          anchor="left"
+                          open={isOpenDetail}
+                          onClose={toggleDetailDrawer}
+                        >
+                          {list("left")}
+                        </Drawer>
+                        <div className="filterMobileDivcontainer">
+                          <div className="part firstfilteDiv" style={{ flex: '20%' }}>
+                            <div className="part-content" onClick={toggleDetailDrawer}>
+                              Filter
+                              <FilterListIcon />
 
                             </div>
                           </div>
@@ -2765,6 +2766,7 @@ const ProductList = () => {
                             <div className="part-content">
                               <div className={`custom-select ${isActive ? 'active' : ''}`}>
                                 <button
+                                  ref={dropdownRef}
                                   className="select-button"
                                   onClick={toggleDropdown}
                                   aria-haspopup="listbox"
@@ -2954,7 +2956,7 @@ const ProductList = () => {
                                       {products?.TitleLine}
                                     </p>
                                     <div>
-                                      </div>
+                                    </div>
                                   </div>
                                   <div className={show4ImagesView ? "listing-features4" : "listing-features"}>
                                     <div>
@@ -3126,13 +3128,13 @@ const ProductList = () => {
                         ) :
                           <div className="" style={{ margin: '50px 0px 50px 0px' }}>
                             {/* <Card style={{ boxShadow: 'none' }}> */}
-                              {/* <CardContent> */}
-                                <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                  <img src="https://i.gifer.com/7jM3.gif" alt="No Products Found" style={{ maxWidth: '10%', height: 'auto' }} />
-                                </div>
-                                <Typography sx={{ color: '#a2a2a2' }} variant="h4" align="center">No Products Found</Typography>
-                                <Typography sx={{ color: '#a2a2a2' }} variant="body2" align="center">Your search did not match any products. <br/>Please try again.</Typography>
-                              {/* </CardContent> */}
+                            {/* <CardContent> */}
+                            <div style={{ display: 'flex', justifyContent: 'center' }}>
+                              <img src="https://i.gifer.com/7jM3.gif" alt="No Products Found" style={{ maxWidth: '10%', height: 'auto' }} />
+                            </div>
+                            <Typography sx={{ color: '#a2a2a2' }} variant="h4" align="center">No Products Found</Typography>
+                            <Typography sx={{ color: '#a2a2a2' }} variant="body2" align="center">Your search did not match any products. <br />Please try again.</Typography>
+                            {/* </CardContent> */}
                             {/* </Card> */}
                           </div>
                         }

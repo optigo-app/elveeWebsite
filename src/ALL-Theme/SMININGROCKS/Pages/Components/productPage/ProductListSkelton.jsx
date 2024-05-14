@@ -11,8 +11,8 @@ const ProductListSkeleton = () => {
                     <Card className='skeltoncards' style={{ width: '100%' }}>
                         <CardContent style={{ display: 'flex', alignItems: 'center' }}>
                             <div style={{ flex: 1 }}>
-                                <Skeleton variant="text" width={'80%'} height={20} style={{ marginBottom: '10px' }} />
-                                <Skeleton variant="text" width={'60%'} height={20} />
+                                <Skeleton animation="wave" variant="text" width={'80%'} height={20} style={{ marginBottom: '10px' }} />
+                                <Skeleton animation="wave" variant="text" width={'60%'} height={20} />
                             </div>
                             {/* <Skeleton variant="rect" width={100} height={100} style={{ marginRight: '10px' }} /> */}
                         </CardContent>
@@ -21,20 +21,20 @@ const ProductListSkeleton = () => {
                 <Grid item xs={3}>
                     <Card className='skeltoncards'>
                         <CardContent>
-                            <Skeleton variant="text" width={'80%'} height={20} style={{ marginBottom: '20px' }} />
-                            <Skeleton variant="text" width={'60%'} height={20} />
-                            <Skeleton variant="text" width={'80%'} height={20} style={{ marginBottom: '20px' }} />
-                            <Skeleton variant="text" width={'60%'} height={20} />
-                            <Skeleton variant="text" width={'80%'} height={20} style={{ marginBottom: '20px' }} />
-                            <Skeleton variant="text" width={'60%'} height={20} />
-                            <Skeleton variant="text" width={'80%'} height={20} style={{ marginBottom: '20px' }} />
-                            <Skeleton variant="text" width={'60%'} height={20} />
-                            <Skeleton variant="text" width={'80%'} height={20} style={{ marginBottom: '20px' }} />
-                            <Skeleton variant="text" width={'60%'} height={20} />
-                            <Skeleton variant="text" width={'80%'} height={20} style={{ marginBottom: '20px' }} />
-                            <Skeleton variant="text" width={'60%'} height={20} />
-                            <Skeleton variant="text" width={'80%'} height={20} style={{ marginBottom: '20px' }} />
-                            <Skeleton variant="text" width={'60%'} height={20} />
+                            <Skeleton animation="wave" variant="text" width={'80%'} height={20} style={{ marginBottom: '20px' }} />
+                            <Skeleton animation="wave" variant="text" width={'60%'} height={20} />
+                            <Skeleton animation="wave" variant="text" width={'80%'} height={20} style={{ marginBottom: '20px' }} />
+                            <Skeleton animation="wave" variant="text" width={'60%'} height={20} />
+                            <Skeleton animation="wave" variant="text" width={'80%'} height={20} style={{ marginBottom: '20px' }} />
+                            <Skeleton animation="wave" variant="text" width={'60%'} height={20} />
+                            <Skeleton animation="wave" variant="text" width={'80%'} height={20} style={{ marginBottom: '20px' }} />
+                            <Skeleton animation="wave" variant="text" width={'60%'} height={20} />
+                            <Skeleton animation="wave" variant="text" width={'80%'} height={20} style={{ marginBottom: '20px' }} />
+                            <Skeleton animation="wave" variant="text" width={'60%'} height={20} />
+                            <Skeleton animation="wave" variant="text" width={'80%'} height={20} style={{ marginBottom: '20px' }} />
+                            <Skeleton animation="wave" variant="text" width={'60%'} height={20} />
+                            <Skeleton animation="wave" variant="text" width={'80%'} height={20} style={{ marginBottom: '20px' }} />
+                            <Skeleton animation="wave" variant="text" width={'60%'} height={20} />
                             
                         </CardContent>
                     </Card>
@@ -44,11 +44,11 @@ const ProductListSkeleton = () => {
                         <Grid item xs={4} key={item}>
                             <Card className='skeltoncards'>
                                 <CardMedia style={{width:'100%', height:'40vh'}}>
-                                    <Skeleton variant="rect" width={'100%'} height='40vh' />
+                                    <Skeleton animation="wave" variant="rect" width={'100%'} height='40vh' />
                                 </CardMedia>
                                 <CardContent>
-                                    <Skeleton variant="text" width={'80%'} height={20} style={{ marginBottom: '10px' }} />
-                                    <Skeleton variant="text" width={'60%'} height={20} />
+                                    <Skeleton animation="wave" variant="text" width={'80%'} height={20} style={{ marginBottom: '10px' }} />
+                                    <Skeleton animation="wave" variant="text" width={'60%'} height={20} />
                                 </CardContent>
                             </Card>
                         </Grid>
