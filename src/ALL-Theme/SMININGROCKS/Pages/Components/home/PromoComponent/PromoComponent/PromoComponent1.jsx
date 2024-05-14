@@ -15,7 +15,7 @@ const PromoComponent1 = () => {
                     <img src={`${storImagePath()}/images/HomePage/Promo/Banner/PromoBanner1.jpg`} className='promo-daimondBox2-image' onClick={() => navigation('/productpage')}/>
                 </div>
                 <div className='promo-daimondBox1'>
-                    <p style={{  fontSize: '22px', color: 'rgba(29, 50, 88, 0.8)' }}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                    <p style={{  fontSize: '22px', color: 'rgba(29, 50, 88, 0.8)' }}>From the first sketch to the final polish, every step of the journey takes place within the walls of our atelier, where master artisans breathe life into raw materials, transforming them into timeless works of art. Each piece is meticulously crafted with a blend of traditional techniques and contemporary innovation, reflecting a harmonious balance between heritage and modernity.</p>
                 </div>
             </div>
         </div>
