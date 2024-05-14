@@ -1203,11 +1203,11 @@ export default function Header() {
                     gap: '20px'
                   }}
                 >
-                  {location?.pathname == '/productpage' &&
+                  {/* {location?.pathname == '/productpage' &&
                     <li className="searchiconInMobile" onClick={toggleOverlay} style={{ listStyle: 'none', width: '40px', textAlign: 'center', cursor: 'pointer' }}>
                       <IoSearch color="#7D7F85" fontSize='30px' />
                     </li>
-                  }
+                  } */}
                   <Badge
                     badgeContent={getWishListCount}
                     max={1000}
