@@ -139,6 +139,7 @@ export default function SMININGROCKS_App() {
                         </Route>
                         <Route path="/CurrentVersion" element={<CurrentVersion />} />
                         <Route path="*" element={<PageNotFound />} />
+                        <Route path="/skelton" element={<ProductListSkeleton />} />
                     </Routes>
                 </div>
             </div>

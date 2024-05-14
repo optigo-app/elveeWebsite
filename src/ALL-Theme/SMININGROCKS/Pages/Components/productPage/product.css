@@ -336,6 +336,7 @@
     margin: 0px 0px 0px 40px;
 }
 .textContainerData{
+    color: #AF8238;
     display: flex;
     justify-content: space-between;
 }
@@ -361,7 +362,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #cccfd8;
+    background-color: #d4dbe7;
     z-index: -1;
 }
 
