@@ -51,6 +51,7 @@ export default function SocialMedia() {
           },
         }}
         modules={[Pagination]}
+        // pagination={{ clickable: true }}
         className="mySwiper"
       >
         {sliderData.map((slide, index) => (
