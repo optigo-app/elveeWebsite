@@ -1043,30 +1043,30 @@ const ProductList = () => {
           getProductData()
         }
         return res
-      }).then(async(res)=>{
-        if(res){
-          console.log("resProduct",res?.map((item)=>item?.autocode))
+      }).then(async (res) => {
+        if (res) {
+          console.log("resProduct", res?.map((item) => item?.autocode))
           let autoCodeList = JSON.parse(localStorage.getItem("autoCodeList"))
           let metalTypeId = findMetalTypeId(mtTypeOption)[0]?.Metalid
           let DiaQCid = [findDiaQcId(diaQColOpt)[0]?.QualityId, findDiaQcId(diaQColOpt)[0]?.ColorId]
           let CsQcid = [findCsQcId(cSQopt)[0]?.QualityId, findCsQcId(cSQopt)[0]?.ColorId]
-      
+
           let obj = { mt: metalTypeId, dqc: DiaQCid, csqc: CsQcid }
 
-         console.log("autoCodeList",typeof(autoCodeList))
-      
-          
-            await getDesignPriceList(param,1,obj ,output,autoCodeList).then(resp => {
-              if(resp) {
-                getProdPriceData()
-              }
-            })
-          
+          console.log("autoCodeList", typeof (autoCodeList))
+
+
+          await getDesignPriceList(param, 1, obj, output, autoCodeList).then(resp => {
+            if (resp) {
+              getProdPriceData()
+            }
+          })
+
         }
       })
     }
 
-    
+
 
   }
   console.log("apiCalling", filterChecked)
@@ -2112,8 +2112,6 @@ const ProductList = () => {
   }
 
   const ShortcutComboFunc = async (event, type) => {
-
-
     if (type === "metal") setmtTypeOption(event)
     if (type === "dia") setDiaQColOpt(event)
     if (type === "cs") setCSQOpt(event)
@@ -2132,11 +2130,11 @@ const ProductList = () => {
     let autoCodeList = JSON.parse(localStorage.getItem("autoCodeList"))
 
     // if(param && currentPage && metalTypeId && DiaQCid && CsQcid){
-      await getDesignPriceList(param, currentPage, obj,{},autoCodeList).then(res => {
-        if(res){
-          getProdPriceData()
-        }
-      })
+    await getDesignPriceList(param, currentPage, obj, {}, autoCodeList).then(res => {
+      if (res) {
+        getProdPriceData()
+      }
+    })
     // }
   }
 
@@ -2150,6 +2148,7 @@ const ProductList = () => {
 
 
   const handlePageChange = async (event, value) => {
+    setFilterProdLoding(true);
     let param = JSON.parse(localStorage.getItem("menuparams"))
     setCurrentPage(value)
 
@@ -2159,6 +2158,10 @@ const ProductList = () => {
 
     let obj = { mt: metalTypeId, dqc: DiaQCid, csqc: CsQcid }
 
+    setTimeout(() => {
+      window.scroll(0, 0)
+    }, 100);
+
     await productListApiCall(param, value).then((res) => {
       if (res) return res
       return res
@@ -2166,7 +2169,7 @@ const ProductList = () => {
       if (res) {
         let autoCodeList = JSON.parse(localStorage.getItem("autoCodeList"))
         console.log("priceCall1");
-        await getDesignPriceList(param, value, obj,{},autoCodeList)
+        await getDesignPriceList(param, value, obj, {}, autoCodeList)
         return res
       }
     }).then((res) => {
@@ -2174,7 +2177,9 @@ const ProductList = () => {
         setDataPriceApiCallFlag(true)
         getProdPriceData()
         getProductData()
-        window.scroll(0, 0)
+        setTimeout(() => {
+          setFilterProdLoding(false);
+        }, 10);
       }
       else {
         setDataPriceApiCallFlag(false)
