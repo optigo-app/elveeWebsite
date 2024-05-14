@@ -16,7 +16,7 @@
 }
 
 .elveBox1Title {
-    font-size: 30px;
+    font-size: 19px;
     font-weight: 500;
 }
 
@@ -25,17 +25,17 @@
     width: 40%;
     border: none;
     background-color: transparent;
-    border-bottom: 1px solid black;
+    border: 1px solid #00000078;
     outline: none;
 }
 
 .elevBox1Btn {
     height: 40px;
     width: 160px;
-    border: 1px solid black;
-    background-color: #e2f0f0;
+    border: 1px solid #00000078;
+    background-color: #ebdcc3;
     font-weight: 500;
-    font-size: 25px;
+    font-size: 18px;
 
 }
 
@@ -52,13 +52,13 @@
 }
 
 .ElevFooterBoxTitle {
-    font-size: 30px;
+    font-size: 20px;
     font-weight: bold;
     font-family: 'PT Sans', sans-serif;
 }
 
 .ElveFooterDesc {
-    font-size: 19px;
+    font-size: 15px;
     font-family: 'PT Sans', sans-serif;
     cursor: pointer;
 }
@@ -73,6 +73,22 @@
 .footerIconMain {
     display: flex;
     margin-top: 30px;
+}
+
+.ElevFooterDesc {
+    opacity: 0;
+    /* Initially hide the content */
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+    /* Add transition for max-height and opacity */
+}
+
+.ElevFooterDesc .show {
+    opacity: 1;
+    /* Show the content */
+    max-height: 100px;
+    /* Adjust height as needed */
 }
 
 .footerSocialIcon {
@@ -91,6 +107,9 @@
     border-color: #7d7f85;
 }
 
+.footerOfficeDesc{
+    font-size: 15px;
+}
 @media screen and (max-width:1500px) {
 
     .ElevFooterBoxTitle {
@@ -154,15 +173,15 @@
 
 @media screen and (max-width: 600px) {
 
-    .ElveFooter1Input{
+    .ElveFooter1Input {
         width: 100%;
     }
 
-    .eleBox1InputBox{
-        width: 60%!important;
+    .eleBox1InputBox {
+        width: 60% !important;
     }
 
-    .elevBox1Btn{
+    .elevBox1Btn {
         width: 30%;
         font-size: 15px;
     }

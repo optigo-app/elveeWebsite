@@ -138,6 +138,7 @@ const ProductList = () => {
   const [prodCount, setProdCount] = useState(0)
   const [storeInitData, setStoreInitData] = useState({})
   const [currentPage, setCurrentPage] = useState(1)
+  const [addToCartFlag, setAddToCartFlag] = useState(false)
 
   const getMenuTransData = useRecoilValue(menuTransfData)
 
@@ -1277,7 +1278,7 @@ const ProductList = () => {
           "UnitCostWithmarkup": Number(`${(product?.price === "Not Available" ? 0 : product?.price) + (product?.markup ?? 0)}`),
           "autocode": `${product?.autocode}`,
           "colorstonecolorname": `${cSQopt?.split('-')[1] ?? ""}`,
-          "colorstonequality": `${cSQopt?.split('-')[0] ?? ""}`,
+          "colorstonequality": `${cSQopt?.split('-')[0]  ?? ""}`,
           "designno": `${product?.designno}`,
           "diamondcolorname": `${diaQColOpt.split("#")[1]}`,
           "diamondpcs": Number(`${product?.updDPCS}`),
@@ -1433,7 +1434,7 @@ const ProductList = () => {
           "UnitCost": Number(`${product?.price === "Not Available" ? 0 : product?.price}`),
           "UnitCostWithmarkup": Number(`${(product?.price === "Not Available" ? 0 : product?.price) + (product?.markup ?? 0)}`),
           "colorstonecolorname": `${cSQopt?.split('-')[1] ?? ""}`,
-          "colorstonequality": `${cSQopt?.split('-')[0] ?? ""}`,
+          "colorstonequality": `${cSQopt?.split('-')[0]  ?? ""}`,
           "diamondcolorname": `${JSON.parse(localStorage.getItem("loginUserDetail"))?.cmboDiaQualityColor.split("#@#")[1]}`,
           "diamondpcs": Number(`${product?.updDPCS}`),
           "diamondquality": `${JSON.parse(localStorage.getItem("loginUserDetail"))?.cmboDiaQualityColor.split("#@#")[0]}`,
@@ -1753,9 +1754,9 @@ const ProductList = () => {
         getProductData()
       }
       return res
-    }).then(async (res) => {
-      if (res) {
-        console.log("resProduct", res?.map((item) => item?.autocode))
+    }).then(async(res)=>{
+      if(res){
+        console.log("resProduct",res?.map((item)=>item?.autocode))
         let autoCodeList = JSON.parse(localStorage.getItem("autoCodeList"))
         let metalTypeId = findMetalTypeId(mtTypeOption)[0]?.Metalid
         let DiaQCid = [findDiaQcId(diaQColOpt)[0]?.QualityId, findDiaQcId(diaQColOpt)[0]?.ColorId]
@@ -2056,7 +2057,6 @@ const ProductList = () => {
                         style={{
                           fontFamily: 'TT Commons, sans-serif',
                           color: '#7f7d85',
-                          textTransform: 'lowercase',
                         }}
                       >
                         {flist.label}
@@ -2596,25 +2596,27 @@ const ProductList = () => {
                                 color: "#7f7d85",
                                 borderRadius: 0,
 
-                                "&.MuiAccordionSummary-root": {
-                                  padding: 0,
-                                },
-                              }}
-                            >
-                              <span className="filtercategoryLable">
-                                {ele.label}
-                              </span>
-                            </AccordionSummary>
-                            <AccordionDetails
-                              sx={{
-                                display: "flex",
-                                flexDirection: "column",
-                                gap: "4px",
-                                height: '300px',
-                                overflow: 'auto'
-                              }}
-                            >
-                              {/* {ele.label === "PRICE" &&
+                                  "&.MuiAccordionSummary-root": {
+                                    padding: 0,
+                                  },
+                                }}
+                              >
+                                <span className="filtercategoryLable">
+                                  {ele.label}
+                                </span>
+                              </AccordionSummary>
+                              <AccordionDetails
+                                sx={{
+                                  display: "flex",
+                                  flexDirection: "column",
+                                  gap: "4px",
+                                  // ...(ele.label.length > 10 && {
+                                  height: '300px',
+                                  overflow: 'auto',
+                                  // }),
+                                }}
+                              >
+                                {/* {ele.label === "PRICE" &&
                               <div>
                                 <Slider
                                   className='netWtSecSlider'
@@ -2708,56 +2710,55 @@ const ProductList = () => {
                                   key={i}
                                 >
 
-                                  <small
-                                    style={{
-                                      fontFamily: "TT Commons, sans-serif",
-                                      color: "#7f7d85",
-                                      textTransform: "lowercase",
-                                    }}
-                                  >
-                                    {flist.label}
-                                  </small>
-                                  <Checkbox
-                                    name={`checkbox${index + 1}${i + 1}`}
-                                    checked={
-                                      filterChecked[`checkbox${index + 1}${i + 1}`]
-                                        ? filterChecked[`checkbox${index + 1}${i + 1}`]?.checked
-                                        : false
-                                    }
-                                    style={{
-                                      color: "#7f7d85",
-                                      padding: 0,
-                                      width: "10px",
-                                    }}
-                                    onClick={(e) =>
-                                      handleCheckboxChange(e, ele, flist.id)
-                                    }
-                                    size="small"
-                                  />
-                                </div>
-                              ))}
-                            </AccordionDetails>
-                          </Accordion>
-                        </>
-                      ))}
+                                    <small
+                                      style={{
+                                        fontFamily: "TT Commons, sans-serif",
+                                        color: "#7f7d85",
+                                      }}
+                                    >
+                                      {flist.label}
+                                    </small>
+                                    <Checkbox
+                                      name={`checkbox${index + 1}${i + 1}`}
+                                      checked={
+                                        filterChecked[`checkbox${index + 1}${i + 1}`]
+                                          ? filterChecked[`checkbox${index + 1}${i + 1}`]?.checked
+                                          : false
+                                      }
+                                      style={{
+                                        color: "#7f7d85",
+                                        padding: 0,
+                                        width: "10px",
+                                      }}
+                                      onClick={(e) =>
+                                        handleCheckboxChange(e, ele, flist.id)
+                                      }
+                                      size="small"
+                                    />
+                                  </div>
+                                ))}
+                              </AccordionDetails>
+                            </Accordion>
+                          </>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                  {/* for mobile */}
-                  <div className="smilingMobileProductListSideBar">
-                    <div className="filterListMobileData" style={{ display: "flex", marginInline: "15px" }}>
-                      <div style={{ width: "100%" }} onClick={toggleDrawerOverlay}>
-                        <Drawer
-                          anchor="left"
-                          open={isOpenDetail}
-                          onClose={toggleDetailDrawer}
-                        >
-                          {list("left")}
-                        </Drawer>
-                        <div className="filterMobileDivcontainer">
-                          <div className="part firstfilteDiv" style={{ flex: '20%' }}>
-                            <div className="part-content" onClick={toggleDetailDrawer}>
-                              Filter
-                              <FilterListIcon />
+                    {/* for mobile */}
+                    <div className="smilingMobileProductListSideBar">
+                      <div className="filterListMobileData" style={{ display: "flex", marginInline: "15px" }}>
+                        <div style={{ width: "100%" }} onClick={toggleDrawerOverlay}>
+                          <Drawer
+                            anchor="left"
+                            open={isOpenDetail}
+                            onClose={toggleDetailDrawer}
+                          >
+                            {list("left")}
+                          </Drawer>
+                          <div className="filterMobileDivcontainer">
+                            <div className="part firstfilteDiv" style={{ flex: '20%' }}>
+                              <div className="part-content" onClick={toggleDetailDrawer}>
+                                Filter
+                                <FilterListIcon />
 
                             </div>
                           </div>
@@ -2954,21 +2955,7 @@ const ProductList = () => {
                                       {products?.TitleLine}
                                     </p>
                                     <div>
-                                      {/* {isPriceShow === 1 &&
-                                <p className={show4ImagesView ? "productDetails price4" : "productDetails price"}>{currencySym?.Currencysymbol}
-                                  {((products?.UnitCost ?? 0) + (products?.price ?? 0) + (products?.markup ?? 0)).toFixed(2)}</p>
-                              }
-                              <span className={show4ImagesView ? "productDesignDetails4" : "productDesignDetails"}>
-                                <p className="productDetails address">{products?.designno}</p>
-                                <Divider
-                                  className="dividerLine"
-                                  orientation="vertical"
-                                  variant="middle"
-                                  flexItem
-                                />
-                                <p className="productDetails address"> {isMetalTCShow === 1 && products?.MetalTypeName}-{products?.MetalColorName}{products?.MetalPurity}</p>
-                              </span> */}
-                                    </div>
+                                      </div>
                                   </div>
                                   <div className={show4ImagesView ? "listing-features4" : "listing-features"}>
                                     <div>

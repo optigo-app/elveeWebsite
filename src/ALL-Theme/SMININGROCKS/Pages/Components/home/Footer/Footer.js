@@ -107,11 +107,11 @@ export default function Footer() {
                                     <IoLocationOutline style={{ width: '50px', height: 'fit-content' }} />
                                     <span>Plot No. – M1 To M6, Gujarat Hira Bourse Gem & Jewellery Park, Pal-Hazira Road, Ichchhapore, Surat - 394510</span>
                                 </p>
-                                <p style={{ fontFamily: 'PT Sans, sans-serif' }}>
+                                <p className="footerOfficeDesc" style={{ fontFamily: 'PT Sans, sans-serif' }}>
                                     <IoMdCall />
                                     +91 2616105100
                                 </p>
-                                <p style={{ fontFamily: 'PT Sans, sans-serif' }}>
+                                <p className='footerOfficeDesc' style={{ fontFamily: 'PT Sans, sans-serif' }}>
                                     <IoMdMail />
                                     <span style={{ marginLeft: '5px' }}>info@elvee.in</span>
                                 </p>
@@ -122,11 +122,11 @@ export default function Footer() {
                                     <IoLocationOutline style={{ width: '22px', height: '22px' }} />
                                     <span>1177 6th Avenue, Suite 5099, New York,NY 10036.</span>
                                 </p>
-                                <p style={{ fontFamily: 'PT Sans, sans-serif' }}>
+                                <p className="footerOfficeDesc" style={{ fontFamily: 'PT Sans, sans-serif' }}>
                                     <IoMdCall />
                                     (646) 284-4466
                                 </p>
-                                <p style={{ fontFamily: 'PT Sans, sans-serif' }}>
+                                <p className="footerOfficeDesc" style={{ fontFamily: 'PT Sans, sans-serif' }}>
                                     <IoMdMail />
                                     <span style={{ marginLeft: '5px' }}>Contact.usa@elveepromise.com</span>
                                 </p>

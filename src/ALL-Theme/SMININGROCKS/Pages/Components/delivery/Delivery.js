@@ -34,6 +34,10 @@ export default function Delivery() {
     const [editId, setEditId] = useState('');
     const navigation = useNavigate();
 
+
+    useEffect(() => {
+    }, []);
+
     const handleOpen = (item, addressIndex = null) => {
         setIsEditMode(addressIndex !== null);
         if (addressIndex !== null && addressData.length > addressIndex) {
@@ -401,6 +405,7 @@ export default function Delivery() {
     const handleContinue = () => {
         if (selectedAddressId) {
             navigation('/Payment');
+            window.scrollTo(0, 0);
         } else {
             alert('Please select an address before continuing.');
         }
