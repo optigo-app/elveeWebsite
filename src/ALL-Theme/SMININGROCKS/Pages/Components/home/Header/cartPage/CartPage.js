@@ -112,6 +112,7 @@ export default function CartPage() {
   const [diaqcData, setDiaQcData] = useState([]);
   const [csData, setCsData] = useState([])
   const [fullprodData,setFullProdData] = useState();
+  const [cartPageLoding, setCartPageloding] = useState(false);
 
 
 
@@ -1298,7 +1299,7 @@ export default function CartPage() {
                             <img
                               src={
                                 storeInitData?.DesignImageFol +
-                                prodSelectData?.MediumImagePath?.split(",")[0]
+                                cartSelectData?.DefaultImageName?.slice(13)
                               }
                               style={{
                                 border: "1px solid #e1e1e1",

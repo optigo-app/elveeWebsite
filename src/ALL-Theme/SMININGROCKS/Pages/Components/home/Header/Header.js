@@ -541,8 +541,8 @@ export default function Header() {
     document.body.style.overflow = 'hidden';
   };
   const handleMouseLeave = (index) => {
-    setExpandedMenu(null);
-    document.body.style.overflow = 'auto';
+      setExpandedMenu(null);
+      document.body.style.overflow = 'auto';
   };
 
   const handleMenuClick = async (param1Item, param2Item) => {
@@ -1008,7 +1008,7 @@ export default function Header() {
                   {menuItems.map((item, index) => (
                     <li
                       className="nav-li-smining"
-                      style={{ height: '100%', display: 'flex', alignItems: 'center', cursor: "pointer" }}
+                      style={{ height: '100%', display: 'flex', alignItems: 'center', cursor: "pointer", marginTop:'10px', textTransform:'uppercase' }}
                       key={index}
                       label={item.menuname}
                       onMouseEnter={() => handleMouseEnter(index, item)}
@@ -1035,8 +1035,8 @@ export default function Header() {
                 <ul className="nav-ul-shop" style={{ marginTop: '24px' }}>
                   <>
                     {location?.pathname == '/productpage' &&
-                      <li style={{ cursor: "pointer", textDecoration: 'none' }} onClick={toggleOverlay}>
-                        <IoSearch color="#7D7F85" fontSize='25px' />
+                      <li style={{ cursor: "pointer", textDecoration: 'none',marginTop:'0' }} onClick={toggleOverlay}>
+                        {/* <IoSearch color="#7D7F85" fontSize='25px' /> */}
                       </li>
                     }
                     <Badge
@@ -1046,7 +1046,7 @@ export default function Header() {
                       color="secondary"
                     >
                       <Tooltip title="WishList">
-                        <li style={{ cursor: "pointer", textDecoration: 'none', marginTop: '0px' }} onClick={() => navigation("/myWishList")}>
+                        <li style={{ cursor: "pointer", textDecoration: 'none', marginTop: '0' }} onClick={() => navigation("/myWishList")}>
                           <GoHeart color="#7D7F85" fontSize='25px' />
                         </li>
                       </Tooltip>
@@ -1072,7 +1072,7 @@ export default function Header() {
                   <Tooltip title="Account">
                     <li
                       className="nav-li-smining"
-                      style={{ cursor: "pointer", textDecoration: 'none', marginTop: "-4px" }}
+                      style={{ cursor: "pointer", textDecoration: 'none', marginTop: "0" }}
                       onClick={() => navigation("/account")}
                     >
                       <IoPersonOutline color="#7D7F85" fontSize='25px' />
@@ -1080,7 +1080,7 @@ export default function Header() {
                   </Tooltip>
                   <li
                     className="nav-li-smining"
-                    style={{ cursor: "pointer", marginTop: "-4px" }}
+                    style={{ cursor: "pointer", marginTop: "0" }}
                     onClick={handleLogout}
                   >
                     <FaPowerOff style={{ fontSize: '25px' }} />
