@@ -223,7 +223,7 @@ export function findDiaQcId(param) {
     let color = param.split("#")[1]
 
     let item = diaQCArr?.filter(ele => ele?.Quality == quality && ele?.color == color)
-    console.log("param", item);
+    
     return item
 }
 
