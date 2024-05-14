@@ -235,7 +235,7 @@ export default function ContactUs() {
                         </div>
                     </div>
 
-                    <SmilingRock />
+                    {/* <SmilingRock /> */}
                     <Footer />
                 </div>
             </div>

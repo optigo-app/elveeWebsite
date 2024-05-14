@@ -144,9 +144,16 @@ export default function Header() {
         console.log("res", res);
         localStorage.setItem("allproductlist", JSON.stringify(res))
       }
+      return res
+    }).then(async(res)=>{
+      if(res){
+        let autoCodeList = JSON.parse(localStorage.getItem("autoCodeList"))
+        console.log("autoCodeList",autoCodeList)
+        await getDesignPriceList(param,1,{},{},autoCodeList)
+        navigation("/productpage", { state: { menuFlag: true }})
+      }
+
     })
-    await getDesignPriceList(param)
-    navigation("/productpage", { state: { menuFlag: true } })
   }
 
 
@@ -326,6 +333,7 @@ export default function Header() {
 
 
   const [islogin, setislogin] = useRecoilState(loginState);
+  const [companyTitleLogo, setCompanyTitleLogo] = useRecoilState(companyLogo)
   const titleImg = useRecoilValue(companyLogo);
   const [isB2bFlag, setIsB2BFlag] = useState('');
   const fetchData = () => {
@@ -338,6 +346,12 @@ export default function Header() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (titleImg.length == 0) {
+      const storeInit = JSON.parse(localStorage.getItem('storeInit'));
+      setCompanyTitleLogo(storeInit?.companylogo);
+    }
+  }, []);
   // useEffect(() => {
   //   setTimeout(() => {
   //     const storeInit = JSON.parse(localStorage.getItem('storeInit')) ?? "";
@@ -525,7 +539,7 @@ export default function Header() {
     setExpandedMenu(index);
     setSelectedData(menuItems[index] || []);
     document.body.style.overflow = 'hidden';
-};
+  };
   const handleMouseLeave = (index) => {
     setExpandedMenu(null);
     document.body.style.overflow = 'auto';
@@ -545,6 +559,7 @@ export default function Header() {
     console.log('menuDataWithoutParam1', menuDataWithoutParam1);
 
     let finalData = {
+      menuname: (leval0Data && leval0Data?.menuname) || (menuDataWithoutParam1 && menuDataWithoutParam1?.menuname) || "",
       FilterKey: (leval0Data && leval0Data.param0name) || (menuDataWithoutParam1 && menuDataWithoutParam1.param0name) || "",
       FilterVal: (leval0Data && leval0Data.param0dataname) || (menuDataWithoutParam1 && menuDataWithoutParam1.param0dataname) || "",
       FilterKey1: menuDataWithoutParam1?.param1name ?? "",
@@ -566,13 +581,18 @@ export default function Header() {
           localStorage.setItem("allproductlist", JSON.stringify(res))
           localStorage.setItem("finalAllData", JSON.stringify(res))
         }
+        return res
+      }).then(async(res)=>{
+        if(res){
+          let autoCodeList = JSON.parse(localStorage.getItem("autoCodeList"))
+          await getDesignPriceList(finalData,1,{},{},autoCodeList)
+          navigation("/productpage", { state: { menuFlag: true, filtervalue: finalData } })
+          setTimeout(() => {
+            setDrawerOpen(false);
+            handleMouseLeave();
+          }, 100)
+        }
       })
-      await getDesignPriceList(finalData)
-      navigation("/productpage", { state: { menuFlag: true } })
-      setTimeout(() => {
-        setDrawerOpen(false);
-        handleMouseLeave();
-      }, 100)
     }
 
     console.log('menuData', finalData);
@@ -951,148 +971,155 @@ export default function Header() {
                   <li
                     className="nav-li-smining"
                     style={{ cursor: "pointer" }}
-                    onClick={() => navigation("/contact")}
+                  // onClick={() => navigation("/contact")}
                   >
                     Contact
                   </li>
                 </ul>
               </div>
 
-            <div
-              style={{
-                width: "10%",
-                display: "flex",
-                justifyContent: 'center'
-              }}
-            >
-              <ul className="nav-ul-shop">
-                <li
-                  className="nav-li-smining"
-                  style={{ cursor: "pointer" }}
-                  onClick={() => navigation('/LoginOption')}
-                >
-                  Log In
-                </li>
-              </ul>
-            </div>
-          </div>
-          :
-          <div className="Smining-Top-LoginHeader">
-            <div
-              className="HeaderMenuItemMainDiv"
-            >
-              <a href="/" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '-25px' }}>
-                <img src={titleImg} alt="Title" className="logoImage1" />
-              </a>
-              <ul className="nav-ul-shop" style={{ height: '100%', display: 'flex', alignItems: 'center', listStyle: "none", padding: 0 }}>
-                {menuItems.map((item, index) => (
+              <div
+                style={{
+                  width: "10%",
+                  display: "flex",
+                  justifyContent: 'center'
+                }}
+              >
+                <ul className="nav-ul-shop">
                   <li
                     className="nav-li-smining"
-                    style={{ height: '100%', display: 'flex', alignItems: 'center', cursor: "pointer" }}
-                    key={index}
-                    label={item.menuname}
-                    onMouseEnter={() => handleMouseEnter(index, item)}
-                    onMouseLeave={() => setLeval0Data(item)}
-                    onClick={() => handleMenuClick(item)}
+                    style={{ cursor: "pointer" }}
+                    onClick={() => navigation('/LoginOption')}
                   >
-                    {item.menuname}
+                    Log In
                   </li>
-                ))}
-              </ul>
-            </div>
-
-            <div
-              style={{
-                width: "30%",
-                display: "flex",
-                justifyContent: 'end',
-                marginRight: '20px'
-              }}
-            >
-              <ul className="nav-ul-shop" style={{ marginTop: '24px' }}>
-                <>
-                  {location?.pathname == '/productpage' &&
-                    <li style={{ cursor: "pointer", textDecoration: 'none' }} onClick={toggleOverlay}>
-                      <IoSearch color="#7D7F85" fontSize='25px' />
-                    </li>
-                  }
-                  <Badge
-                    badgeContent={getWishListCount}
-                    max={1000}
-                    overlap={"rectangular"}
-                    color="secondary"
-                  >
-                    <Tooltip title="WishList">
-                      <li style={{ cursor: "pointer", textDecoration: 'none' }} onClick={() => navigation("/myWishList")}>
-                        <GoHeart color="#7D7F85" fontSize='25px' />
-                      </li>
-                    </Tooltip>
-                  </Badge>
-                  <Badge
-                    badgeContent={getCartListCount}
-                    max={1000}
-                    overlap={"rectangular"}
-                    color="secondary"
-                  >
-                    <Tooltip title="Cart">
-                      <li
-                        onClick={() => navigation('/CartPage')}
-                        style={{
-                          cursor: "pointer",
-                          marginTop: "0px",
-                        }}
-                      >
-                        <HiOutlineShoppingBag color="#7D7F85" fontSize='25px' />
-                      </li>
-                    </Tooltip>
-                  </Badge></>
-                <li
-                  className="nav-li-smining"
-                  style={{ cursor: "pointer", textDecoration: 'none' }}
-                  onClick={() => navigation("/account")}
-                >
-                  <IoPersonOutline color="#7D7F85" fontSize='25px' />
-                </li>
-                <li
-                  className="nav-li-smining"
-                  style={{ cursor: "pointer" }}
-                  onClick={handleLogout}
-                >
-                  <FaPowerOff style={{ fontSize: '25px' }} />
-                </li>
-              </ul>
-            </div>
-          </div>
-        }
-        <>
-          <div className={`shop-dropdown ${expandedMenu !== null ? "open" : ""}`} onMouseEnter={() => handleMouseEnter(hoveredIndex)} onMouseLeave={handleMouseLeave}>
-            <div
-              style={{
-                display: "flex",
-                padding: "50px",
-                color: "#7d7f85",
-                // backgroundColor: "rgba(255, 255, 255, 0.8)",
-                // flexDirection: "column",
-                gap: "50px",
-                justifyContent: 'space-between'
-              }}
-              className="menuDropdownData"
-            >
-              <div style={{}}>
-                {/* Render selectedData outside the menuItems loop */}
-                <div style={{ width: '100%', display: 'flex', gap: '60px', textTransform: 'uppercase' }}>
-                  {selectedData?.param1?.map((param1Item, param1Index) => (
-                    <div key={param1Index}>
-                      <span onClick={() => handleMenuClick(param1Item)} className="level1MenuData" key={param1Index} style={{ fontSize: '15px', marginBottom: '10px', fontFamily: '"PT Sans", sans-serif', textAlign: 'start', letterSpacing: 1, fontWeight: 600, cursor: 'pointer' }} > {param1Item?.param1dataname}</span>
-                      {param1Item?.param2?.map((param2Item, param2Index) => (
-                        <p key={param2Index} onClick={() => handleMenuClick(param1Item, param2Item)} style={{ fontSize: '13.5px', margin: '6px 0px 6px 0px', fontFamily: '"PT Sans", sans-serif', letterSpacing: 0.4, textAlign: 'start', cursor: 'pointer', textTransform: 'capitalize' }}>
-                          {param2Item?.param2dataname}
-                        </p>
-                      ))}
-                    </div>
-                  ))}
-                </div>
+                </ul>
               </div>
+            </div>
+            :
+            <div className="Smining-Top-LoginHeader">
+              <div
+                className="HeaderMenuItemMainDiv"
+              >
+                <a href="/" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '-25px' }}>
+                  <img src={titleImg} alt="Title" className="logoImage1" />
+                </a>
+                <ul className="nav-ul-shop" style={{ height: '100%', display: 'flex', alignItems: 'center', listStyle: "none", padding: 0 }}>
+                  {menuItems.map((item, index) => (
+                    <li
+                      className="nav-li-smining"
+                      style={{ height: '100%', display: 'flex', alignItems: 'center', cursor: "pointer" }}
+                      key={index}
+                      label={item.menuname}
+                      onMouseEnter={() => handleMouseEnter(index, item)}
+                      onMouseLeave={() => {
+                        setLeval0Data(item);
+                        handleMouseLeave();
+                      }}
+                      onClick={() => handleMenuClick(item)}
+                    >
+                      {item.menuname}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div
+                style={{
+                  width: "30%",
+                  display: "flex",
+                  justifyContent: 'end',
+                  marginRight: '20px'
+                }}
+              >
+                <ul className="nav-ul-shop" style={{ marginTop: '24px' }}>
+                  <>
+                    {location?.pathname == '/productpage' &&
+                      <li style={{ cursor: "pointer", textDecoration: 'none' }} onClick={toggleOverlay}>
+                        <IoSearch color="#7D7F85" fontSize='25px' />
+                      </li>
+                    }
+                    <Badge
+                      badgeContent={getWishListCount}
+                      max={1000}
+                      overlap={"rectangular"}
+                      color="secondary"
+                    >
+                      <Tooltip title="WishList">
+                        <li style={{ cursor: "pointer", textDecoration: 'none', marginTop: '0px' }} onClick={() => navigation("/myWishList")}>
+                          <GoHeart color="#7D7F85" fontSize='25px' />
+                        </li>
+                      </Tooltip>
+                    </Badge>
+                    <Badge
+                      badgeContent={getCartListCount}
+                      max={1000}
+                      overlap={"rectangular"}
+                      color="secondary"
+                    >
+                      <Tooltip title="Cart">
+                        <li
+                          onClick={() => navigation('/CartPage')}
+                          style={{
+                            cursor: "pointer",
+                            marginTop: "0px",
+                          }}
+                        >
+                          <HiOutlineShoppingBag color="#7D7F85" fontSize='25px' />
+                        </li>
+                      </Tooltip>
+                    </Badge></>
+                  <Tooltip title="Account">
+                    <li
+                      className="nav-li-smining"
+                      style={{ cursor: "pointer", textDecoration: 'none', marginTop: "-4px" }}
+                      onClick={() => navigation("/account")}
+                    >
+                      <IoPersonOutline color="#7D7F85" fontSize='25px' />
+                    </li>
+                  </Tooltip>
+                  <li
+                    className="nav-li-smining"
+                    style={{ cursor: "pointer", marginTop: "-4px" }}
+                    onClick={handleLogout}
+                  >
+                    <FaPowerOff style={{ fontSize: '25px' }} />
+                  </li>
+                </ul>
+              </div>
+            </div>
+          }
+          <>
+            <div className={`shop-dropdown ${expandedMenu !== null ? "open" : ""}`} onMouseEnter={() => handleMouseEnter(hoveredIndex)} onMouseLeave={handleMouseLeave}>
+              <div
+                style={{
+                  display: "flex",
+                  padding: "50px",
+                  color: "#7d7f85",
+                  // backgroundColor: "rgba(255, 255, 255, 0.8)",
+                  // flexDirection: "column",
+                  gap: "50px",
+                  justifyContent: 'space-between'
+                }}
+                className="menuDropdownData"
+              >
+                <div style={{}}>
+                  {/* Render selectedData outside the menuItems loop */}
+                  <div style={{ width: '100%', display: 'flex', gap: '60px', textTransform: 'uppercase' }}>
+                    {selectedData?.param1?.map((param1Item, param1Index) => (
+                      <div key={param1Index}>
+                        <span onClick={() => handleMenuClick(param1Item)} className="level1MenuData" key={param1Index} style={{ fontSize: '15px', marginBottom: '10px', fontFamily: '"PT Sans", sans-serif', textAlign: 'start', letterSpacing: 1, fontWeight: 600, cursor: 'pointer' }} > {param1Item?.param1dataname}</span>
+                        <div style={{ height: '300px', display: 'flex', flexWrap: 'wrap', flexDirection: 'column' }}>
+                          {param1Item?.param2?.map((param2Item, param2Index) => (
+                            <p key={param2Index} onClick={() => handleMenuClick(param1Item, param2Item)} style={{ fontSize: '13.5px', margin: '6px 15px 6px 0px', fontFamily: '"PT Sans", sans-serif', letterSpacing: 0.4, textAlign: 'start', cursor: 'pointer', textTransform: 'capitalize', paddingRight: '15px' }}>
+                              {param2Item?.param2dataname}
+                            </p>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
 
                 <div style={{ display: 'flex', gap: '15px' }}>
                   <img src={`${storImagePath()}/images/Menu/Menu1.jpg`} alt="#" className="menuImages" />
