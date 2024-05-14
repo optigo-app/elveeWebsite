@@ -98,7 +98,7 @@ export default function Footer() {
                     <p className='ElevFooterBoxTitle'>Office</p>
                     <div style={{ display: 'flex' }}>
                         <p className='ElevBox4Title' onClick={() => setSelectedVal(0)} style={{ textDecoration: selectedFooteVal === 0 && 'underline' }}>INDIA</p>
-                        <p className='ElevBox4Title' onClick={() => setSelectedVal(1)} style={{ textDecoration: selectedFooteVal === 1 && 'underline', marginLeft: '50px' }}>USA</p>
+                        {/* <p className='ElevBox4Title' onClick={() => setSelectedVal(1)} style={{ textDecoration: selectedFooteVal === 1 && 'underline', marginLeft: '50px' }}>USA</p> */}
                     </div>
                     {
                         selectedFooteVal === 0 ?
