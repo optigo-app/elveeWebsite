@@ -93,10 +93,10 @@ export const productListApiCall = async(param,page=1,filterObj={}) =>{
 
     let encodedFilter = {
       "DesignNo":"",
-      // "FilterKey":`${param?.FilterKey}`,
-      // "FilterVal":`${param?.FilterVal}`,
-      "FilterKey":'',
-      "FilterVal":'',
+      "FilterKey":`${param?.FilterKey}`,
+      "FilterVal":`${param?.FilterVal}`,
+      // "FilterKey":'',
+      // "FilterVal":'',
       "FilterKey1":`${param?.FilterKey1}`,
       "FilterVal1":`${param?.FilterVal1}`,
       "FilterKey2":`${param?.FilterKey2}`,
