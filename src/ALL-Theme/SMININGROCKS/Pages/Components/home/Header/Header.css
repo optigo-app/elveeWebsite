@@ -227,12 +227,18 @@
 }
 
 .nav-li-smining {
-    font-weight: 500;
+    /* font-weight: 500; */
+    font-size: 14px !important;
     text-transform: capitalize;
+    color: #AF8238 !important;
 }
-.nav-li-smining:hover{ 
-    font-weight: 600 !important;
+
+.nav-li-smining:hover {
+    font-weight: 600;
+    transform: scale(1.1);
+    transition: transform 0.4s ease;
 }
+
 
 .nav-li {
     font-weight: 500;
@@ -307,10 +313,9 @@
 
 .nav-li-smining-fixed {
     font-size: 18px;
-    font-weight: 500;
+    /* font-weight: 500; */
     margin: 0px;
     cursor: pointer;
-
     position: relative;
     display: inline-block;
     height: 22px;
@@ -336,7 +341,7 @@
 
 .nav-li-smining {
     font-size: 16px;
-    font-weight: 600;
+    /* font-weight: 600; */
     margin: 0px;
     cursor: pointer;
     position: relative;
