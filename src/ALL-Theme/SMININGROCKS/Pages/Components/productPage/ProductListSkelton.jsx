@@ -14,7 +14,7 @@ const ProductListSkeleton = () => {
                                 <Skeleton variant="text" width={'80%'} height={20} style={{ marginBottom: '10px' }} />
                                 <Skeleton variant="text" width={'60%'} height={20} />
                             </div>
-                            <Skeleton variant="rect" width={100} height={100} style={{ marginRight: '10px' }} />
+                            {/* <Skeleton variant="rect" width={100} height={100} style={{ marginRight: '10px' }} /> */}
                         </CardContent>
                     </Card>
                 </Grid>

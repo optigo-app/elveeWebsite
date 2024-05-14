@@ -182,7 +182,7 @@ export default function Payment() {
                 <div className='smilingPaymentMainMobile'>
                     {/* <IoArrowBackOutline style={{ height: '40px', width: '60px', cursor: 'pointer',margin: '' }} onClick={() => navigation('/Delivery')} /> */}
 
-                    <div style={{ padding: '50px' }}>
+                    <div className='paymentSubDiv' style={{ padding: '50px' }}>
 
                         <div style={{ width: '100%' }}>
                             <p style={{ fontSize: '25px', fontWeight: 500, color: '#5e5e5e' }}>Payment Card Method</p>
@@ -221,7 +221,7 @@ export default function Payment() {
                             </div>
                         </div>
                         <div className='smilingPaymentBtn'>
-                            <button onClick={handlePayment} className='paymentBtn'>PAY ON ACCOUNT</button>
+                            <button onClick={handlePayment} className='paymentBtn'>Place Order</button>
                         </div>
 
                         <p style={{ color: 'blue', textDecoration: 'underline', marginTop: '10px', textAlign: 'center' }} onClick={() => navigation('/Delivery')}>Cancel</p>

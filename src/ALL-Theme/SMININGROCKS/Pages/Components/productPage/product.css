@@ -213,7 +213,7 @@
     /* padding: 52px 0px 40px 100px; */
 }
 
-@media screen and (max-width: 1441px) {
+    @media screen and (max-width: 1441px) {
 
     .smilingWebProductListSideBar {
         display: none;
@@ -269,6 +269,10 @@
         height: auto!important;
     } */
 
+    .filterListMobileData{
+        margin-inline: 0px!important;
+    }
+
     .prod_img {
         min-height: 200px !important;
         height: 200px !important;
@@ -281,6 +285,9 @@
         min-height: auto !important;
     }
 
+    .thirdfilteDiv{
+        display: none!important;
+    }
     .mobileDeatilDiv1 {
         display: flex !important;
         flex-direction: column !important;
@@ -301,7 +308,7 @@
     .smilingAllProductDataMainMobile {
         display: flex !important;
         flex-direction: column !important;
-        margin: 10px;
+        margin: 10px 0px;
     }
 
     .smilingProductImageBox {
@@ -336,6 +343,7 @@
     margin: 0px 0px 0px 40px;
 }
 .textContainerData{
+    color: #AF8238;
     display: flex;
     justify-content: space-between;
 }
@@ -361,7 +369,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #cccfd8;
+    background-color: #d4dbe7;
     z-index: -1;
 }
 
@@ -875,7 +883,6 @@
         display: flex !important;
         flex-direction: row !important;
         flex-wrap: wrap;
-        margin: 10px;
     }
 
     .smilingProductMain {
@@ -888,7 +895,7 @@
     }
 
     .property-type {
-        width: 192px;
+        width: 100%;
         font-size: 0.675rem;
         font-weight: 700;
         height: 6vh;
@@ -916,7 +923,6 @@
         border: 1px solid #d9d9d9;
         border-radius: 5px;
         overflow: hidden;
-        width: 395px;
     }
 
     .bg-image {
