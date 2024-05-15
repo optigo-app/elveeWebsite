@@ -816,7 +816,7 @@ export default function Header() {
                   </Tooltip>
                 </Badge>
               </div>
-              <List>
+              <List sx={{maxWidth:'330px'}}>
                 {menuItems.map(menuItem => (
                   <div key={menuItem.menuid}>
                     <ListItem onClick={() => handleLoginMenuClick(menuItem.menuname, menuItem)} >

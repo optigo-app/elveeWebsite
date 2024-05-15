@@ -797,7 +797,7 @@
     }
 
     .smilingMobileSubDiv {
-        padding: 5px 10px 12px 10px !important;
+        padding: 12px 10px 12px 10px !important;
     }
 
     .Smining-Top-Header-fixed {
@@ -822,13 +822,13 @@
     }
 
     .centerSVGMobileImage {
-        height: 60px !important;
+        height: 80px !important;
         width: 120% !important;
     }
 
     .MainlogogMobileImage {
-        width: 55% !important;
-        margin-top: -22px;
+        width: 45% !important;
+        margin-top: -12px;
     }
 
     .mobileViewSmilingTop2Icone {
@@ -891,24 +891,41 @@
 
 @media (min-width: 768px) and (max-width: 1440px) {
     .MainlogogMobileImage {
-        width: 70% !important;
-        margin-top: -21px
+        width: 60% !important;
+        margin-top: -11px;
+        margin-left: 0px !important;
+    }
+    
+    .smilingMobileSubDiv {
+        padding: 15px 10px 15px 10px !important;
     }
 }
 
 @media (min-width: 600px) and (max-width: 769px) {
     .MainlogogMobileImage {
-        width: 70% !important;
-        margin-top: -21px
+        width: 50% !important;
+        margin-top: -11px;
+        margin-left: 0px !important;
+    }
+    
+    .smilingMobileSubDiv {
+        padding: 15px 10px 15px 10px !important;
     }
 }
 
 @media screen and (max-width: 400px) {
     .MainlogogMobileImage {
-        width: 70% !important;
+        width: 50% !important;
         /* margin-top: -11px */
+        margin-left: 0px !important;
     }
 
+    .smilingMobileSubDiv {
+        padding: 15px 10px 15px 10px !important;
+    }
+    .mobileHeaderSmining {
+        height: 70px !important;
+    }
     .searchiconInMobile {
         display: none;
     }
