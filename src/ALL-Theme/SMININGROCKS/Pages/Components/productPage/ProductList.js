@@ -2117,12 +2117,11 @@ const ProductList = () => {
   // }, []);
 
 
-  const handleSortChange = (option) => {
-    const selectedOption = option?.label;
-    setSelectedOptionData(option?.label);
-    setIsActive(false);
-    setSelectedSortOption(option?.label);
+  const handleSortChange = (e) => {
+    const selectedOption = e?.target?.value;
+    setSelectedSortOption(selectedOption);
     let sortedData = [...ProductApiData2];
+    console.log('seirt--', e?.target?.value);
 
     if (selectedOption === 'PRICE HIGH TO LOW') {
       sortedData.sort((a, b) => ((b?.UnitCost ?? 0) + (b?.price ?? 0) + (b?.markup ?? 0)) - ((a?.UnitCost ?? 0) + (a?.price ?? 0) + (a?.markup ?? 0)));
@@ -2172,9 +2171,10 @@ const ProductList = () => {
   }
 
   const [isActive, setIsActive] = useState(false);
+  const [isMobileActive, setIsMobileActive] = useState(false);
 
   const [isShowfilter, setIsShowFilter] = useState(true);
-  const options = [
+  const sortOptions = [
     { label: 'Recommended' },
     { label: 'New' },
     { label: 'In stock' },
@@ -2189,6 +2189,9 @@ const ProductList = () => {
 
   const toggleDropdown = () => {
     setIsActive(!isActive);
+  };
+  const toggleMobileDropdown = () => {
+    setIsMobileActive(!isMobileActive);
   };
 
   const [show2ImagesView, setShow2ImageView] = useState(false);
@@ -2463,8 +2466,7 @@ const ProductList = () => {
                 </div>
                 <div className="divider"></div>
                 <div className="part" style={{ flex: '20%' }}>
-                  <div className="part-content">
-                    <div className={`custom-select ${isActive ? 'active' : ''}`}>
+                    {/* <div className={`custom-select ${isActive ? 'active' : ''}`}>
                       <button
                         ref={dropdownRef}
                         className="select-button"
@@ -2485,8 +2487,28 @@ const ProductList = () => {
                           ))}
                         </ul>
                       )}
+                    </div> */}
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        width: '95%',
+                        gap: '5px'
+                      }}
+                    >
+                      <select
+                        className='menuitemSelectoreMain'
+                        onChange={handleSortChange}
+                        value={selectedSortOption}
+                        style={{ color: '#7b7b7b', fontSize: '12px', fontWeight: 400, cursor: 'pointer' }}
+                      >
+                        {sortOptions?.map((option, index) => (
+                          <option key={index} value={option.label}>
+                            {(option.label).toUpperCase()}
+                          </option>
+                        ))}
+                      </select>
                     </div>
-                  </div>
                 </div>
                 <div className="divider"></div>
 
@@ -2660,7 +2682,7 @@ const ProductList = () => {
                                 gap: "4px",
                                 // ...(ele.label.length > 10 && {
                                 minHeight: 'fit-content',
-                                  maxHeight: '300px',
+                                maxHeight: '300px',
                                 overflow: 'auto',
                                 // }),
                               }}
@@ -2812,20 +2834,19 @@ const ProductList = () => {
                             </div>
                           </div>
                           <div className="part secondfilteDiv" style={{ flex: '20%' }}>
-                            <div className="part-content">
-                              <div className={`custom-select ${isActive ? 'active' : ''}`}>
+                              {/* <div className={`custom-select ${isMobileActive ? 'active' : ''}`}>
                                 <button
                                   ref={dropdownRef}
                                   className="select-button"
-                                  onClick={toggleDropdown}
+                                  onClick={toggleMobileDropdown}
                                   aria-haspopup="listbox"
-                                  aria-expanded={isActive}
+                                  aria-expanded={isMobileActive}
                                 >
                                   <span className="selected-value">{selectedOptionData ? selectedOptionData : 'Featured'}
                                     <SortIcon />
                                   </span>
                                 </button>
-                                {isActive && (
+                                {isMobileActive && (
                                   <ul className="select-dropdown">
                                     {options.map((option, index) => (
                                       <li key={index} role="option" onClick={() => handleSortChange(option)}>
@@ -2834,8 +2855,28 @@ const ProductList = () => {
                                     ))}
                                   </ul>
                                 )}
+                              </div> */}
+                              <div
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "column",
+                                  // width: '95%',
+                                  // gap: '5px'
+                                }}
+                              >
+                                <select
+                                  className='menuitemSelectoreMain'
+                                  onChange={handleSortChange}
+                                  value={selectedSortOption}
+                                  style={{ color: '#7b7b7b', cursor: 'pointer' }}
+                                >
+                                  {sortOptions?.map((option, index) => (
+                                    <option key={index} value={option.label}>
+                                      {(option.label)}
+                                    </option>
+                                  ))}
+                                </select>
                               </div>
-                            </div>
                           </div>
 
                           <div className="part secondfilteDiv" style={{ flex: '20%' }}>

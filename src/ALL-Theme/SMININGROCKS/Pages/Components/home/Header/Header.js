@@ -825,7 +825,7 @@ export default function Header() {
                   </Tooltip>
                 </Badge>
               </div>
-              <List>
+              <List sx={{maxWidth:'330px'}}>
                 {menuItems.map(menuItem => (
                   <div key={menuItem.menuid}>
                     <ListItem onClick={() => handleLoginMenuClick(menuItem.menuname, menuItem)} >
@@ -893,7 +893,7 @@ export default function Header() {
                   <img src={titleImg} alt="Title" className="logoImage1" style={{ marginTop: '-32px' }} />
                 </Link>
                 <List>
-                  <ListItem onClick={() => navigation('/LoginOption')}>
+                  <ListItem onClick={() => {setDrawerOpen(false); navigation('/LoginOption')}}>
                     <ListItemText primary="Log In" />
                   </ListItem>
                 </List>
