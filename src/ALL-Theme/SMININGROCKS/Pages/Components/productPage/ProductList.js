@@ -224,32 +224,71 @@ const ProductList = () => {
     let MetalTypeData = JSON.parse(localStorage.getItem("MetalTypeData"))
     let DimondQualityColor = JSON.parse(localStorage.getItem("QualityColor"))
     let ColorStoneQualityColor = JSON.parse(localStorage.getItem("ColorStoneQualityColor"))
+    let selectedCombomt = JSON.parse(localStorage.getItem("selectedCombomt"))
+    let selectedCombodia = JSON.parse(localStorage.getItem("selectedCombodia"))
+    let selectedCombocs = JSON.parse(localStorage.getItem("selectedCombocs"))
+
+    
+
 
     if (loginData?.MetalId !== 0) {
       let metalType = MetalTypeData?.find(item => item?.Metalid == loginData?.MetalId)
-      setmtTypeOption(metalType?.metaltype)
+      if(selectedCombomt?.length){
+        setmtTypeOption(selectedCombomt)
+      }else{
+        setmtTypeOption(metalType?.metaltype)
+      }
     } else {
-      setmtTypeOption(MetalTypeData[0]?.metaltype)
+      if(selectedCombomt){
+        setmtTypeOption(selectedCombomt)
+      }else{
+        setmtTypeOption(MetalTypeData[0]?.metaltype)
+      }
+    }
+
+    if(selectedCombodia){
+      setDiaQColOpt(selectedCombodia)
     }
 
     let diaQCVar = DimondQualityColor?.find(item => item.QualityId == loginData?.cmboDiaQCid?.split(',')[0] && item.ColorId == loginData?.cmboDiaQCid?.split(',')[1]);
     if (loginData?.cmboDiaQCid !== "0,0") {
-      let qualityColor = `${diaQCVar?.Quality}#${diaQCVar?.color}`
-      setDiaQColOpt(qualityColor)
-    }
+      if(selectedCombodia){
+        setDiaQColOpt(selectedCombodia)
+      }else{
+        let qualityColor = `${diaQCVar?.Quality}#${diaQCVar?.color}`
+        setDiaQColOpt(qualityColor)
+      }
+    } 
     else {
-      if (DimondQualityColor && DimondQualityColor?.length) {
-        setDiaQColOpt(`${DimondQualityColor[0]?.Quality}#${DimondQualityColor[0]?.color}`)
+      if(selectedCombodia){
+        setDiaQColOpt(selectedCombodia)
+      }else{
+        if (DimondQualityColor && DimondQualityColor?.length) {
+          setDiaQColOpt(`${DimondQualityColor[0]?.Quality}#${DimondQualityColor[0]?.color}`)
+        }
       }
     }
 
+    if(selectedCombocs){
+      setCSQOpt(selectedCombocs)
+    } 
+
     let csQCVar = ColorStoneQualityColor?.find(item => item?.QualityId === loginData?.cmboCSQCid?.split(',')[0] && item?.ColorId === loginData?.cmboCSQCid?.split(',')[1])
     if (loginData?.cmboCSQCid !== "0,0") {
-      let csQualColor = `${csQCVar?.QualityId}-${csQCVar?.ColorId}`
-      setCSQOpt(csQualColor)
-    } else {
-      if (ColorStoneQualityColor && ColorStoneQualityColor?.length) {
-        setCSQOpt(`${ColorStoneQualityColor[0].Quality}-${ColorStoneQualityColor[0].color}`)
+      if(selectedCombocs){
+        setCSQOpt(selectedCombocs)
+      }else{
+        let csQualColor = `${csQCVar?.QualityId}-${csQCVar?.ColorId}`
+        setCSQOpt(csQualColor)
+      }
+    } 
+    else {
+      if(selectedCombocs){
+        setCSQOpt(selectedCombocs)
+      }else{
+        if (ColorStoneQualityColor && ColorStoneQualityColor?.length) {
+          setCSQOpt(`${ColorStoneQualityColor[0].Quality}-${ColorStoneQualityColor[0].color}`)
+        }
       }
     }
 
@@ -1065,7 +1104,6 @@ const ProductList = () => {
           let obj = { mt: metalTypeId, dqc: DiaQCid, csqc: CsQcid }
 
           console.log("autoCodeList", typeof (autoCodeList))
-
 
           await getDesignPriceList(param, 1, obj, output, autoCodeList).then(resp => {
             if (resp) {
@@ -2079,12 +2117,11 @@ const ProductList = () => {
   // }, []);
 
 
-  const handleSortChange = (option) => {
-    const selectedOption = option?.label;
-    setSelectedOptionData(option?.label);
-    setIsActive(false);
-    setSelectedSortOption(option?.label);
+  const handleSortChange = (e) => {
+    const selectedOption = e?.target?.value;
+    setSelectedSortOption(selectedOption);
     let sortedData = [...ProductApiData2];
+    console.log('seirt--', e?.target?.value);
 
     if (selectedOption === 'PRICE HIGH TO LOW') {
       sortedData.sort((a, b) => ((b?.UnitCost ?? 0) + (b?.price ?? 0) + (b?.markup ?? 0)) - ((a?.UnitCost ?? 0) + (a?.price ?? 0) + (a?.markup ?? 0)));
@@ -2134,9 +2171,10 @@ const ProductList = () => {
   }
 
   const [isActive, setIsActive] = useState(false);
+  const [isMobileActive, setIsMobileActive] = useState(false);
 
   const [isShowfilter, setIsShowFilter] = useState(true);
-  const options = [
+  const sortOptions = [
     { label: 'Recommended' },
     { label: 'New' },
     { label: 'In stock' },
@@ -2151,6 +2189,9 @@ const ProductList = () => {
 
   const toggleDropdown = () => {
     setIsActive(!isActive);
+  };
+  const toggleMobileDropdown = () => {
+    setIsMobileActive(!isMobileActive);
   };
 
   const [show2ImagesView, setShow2ImageView] = useState(false);
@@ -2176,9 +2217,18 @@ const ProductList = () => {
   }
 
   const ShortcutComboFunc = async (event, type) => {
-    if (type === "metal") setmtTypeOption(event)
-    if (type === "dia") setDiaQColOpt(event)
-    if (type === "cs") setCSQOpt(event)
+    if (type === "metal"){
+      setmtTypeOption(event)
+      localStorage.setItem("selectedCombomt",JSON.stringify(event))
+    }
+    if (type === "dia"){
+      setDiaQColOpt(event)
+      localStorage.setItem("selectedCombodia",JSON.stringify(event))
+    }
+    if (type === "cs"){ 
+      setCSQOpt(event)
+      localStorage.setItem("selectedCombocs",JSON.stringify(event))
+    }
 
 
     let metalTypeId = type === "metal" ? findMetalTypeId(`${event}`)[0]?.Metalid : findMetalTypeId(mtTypeOption)[0]?.Metalid
@@ -2290,7 +2340,7 @@ const ProductList = () => {
               >
                 <select
                   className='menuitemSelectoreMain'
-                  defaultValue={mtTypeOption}
+                  value={mtTypeOption}
                   onChange={(e) => {
                     setmtTypeOption(e.target.value)
                   }}
@@ -2351,7 +2401,7 @@ const ProductList = () => {
                   <select
                     className='menuitemSelectoreMain'
                     onChange={(e) => setCSQOpt(e.target.value)}
-                    defaultValue={cSQopt}
+                    value={cSQopt}
                   >
                     {DaimondQualityColor.map((data, index) => (
                       <option
@@ -2416,8 +2466,7 @@ const ProductList = () => {
                 </div>
                 <div className="divider"></div>
                 <div className="part" style={{ flex: '20%' }}>
-                  <div className="part-content">
-                    <div className={`custom-select ${isActive ? 'active' : ''}`}>
+                    {/* <div className={`custom-select ${isActive ? 'active' : ''}`}>
                       <button
                         ref={dropdownRef}
                         className="select-button"
@@ -2438,8 +2487,28 @@ const ProductList = () => {
                           ))}
                         </ul>
                       )}
+                    </div> */}
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        width: '95%',
+                        gap: '5px'
+                      }}
+                    >
+                      <select
+                        className='menuitemSelectoreMain'
+                        onChange={handleSortChange}
+                        value={selectedSortOption}
+                        style={{ color: '#7b7b7b', fontSize: '12px', fontWeight: 400, cursor: 'pointer' }}
+                      >
+                        {sortOptions?.map((option, index) => (
+                          <option key={index} value={option.label}>
+                            {(option.label).toUpperCase()}
+                          </option>
+                        ))}
+                      </select>
                     </div>
-                  </div>
                 </div>
                 <div className="divider"></div>
 
@@ -2454,7 +2523,7 @@ const ProductList = () => {
                   >
                     <select
                       className='menuitemSelectoreMain'
-                      defaultValue={mtTypeOption}
+                      value={mtTypeOption}
                       onChange={(e) => {
                         // setmtTypeOption(e.target.value)
                         ShortcutComboFunc(e.target.value, "metal")
@@ -2524,7 +2593,7 @@ const ProductList = () => {
                           // setCSQOpt(e.target.value)
                           ShortcutComboFunc(e.target.value, "cs")
                         }
-                        defaultValue={cSQopt}
+                        value={cSQopt}
                         style={{ color: '#7b7b7b', fontSize: '12px', fontWeight: 400, cursor: 'pointer' }}
                       >
                         {DaimondQualityColor.map((data, index) => (
@@ -2567,7 +2636,8 @@ const ProductList = () => {
                           (Object.values(filterChecked)).filter(fc => fc.checked !== false).filter(fc => fc.checked !== undefined).length ?
                             "Clear All"
                             :
-                            `Product: ${ProductApiData2?.length}`
+                            // `Product: ${ProductApiData2?.length}`
+                            null
                         }
                       </li>
                     </ul>
@@ -2612,7 +2682,7 @@ const ProductList = () => {
                                 gap: "4px",
                                 // ...(ele.label.length > 10 && {
                                 minHeight: 'fit-content',
-                                  maxHeight: '300px',
+                                maxHeight: '300px',
                                 overflow: 'auto',
                                 // }),
                               }}
@@ -2764,20 +2834,19 @@ const ProductList = () => {
                             </div>
                           </div>
                           <div className="part secondfilteDiv" style={{ flex: '20%' }}>
-                            <div className="part-content">
-                              <div className={`custom-select ${isActive ? 'active' : ''}`}>
+                              {/* <div className={`custom-select ${isMobileActive ? 'active' : ''}`}>
                                 <button
                                   ref={dropdownRef}
                                   className="select-button"
-                                  onClick={toggleDropdown}
+                                  onClick={toggleMobileDropdown}
                                   aria-haspopup="listbox"
-                                  aria-expanded={isActive}
+                                  aria-expanded={isMobileActive}
                                 >
                                   <span className="selected-value">{selectedOptionData ? selectedOptionData : 'Featured'}
                                     <SortIcon />
                                   </span>
                                 </button>
-                                {isActive && (
+                                {isMobileActive && (
                                   <ul className="select-dropdown">
                                     {options.map((option, index) => (
                                       <li key={index} role="option" onClick={() => handleSortChange(option)}>
@@ -2786,8 +2855,28 @@ const ProductList = () => {
                                     ))}
                                   </ul>
                                 )}
+                              </div> */}
+                              <div
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "column",
+                                  // width: '95%',
+                                  // gap: '5px'
+                                }}
+                              >
+                                <select
+                                  className='menuitemSelectoreMain'
+                                  onChange={handleSortChange}
+                                  value={selectedSortOption}
+                                  style={{ color: '#7b7b7b', cursor: 'pointer' }}
+                                >
+                                  {sortOptions?.map((option, index) => (
+                                    <option key={index} value={option.label}>
+                                      {(option.label)}
+                                    </option>
+                                  ))}
+                                </select>
                               </div>
-                            </div>
                           </div>
 
                           <div className="part secondfilteDiv" style={{ flex: '20%' }}>
@@ -3155,9 +3244,9 @@ const ProductList = () => {
                   </div>
                 } */}
                 </div>
-                <div style={{ display: 'flex', width: '100%', justifyContent: 'center', marginTop: '100px', marginBottom: '50px' }}>
+                { newProData?.length != 0 || ProductApiData2?.length != 0 && <div style={{ display: 'flex', width: '100%', justifyContent: 'center', marginTop: '100px', marginBottom: '50px' }}>
                   <Pagination count={Math.ceil(prodCount / prodPageSize)} onChange={handlePageChange} />
-                </div>
+                </div>}
                 {/* <SmilingRock /> */}
                 {/* <Footer /> */}
               </div>

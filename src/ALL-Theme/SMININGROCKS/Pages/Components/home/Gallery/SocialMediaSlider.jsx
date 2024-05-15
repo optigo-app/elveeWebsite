@@ -10,19 +10,19 @@ import { storImagePath } from '../../../../Utils/globalFunctions/GlobalFunction'
 
 const sliderData = [
   {
-    imageUrl: storImagePath() + "/images/HomePage/SocialMedia/socialMedia1.jpg",
+    imageUrl: "/images/HomePage/SocialMedia/socialMedia1.jpg",
   },
   {
-    imageUrl: storImagePath() + "/images/HomePage/SocialMedia/socialMedia2.jpg",
+    imageUrl: "/images/HomePage/SocialMedia/socialMedia2.jpg",
   },
   {
-    imageUrl: storImagePath() + "/images/HomePage/SocialMedia/socialMedia3.jpg",
+    imageUrl: "/images/HomePage/SocialMedia/socialMedia3.jpg",
   },
   {
-    imageUrl: storImagePath() + "/images/HomePage/SocialMedia/socialMedia4.jpg",
+    imageUrl: "/images/HomePage/SocialMedia/socialMedia4.jpg",
   },
   {
-    imageUrl: storImagePath() + "/images/HomePage/SocialMedia/socialMedia5.jpg",
+    imageUrl: "/images/HomePage/SocialMedia/socialMedia5.jpg",
   },
 ];
 
@@ -56,7 +56,7 @@ export default function SocialMedia() {
       >
         {sliderData.map((slide, index) => (
           <SwiperSlide key={index} style={{ marginRight: '10px' }}>
-            <img src={slide.imageUrl} alt={`Slide ${index}`} />
+            <img src={storImagePath() + slide.imageUrl} alt={`Slide ${index}`} />
           </SwiperSlide>
         ))}
       </Swiper>

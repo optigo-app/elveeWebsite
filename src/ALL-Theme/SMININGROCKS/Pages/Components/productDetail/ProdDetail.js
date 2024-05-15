@@ -1001,7 +1001,7 @@ const ProdDetail = () => {
           "MetalColorName": `${product?.updMC}`,
           "MetalColorid": Number(`${product?.MetalColorid}`),
           "MetalPurity": `${mtPurity.split(" ")[1]}`,
-          "MetalPurityid": Number(`${findMetalTypeId(mtPurity)[0]?.MetalId}`),
+          "MetalPurityid": Number(`${findMetalTypeId(mtPurity)[0]?.Metalid ?? 0}`),
           "MetalTypeName": `${mtPurity.split(" ")[0]}`,
           "MetalTypeid": Number(`${product?.IsInReadyStock}`),
           "MetalWeight": Number(`${product?.updNWT}`),
