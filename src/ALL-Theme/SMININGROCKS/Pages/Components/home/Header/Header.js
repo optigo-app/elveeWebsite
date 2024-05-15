@@ -133,28 +133,30 @@ export default function Header() {
     setMenul2data(tempMenu2data)
   };
 
-  const handelNewMenuData = async (param) => {
-    setNewMenuData(param)
-    setIsDropdownOpen(false)
-    setDrawerShowOverlay(false)
-    setDrawerShowOverlay(false)
-    localStorage.setItem("menuparams", JSON.stringify(param))
-    await productListApiCall(param).then((res) => {
-      if (res) {
-        console.log("res", res);
-        localStorage.setItem("allproductlist", JSON.stringify(res))
-      }
-      return res
-    }).then(async(res)=>{
-      if(res){
-        let autoCodeList = JSON.parse(localStorage.getItem("autoCodeList"))
-        console.log("autoCodeList",autoCodeList)
-        await getDesignPriceList(param,1,{},{},autoCodeList)
-        navigation("/productpage", { state: { menuFlag: true }})
-      }
-
-    })
-  }
+  // const handelNewMenuData = async (param) => {
+  //   setNewMenuData(param)
+  //   setIsDropdownOpen(false)
+  //   setDrawerShowOverlay(false)
+  //   setDrawerShowOverlay(false)
+  //   localStorage.setItem("menuparams", JSON.stringify(param))
+  //   navigation("/productpage", { state: { menuFlag: true }})
+    
+  //   await productListApiCall(param).then((res) => {
+  //     if (res) {
+  //       console.log("res", res);
+  //       localStorage.setItem("allproductlist", JSON.stringify(res))
+  //     }
+  //     return res
+  //   }).then(async(res)=>{
+  //     if(res){
+  //       let autoCodeList = JSON.parse(localStorage.getItem("autoCodeList"))
+  //       console.log("autoCodeList",autoCodeList)
+  //       await getDesignPriceList(param,1,{},{},autoCodeList)
+  //     }
+      
+  //   })
+    
+  // }
 
 
   useEffect(() => {
@@ -546,6 +548,10 @@ export default function Header() {
   };
 
   const handleMenuClick = async (param1Item, param2Item) => {
+    localStorage.removeItem("selectedCombomt")
+    localStorage.removeItem("selectedCombodia")
+    localStorage.removeItem("selectedCombocs")
+
     let menuDataWithoutParam1;
 
     if (param1Item?.param0dataid) {
@@ -569,6 +575,9 @@ export default function Header() {
     }
 
     console.log('finalData', finalData);
+    setTimeout(() => {
+      navigation("/productpage", { state: { menuFlag: true, filtervalue: finalData } })
+    }, 200);
 
     if (finalData) {
       let resData;
@@ -586,7 +595,7 @@ export default function Header() {
         if(res){
           let autoCodeList = JSON.parse(localStorage.getItem("autoCodeList"))
           await getDesignPriceList(finalData,1,{},{},autoCodeList)
-          navigation("/productpage", { state: { menuFlag: true, filtervalue: finalData } })
+          
           setTimeout(() => {
             setDrawerOpen(false);
             handleMouseLeave();
