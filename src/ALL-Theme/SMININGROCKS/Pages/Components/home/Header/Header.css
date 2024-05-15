@@ -797,7 +797,7 @@
     }
 
     .smilingMobileSubDiv {
-        padding: 5px 10px 12px 10px !important;
+        padding: 5px 0px 12px 0px !important;
     }
 
     .Smining-Top-Header-fixed {
@@ -840,6 +840,13 @@
         height: 25px !important;
         width: 25px !important;
         margin-top: -5px!important;
+    }
+
+    .mobileViewFirstDiv3Sub{
+        margin: 20px 10px!important;
+    }
+    .mobileViewFirstDiv3Sub-sub{
+        gap: 8px!important;
     }
 }
 
@@ -904,10 +911,6 @@
 }
 
 @media screen and (max-width: 400px) {
-    .MainlogogMobileImage {
-        width: 70% !important;
-        /* margin-top: -11px */
-    }
 
     .searchiconInMobile {
         display: none;

@@ -35,9 +35,10 @@
     border: 1px solid #7d7f85;
 }
 
-.smiTopClearBtn:hover{
+.smiTopClearBtn:hover {
     background-color: rgba(66, 66, 66, 0.05);
 }
+
 .smiTopAddAllBtn {
     height: 60px;
     width: 150px;
@@ -58,7 +59,7 @@
 .smiWishLsitBoxMain {
     display: flex;
     margin-inline: 5%;
-    margin-top: 50px;
+    margin-top: 120px;
     flex-wrap: wrap;
     margin-bottom: 20px;
 }
@@ -74,7 +75,7 @@
     width: 100%;
     /* margin-top: 30px; */
     height: 350px;
-}   
+}
 
 .smiWishLsitBoxDesc1 {
     font-size: 1rem;
@@ -85,6 +86,7 @@
     font-family: 'PT Sans', sans-serif;
 
 }
+
 .smiWishLsitBoxDesc2 {
     font-size: 12px;
     font-weight: 400;
@@ -94,7 +96,7 @@
     font-family: 'PT Sans', sans-serif;
 }
 
-.smiWishLsitBoxTitltLine{
+.smiWishLsitBoxTitltLine {
     text-align: center;
     color: #212529;
     font-size: 14px;
@@ -102,6 +104,7 @@
     font-family: 'PT Sans', sans-serif;
 
 }
+
 .smiWishLsitBoxDesc3 {
     font-size: 12px;
     font-weight: 500;
@@ -114,7 +117,7 @@
     font-family: 'PT Sans', sans-serif;
 }
 
-.smiWishLsitBoxDescPrice{
+.smiWishLsitBoxDescPrice {
     font-size: 1rem;
     font-weight: 500;
     color: #212529;
@@ -125,6 +128,63 @@
     align-items: center;
     justify-content: center;
     flex-direction: row;
+}
+
+
+
+@media screen and (max-width: 1600px) {
+
+    .smiling-wishlist {
+        margin-inline: 0px !important;
+    }
+}
+
+@media screen and (max-width: 1441px) {
+
+    .smiWishLsitBoxDesc1 {
+        margin-inline: 5px;
+    }
+
+    .smiWishLsitBoxDesc2 {
+        margin-inline: 5px;
+
+    }
+
+    .smiWishLsitBoxDesc3 {
+        margin-inline: 5px;
+    }
+
+    .smiWishLsitBoxMain {
+        margin-inline: 1% !important;
+    }
+}
+
+@media screen and (max-width: 1300px) {
+    .smiWishLsitBox {
+        width: 32% !important;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+
+    .smiWishLsitBox {
+        width: 33.33%;
+    }
+
+    .smiWishLsitBoxDesc1 {
+        margin: 0;
+    }
+}
+
+@media screen and (max-width: 800px) {
+
+    .smiWishLsitBox {
+        width: 48% !important;
+    }
+
+    .SmiWishListTitle {
+        width: auto !important;
+    }
 }
 
 @media screen and (max-width: 600px) {
@@ -148,55 +208,19 @@
 
 }
 
-@media screen and (max-width: 1441px) {
-
-    .smiWishLsitBoxDesc1 {
-        margin-inline: 5px;
-    }
-
-    .smiWishLsitBoxDesc2 {
-        margin-inline: 5px;
-
-    }
-
-    .smiWishLsitBoxDesc3 {
-        margin-inline: 5px;
-
-    }
-}
-
-@media screen and (max-width: 1000px) {
-
-    .smiWishLsitBox {
-        width: 33.33%;
-    }
-
-    .smiWishLsitBoxDesc1 {
-        margin: 0;
-    }
-}
-
-@media screen and (max-width: 800px) {
-
-    .smiWishLsitBox {
-        width: 50%;
-    }
-
-    .smiWishLsitBoxMain {
-        display: flex !important;
-        flex-wrap: nowrap !important;
-    }
-}
-
 @media screen and (max-width: 450px) {
     .smiWishLsitBoxMain {
         display: flex !important;
         flex-wrap: nowrap !important;
         flex-direction: column !important;
+        margin-inline: 0% !important;
+        padding: 5px;
     }
+
 
     .smiWishLsitBox {
         width: 100% !important;
+        margin: 5px 0px !important;
     }
 
 }

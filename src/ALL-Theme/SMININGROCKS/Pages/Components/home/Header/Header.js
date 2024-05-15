@@ -1194,6 +1194,8 @@ export default function Header() {
                   display: "flex",
                   margin: "20px",
                 }}
+            className="mobileViewFirstDiv3Sub"
+
               >
                 <div
                   style={{
@@ -1202,6 +1204,8 @@ export default function Header() {
                     width: "20%",
                     gap: '20px'
                   }}
+            className="mobileViewFirstDiv3Sub-sub"
+
                 >
                   {/* {location?.pathname == '/productpage' &&
                     <li className="searchiconInMobile" onClick={toggleOverlay} style={{ listStyle: 'none', width: '40px', textAlign: 'center', cursor: 'pointer' }}>

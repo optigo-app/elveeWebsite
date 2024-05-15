@@ -1179,6 +1179,7 @@ export default function CartPage() {
   };
 
 
+  console.log('prodSelectDataprodSelectData', cartSelectData);
   return (
     <>
       <div
@@ -1211,17 +1212,18 @@ export default function CartPage() {
             }}
           >
 
-            <div style={{display: 'flex' , justifyContent: 'space-between', alignItems: 'center'}}>
-              <div className="backErrorMobile">
-                <IoArrowBackOutline style={{ height: '30px', width: '30px' }} onClick={() => navigation("/productpage")} />
-              </div>
-              <p className="SmiWishListTitle" style={{ paddingTop: "30px" }}>
-                My Cart
-              </p>
-              <div className="ClreareAllMobilee">
-                <p style={{ fontWeight: 600, textDecoration: 'underline',width:'80px', cursor: 'pointer' }} onClick={handleClickOpen}>Clear All</p>
-              </div>
-            </div>
+            {cartListData?.length !== 0 && (
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div className="backErrorMobile">
+                  <IoArrowBackOutline style={{ height: '30px', marginLeft: '5px', width: '30px', color: 'rgb(192 182 182)' }} onClick={() => navigation("/productpage")} />
+                </div>
+                <p className="SmiWishListTitle" style={{ paddingTop: "30px" }}>
+                  My Cart
+                </p>
+                <div className="ClreareAllMobilee">
+                  <p style={{ fontWeight: 600, margin: '0px', textDecoration: 'underline', width: '80px', cursor: 'pointer', color: 'rgb(192 182 182)' }} onClick={handleClickOpen}>Clear All</p>
+                </div>
+              </div>)}
 
 
 
@@ -1239,13 +1241,13 @@ export default function CartPage() {
                   >
                     List View
                   </button>
-                  <button
+                  {/* <button
                     className={`cartPageTopBtn ${value === 1 ? "activec" : ""}`}
                     onClick={() => handleChange(1)}
                     style={{ margin: '5px' }}
                   >
                     Image View
-                  </button>
+                  </button> */}
                   {/* </div> */}
 
                   <button
@@ -1254,12 +1256,12 @@ export default function CartPage() {
                   >
                     Clear All
                   </button>
-                  <button
+                  {/* <button
                     className={`cartPageTopBtn ${value === 3 ? "activec" : ""}`}
                     onClick={() => navigation("/productpage")}
                   >
                     Show ProductList
-                  </button>
+                  </button> */}
                   <button
                     className="placeOrderCartPageBtnMobile"
                     onClick={(event) => {
@@ -1282,7 +1284,7 @@ export default function CartPage() {
                     Show ProductList
                   </button> */}
 
-                  <div style={{ display: 'flex' }}>
+                  {/* <div style={{ display: 'flex' }}>
                     <button
                       className={`cartPageTopBtn ${value === 0 ? "activec" : ""}`}
                       onClick={() => handleChange(0)}
@@ -1297,7 +1299,7 @@ export default function CartPage() {
                     >
                       Image View
                     </button>
-                  </div>
+                  </div> */}
 
                   {/* <button
                     className={`cartPageTopBtn ${value === 2 ? "activec" : ""}`}
@@ -1356,7 +1358,7 @@ export default function CartPage() {
                         flexDirection: "column",
                         justifyContent: "center",
                         alignItems: "center",
-                        marginBlock: "150px",
+                        marginBlock: "200px",
                       }}
                     >
                       <p
@@ -1369,12 +1371,12 @@ export default function CartPage() {
                         No Data Available
                       </p>
                       <p>Please First Add To Cart Data</p>
-                      <button
+                      {/* <button
                         className="browseBtnMore"
                         onClick={() => navigation("/productpage")}
                       >
                         BROWSE OUR COLLECTION
-                      </button>
+                      </button> */}
                     </div>
                   )
                 ) : (
@@ -1389,22 +1391,36 @@ export default function CartPage() {
                           }}
                         >
                           <div className="popUpcontainer">
-                            <img
-                              src={
-                                storeInitData?.DesignImageFol +
-                                cartSelectData?.DefaultImageName?.slice(13)
-                              }
+
+                            <div
                               style={{
-                                border: "1px solid #e1e1e1",
                                 borderRadius: "12px",
-                                width: "350px",
-                                height: "350px"
+                                width: "370px",
+                                height: "410px",
+                                border: "1px solid #e1e1e1",
+                                overflow: 'hidden',
+                                position: 'relative'
                               }}
-                              onError={(e) => {
-                                e.target.src = noFoundImage;
-                              }}
-                            />
-                            <div style={{ width: "550px" }}>
+                              className="CartPageMainImageShowMobile"
+                            >
+                              <img
+                                src={
+                                  storeInitData?.DesignImageFol +
+                                  cartSelectData?.DefaultImageName?.slice(13)
+                                }
+                                style={{
+                                  borderRadius: "12px",
+                                  width: "370px",
+                                  height: "410px"
+                                }}
+                                onError={(e) => {
+                                  e.target.src = noFoundImage;
+                                }}
+                              />
+                              <p style={{ position: 'absolute', top: '5px', left: '5px', fontSize: '14px' }}>{cartSelectData?.designno}</p>
+                            </div>
+
+                            <div style={{ width: "550px" }} className="cartCustomizationMainMobile">
                               <div
                                 style={{
                                   width: "100%",
@@ -1413,7 +1429,7 @@ export default function CartPage() {
                                 }}
                                 className="srcolorsizecarat"
                               >
-                                <div
+                                {/* <div
                                   style={{
                                     fontSize: "40px",
                                     fontFamily: "FreightDisp Pro Medium",
@@ -1429,12 +1445,12 @@ export default function CartPage() {
                                   className="prodTitleLine"
                                 >
                                   {prodSelectData?.TitleLine}
-                                </div>
+                                </div> */}
 
                                 {isProductCuFlag === 1 && (
                                   <div
                                     style={{
-                                      borderTop: "1px solid #e1e1e1",
+                                      // borderTop: "1px solid #e1e1e1",
                                       marginInline: "-10px",
                                       padding: "20px",
                                     }}
@@ -2126,7 +2142,7 @@ export default function CartPage() {
                       flexDirection: "column",
                       justifyContent: "center",
                       alignItems: "center",
-                      marginTop: "150px",
+                      marginTop: "200px",
                     }}
                   >
                     <p
@@ -2139,12 +2155,12 @@ export default function CartPage() {
                       No Data Available
                     </p>
                     <p>Please First Add To Cart Data</p>
-                    <button
+                    {/* <button
                       className="browseBtnMore"
                       onClick={() => navigation("/productpage")}
                     >
                       BROWSE OUR COLLECTION
-                    </button>
+                    </button> */}
                   </div>
                 )
               ) : (
@@ -2248,7 +2264,7 @@ export default function CartPage() {
           </CustomTabPanel>
         </div>
 
-        <div className="mobileFootreCs">
+        <div style={{position: cartListData?.length === 0 && 'absolute', bottom: '0px', width: '100%'}} className="mobileFootreCs">
           <Footer />
         </div>
       </div>
@@ -2276,27 +2292,23 @@ export default function CartPage() {
               </div>
             </div>
             <div
-              className="smilingCartDeatilSub1"
+              className="smilingCartDeatilSub11"
               style={{ display: !prodSelectData && !cartSelectData && "none" }}
             >
               <div className="popUpcontainer">
                 <img
-                  // src={
-                  //   prodSelectData?.imagepath +
-                  //   prodSelectData?.MediumImagePath?.split(",")[0]
-                  // }
                   src={
                     storeInitData?.DesignImageFol +
-                    prodSelectData?.MediumImagePath?.split(",")[0]
+                    cartSelectData?.DefaultImageName?.slice(13)
                   }
                   style={{
                     border: "1px solid #e1e1e1",
                     borderRadius: "12px",
-                    width: "35%",
+                    width: "60%",
                   }}
                 />
 
-                <div>
+                <div style={{ width: '100%' }}>
                   <div
                     style={{
                       width: "100%",
@@ -2417,6 +2429,7 @@ export default function CartPage() {
                           style={{
                             display: "flex",
                             justifyContent: "space-between",
+                            flexWrap: 'wrap'
                           }}
                         >
                           {isDaimondCstoFlag == 1 && (
@@ -2494,55 +2507,56 @@ export default function CartPage() {
                               </select>
                             </div>
                           )}
+
+                          {(sizeData?.length !== 0 ||
+                            (productData?.DefaultSize &&
+                              productData.DefaultSize.length !== 0)) && (
+                              <div
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "column",
+                                  width: "49%",
+                                  marginTop: "30px",
+                                }}
+                              >
+                                <label
+                                  style={{ fontSize: "12.5px", color: "#7d7f85" }}
+                                >
+                                  SIZE:
+                                </label>
+                                <select
+                                  style={{
+                                    border: "none",
+                                    outline: "none",
+                                    color: "#7d7f85",
+                                    fontSize: "12.5px",
+                                  }}
+                                  onChange={(e) => handelSize(e.target.value)}
+                                  defaultValue={
+                                    productData && productData.DefaultSize
+                                      ? productData.DefaultSize
+                                      : sizeData.find(
+                                        (size) => size.IsDefaultSize === 1
+                                      )?.id
+                                  }
+                                >
+                                  {sizeData?.map((size) => (
+                                    <option
+                                      key={size.id}
+                                      value={sizeOption} // Pass sizename as value
+                                      selected={
+                                        productData &&
+                                        productData.DefaultSize === size.sizename
+                                      }
+                                    >
+                                      {size.sizename}
+                                    </option>
+                                  ))}
+                                </select>
+                              </div>
+                            )}
                         </div>
 
-                        {(sizeData?.length !== 0 ||
-                          (productData?.DefaultSize &&
-                            productData.DefaultSize.length !== 0)) && (
-                            <div
-                              style={{
-                                display: "flex",
-                                flexDirection: "column",
-                                width: "49%",
-                                marginTop: "30px",
-                              }}
-                            >
-                              <label
-                                style={{ fontSize: "12.5px", color: "#7d7f85" }}
-                              >
-                                SIZE:
-                              </label>
-                              <select
-                                style={{
-                                  border: "none",
-                                  outline: "none",
-                                  color: "#7d7f85",
-                                  fontSize: "12.5px",
-                                }}
-                                onChange={(e) => handelSize(e.target.value)}
-                                defaultValue={
-                                  productData && productData.DefaultSize
-                                    ? productData.DefaultSize
-                                    : sizeData.find(
-                                      (size) => size.IsDefaultSize === 1
-                                    )?.id
-                                }
-                              >
-                                {sizeData?.map((size) => (
-                                  <option
-                                    key={size.id}
-                                    value={sizeOption} // Pass sizename as value
-                                    selected={
-                                      productData &&
-                                      productData.DefaultSize === size.sizename
-                                    }
-                                  >
-                                    {size.sizename}
-                                  </option>
-                                ))}
-                              </select>
-                            </div>
-                          )}
                       </div>
                     )}
                   </div>
@@ -2652,59 +2666,6 @@ export default function CartPage() {
                         </span>
                       </button>
                     </div>
-                    {/* <div
-                      className="smilingQualityMain"
-                      style={{ display: "flex", alignItems: "center" }}
-                    >
-                      <input
-                        type="text"
-                        style={{
-                          border: "0px",
-                          textAlign: "center",
-                          outline: "none",
-                          width: "80px",
-                          height: "35px",
-                          border: "1px solid #7d7f85",
-                        }}
-                        maxLength={2}
-                        className="simlingQualityBox"
-                        inputMode="numeric"
-                        onClick={(event) => event.target.select()}
-                        value={lastEnteredQuantity}
-                        onChange={(event) => handleInputChange(event)}
-                      />
-                      <button
-                        className="SmilingUpdateQuantityBtn"
-                        onClick={() =>
-                          handleUpdateQuantity(prodSelectData?.designno)
-                        }
-                      >
-                        QTY
-                      </button>
-                    </div> */}
-
-                    {/* <div
-                      className="smilingAddresingleMobileMain"
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        marginLeft: "30px",
-                      }}
-                    >
-                      <textarea
-                        type="text"
-                        placeholder="Enter Remarks..."
-                        value={remarks}
-                        onChange={(event) => handleInputChangeRemarks(event)}
-                        className="YourCartMainRemkarBoxSingle"
-                      />
-                      <button
-                        onClick={() => handleSubmit(cartSelectData)}
-                        className="SmilingAddSingleRemkarBtn"
-                      >
-                        Add
-                      </button>
-                    </div> */}
                     <div className="mt-3">
                       <div className="container-fluid mainRenarkConatiner" style={{ border: '1px solid rgb(225, 225, 225)', borderRadius: '12px' }}>
                         <div className="d-flex justify-content-center row">
