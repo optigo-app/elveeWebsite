@@ -884,7 +884,7 @@ export default function Header() {
                   <img src={titleImg} alt="Title" className="logoImage1" style={{ marginTop: '-32px' }} />
                 </Link>
                 <List>
-                  <ListItem onClick={() => navigation('/LoginOption')}>
+                  <ListItem onClick={() => {setDrawerOpen(false); navigation('/LoginOption')}}>
                     <ListItemText primary="Log In" />
                   </ListItem>
                 </List>
