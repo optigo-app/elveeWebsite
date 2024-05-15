@@ -4,7 +4,7 @@
     border-top: 1px solid black;
     padding-bottom: 20px;
     padding-top: 20px;
-
+    padding-inline: 10px;
 }
 
 .ElveFooter1 {
@@ -12,12 +12,13 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding-left: 100px;
 }
 
 .elveBox1Title {
     font-size: 19px;
-    font-weight: 500;
+    font-weight: bold;
+    /* margin: 0px; */
+    margin-left: 15%;
 }
 
 .eleBox1InputBox {
@@ -61,10 +62,12 @@
     font-size: 15px;
     font-family: 'PT Sans', sans-serif;
     cursor: pointer;
+    margin-bottom: 9px;
+    width: fit-content;
 }
 
 .ElevBox4Title {
-    font-size: 17px;
+    font-size: 14px;
     font-weight: bold;
     font-family: 'PT Sans', sans-serif;
     cursor: pointer;
@@ -107,9 +110,18 @@
     border-color: #7d7f85;
 }
 
-.footerOfficeDesc{
+.footerOfficeDesc {
     font-size: 15px;
 }
+
+.eleBox1InputBox::placeholder {
+    padding-left: 10px;
+}
+
+.ElveFooterDesc:hover {
+    text-decoration: underline;
+}
+
 @media screen and (max-width:1500px) {
 
     .ElevFooterBoxTitle {
@@ -127,6 +139,17 @@
     .footerOfficeDesc {
         font-size: 13px;
         height: auto;
+    }
+
+    .eleBox1InputBox {
+        width: 60%;
+    }
+}
+
+@media screen and (max-width: 1400px) {
+
+    .elevBox1Btn {
+        width: 110px;
     }
 }
 
@@ -153,6 +176,10 @@
         width: 100%;
         margin-top: 10px;
         padding-inline: 15px;
+    }
+
+    .elveBox1Title {
+        margin-left: 0px !important;
     }
 
 
