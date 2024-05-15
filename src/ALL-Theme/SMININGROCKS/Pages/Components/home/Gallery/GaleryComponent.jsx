@@ -10,34 +10,34 @@ import { storImagePath } from '../../../../Utils/globalFunctions/GlobalFunction'
 
 const sliderData = [
   {
-    imageUrl: storImagePath() + "/images/HomePage/Gallery/GalleryImg01.jpg",
+    imageUrl: "/images/HomePage/Gallery/GalleryImg01.jpg",
   },
   {
-    imageUrl: storImagePath() + "/images/HomePage/Gallery/GalleryImg02.jpg",
+    imageUrl: "/images/HomePage/Gallery/GalleryImg02.jpg",
   },
   {
-    imageUrl: storImagePath() + "/images/HomePage/Gallery/GalleryImg03.jpg",
+    imageUrl: "/images/HomePage/Gallery/GalleryImg03.jpg",
   },
   {
-    imageUrl: storImagePath() + "/images/HomePage/Gallery/GalleryImg04.jpg",
+    imageUrl: "/images/HomePage/Gallery/GalleryImg04.jpg",
   },
   {
-    imageUrl: storImagePath() + "/images/HomePage/Gallery/GalleryImg05.jpg",
+    imageUrl: "/images/HomePage/Gallery/GalleryImg05.jpg",
   },
   {
-    imageUrl: storImagePath() + "/images/HomePage/Gallery/GalleryImg06.jpg",
+    imageUrl: "/images/HomePage/Gallery/GalleryImg06.jpg",
   },
   {
-    imageUrl: storImagePath() + "/images/HomePage/Gallery/GalleryImg07.jpg",
+    imageUrl: "/images/HomePage/Gallery/GalleryImg07.jpg",
   },
   {
-    imageUrl: storImagePath() + "/images/HomePage/Gallery/GalleryImg08.jpg",
+    imageUrl: "/images/HomePage/Gallery/GalleryImg08.jpg",
   },
   {
-    imageUrl: storImagePath() + "/images/HomePage/Gallery/GalleryImg09.jpg",
+    imageUrl: "/images/HomePage/Gallery/GalleryImg09.jpg",
   },
   {
-    imageUrl: storImagePath() + "/images/HomePage/Gallery/GalleryImg10.jpg",
+    imageUrl: "/images/HomePage/Gallery/GalleryImg10.jpg",
   },
 ];
 
@@ -70,7 +70,7 @@ export default function App() {
       >
         {sliderData.map((slide, index) => (
           <SwiperSlide key={index} style={{ marginRight: '10px' }}>
-            <img src={slide.imageUrl} alt={`Slide ${index}`} />
+            <img src={storImagePath() + slide.imageUrl} alt={`Slide ${index}`} />
           </SwiperSlide>
         ))}
       </Swiper>
