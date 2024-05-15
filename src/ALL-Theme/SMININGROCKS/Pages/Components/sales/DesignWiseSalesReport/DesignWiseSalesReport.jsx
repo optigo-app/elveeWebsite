@@ -368,19 +368,19 @@ const DesignWiseSalesReport = () => {
                     break;
             }
             // }
-            if (e?.MetalType?.includes(Metal_Name) || Metal_Name?.toLowerCase() === "all") {
+            if (e?.MetalType?.startsWith(Metal_Name) || Metal_Name?.toLowerCase() === "all") {
                 flags.metal = true;
             }
-            if (e?.ProductType?.includes(product_Type) || product_Type?.toLowerCase() === "all") {
+            if (e?.ProductType?.startsWith(product_Type) || product_Type?.toLowerCase() === "all") {
                 flags.productType = true;
             }
-            if (e?.MetalColor?.includes(metal_Color) || metal_Color?.toLowerCase() === "all") {
+            if (e?.MetalColor?.startsWith(metal_Color) || metal_Color?.toLowerCase() === "all") {
                 flags.metalColor = true;
             }
-            if (e?.Categoryname?.includes(category_name) || category_name?.toLowerCase() === "all") {
+            if (e?.Categoryname?.startsWith(category_name) || category_name?.toLowerCase() === "all") {
                 flags.category = true;
             }
-            if (e?.SubCategoryname?.includes(sub_category) || sub_category?.toLowerCase() === "all") {
+            if (e?.SubCategoryname?.startsWith(sub_category) || sub_category?.toLowerCase() === "all") {
                 flags.subCategory = true;
             }
             // flags.dateFrom && flags.dateTo && 

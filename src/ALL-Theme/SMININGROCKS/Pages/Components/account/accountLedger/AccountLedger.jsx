@@ -79,7 +79,7 @@ const AccountLedger = () => {
         let storeinit = JSON.parse(localStorage.getItem("storeInit"));
         let loginInfo = JSON.parse(localStorage.getItem("loginUserDetail"));
         const UserEmail = localStorage.getItem("userEmail");
-
+        console.log(UserEmail);
         try {
             
         let EncodeData = {
@@ -113,7 +113,7 @@ const AccountLedger = () => {
             }
             
           const response2 = await CommonAPI(body);
-
+            console.log(response2);
           if(response2?.Status === '200'){
 
               if(response2?.Data?.rd?.length > 0)
@@ -129,6 +129,10 @@ const AccountLedger = () => {
                     setResultArray(mainData)
                     getFormatedArrayData(mainData)
                     setFilterArray(mainData)
+                    setLoaderAC(false)
+                }else{
+                    setResultArray(['Data Not Present'])
+                    setFilterArray(['Data Not Present'])
                     setLoaderAC(false)
                 }
           }
@@ -200,7 +204,6 @@ const AccountLedger = () => {
         });
 
         getLedgerData();
-
 
         // setOpeningBalanceTotal(null);
 
@@ -1192,187 +1195,194 @@ const AccountLedger = () => {
 
                 {/* <div className='p-2 ps-4 border-bottom' style={{letterSpacing:'1px'}}>Account Detail for &nbsp; <b>{userName}</b>&nbsp; Period of &nbsp;<b>{formatDate(startDate)}</b>&nbsp; to &nbsp;<b>{formatDate(endDate)}</b>&nbsp;</div> */}
                 
-                <div className='d-flex justify-content-between align-items-center flex_col_Al mt-2'>
                 {
-                    // filterVisible ? 
-                    <div className='fs_al2 p-2 d-flex justify-content-start  align-items-center flex-wrap mb-0'>
+                    (filterArray?.length === 1 && filterArray[0] === 'Data Not Present') ? '' : <div className='d-flex justify-content-between align-items-center flex_col_Al mt-2'>
+                    {
+                        // filterVisible ? 
+                        <div className='fs_al2 p-2 d-flex justify-content-start  align-items-center flex-wrap mb-0'>
+                            <div>
+                            <Box sx={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}>
+                            <Box sx={{ display: "flex", alignItems: "center", paddingRight: "15px", paddingBottom: "35px" }} className="QuotePadSec">
+                            <p className='fs-6 mb-0' style={{ paddingRight: "8px" }}>Date : </p>
+                            <Box>
+                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                    <DatePicker
+                                        label="Date From"
+                                        value={fromDate} 
+                                        ref={fromDateRef}
+                                        // defaultValue={dayjs('2022-04-17')}
+                                        // onChange={(e) => setStartDate(e.target.value)}
+                                        // onChange={(newValue) => setFromDate(newValue)}
+                                        // onChange={handleFromDateChange}
+                                        onChange={(newValue) => {
+                                            console.log(moment(newValue));
+                                            if (newValue === null) {
+                                              setFromDate(null)
+                                            } else {
+                                                // if(newValue["$d"] == "Invalid Date"){
+                                                //     Swal.fire({
+                                                //         title: "Error !",
+                                                //         text: "Enter Valid Date From",
+                                                //         icon: "error",
+                                                //         confirmButtonText: "ok"
+                                                //       });
+                                                //       backToInitial2();
+                                                // }
+                                                // else {
+                                                    if (((newValue["$y"] <= 2099 && newValue["$y"] >= 1900) || newValue["$y"] < 1000) || isNaN(newValue["$y"])) {
+                                                        setFromDate(newValue)
+                                                      } else {
+                                                        Swal.fire({
+                                                          title: "Error !",
+                                                          text: "Enter Valid Date From",
+                                                          icon: "error",
+                                                          confirmButtonText: "ok"
+                                                        });
+                                                        // resetAllFilters();
+                                                        backToInitial2();
+                                                        // backToInitial2();
+                                                      }
+                                                // }
+                                             
+                                            }
+                                          }}
+                                        format="DD MM YYYY"
+                                        placeholder="DD MM YYYY"
+                                        className='quotationFilterDates'
+                                        name="date" 
+                                        id="startdate" 
+                                    />
+                                </LocalizationProvider>
+                            </Box>
+                        </Box>
+                        <Box sx={{ display: "flex", alignItems: "center", paddingBottom: "35px", paddingRight: "15px" }} className="QuotePadSec">
+                            <p className='fs-6 mb-0' style={{ paddingRight: "8px" }}>To : </p>
+                            <Box>
+                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                    <DatePicker
+                                        label="Date To"
+                                        value={toDate} 
+                                        ref={toDateRef}
+                                        // defaultValue={dayjs('2022-04-17')}
+                                        // onChange={(newValue) => setToDate(newValue)}
+                                        // onChange={(e) => setEndDate(e.target.value)}
+                                        // onChange={handleToDateChange}
+                                        onChange={(newValue) => {
+                                            if (newValue === null) {
+                                              setToDate(null)
+                                            } else {
+                                              if (((newValue["$y"] <= 2099 && newValue["$y"] >= 1900) || newValue["$y"] < 1000) || isNaN(newValue["$y"])) {
+                                                setToDate(newValue)
+                                                setShowEndDate(newValue)
+                                              } 
+                                              else {
+                                                Swal.fire({
+                                                  title: "Error !",
+                                                  text: "Enter Valid Date To",
+                                                  icon: "error",
+                                                  confirmButtonText: "ok"
+                                                });
+                                                // resetAllFilters();
+                                                // backToInitial();
+                                                backToInitial2();
+                                            }
+                                            }
+                                          }}
+                                        format="DD MM YYYY"
+                                        placeholder="DD MM YYYY"
+                                        className='quotationFilterDates'
+                                        name="date" 
+                                        id="enddate"
+                                    />
+                                </LocalizationProvider>
+                            </Box>
+                        </Box>
+                    </Box>
+                            </div>
                         <div>
-                        <Box sx={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}>
-                    <Box sx={{ display: "flex", alignItems: "center", paddingRight: "15px", paddingBottom: "35px" }} className="QuotePadSec">
-                        <p className='fs-6 mb-0' style={{ paddingRight: "8px" }}>Date : </p>
-                        <Box>
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <DatePicker
-                                    label="Date From"
-                                    value={fromDate} 
-                                    ref={fromDateRef}
-                                    // defaultValue={dayjs('2022-04-17')}
-                                    // onChange={(e) => setStartDate(e.target.value)}
-                                    // onChange={(newValue) => setFromDate(newValue)}
-                                    // onChange={handleFromDateChange}
-                                    onChange={(newValue) => {
-                                        console.log(moment(newValue));
-                                        if (newValue === null) {
-                                          setFromDate(null)
-                                        } else {
-                                            // if(newValue["$d"] == "Invalid Date"){
-                                            //     Swal.fire({
-                                            //         title: "Error !",
-                                            //         text: "Enter Valid Date From",
-                                            //         icon: "error",
-                                            //         confirmButtonText: "ok"
-                                            //       });
-                                            //       backToInitial2();
-                                            // }
-                                            // else {
-                                                if (((newValue["$y"] <= 2099 && newValue["$y"] >= 1900) || newValue["$y"] < 1000) || isNaN(newValue["$y"])) {
-                                                    setFromDate(newValue)
-                                                  } else {
-                                                    Swal.fire({
-                                                      title: "Error !",
-                                                      text: "Enter Valid Date From",
-                                                      icon: "error",
-                                                      confirmButtonText: "ok"
-                                                    });
-                                                    // resetAllFilters();
-                                                    backToInitial2();
-                                                    // backToInitial2();
-                                                  }
-                                            // }
-                                         
-                                        }
-                                      }}
-                                    format="DD MM YYYY"
-                                    placeholder="DD MM YYYY"
-                                    className='quotationFilterDates'
-                                    name="date" 
-                                    id="startdate" 
-                                />
-                            </LocalizationProvider>
-                        </Box>
-                    </Box>
-                    <Box sx={{ display: "flex", alignItems: "center", paddingBottom: "35px", paddingRight: "15px" }} className="QuotePadSec">
-                        <p className='fs-6 mb-0' style={{ paddingRight: "8px" }}>To : </p>
-                        <Box>
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <DatePicker
-                                    label="Date To"
-                                    value={toDate} 
-                                    ref={toDateRef}
-                                    // defaultValue={dayjs('2022-04-17')}
-                                    // onChange={(newValue) => setToDate(newValue)}
-                                    // onChange={(e) => setEndDate(e.target.value)}
-                                    // onChange={handleToDateChange}
-                                    onChange={(newValue) => {
-                                        if (newValue === null) {
-                                          setToDate(null)
-                                        } else {
-                                          if (((newValue["$y"] <= 2099 && newValue["$y"] >= 1900) || newValue["$y"] < 1000) || isNaN(newValue["$y"])) {
-                                            setToDate(newValue)
-                                            setShowEndDate(newValue)
-                                          } 
-                                          else {
-                                            Swal.fire({
-                                              title: "Error !",
-                                              text: "Enter Valid Date To",
-                                              icon: "error",
-                                              confirmButtonText: "ok"
-                                            });
-                                            // resetAllFilters();
-                                            // backToInitial();
-                                            backToInitial2();
-                                        }
-                                        }
-                                      }}
-                                    format="DD MM YYYY"
-                                    placeholder="DD MM YYYY"
-                                    className='quotationFilterDates'
-                                    name="date" 
-                                    id="enddate"
-                                />
-                            </LocalizationProvider>
-                        </Box>
-                    </Box>
-                </Box>
+                            {/* <input type="date" name="date" id="startdate" className='mx-2 p-1 mb-2' value={startDate} onChange={(e) => setStartDate(e.target.value)} title='find data'  />
+                                To 
+                            <input type="date" name="date" id="enddate" className='mx-2 p-1 mb-2'   value={endDate} onChange={(e) => setEndDate(e.target.value)}  title='enddate' /> */}
+                            {/* <Box sx={{paddingBottom: "35px", paddingRight: "15px"}}>
+                                <SearchIcon titleAccess='search here' sx={{cursor:'pointer'}}   onClick={(e) => handleSearchBtn(e, fromDate, toDate, selectedDays)}/>
+                            </Box> */}
+                            <Box sx={{ paddingBottom: "35px", paddingRight: "15px"}}>
+    
+                             <Button variant='contained' className='muiSmilingRocksBtn' title='search here'
+                                sx={{ padding: "7px 10px", minWidth: "max-content", background: "#7d7f85",  }}
+                                onClick={(e) => handleSearchBtn(e, fromDate, toDate, selectedDays)}
+                                // onClick={(eve) => handleSearch(eve, fromDate, toDate, netWtSlider[0], netWtSlider[1], grossWtSlider[0], grossWtSlider[1], purchaseCount, designNo, metal, productType, metalColor, category, subCategory, orderProm)}
+                                >
+                                <SearchIcon sx={{ color: "#fff !important", cursor:'pointer' }} /></Button>
+                            </Box>
                         </div>
-                    <div>
-                        {/* <input type="date" name="date" id="startdate" className='mx-2 p-1 mb-2' value={startDate} onChange={(e) => setStartDate(e.target.value)} title='find data'  />
-                            To 
-                        <input type="date" name="date" id="enddate" className='mx-2 p-1 mb-2'   value={endDate} onChange={(e) => setEndDate(e.target.value)}  title='enddate' /> */}
-                        {/* <Box sx={{paddingBottom: "35px", paddingRight: "15px"}}>
-                            <SearchIcon titleAccess='search here' sx={{cursor:'pointer'}}   onClick={(e) => handleSearchBtn(e, fromDate, toDate, selectedDays)}/>
-                        </Box> */}
-                        <Box sx={{ paddingBottom: "35px", paddingRight: "15px"}}>
-
-                         <Button variant='contained' className='muiSmilingRocksBtn' title='search here'
-                            sx={{ padding: "7px 10px", minWidth: "max-content", background: "#7d7f85",  }}
-                            onClick={(e) => handleSearchBtn(e, fromDate, toDate, selectedDays)}
-                            // onClick={(eve) => handleSearch(eve, fromDate, toDate, netWtSlider[0], netWtSlider[1], grossWtSlider[0], grossWtSlider[1], purchaseCount, designNo, metal, productType, metalColor, category, subCategory, orderProm)}
-                            >
-                            <SearchIcon sx={{ color: "#fff !important", cursor:'pointer' }} /></Button>
+                        <Box sx={{paddingBottom: "35px", paddingRight: "15px"}}>
+                            {/* <div className='mb-2'><button className='btn btn-secondary mx-2 py-1' onClick={() => backToInitial()}>All</button></div> */}
+                            <Button variant="contained" className="muiSmilingRocksBtn" sx={{ background: "#7d7f85", display: "flex", alignItems: "center", marginBottom: 0, padding: "6px 0", }}  
+                            // onClick={() => backToInitial()}>
+                            onClick={() => backToInitial3()}>
+                                All
+                            </Button>
                         </Box>
+                        {/* <div onClick={() => navigate("/accountledgerexcel")}><img src="https://cdn22.optigoapps.com/lib/jo/28/images/ExcelExport.png" alt="#excelexport" className='eeal' /></div> */}
+                        {/* <div onClick={() => handleExcel()}><img src="https://cdn22.optigoapps.com/lib/jo/28/images/ExcelExport.png" alt="#excelexport" className='eeal' /></div> */}
+                        {/* <div onClick={() => navigate("/accountledgertable")}><img src="	https://cdn22.optigoapps.com/lib/jo/28/images/print_icon.png" alt="#excelexport" className='eeal' /></div> */}
+                        {/* <div onClick={() => window.open("http://localhost:3000/accountledgertable")}><img src="	https://cdn22.optigoapps.com/lib/jo/28/images/print_icon.png" alt="#printtable" className='eeal' /></div> */}
+                        <Box sx={{paddingBottom: "35px", paddingRight: "15px"}}>
+    
+                       
+                        <div className='d-flex pt-2'>
+                            <button className='ms-2 mx-1 btn border p-2 py-0 daybtn mb-2' title='previous' 
+                            onClick={() => handlePreviousDays()}
+                            >&lt;</button>
+                            {/* <div className='mx-2 mb-2 d-flex flex-wrap'> */}
+                                {[30, 60, 90]?.map((days) => (
+                                    <button key={days} className={`mx-1 btn border p-2 py-0 daybtn mb-2 ${selectedDays === days ? 'selected' : ''}`} title={`${days} days`} onClick={() => handleDays(days)}>{days}</button>
+                                ))}
+                            {/* </div> */}
+                            <button className='ms-2 mx-1 btn border p-2 py-0 daybtn me-3 mb-2' title='next' 
+                            onClick={() => handleNextDays()}
+                            >&gt;</button>
+                        </div>
+                        </Box>
+                        {/* <div>
+                            <select name="status" className='p-1' id="status" value={selectedStatus} onChange={(e) => handleSelect(e)}>
+                                <option value="all">All</option>
+                                <option value="2">Pending</option>
+                                <option value="1">Declined</option>
+                                <option value="0">Verified</option>
+                            </select>
+                        </div> */}
+                        <div className='mx-1 ms-4 mb-2'>
+                            {/* <input type="checkbox" name="duedate" checked={dueDateWise} value={dueDateWise} id="duedate" onChange={() => setDueDateWise(!dueDateWise)} /><label htmlFor="duedate" className='user-select-none ps-1'>Due Date Wise</label> */}
+                        </div>
                     </div>
-                    <Box sx={{paddingBottom: "35px", paddingRight: "15px"}}>
-                        {/* <div className='mb-2'><button className='btn btn-secondary mx-2 py-1' onClick={() => backToInitial()}>All</button></div> */}
-                        <Button variant="contained" className="muiSmilingRocksBtn" sx={{ background: "#7d7f85", display: "flex", alignItems: "center", marginBottom: 0, padding: "6px 0", }}  
-                        // onClick={() => backToInitial()}>
-                        onClick={() => backToInitial3()}>
-                            All
-                        </Button>
-                    </Box>
-                    {/* <div onClick={() => navigate("/accountledgerexcel")}><img src="https://cdn22.optigoapps.com/lib/jo/28/images/ExcelExport.png" alt="#excelexport" className='eeal' /></div> */}
-                    {/* <div onClick={() => handleExcel()}><img src="https://cdn22.optigoapps.com/lib/jo/28/images/ExcelExport.png" alt="#excelexport" className='eeal' /></div> */}
-                    {/* <div onClick={() => navigate("/accountledgertable")}><img src="	https://cdn22.optigoapps.com/lib/jo/28/images/print_icon.png" alt="#excelexport" className='eeal' /></div> */}
-                    {/* <div onClick={() => window.open("http://localhost:3000/accountledgertable")}><img src="	https://cdn22.optigoapps.com/lib/jo/28/images/print_icon.png" alt="#printtable" className='eeal' /></div> */}
-                    <Box sx={{paddingBottom: "35px", paddingRight: "15px"}}>
-
-                   
-                    <div className='d-flex pt-2'>
-                        <button className='ms-2 mx-1 btn border p-2 py-0 daybtn mb-2' title='previous' 
-                        onClick={() => handlePreviousDays()}
-                        >&lt;</button>
-                        {/* <div className='mx-2 mb-2 d-flex flex-wrap'> */}
-                            {[30, 60, 90]?.map((days) => (
-                                <button key={days} className={`mx-1 btn border p-2 py-0 daybtn mb-2 ${selectedDays === days ? 'selected' : ''}`} title={`${days} days`} onClick={() => handleDays(days)}>{days}</button>
-                            ))}
-                        {/* </div> */}
-                        <button className='ms-2 mx-1 btn border p-2 py-0 daybtn me-3 mb-2' title='next' 
-                        onClick={() => handleNextDays()}
-                        >&gt;</button>
+                    //  : <div className=''></div>
+                    }
+                    {/* <Box sx={{paddingBottom: "35px", paddingRight: "15px"}}> <div className='m-2' style={{minWidth:'max-content'}} onClick={toggleFilter}> { !filterVisible ? <button className='toggleBtn'>Show More</button> : <button className='toggleBtn'>Show Less</button> } </div></Box> */}
+                    {/* <ExpandMoreIcon sx={{cursor:'pointer'}} titleAccess='Show' /> */}
+                    {/* <ExpandLessIcon sx={{cursor:'pointer'}} titleAccess='Hide'/> */}
                     </div>
-                    </Box>
-                    {/* <div>
-                        <select name="status" className='p-1' id="status" value={selectedStatus} onChange={(e) => handleSelect(e)}>
-                            <option value="all">All</option>
-                            <option value="2">Pending</option>
-                            <option value="1">Declined</option>
-                            <option value="0">Verified</option>
-                        </select>
-                    </div> */}
-                    <div className='mx-1 ms-4 mb-2'>
-                        {/* <input type="checkbox" name="duedate" checked={dueDateWise} value={dueDateWise} id="duedate" onChange={() => setDueDateWise(!dueDateWise)} /><label htmlFor="duedate" className='user-select-none ps-1'>Due Date Wise</label> */}
-                    </div>
-                </div>
-                //  : <div className=''></div>
                 }
-                {/* <Box sx={{paddingBottom: "35px", paddingRight: "15px"}}> <div className='m-2' style={{minWidth:'max-content'}} onClick={toggleFilter}> { !filterVisible ? <button className='toggleBtn'>Show More</button> : <button className='toggleBtn'>Show Less</button> } </div></Box> */}
-                {/* <ExpandMoreIcon sx={{cursor:'pointer'}} titleAccess='Show' /> */}
-                {/* <ExpandLessIcon sx={{cursor:'pointer'}} titleAccess='Hide'/> */}
-                </div>
                 
                 <div className='text-secondary fs_al d-flex justify-content-between align-items-start p-2 my-3 mt-0'>
                     <div className='d-flex justify-content-start align-items-start flex-wrap'>
                         <div className='px-4 px_2_al d-flex align-items-center mb-2 ps-0'><span>Balance Gold :&nbsp;</span> <span className='bal_Amt_ac'>
-                            { (((resultTotal?.debit_metalgold  + Math.abs(debit_mg_diff) ) - ( resultTotal?.credit_metalgold + Math.abs(credit_mg_diff)))?.toFixed(3)) }
+                            { ((((resultTotal?.debit_metalgold  + Math.abs(debit_mg_diff) ) - ( resultTotal?.credit_metalgold + Math.abs(credit_mg_diff)))?.toFixed(3)) === 'NaN' ? '0.00' :  (((resultTotal?.debit_metalgold  + Math.abs(debit_mg_diff) ) - ( resultTotal?.credit_metalgold + Math.abs(credit_mg_diff)))?.toFixed(3))) }
                             { ((resultTotal?.debit_metalgold + Math.abs(debit_mg_diff)) - (resultTotal?.credit_metalgold + Math.abs(credit_mg_diff))) > 0 ? 'Dr' : ' Cr' }</span></div>
                         <div className='px-4 px_2_al d-flex align-items-center mb-2'><span>Balance Diam. :&nbsp;</span> <span className='bal_Amt_ac'>
-                            { (((Math.abs(debit_dia_diff) + resultTotal?.debit_diamondwt) - (Math.abs(credit_dia_diff) + resultTotal?.credit_diamondwt))?.toFixed(3)) }
+                            { ((((Math.abs(debit_dia_diff) + resultTotal?.debit_diamondwt) - (Math.abs(credit_dia_diff) + resultTotal?.credit_diamondwt))?.toFixed(3)) === 'NaN' ? '0.00' : (((Math.abs(debit_dia_diff) + resultTotal?.debit_diamondwt) - (Math.abs(credit_dia_diff) + resultTotal?.credit_diamondwt))?.toFixed(3))) }
                             { ((Math.abs(debit_dia_diff) + resultTotal?.debit_diamondwt) - (Math.abs(credit_dia_diff) + resultTotal?.credit_diamondwt)) > 0 ? 'Dr' : ' Cr' }</span></div>
                         <div className='px-4 px_2_al d-flex align-items-center mb-2'><span>Balance Amount :&nbsp;</span> <span className='bal_Amt_ac'>
                             {/* { (formatAmount(resultTotal?.debit_totalcurrency - resultTotal?.credit_totalcurrency))}&nbsp;{(((Math.abs(debit_amt_diff) + resultTotal?.debit_totalamount) - (Math.abs(credit_amt_diff) + resultTotal?.credit_totalamount)) ? 'Dr' : 'Cr' ) }</span></div> */}
                             {currencySymbol}&nbsp;
-                            { (formatAmount(
-                                (Math.abs(debit_curr_diff) + resultTotal?.debit_totalcurrency) - (Math.abs(credit_curr_diff) + resultTotal?.credit_totalcurrency)))}&nbsp;
+                            { ((formatAmount(
+                                (Math.abs(debit_curr_diff) + resultTotal?.debit_totalcurrency) - (Math.abs(credit_curr_diff) + resultTotal?.credit_totalcurrency))
+                              ) === 'NaN' ? '0.00' : (formatAmount(
+                                (Math.abs(debit_curr_diff) + resultTotal?.debit_totalcurrency) - (Math.abs(credit_curr_diff) + resultTotal?.credit_totalcurrency))
+                              ))
+                            }&nbsp;
+
                             {(((Math.abs(debit_curr_diff) + resultTotal?.debit_totalcurrency) - (Math.abs(credit_curr_diff) + resultTotal?.credit_totalcurrency)) ? 'Dr' : ' Cr' ) }</span></div>
                     </div>
                 </div>
@@ -1447,27 +1457,31 @@ const AccountLedger = () => {
                                             }
 
                                     return(
-                                        <tr className='border' key={e?.id}>
-                                            <td className='border-end p-1 text-center'>{e?.IsDebit === 0 ? '' : e?.EntryDate}</td>
-                                            <td className='border-end p-1 text-start ps-1'>{ e?.IsDebit === 0 ? '' : e?.particular}</td>
-                                            <td className='border-end p-1 text-start ps-1 text-primary text-decoration-underline' style={{cursor:'pointer'}} onClick={() => window.open("http://localhost:3000/accountledgerdebit")}>{e?.IsDebit === 0 ? '' : e?.referenceno === '' ? e?.voucherno : e?.referenceno}</td>
-                                            <td className='border-end p-1 text-end pe-1'>{e?.IsDebit === 0 ? '' : (e?.metalctw === 0 ? '' : e?.metalctw)}</td>
-                                            <td className='border-end p-1 text-end pe-1'>{e?.IsDebit === 0 ? '' : (e?.diamondctw === 0 ? '' : e?.diamondctw)}</td>
-                                            {/* <td className='border-end p-1 text-end pe-1'>{e?.IsDebit === 0 ? '' : e?.Amount}</td>
-                                            <td className='border-end p-1 text-end pe-1'>{e?.IsDebit === 0 ? '' : e?.CurrRate}</td> */}
-                                            <td className='border-end p-1 text-end pe-1' style={{minWidth:'100px'}}>{e?.IsDebit === 0 ? '' : `${e?.CurrSymbol} ${formatAmount(e?.Currency)} `}</td>
-                                            <td className='border-end p-1 text-center'></td>
-                                            <td className='border-end p-1 text-center'>{e?.IsDebit === 0 ? e?.EntryDate : ''}</td>
-                                            <td className='border-end p-1 text-start ps-1'>{e?.IsDebit === 0 ? e?.particular : ''}</td>
-                                            <td className='border-end p-1 text-start ps-1 text-primary text-decoration-underline' onClick={() => window.open("http://localhost:3000/accountledgercredit")} style={{cursor:'pointer'}}>{e?.IsDebit === 0 ? e?.referenceno === '' ? e?.voucherno : e?.referenceno : ''}</td>
-                                            <td className='border-end p-1 text-end pe-1'>{e?.IsDebit === 0 ? (e?.metalctw === 0 ? '' : e?.metalctw) : ''}</td>
-                                            <td className='border-end p-1 text-end pe-1'>{e?.IsDebit === 0 ? (e?.diamondctw === 0 ? '' : e?.diamondctw) : ''}</td>
-                                            {/* <td className='border-end p-1 text-end pe-1'>{e?.IsDebit === 0 ? e?.Amount : ''}</td>
-                                            <td className='border-end p-1 text-end pe-1'>{e?.IsDebit === 0 ? e?.CurrRate : ''}</td> */}
-                                            <td className='border-end p-1 text-end pe-1' style={{minWidth:'100px'}}>{e?.IsDebit === 0 ? `${e?.Currency === 0 ? '' : e?.CurrSymbol} ${e?.Currency === 0 ? '' : formatAmount(e?.Currency)}`  : ''}</td>
-                                            {/* <td className=' p-1 text-center'><DoneIcon sx={{color:'red'}} /><CloseIcon /></td> */}
-                                            <td className=' p-1 text-center'>{doneIcon}{closeIcon}</td>
-                                        </tr>
+                                     <>
+                                     {
+                                        e === 'Data Not Present' ? <tr><td colSpan={14} align='center'>Data Not Present</td></tr> :    <tr className='border' key={e?.id}>
+                                        <td className='border-end p-1 text-center'>{e?.IsDebit === 0 ? '' : e?.EntryDate}</td>
+                                        <td className='border-end p-1 text-start ps-1'>{ e?.IsDebit === 0 ? '' : e?.particular}</td>
+                                        <td className='border-end p-1 text-start ps-1 text-primary text-decoration-underline' style={{cursor:'pointer'}} onClick={() => window.open("http://localhost:3000/accountledgerdebit")}>{e?.IsDebit === 0 ? '' : e?.referenceno === '' ? e?.voucherno : e?.referenceno}</td>
+                                        <td className='border-end p-1 text-end pe-1'>{e?.IsDebit === 0 ? '' : (e?.metalctw === 0 ? '' : e?.metalctw)}</td>
+                                        <td className='border-end p-1 text-end pe-1'>{e?.IsDebit === 0 ? '' : (e?.diamondctw === 0 ? '' : e?.diamondctw)}</td>
+                                        {/* <td className='border-end p-1 text-end pe-1'>{e?.IsDebit === 0 ? '' : e?.Amount}</td>
+                                        <td className='border-end p-1 text-end pe-1'>{e?.IsDebit === 0 ? '' : e?.CurrRate}</td> */}
+                                        <td className='border-end p-1 text-end pe-1' style={{minWidth:'100px'}}>{e?.IsDebit === 0 ? '' : `${e?.CurrSymbol === undefined ? '' : e?.CurrSymbol} ${formatAmount(e?.Currency) === 'NaN' ? '' : formatAmount(e?.Currency)} `}</td>
+                                        <td className='border-end p-1 text-center'></td>
+                                        <td className='border-end p-1 text-center'>{e?.IsDebit === 0 ? e?.EntryDate : ''}</td>
+                                        <td className='border-end p-1 text-start ps-1'>{e?.IsDebit === 0 ? e?.particular : ''}</td>
+                                        <td className='border-end p-1 text-start ps-1 text-primary text-decoration-underline' onClick={() => window.open("http://localhost:3000/accountledgercredit")} style={{cursor:'pointer'}}>{e?.IsDebit === 0 ? e?.referenceno === '' ? e?.voucherno : e?.referenceno : ''}</td>
+                                        <td className='border-end p-1 text-end pe-1'>{e?.IsDebit === 0 ? (e?.metalctw === 0 ? '' : e?.metalctw) : ''}</td>
+                                        <td className='border-end p-1 text-end pe-1'>{e?.IsDebit === 0 ? (e?.diamondctw === 0 ? '' : e?.diamondctw) : ''}</td>
+                                        {/* <td className='border-end p-1 text-end pe-1'>{e?.IsDebit === 0 ? e?.Amount : ''}</td>
+                                        <td className='border-end p-1 text-end pe-1'>{e?.IsDebit === 0 ? e?.CurrRate : ''}</td> */}
+                                        <td className='border-end p-1 text-end pe-1' style={{minWidth:'100px'}}>{e?.IsDebit === 0 ? `${e?.Currency === 0 ? '' : e?.CurrSymbol} ${e?.Currency === 0 ? '' : formatAmount(e?.Currency)}`  : ''}</td>
+                                        {/* <td className=' p-1 text-center'><DoneIcon sx={{color:'red'}} /><CloseIcon /></td> */}
+                                        <td className=' p-1 text-center'>{doneIcon}{closeIcon}</td>
+                                    </tr>
+                                     }
+                                     </>
                                     )
                                 }) : <tr><td align='center' colSpan={18}>Data No Present</td></tr>
                             }
@@ -1475,24 +1489,26 @@ const AccountLedger = () => {
                                             <td className='border-end p-1 text-center'></td>
                                             <td className='border-end p-1 text-start ps-1'></td>
                                             <td className='border-end p-1 text-start ps-1'></td>
-                                            <td className='border-end p-1 text-end pe-1'>{( (Math.abs(debit_mg_diff) + resultTotal?.debit_metalgold))?.toFixed(3) === '0.000' ? '' : ( (Math.abs(debit_mg_diff) + resultTotal?.debit_metalgold))?.toFixed(3)}</td>
-                                            <td className='border-end p-1 text-end pe-1'>{((Math.abs(debit_dia_diff) + resultTotal?.debit_diamondwt))?.toFixed(3) === '0.000' ? '' : ((Math.abs(debit_dia_diff) + resultTotal?.debit_diamondwt))?.toFixed(3)}</td>
+                                            <td className='border-end p-1 text-end pe-1'>{((Math.abs(debit_mg_diff) + resultTotal?.debit_metalgold))?.toFixed(3) === '0.000' ? '' : (( (Math.abs(debit_mg_diff) + resultTotal?.debit_metalgold))?.toFixed(3) === 'NaN' ? '0.00' : ( (Math.abs(debit_mg_diff) + resultTotal?.debit_metalgold))?.toFixed(3))}</td>
+                                            <td className='border-end p-1 text-end pe-1'>{((Math.abs(debit_dia_diff) + resultTotal?.debit_diamondwt))?.toFixed(3) === '0.000' ? '' : (((Math.abs(debit_dia_diff) + resultTotal?.debit_diamondwt))?.toFixed(3) === 'NaN' ? '0.00' : ((Math.abs(debit_dia_diff) + resultTotal?.debit_diamondwt))?.toFixed(3))}</td>
                                             {/* <td className='border-end p-1 text-end pe-1' style={{minWidth:'100px'}}>{formatAmount(((Math.abs(debit_amt_diff) + resultTotal?.debit_totalamount)))}</td>
                                             <td className='border-end p-1 text-end pe-1'></td> */}
-                                            <td className='border-end p-1 text-end pe-1' style={{minWidth:'100px'}}>{formatAmount((Math.abs(debit_curr_diff) + resultTotal?.debit_totalcurrency)) === '0.00' ? '' :  currencySymbol}&nbsp;{formatAmount((Math.abs(debit_curr_diff) + resultTotal?.debit_totalcurrency)) === '0.00' ? '' : formatAmount((Math.abs(debit_curr_diff) + resultTotal?.debit_totalcurrency))}</td>
+                                            <td className='border-end p-1 text-end pe-1' style={{minWidth:'100px'}}>
+                                                {formatAmount((Math.abs(debit_curr_diff) + resultTotal?.debit_totalcurrency)) === '0.00' ? '' :  currencySymbol}&nbsp;{formatAmount((Math.abs(debit_curr_diff) + resultTotal?.debit_totalcurrency)) === '0.00' ? '' : (formatAmount((Math.abs(debit_curr_diff) + resultTotal?.debit_totalcurrency)) === 'NaN' ? '0.00' : formatAmount((Math.abs(debit_curr_diff) + resultTotal?.debit_totalcurrency)))}
+                                            </td>
                                             <td className='border-end p-1 text-center'></td>
                                             <td className='border-end p-1 text-center'></td>
                                             <td className='border-end p-1 text-start ps-1'></td>
                                             <td className='border-end p-1 text-start ps-1'></td>
                                             {/* {console.log("dia wt total with result",((Math.abs(credit_dia_diff) + resultTotal?.credit_diamondwt))?.toFixed(3))} */}
-                                            <td className='border-end p-1 text-end pe-1'>{((Math.abs(credit_mg_diff) + resultTotal?.credit_metalgold))?.toFixed(3) === '0.000' ? '' : ((Math.abs(credit_mg_diff) + resultTotal?.credit_metalgold))?.toFixed(3)}</td>
-                                            <td className='border-end p-1 text-end pe-1'>{((Math.abs(credit_dia_diff) + resultTotal?.credit_diamondwt))?.toFixed(3) === '0.000' ? '' : ((Math.abs(credit_dia_diff) + resultTotal?.credit_diamondwt))?.toFixed(3)}</td>
+                                            <td className='border-end p-1 text-end pe-1'>{((Math.abs(credit_mg_diff) + resultTotal?.credit_metalgold))?.toFixed(3) === '0.000' ? '' : (((Math.abs(credit_mg_diff) + resultTotal?.credit_metalgold))?.toFixed(3) === 'NaN' ? '0.00' : ((Math.abs(credit_mg_diff) + resultTotal?.credit_metalgold))?.toFixed(3))}</td>
+                                            <td className='border-end p-1 text-end pe-1'>{((Math.abs(credit_dia_diff) + resultTotal?.credit_diamondwt))?.toFixed(3) === '0.000' ? '' : (((Math.abs(credit_dia_diff) + resultTotal?.credit_diamondwt))?.toFixed(3) === 'NaN' ? '0.00' : ((Math.abs(credit_dia_diff) + resultTotal?.credit_diamondwt))?.toFixed(3))}</td>
                                             {/* <td className='border-end p-1 text-end pe-1' style={{minWidth:'100px'}}>{formatAmount((Math.abs(credit_amt_diff) + resultTotal?.credit_totalamount))}</td>
                                             <td className='border-end p-1 text-end pe-1'></td> */}
                                             <td className='border-end p-1 text-end pe-1' style={{minWidth:'100px'}}>
                                                 {formatAmount((Math.abs(credit_curr_diff) + resultTotal?.credit_totalcurrency)) === '0.00' ? '' : currencySymbol}
                                                 &nbsp;
-                                                {formatAmount((Math.abs(credit_curr_diff) + resultTotal?.credit_totalcurrency)) === '0.00' ? '' : formatAmount((Math.abs(credit_curr_diff) + resultTotal?.credit_totalcurrency))}</td>
+                                                {formatAmount((Math.abs(credit_curr_diff) + resultTotal?.credit_totalcurrency)) === '0.00' ? '' : ((formatAmount((Math.abs(credit_curr_diff) + resultTotal?.credit_totalcurrency)) === 'NaN' ? '0.00' : formatAmount((Math.abs(credit_curr_diff) + resultTotal?.credit_totalcurrency))))}</td>
                                             <td className=' p-1 text-center'></td>
                                         </tr>
                         </tbody>
