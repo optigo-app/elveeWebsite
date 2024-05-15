@@ -185,10 +185,10 @@ export default function Payment() {
                     <div className='paymentSubDiv' style={{ padding: '50px' }}>
 
                         <div style={{ width: '100%' }}>
-                            <p style={{ fontSize: '25px', fontWeight: 500, color: '#5e5e5e' }}>Payment Card Method</p>
+                            <p className='mainTitleMobileShiping' style={{ fontSize: '25px', fontWeight: 500, color: '#5e5e5e' }}>Payment Card Method</p>
 
-                            <div style={{ marginTop: '40px' }}>
-                                <p style={{ fontSize: '25px', fontWeight: 500, color: '#5e5e5e' }}>Billing Address</p>
+                            <div className='BilingAdressMain' style={{ marginTop: '40px' }}>
+                                <p className='mainTitleMobileShiping' style={{ fontSize: '25px', fontWeight: 500, color: '#5e5e5e' ,margin: '0px' }}>Billing Address</p>
                                 <p className='AddressTitle'>Name : <span className='AdressData'>{selectedAdd.shippingfirstname} {selectedAdd.shippinglastname}</span></p>
                                 <p className='AddressTitle'>Address : <span className='AdressData'>{selectedAdd.street}</span></p>
                                 <p className='AddressTitle'>City : <span className='AdressData'>{selectedAdd.city}-{selectedAdd.zip}</span></p>
@@ -196,17 +196,17 @@ export default function Payment() {
                                 <p className='AddressTitle'>Mobile : <span className='AdressData'>{selectedAdd.shippingmobile}</span></p>
                             </div>
                         </div>
-                        <div style={{ width: '100%', marginTop: '50px' }}>
-                            <p style={{ fontSize: '25px', fontWeight: 500, color: '#5e5e5e', marginBottom: '5px' }}>Shipping Address</p>
+                        <div style={{ width: '100%', marginTop: '30px' }}>
+                            <p className='mainTitleMobileShiping' style={{ fontSize: '25px', fontWeight: 500, color: '#5e5e5e', marginBottom: '5px' }}>Shipping Address</p>
                             <div style={{ marginTop: '0px' }}>
-                                <p style={{ fontSize: '20px', margin: '0px', fontWeight: 500, color: '#5e5e5e' }}>{selectedAdd.shippingfirstname} {selectedAdd.shippinglastname}</p>
+                                <p className='shipingName' style={{ fontSize: '20px', margin: '0px', fontWeight: 500, color: '#5e5e5e' }}>{selectedAdd.shippingfirstname} {selectedAdd.shippinglastname}</p>
                                 <p className='AddressTitle'><span className='AdressData'>{selectedAdd.street}</span></p>
                                 <p className='AddressTitle'><span className='AdressData'>{selectedAdd.city}-{selectedAdd.zip}</span></p>
                                 <p className='AddressTitle'><span className='AdressData'>{selectedAdd.state},{selectedAdd.country}</span></p>
                                 <p className='AddressTitle'><span className='AdressData'>{selectedAdd.shippingmobile}</span></p>
                             </div>
 
-                            <p style={{ fontSize: '25px', fontWeight: 500, color: '#5e5e5e', marginTop: '50px' }}>Order Summary</p>
+                            <p className='mainTitleMobileShiping' style={{ fontSize: '25px', fontWeight: 500, color: '#5e5e5e', marginTop: '30px' }}>Order Summary</p>
                             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                 <p>Subtotal</p>
                                 <p>0.00</p>

@@ -17,21 +17,54 @@ import { Button, CircularProgress, TextField } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { checkMonth } from "../../../../Utils/globalFunctions/GlobalFunction";
+import { checkMonth, formatAmount } from "../../../../Utils/globalFunctions/GlobalFunction";
 import moment from "moment";
 import { CommonAPI } from "../../../../Utils/API/CommonAPI";
 import { addYears, subYears } from 'date-fns';
 import Swal from "sweetalert2";
+import PrintIcon from '@mui/icons-material/Print';
 // import AlertPopup from '../../../../../../alertPopup/AlertPopup';
-const createData = (SrNo, Date, SKUNo, TotalDesign, Amount) => {
+const createData = (SrNo, Date, SKUNo, TotalDesign, Amount, PrintUrl) => {
     return {
         SrNo,
         Date,
         SKUNo,
         TotalDesign,
-        Amount
+        Amount,
+        PrintUrl
     };
 }
+
+// const descendingComparator = (a, b, orderBy) => {
+//     if (orderBy === 'Date') {
+//         const dateA = new Date(a[orderBy]);
+//         const dateB = new Date(b[orderBy]);
+//         if (isNaN(dateA.getTime()) || isNaN(dateB.getTime())) {
+//             return isNaN(dateA.getTime()) ? 1 : -1;
+//         }
+
+//         if (dateB < dateA) {
+//             return -1;
+//         }
+//         if (dateB > dateA) {
+//             return 1;
+//         }
+//         return 0;
+//     } else if (orderBy === 'SrNo' || orderBy === 'Amount') {
+//         return b[orderBy] - a[orderBy];
+//     } else {
+//         const valueA = typeof a[orderBy] === 'string' ? a[orderBy]?.toLowerCase() : a[orderBy];
+//         const valueB = typeof b[orderBy] === 'string' ? b[orderBy]?.toLowerCase() : b[orderBy];
+
+//         if (valueB < valueA) {
+//             return -1;
+//         }
+//         if (valueB > valueA) {
+//             return 1;
+//         }
+//         return 0;
+//     }
+// }
 
 const descendingComparator = (a, b, orderBy) => {
     if (orderBy === 'Date') {
@@ -49,8 +82,11 @@ const descendingComparator = (a, b, orderBy) => {
         }
         return 0;
     } else if (orderBy === 'SrNo' || orderBy === 'Amount') {
-        return a[orderBy] - b[orderBy];
-    } else {
+        return b[orderBy] - a[orderBy];
+    } else if ((orderBy === 'SKUNo') ) {
+        // Handle sorting for SKU# column
+        return customComparator_Col(a[orderBy], b[orderBy]);
+    }  else {
         const valueA = typeof a[orderBy] === 'string' ? a[orderBy].toLowerCase() : a[orderBy];
         const valueB = typeof b[orderBy] === 'string' ? b[orderBy].toLowerCase() : b[orderBy];
 
@@ -63,6 +99,17 @@ const descendingComparator = (a, b, orderBy) => {
         return 0;
     }
 }
+const customComparator_Col = (a, b) => {
+    const regex = /([^\d]+)(\d+)/;
+    const [, wordA, numA] = a?.match(regex);
+    const [, wordB, numB] = b?.match(regex);
+    
+    if (wordA !== wordB) {
+        return wordA?.localeCompare(wordB);
+    }
+    
+    return parseInt(numB, 10) - parseInt(numA, 10);
+  };
 
 
 const getComparator = (order, orderBy) => {
@@ -70,6 +117,7 @@ const getComparator = (order, orderBy) => {
         ? (a, b) => descendingComparator(a, b, orderBy)
         : (a, b) => -descendingComparator(a, b, orderBy);
 }
+
 
 function stableSort(array, comparator) {
     const stabilizedThis = array.map((el, index) => [el, index]);
@@ -118,6 +166,13 @@ const headCells = [
         disablePadding: false,
         label: 'Total Amount',
         align: "right"
+    },
+    {
+        id: 'Print',
+        numeric: false,
+        disablePadding: false,
+        label: 'Print',
+        align: "center"
     },
 ];
 
@@ -215,11 +270,13 @@ const QuotationQuote = () => {
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
+        scrollToTop();
     };
 
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
+        scrollToTop();
     };
 
     const emptyRows =
@@ -240,6 +297,7 @@ const QuotationQuote = () => {
         setToDate(null);
         setFilterData(data);
         setPage(0);
+        setRowsPerPage(10);
     }
 
     const reseltFil = () => {
@@ -387,7 +445,8 @@ const QuotationQuote = () => {
             if (response.Data?.rd) {
                 let rows = [];
                 response?.Data?.rd?.forEach((e, i) => {
-                    let dataa = createData(i + 1, e?.Date, e?.SKUNo, e?.TotalDesign, e?.Amount);
+                    let printUrl = atob(e?.PrintUrl);
+                    let dataa = createData(i + 1, e?.Date, e?.SKUNo, e?.TotalDesign, e?.Amount, printUrl);
                     rows?.push(dataa)
                 });
                 // console.log(rows);
@@ -414,6 +473,18 @@ const QuotationQuote = () => {
             inputTo.placeholder = 'Date To';
         }
     }, []);
+
+    const handlePrintUrl = (printUrl) => {
+        window.open(printUrl)
+    }
+    const scrollToTop = () => {
+        // Find the table container element and set its scrollTop property to 0
+        const tableContainer = document.querySelector('.quotationJobSec');
+        if (tableContainer) {
+          tableContainer.scrollTop = 0;
+        }
+      };
+
 
     return (
         <Box className='smilingSavedAddressMain salesApiSection' sx={{ padding: "20px", }}>
@@ -558,12 +629,22 @@ const QuotationQuote = () => {
                                                 padding="none"
                                                 align="center"
                                             >
-                                                {index + 1}
+                                                {/* {index + 1} */}
+                                                {page * rowsPerPage + index + 1}
                                             </TableCell>
                                             <TableCell align="center">{row.Date}</TableCell>
                                             <TableCell align="center">{row.SKUNo}</TableCell>
                                             <TableCell align="center">{row.TotalDesign}</TableCell>
-                                            <TableCell align="right">{row.Amount}</TableCell>
+                                            <TableCell align="right">{formatAmount(row.Amount)}</TableCell>
+                                            <TableCell align="center">
+                                                
+                                                {/* <Link href={`${row.PrintUrl}`} target="_blank" rel="noopener noreferrer" underline="none"> */}
+                                                        <div onClick={() => handlePrintUrl(row?.PrintUrl)}>
+                                                            <PrintIcon   />
+                                                        </div>
+                                                    
+                                                {/* </Link> */}
+                                            </TableCell>
                                             {/* <TableCell align="right">{row.protein}</TableCell> */}
                                         </TableRow>
                                     );
