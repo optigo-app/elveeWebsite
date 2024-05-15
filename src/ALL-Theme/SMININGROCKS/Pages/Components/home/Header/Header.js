@@ -548,9 +548,9 @@ export default function Header() {
   };
 
   const handleMenuClick = async (param1Item, param2Item) => {
-    localStorage.removeItem("selectedCombomt")
-    localStorage.removeItem("selectedCombodia")
-    localStorage.removeItem("selectedCombocs")
+    // localStorage.removeItem("selectedCombomt")
+    // localStorage.removeItem("selectedCombodia")
+    // localStorage.removeItem("selectedCombocs")
 
     let menuDataWithoutParam1;
 
@@ -575,9 +575,8 @@ export default function Header() {
     }
 
     console.log('finalData', finalData);
-    setTimeout(() => {
-      navigation("/productpage", { state: { menuFlag: true, filtervalue: finalData } })
-    }, 200);
+    navigation("/productpage", { state: { menuFlag: true, filtervalue: finalData } })
+
 
     if (finalData) {
       let resData;
