@@ -1153,6 +1153,7 @@ export default function Header() {
             display: "flex",
             justifyContent: "space-between",
             // padding: "20px",
+            height: '65px'
           }}
           className="smilingMobileSubDiv"
         >
