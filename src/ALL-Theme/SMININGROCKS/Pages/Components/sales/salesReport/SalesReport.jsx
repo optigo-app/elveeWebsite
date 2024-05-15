@@ -399,11 +399,13 @@ const SalesReport = () => {
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
+    scrollToTop();
   };
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
+    scrollToTop();
   };
 
   const visibleRows = React.useMemo(
@@ -627,6 +629,7 @@ const SalesReport = () => {
     setToDate(null);
     setSearchVal("");
     setFilterData(data);
+    setPage(0);
   };
 
   const handleimageShow = (eve, img) => {
@@ -741,6 +744,13 @@ const SalesReport = () => {
       inputTo.placeholder = "Date To";
     }
   }, []);
+  const scrollToTop = () => {
+    // Find the table container element and set its scrollTop property to 0
+    const tableContainer = document.querySelector('.quotationJobSec');
+    if (tableContainer) {
+      tableContainer.scrollTop = 0;
+    }
+  };
 
   return (
     <Box>
