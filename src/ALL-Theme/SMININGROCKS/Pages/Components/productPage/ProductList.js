@@ -224,32 +224,71 @@ const ProductList = () => {
     let MetalTypeData = JSON.parse(localStorage.getItem("MetalTypeData"))
     let DimondQualityColor = JSON.parse(localStorage.getItem("QualityColor"))
     let ColorStoneQualityColor = JSON.parse(localStorage.getItem("ColorStoneQualityColor"))
+    let selectedCombomt = JSON.parse(localStorage.getItem("selectedCombomt"))
+    let selectedCombodia = JSON.parse(localStorage.getItem("selectedCombodia"))
+    let selectedCombocs = JSON.parse(localStorage.getItem("selectedCombocs"))
+
+    
+
 
     if (loginData?.MetalId !== 0) {
       let metalType = MetalTypeData?.find(item => item?.Metalid == loginData?.MetalId)
-      setmtTypeOption(metalType?.metaltype)
+      if(selectedCombomt?.length){
+        setmtTypeOption(selectedCombomt)
+      }else{
+        setmtTypeOption(metalType?.metaltype)
+      }
     } else {
-      setmtTypeOption(MetalTypeData[0]?.metaltype)
+      if(selectedCombomt){
+        setmtTypeOption(selectedCombomt)
+      }else{
+        setmtTypeOption(MetalTypeData[0]?.metaltype)
+      }
+    }
+
+    if(selectedCombodia){
+      setDiaQColOpt(selectedCombodia)
     }
 
     let diaQCVar = DimondQualityColor?.find(item => item.QualityId == loginData?.cmboDiaQCid?.split(',')[0] && item.ColorId == loginData?.cmboDiaQCid?.split(',')[1]);
     if (loginData?.cmboDiaQCid !== "0,0") {
-      let qualityColor = `${diaQCVar?.Quality}#${diaQCVar?.color}`
-      setDiaQColOpt(qualityColor)
-    }
+      if(selectedCombodia){
+        setDiaQColOpt(selectedCombodia)
+      }else{
+        let qualityColor = `${diaQCVar?.Quality}#${diaQCVar?.color}`
+        setDiaQColOpt(qualityColor)
+      }
+    } 
     else {
-      if (DimondQualityColor && DimondQualityColor?.length) {
-        setDiaQColOpt(`${DimondQualityColor[0]?.Quality}#${DimondQualityColor[0]?.color}`)
+      if(selectedCombodia){
+        setDiaQColOpt(selectedCombodia)
+      }else{
+        if (DimondQualityColor && DimondQualityColor?.length) {
+          setDiaQColOpt(`${DimondQualityColor[0]?.Quality}#${DimondQualityColor[0]?.color}`)
+        }
       }
     }
 
+    if(selectedCombocs){
+      setCSQOpt(selectedCombocs)
+    } 
+
     let csQCVar = ColorStoneQualityColor?.find(item => item?.QualityId === loginData?.cmboCSQCid?.split(',')[0] && item?.ColorId === loginData?.cmboCSQCid?.split(',')[1])
     if (loginData?.cmboCSQCid !== "0,0") {
-      let csQualColor = `${csQCVar?.QualityId}-${csQCVar?.ColorId}`
-      setCSQOpt(csQualColor)
-    } else {
-      if (ColorStoneQualityColor && ColorStoneQualityColor?.length) {
-        setCSQOpt(`${ColorStoneQualityColor[0].Quality}-${ColorStoneQualityColor[0].color}`)
+      if(selectedCombocs){
+        setCSQOpt(selectedCombocs)
+      }else{
+        let csQualColor = `${csQCVar?.QualityId}-${csQCVar?.ColorId}`
+        setCSQOpt(csQualColor)
+      }
+    } 
+    else {
+      if(selectedCombocs){
+        setCSQOpt(selectedCombocs)
+      }else{
+        if (ColorStoneQualityColor && ColorStoneQualityColor?.length) {
+          setCSQOpt(`${ColorStoneQualityColor[0].Quality}-${ColorStoneQualityColor[0].color}`)
+        }
       }
     }
 
@@ -2175,9 +2214,18 @@ const ProductList = () => {
   }
 
   const ShortcutComboFunc = async (event, type) => {
-    if (type === "metal") setmtTypeOption(event)
-    if (type === "dia") setDiaQColOpt(event)
-    if (type === "cs") setCSQOpt(event)
+    if (type === "metal"){
+      setmtTypeOption(event)
+      localStorage.setItem("selectedCombomt",JSON.stringify(event))
+    }
+    if (type === "dia"){
+      setDiaQColOpt(event)
+      localStorage.setItem("selectedCombodia",JSON.stringify(event))
+    }
+    if (type === "cs"){ 
+      setCSQOpt(event)
+      localStorage.setItem("selectedCombocs",JSON.stringify(event))
+    }
 
 
     let metalTypeId = type === "metal" ? findMetalTypeId(`${event}`)[0]?.Metalid : findMetalTypeId(mtTypeOption)[0]?.Metalid
@@ -2289,7 +2337,7 @@ const ProductList = () => {
               >
                 <select
                   className='menuitemSelectoreMain'
-                  defaultValue={mtTypeOption}
+                  value={mtTypeOption}
                   onChange={(e) => {
                     setmtTypeOption(e.target.value)
                   }}
@@ -2350,7 +2398,7 @@ const ProductList = () => {
                   <select
                     className='menuitemSelectoreMain'
                     onChange={(e) => setCSQOpt(e.target.value)}
-                    defaultValue={cSQopt}
+                    value={cSQopt}
                   >
                     {DaimondQualityColor.map((data, index) => (
                       <option
@@ -2453,7 +2501,7 @@ const ProductList = () => {
                   >
                     <select
                       className='menuitemSelectoreMain'
-                      defaultValue={mtTypeOption}
+                      value={mtTypeOption}
                       onChange={(e) => {
                         // setmtTypeOption(e.target.value)
                         ShortcutComboFunc(e.target.value, "metal")
@@ -2523,7 +2571,7 @@ const ProductList = () => {
                           // setCSQOpt(e.target.value)
                           ShortcutComboFunc(e.target.value, "cs")
                         }
-                        defaultValue={cSQopt}
+                        value={cSQopt}
                         style={{ color: '#7b7b7b', fontSize: '12px', fontWeight: 400, cursor: 'pointer' }}
                       >
                         {DaimondQualityColor.map((data, index) => (
@@ -2566,7 +2614,8 @@ const ProductList = () => {
                           (Object.values(filterChecked)).filter(fc => fc.checked !== false).filter(fc => fc.checked !== undefined).length ?
                             "Clear All"
                             :
-                            `Product: ${ProductApiData2?.length}`
+                            // `Product: ${ProductApiData2?.length}`
+                            null
                         }
                       </li>
                     </ul>
@@ -3154,9 +3203,9 @@ const ProductList = () => {
                   </div>
                 } */}
                 </div>
-                <div style={{ display: 'flex', width: '100%', justifyContent: 'center', marginTop: '100px', marginBottom: '50px' }}>
+                { newProData?.length != 0 || ProductApiData2?.length != 0 && <div style={{ display: 'flex', width: '100%', justifyContent: 'center', marginTop: '100px', marginBottom: '50px' }}>
                   <Pagination count={Math.ceil(prodCount / prodPageSize)} onChange={handlePageChange} />
-                </div>
+                </div>}
                 {/* <SmilingRock /> */}
                 {/* <Footer /> */}
               </div>

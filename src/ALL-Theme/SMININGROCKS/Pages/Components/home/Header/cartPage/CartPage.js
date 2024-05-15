@@ -13,6 +13,7 @@ import {
   Divider,
   Drawer,
   Grid,
+  Snackbar,
   Tab,
   Tabs,
   Typography,
@@ -118,6 +119,7 @@ export default function CartPage() {
   const [fullprodData, setFullProdData] = useState();
   const [cartPageLoding, setCartPageloding] = useState(false);
   const [singleProdData,setSingleProdData] = useState();
+  const [cartUpdateSnackbar,setCartUpdateSnackbar] = useState("")
 
 
 
@@ -429,7 +431,7 @@ export default function CartPage() {
     }
     // let gt = showPrice + showPrice1 + showPrice2;
     // setGrandTotal(gt ?? 0);
-  }, [fullprodData, mtTypeOption, diaQColOpt, cSQopt, cartSelectData])
+  }, [fullprodData, mtTypeOption, diaQColOpt, cSQopt, cartSelectData,singleProdData])
 
   useEffect(() => {
     let finalmetalTypeName = cartSelectData?.metaltypename?.length > 4 ? `${cartSelectData?.metaltypename?.split(" ")[0]}` : `${cartSelectData?.metaltypename}`
@@ -911,7 +913,7 @@ export default function CartPage() {
   //     }
   // };
 
-  // console.log('cartListData', cartListData);
+  console.log('cartListData', cartListData);
   // console.log('dqcData', dqcData);
   // console.log('csqcData', csqcData);
   // console.log('mtrdData', mtrdData);
@@ -1085,15 +1087,17 @@ export default function CartPage() {
         await CommonAPI(body).then(async (res) => {
           if (res?.Data?.rd[0]?.msg === "success") {
             await getCartAndWishListData()
-            getCountFunc()
-            getCartData()
-            console.log("done", res);
+            await getCountFunc()
+            await getCartData()
+            toast.success("Product Updated successFully !!!")
           }
           else {
             console.log("error", res);
+            toast.error("Something Went Wrong!!")
           }
         }).catch((error) => {
           console.log("error", error);
+          toast.error("Something Went Wrong!!")
 
         })
 
@@ -2114,7 +2118,7 @@ export default function CartPage() {
                           </div>
 
                         </div>
-                        {/* `<div className="container-fluid totalpriceConatiner">
+                        <div className="container-fluid totalpriceConatiner">
                           <div className="row">
                             <div className="col-md-12" style={{ padding: '0' }}>
                               <Card className="text-center" style={{ border: '1px solid rgb(225, 225, 225', borderRadius: '12px' }}>
@@ -2136,7 +2140,7 @@ export default function CartPage() {
                               </Card>
                             </div>
                           </div>
-                        </div>` */}
+                        </div>
                       </div>
                     )}
                   </div>
