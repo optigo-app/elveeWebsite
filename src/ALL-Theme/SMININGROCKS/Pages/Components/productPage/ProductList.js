@@ -224,72 +224,72 @@ const ProductList = () => {
     let MetalTypeData = JSON.parse(localStorage.getItem("MetalTypeData"))
     let DimondQualityColor = JSON.parse(localStorage.getItem("QualityColor"))
     let ColorStoneQualityColor = JSON.parse(localStorage.getItem("ColorStoneQualityColor"))
-    let selectedCombomt = JSON.parse(localStorage.getItem("selectedCombomt"))
-    let selectedCombodia = JSON.parse(localStorage.getItem("selectedCombodia"))
-    let selectedCombocs = JSON.parse(localStorage.getItem("selectedCombocs"))
+    // let selectedCombomt = JSON.parse(localStorage.getItem("selectedCombomt"))
+    // let selectedCombodia = JSON.parse(localStorage.getItem("selectedCombodia"))
+    // let selectedCombocs = JSON.parse(localStorage.getItem("selectedCombocs"))
 
-    
+    // console.log("selectedCombomt",selectedCombomt)
 
 
     if (loginData?.MetalId !== 0) {
       let metalType = MetalTypeData?.find(item => item?.Metalid == loginData?.MetalId)
-      if(selectedCombomt?.length){
-        setmtTypeOption(selectedCombomt)
-      }else{
-        setmtTypeOption(metalType?.metaltype)
-      }
+      // if(selectedCombomt){
+      //   setmtTypeOption(selectedCombomt)
+      // }else{
+      // }
+      setmtTypeOption(metalType?.metaltype)
     } else {
-      if(selectedCombomt){
-        setmtTypeOption(selectedCombomt)
-      }else{
+      // if(selectedCombomt){
+      //   setmtTypeOption(selectedCombomt)
+      // }else{
         setmtTypeOption(MetalTypeData[0]?.metaltype)
-      }
+      // }
     }
 
-    if(selectedCombodia){
-      setDiaQColOpt(selectedCombodia)
-    }
+    // if(selectedCombodia){
+    //   setDiaQColOpt(selectedCombodia)
+    // }
 
     let diaQCVar = DimondQualityColor?.find(item => item.QualityId == loginData?.cmboDiaQCid?.split(',')[0] && item.ColorId == loginData?.cmboDiaQCid?.split(',')[1]);
     if (loginData?.cmboDiaQCid !== "0,0") {
-      if(selectedCombodia){
-        setDiaQColOpt(selectedCombodia)
-      }else{
+      // if(selectedCombodia){
+      //   setDiaQColOpt(selectedCombodia)
+      // }else{
         let qualityColor = `${diaQCVar?.Quality}#${diaQCVar?.color}`
         setDiaQColOpt(qualityColor)
-      }
+      // }
     } 
     else {
-      if(selectedCombodia){
-        setDiaQColOpt(selectedCombodia)
-      }else{
+      // if(selectedCombodia){
+      //   setDiaQColOpt(selectedCombodia)
+      // }else{
         if (DimondQualityColor && DimondQualityColor?.length) {
           setDiaQColOpt(`${DimondQualityColor[0]?.Quality}#${DimondQualityColor[0]?.color}`)
         }
-      }
+      // }
     }
 
-    if(selectedCombocs){
-      setCSQOpt(selectedCombocs)
-    } 
+    // if(selectedCombocs){
+    //   setCSQOpt(selectedCombocs)
+    // } 
 
     let csQCVar = ColorStoneQualityColor?.find(item => item?.QualityId === loginData?.cmboCSQCid?.split(',')[0] && item?.ColorId === loginData?.cmboCSQCid?.split(',')[1])
     if (loginData?.cmboCSQCid !== "0,0") {
-      if(selectedCombocs){
-        setCSQOpt(selectedCombocs)
-      }else{
+      // if(selectedCombocs){
+      //   setCSQOpt(selectedCombocs)
+      // }else{
         let csQualColor = `${csQCVar?.QualityId}-${csQCVar?.ColorId}`
         setCSQOpt(csQualColor)
-      }
+      // }
     } 
     else {
-      if(selectedCombocs){
-        setCSQOpt(selectedCombocs)
-      }else{
+      // if(selectedCombocs){
+      //   setCSQOpt(selectedCombocs)
+      // }else{
         if (ColorStoneQualityColor && ColorStoneQualityColor?.length) {
           setCSQOpt(`${ColorStoneQualityColor[0].Quality}-${ColorStoneQualityColor[0].color}`)
         }
-      }
+      // }
     }
 
     let obj = { "CurrencyRate": loginData?.CurrencyRate, "Currencysymbol": loginData?.Currencysymbol }
@@ -2219,15 +2219,15 @@ const ProductList = () => {
   const ShortcutComboFunc = async (event, type) => {
     if (type === "metal"){
       setmtTypeOption(event)
-      localStorage.setItem("selectedCombomt",JSON.stringify(event))
+      // localStorage.setItem("selectedCombomt",JSON.stringify(event))
     }
     if (type === "dia"){
       setDiaQColOpt(event)
-      localStorage.setItem("selectedCombodia",JSON.stringify(event))
+      // localStorage.setItem("selectedCombodia",JSON.stringify(event))
     }
     if (type === "cs"){ 
       setCSQOpt(event)
-      localStorage.setItem("selectedCombocs",JSON.stringify(event))
+      // localStorage.setItem("selectedCombocs",JSON.stringify(event))
     }
 
 
