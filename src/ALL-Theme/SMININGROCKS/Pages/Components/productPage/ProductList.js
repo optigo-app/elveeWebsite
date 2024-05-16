@@ -138,10 +138,9 @@ const ProductList = () => {
   const [prodCount, setProdCount] = useState(0)
   const [storeInitData, setStoreInitData] = useState({})
   const [currentPage, setCurrentPage] = useState(1)
-  const [addToCartFlag, setAddToCartFlag] = useState(false)
+  const [ListReloadData, setListReloadData] = useState()
 
   const getMenuTransData = useRecoilValue(menuTransfData)
-
 
   let location = useLocation();
 
@@ -373,7 +372,10 @@ const ProductList = () => {
   const getProductData = () => {
     const data = JSON.parse(localStorage.getItem("allproductlist"));
     const prodCount = JSON.parse(localStorage.getItem("allproductcount"));
-    if (data) setProductApiData2(data)
+    if (data) {
+      setProductApiData2(data)
+      // setListReloadData(data)
+    }
     if (prodCount) setProdCount(prodCount)
   }
   const getProdPriceData = () => {
@@ -387,7 +389,6 @@ const ProductList = () => {
 
   // console.log("priceDataApi",priceDataApi);
 
-
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("allproductlist"));
     const prodCount = JSON.parse(localStorage.getItem("allproductcount"));
@@ -398,28 +399,34 @@ const ProductList = () => {
   }, [getMenuTransData])
 
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("getPriceData"));
-
-    if (!data?.length) {
-      setpriceDataApi(data)
-    }
+    setTimeout(()=>{
+      const data = JSON.parse(localStorage.getItem("getPriceData"))
+      console.log("test",data);
+      if (!data?.length) {
+        setpriceDataApi(data)
+      }
+    },1000)
   }, [getMenuTransData])
 
 
   useEffect(() => {
     const fetchData = async () => {
       const data = JSON.parse(localStorage.getItem("allproductlist"));
+      
       // const loginUserDetail = JSON.parse(localStorage.getItem('loginUserDetail'));
       // const storeInit = JSON.parse(localStorage.getItem('storeInit'));
 
       // console.log("priceDataApi",priceDataApi);
 
       const updatedData = await Promise?.all(data?.map(async (product) => {
-        const newPriceData = priceDataApi?.rd?.find((pda) => pda.A == product.autocode)
+        // debugger
 
-        const newPriceData1 = priceDataApi?.rd1?.filter((pda) => pda.A == product.autocode).reduce((acc, obj) => acc + obj.S, 0)
-
-        const newPriceData2 = priceDataApi?.rd2?.filter((pda) => pda.A == product.autocode).reduce((acc, obj) => acc + obj.S, 0)
+          const newPriceData = priceDataApi?.rd?.find((pda) => pda.A == product.autocode)
+  
+          const newPriceData1 = priceDataApi?.rd1?.filter((pda) => pda.A == product.autocode).reduce((acc, obj) => acc + obj.S, 0)
+  
+          const newPriceData2 = priceDataApi?.rd2?.filter((pda) => pda.A == product.autocode).reduce((acc, obj) => acc + obj.S, 0)
+        
 
         let price = 0;
         let markup = 0;
@@ -443,7 +450,7 @@ const ProductList = () => {
         let csC = "";
         let csCid = "";
 
-
+        // console.log("test",data,priceDataApi,priceDataApi?.rd?.find((pda) => pda.A === product.autocode))
 
         if (newPriceData || newPriceData1 || newPriceData2) {
           price = (((newPriceData?.V ?? 0) / currData?.CurrencyRate ?? 0) + (newPriceData?.W ?? 0) + (newPriceData?.X ?? 0)) + (newPriceData1 ?? 0) + (newPriceData2 ?? 0);
@@ -484,10 +491,18 @@ const ProductList = () => {
 
     // console.log("calling");
     fetchData().then((res) => {
-      setFilterProdLoding(false);
+      if(res){
+        setFilterProdLoding(false);
+      }
     });
 
-  }, [priceDataApi,mtTypeOption,diaQColOpt,cSQopt]);
+  }, [priceDataApi,mtTypeOption,diaQColOpt,cSQopt])
+
+  // useEffect(()=>{
+  //   if(location?.state?.menuFlag?.length > 0){
+  //     window.location.reload()
+  //   }
+  // },[location?.state?.menuFlag])
 
 
   const toggleDeatilList = () => {
@@ -2147,7 +2162,7 @@ const ProductList = () => {
         setIsProdLoading(false);
       }
     }
-  }, [newProData, ProductApiData2,location?.state])
+  }, [newProData, ProductApiData2,priceDataApi])
 
   console.log('proDcount--', prodCount);
 
