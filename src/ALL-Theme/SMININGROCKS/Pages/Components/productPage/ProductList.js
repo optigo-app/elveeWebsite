@@ -487,7 +487,7 @@ const ProductList = () => {
       setFilterProdLoding(false);
     });
 
-  }, [priceDataApi, mtTypeOption]);
+  }, [priceDataApi,mtTypeOption,diaQColOpt,cSQopt]);
 
 
   const toggleDeatilList = () => {
@@ -2137,7 +2137,7 @@ const ProductList = () => {
   useEffect(() => {
     if ((newProData?.length != 0 || ProductApiData2?.length != 0)) {
       setIsProdLoading(true)
-      console.log('first');
+      console.log('first++++');
     } else {
       if (newProData?.length == 0 || ProductApiData2?.length == 0) {
         setTimeout(() => {
@@ -2147,7 +2147,7 @@ const ProductList = () => {
         setIsProdLoading(false);
       }
     }
-  }, [newProData, ProductApiData2])
+  }, [newProData, ProductApiData2,location?.state])
 
   console.log('proDcount--', prodCount);
 

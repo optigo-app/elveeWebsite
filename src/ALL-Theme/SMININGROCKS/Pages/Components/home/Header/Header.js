@@ -31,6 +31,7 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { List, ListItem, ListItemText, Button, IconButton } from '@mui/material';
 import { FilterAPI, FilterListAPI } from "../../../../Utils/API/FilterListAPI";
+import { toast } from "react-toastify";
 
 export default function Header() {
   // const [titleImg, setTitleImg ] = useState() 
@@ -575,7 +576,6 @@ export default function Header() {
     }
 
     console.log('finalData', finalData);
-    navigation("/productpage", { state: { menuFlag: true, filtervalue: finalData } })
 
 
     if (finalData) {
@@ -593,12 +593,19 @@ export default function Header() {
       }).then(async (res) => {
         if (res) {
           let autoCodeList = JSON.parse(localStorage.getItem("autoCodeList"))
-          await getDesignPriceList(finalData, 1, {}, {}, autoCodeList)
-          navigation("/productpage", { state: { menuFlag: true, filtervalue: finalData } })
-          setTimeout(() => {
-            setDrawerOpen(false);
-            handleMouseLeave();
-          }, 100)
+          await getDesignPriceList(finalData,1,{},{},autoCodeList).then((res)=>{
+            if(res){
+              navigation("/productpage", { state: { menuFlag: true, filtervalue: finalData } })
+            }
+            setTimeout(() => {
+              setDrawerOpen(false);
+              handleMouseLeave();
+            }, 50)
+          })
+        }
+      }).catch((err)=>{
+        if(err){
+          toast.error("Something Went Wrong!!");
         }
       })
     }
