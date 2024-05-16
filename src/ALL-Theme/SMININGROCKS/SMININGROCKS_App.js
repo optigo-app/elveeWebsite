@@ -125,7 +125,7 @@ export default function SMININGROCKS_App() {
                         <Route path="/term&condition" element={<TermsAndConditions />} />
                         <Route path='/' element={<PrivateRoutes isLoginStatus={isLoginStatus} />}>
                             <Route path="/myWishList" element={<MyWishList />} />
-                            <Route path="/productpage" element={<ProductList />} />
+                            <Route path="/productpage/*" element={<ProductList />} />
                             <Route path="/productdetail" element={<ProdDetail />} />
                             <Route path="/Delivery" element={<Delivery />} />
                             <Route path="/Payment" element={<Payment />} />
