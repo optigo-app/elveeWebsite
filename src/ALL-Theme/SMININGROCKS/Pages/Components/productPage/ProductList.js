@@ -405,7 +405,7 @@ const ProductList = () => {
       if (!data?.length) {
         setpriceDataApi(data)
       }
-    },1000)
+    },2000)
   }, [getMenuTransData])
 
 
