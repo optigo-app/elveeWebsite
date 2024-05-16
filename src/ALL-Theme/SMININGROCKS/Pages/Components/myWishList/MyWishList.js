@@ -10,6 +10,10 @@ import { useSetRecoilState } from "recoil";
 import { CartListCounts, WishListCounts } from "../../../../../Recoil/atom";
 import { GetCount } from "../../../Utils/API/GetCount";
 import notFound from "../../assets/image-not-found.png";
+import { FilterListAPI } from "../../../Utils/API/FilterListAPI";
+import { productListApiCall } from "../../../Utils/API/ProductListAPI";
+import { getDesignPriceList } from "../../../Utils/API/PriceDataApi";
+import { toast } from "react-toastify";
 
 export default function MyWishList() {
   const [wishlistData, setWishlistData] = useState([]);
@@ -270,6 +274,30 @@ export default function MyWishList() {
     return txt.value;
   };
 
+  const handelBrowse = async() =>{
+
+    let finalData = JSON.parse(localStorage.getItem("menuparams"))
+
+    if (finalData) {
+      await FilterListAPI(finalData)
+      await productListApiCall(finalData).then((res) => {
+        if (res) {
+          localStorage.setItem("allproductlist", JSON.stringify(res))
+          localStorage.setItem("finalAllData", JSON.stringify(res))
+        }
+        return res
+      }).then(async(res)=>{
+        if(res){
+          let autoCodeList = JSON.parse(localStorage.getItem("autoCodeList"))
+          await getDesignPriceList(finalData,1,{},{},autoCodeList)
+          navigation("/productpage")
+        }
+      }).catch((err)=>{
+        if(err) toast.error("Something Went Wrong!!!")
+      })
+    }
+  }
+
 
 
   const [open, setOpen] = useState(false);
@@ -352,12 +380,12 @@ export default function MyWishList() {
                     No Data Available
                   </p>
                   <p>Please First Add To Wishlist Data</p>
-                  {/* <button
+                  <button
                     className="browseBtnMore"
-                    onClick={() => navigation("/productpage")}
+                    onClick={() => handelBrowse()}
                   >
                     BROWSE OUR COLLECTION
-                  </button> */}
+                  </button>
                 </div>
               )
               : wishlistData?.map((item) => (

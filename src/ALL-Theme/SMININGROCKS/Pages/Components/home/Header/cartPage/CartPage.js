@@ -40,6 +40,9 @@ import { FullProInfoAPI } from "../../../../../Utils/API/FullProInfoAPI";
 import { findCsQcIdDiff, findDiaQcId, findMetalType, findMetalTypeId, findValueFromId } from "../../../../../Utils/globalFunctions/GlobalFunction";
 import { SingleProductAPI } from "../../../../../Utils/API/SingleProductAPI";
 import { IoArrowBackOutline } from "react-icons/io5";
+import { getDesignPriceList } from "../../../../../Utils/API/PriceDataApi";
+import { productListApiCall } from "../../../../../Utils/API/ProductListAPI";
+import { FilterListAPI } from "../../../../../Utils/API/FilterListAPI";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -142,8 +145,9 @@ export default function CartPage() {
   }
 
   useEffect(() => {
+    // console.log("cartListData1111",cartListData)
     cartSingalDataAPICalling()
-  }, [])
+  },[cartListData])
 
 
   console.log('singleProdData', singleProdData, mtrdData, diaqcData, csData)
@@ -1206,6 +1210,31 @@ export default function CartPage() {
 
 
   console.log('prodSelectDataprodSelectData', cartSelectData);
+
+  const handelBrowse = async() =>{
+
+    let finalData = JSON.parse(localStorage.getItem("menuparams"))
+
+    if (finalData) {
+      await FilterListAPI(finalData)
+      await productListApiCall(finalData).then((res) => {
+        if (res) {
+          localStorage.setItem("allproductlist", JSON.stringify(res))
+          localStorage.setItem("finalAllData", JSON.stringify(res))
+        }
+        return res
+      }).then(async(res)=>{
+        if(res){
+          let autoCodeList = JSON.parse(localStorage.getItem("autoCodeList"))
+          await getDesignPriceList(finalData,1,{},{},autoCodeList)
+          navigation("/productpage")
+        }
+      }).catch((err)=>{
+        if(err) toast.error("Something Went Wrong!!!")
+      })
+    }
+  }
+  
   return (
     <>
       <div
@@ -1382,12 +1411,12 @@ export default function CartPage() {
                         No Data Available
                       </p>
                       <p>Please First Add To Cart Data</p>
-                      {/* <button
+                      <button
                         className="browseBtnMore"
-                        onClick={() => navigation("/productpage")}
+                        onClick={() => handelBrowse()}
                       >
                         BROWSE OUR COLLECTION
-                      </button> */}
+                      </button>
                     </div>
                   )
                 ) : (
