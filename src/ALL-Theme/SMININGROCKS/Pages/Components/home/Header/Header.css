@@ -676,6 +676,14 @@
 
 }
 
+
+@media (min-width : 900px) and (max-width: 1450px) {
+    .mobileViewFirstDiv2 {
+        margin-left: 29px;
+    }
+}
+
+
 @media screen and (max-width:1440px) {
 
     .Smining-Top-Header-fixed {
@@ -738,18 +746,21 @@
         width: 25% !important;
     }
 
-    .mobileViewSmilingTop4Icone{
-        font-size: 22px!important;
+    .mobileViewSmilingTop4Icone {
+        font-size: 22px !important;
     }
-    .mobileViewSmilingTop1Icone{
+
+    .mobileViewSmilingTop1Icone {
         font-size: 22px;
     }
-    .mobileViewSmilingTop2Icone{
+
+    .mobileViewSmilingTop2Icone {
         font-size: 22px;
     }
-    .mobileViewSmilingTop3Icone{
+
+    .mobileViewSmilingTop3Icone {
         font-size: 22px;
-        margin-top: -2px!important;
+        margin-top: -2px !important;
     }
 }
 
@@ -762,7 +773,14 @@
 
 }
 
+@media (min-width: 1200px) and (max-width: 1440px) {
+    .mobileViewFirstDiv2 {
+        margin-top: -5px;
+    }
+}
+
 @media (min-width: 768px) and (max-width: 1440px) {
+
     .MainlogogMobileImage {
         width: 45% !important;
         margin-left: 0px !important;
@@ -822,6 +840,9 @@
         margin-top: 300px !important;
     }
 
+    .mainRenarkConatiner{
+        width: 100%;
+    }
     .smiling-cartBoxImg {
         width: 100% !important;
         margin: 0px !important;
@@ -927,11 +948,12 @@
         margin-top: -5px !important;
     }
 
-    .mobileViewFirstDiv3Sub{
-        margin: 20px 10px!important;
+    .mobileViewFirstDiv3Sub {
+        margin: 20px 10px !important;
     }
-    .mobileViewFirstDiv3Sub-sub{
-        gap: 8px!important;
+
+    .mobileViewFirstDiv3Sub-sub {
+        gap: 8px !important;
     }
 
     .mobileViewFirstDiv2 {
