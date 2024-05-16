@@ -5,7 +5,7 @@ import Footer from "../home/Footer/Footer";
 import { CommonAPI } from "../../../Utils/API/CommonAPI";
 import { useNavigate } from "react-router-dom";
 import { IoClose } from "react-icons/io5";
-import { CircularProgress } from "@mui/material";
+import { Button, CircularProgress, Dialog, DialogTitle } from "@mui/material";
 import { useSetRecoilState } from "recoil";
 import { CartListCounts, WishListCounts } from "../../../../../Recoil/atom";
 import { GetCount } from "../../../Utils/API/GetCount";
@@ -298,6 +298,19 @@ export default function MyWishList() {
     }
   }
 
+
+
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+
   return (
     <div
       className="paddingTopMobileSet">
@@ -306,6 +319,20 @@ export default function MyWishList() {
           <CircularProgress className="loadingBarManage" />
         </div>
       )}
+
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Are You Sure To Delete Alll This Item?</DialogTitle>
+
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' }}>
+          <Button onClick={handleClose} color="primary">
+            NO
+          </Button>
+          <Button onClick={handleRemoveAllWishList} color="primary">
+            YES
+          </Button>
+        </div>
+      </Dialog>
+
       <div>
         <div className="smiling-wishlist">
           <p className="SmiWishListTitle">My Wishlist</p>
@@ -315,12 +342,12 @@ export default function MyWishList() {
               {/* <button className='smiTopShareBtn'>SHARE WISHLIST</button> */}
               <button
                 className="smiTopAddAllBtn"
-                onClick={handleRemoveAllWishList}
+                onClick={handleClickOpen}
               >
-                CLEAR ALL
+                Clear All
               </button>
               <button className="smiTopAddAllBtn" onClick={handleAddAll}>
-                ADD TO CART ALL
+                Add To Cart All
               </button>
               {/* <button
                 className="smiTopAddAllBtn"
@@ -430,12 +457,13 @@ export default function MyWishList() {
                       marginInline: "2%",
                       paddingBottom: "18%",
                     }}
+                    className="mobileViewDeac"
                   >
                     <p className="smiWishLsitBoxDesc2">
-                      GWT: {item.ActualGrossweight}
+                      GWT: {(item.ActualGrossweight).toFixed(2)}
                     </p>
                     <p className="smiWishLsitBoxDesc2">
-                      DWT: {item.totaldiamondweight}
+                      DWT: {(item.totaldiamondweight).toFixed(2)}
                     </p>
                   </div>
                   <div
@@ -447,6 +475,7 @@ export default function MyWishList() {
                       justifyContent: "center",
                       marginBlock: "15px",
                     }}
+                    className="mobilkeAddToCartBtn"
                   >
                     <button
                       className="smiWishLsitBoxDesc3"
@@ -460,7 +489,7 @@ export default function MyWishList() {
           </div>
         </div>
       </div>
-      <div style={{position: wishlistData?.length === 0 && 'absolute', bottom: '0px', width: '100%'}}>
+      <div className="mobileFootreCs" style={{ position: wishlistData?.length === 0 && 'absolute', bottom: '0px',top:'40%', width: '100%' }}>
         <Footer />
       </div>
     </div>
