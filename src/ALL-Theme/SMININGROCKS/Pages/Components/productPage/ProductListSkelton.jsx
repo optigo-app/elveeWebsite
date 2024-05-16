@@ -1,5 +1,5 @@
 import React from 'react';
-import './ProductSkelton.css'; // Assuming you have a CSS file for styling
+import './ProductSkelton.css';
 import { Skeleton, Card, CardContent, Grid, CardMedia } from '@mui/material';
 
 const ProductListSkeleton = () => {

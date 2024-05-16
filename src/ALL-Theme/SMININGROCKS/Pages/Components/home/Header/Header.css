@@ -198,7 +198,7 @@
     width: 100%;
     position: absolute;
     background: rgba(255, 255, 255, 0.8);
-    top: 72px;  
+    top: 72px;
     left: 0;
     backdrop-filter: blur(8px);
     border-radius: 0 0 15px 15px;
@@ -649,6 +649,18 @@
     gap: 20px;
 }
 
+.drawermenuImage {
+    width: 45% !important;
+}
+
+.level2menuData {
+    color: #7d7f85 !important;
+}
+
+.level2menuData:hover {
+    color: black !important
+}
+
 @media (max-width:1640px) {
     .menuImages {
         height: 200px;
@@ -839,7 +851,7 @@
     .mobileViewSmilingTop3Icone {
         height: 25px !important;
         width: 25px !important;
-        margin-top: -5px!important;
+        margin-top: -5px !important;
     }
 }
 
@@ -895,7 +907,7 @@
         margin-top: -11px;
         margin-left: 0px !important;
     }
-    
+
     .smilingMobileSubDiv {
         padding: 15px 10px 15px 10px !important;
     }
@@ -907,7 +919,7 @@
         margin-top: -11px;
         margin-left: 0px !important;
     }
-    
+
     .smilingMobileSubDiv {
         padding: 15px 10px 15px 10px !important;
     }
@@ -923,9 +935,11 @@
     .smilingMobileSubDiv {
         padding: 15px 10px 15px 10px !important;
     }
+
     .mobileHeaderSmining {
         height: 70px !important;
     }
+
     .searchiconInMobile {
         display: none;
     }
@@ -953,7 +967,7 @@
     }
 
 
- 
+
 
     .mobileViewSmilingTop3Icone {
         height: 25px !important;
