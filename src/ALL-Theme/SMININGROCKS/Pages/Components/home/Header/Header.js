@@ -1190,7 +1190,7 @@ export default function Header() {
               onClick={() => setDrawerOpen(true)}
               aria-label="open menu"
             >
-              <MenuIcon style={{ fontSize: "35px" }} />
+              <MenuIcon style={{ fontSize: "35px" }} className="mobileViewSmilingTop4Icone"/>
             </IconButton>
           </div>
           <div
