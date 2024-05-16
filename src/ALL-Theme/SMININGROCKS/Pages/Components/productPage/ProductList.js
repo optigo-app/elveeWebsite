@@ -37,6 +37,7 @@ import ProductListSkeleton from "./ProductListSkelton";
 
 import { Card } from "react-bootstrap";
 import ProductFilterSkelton from "./ProductFilterSkelton";
+import { FaChevronDown } from "react-icons/fa";
 
 function valuetext(value) {
   return `${value}°C`;
@@ -242,7 +243,7 @@ const ProductList = () => {
       // if(selectedCombomt){
       //   setmtTypeOption(selectedCombomt)
       // }else{
-        setmtTypeOption(MetalTypeData[0]?.metaltype)
+      setmtTypeOption(MetalTypeData[0]?.metaltype)
       // }
     }
 
@@ -255,17 +256,17 @@ const ProductList = () => {
       // if(selectedCombodia){
       //   setDiaQColOpt(selectedCombodia)
       // }else{
-        let qualityColor = `${diaQCVar?.Quality}#${diaQCVar?.color}`
-        setDiaQColOpt(qualityColor)
+      let qualityColor = `${diaQCVar?.Quality}#${diaQCVar?.color}`
+      setDiaQColOpt(qualityColor)
       // }
-    } 
+    }
     else {
       // if(selectedCombodia){
       //   setDiaQColOpt(selectedCombodia)
       // }else{
-        if (DimondQualityColor && DimondQualityColor?.length) {
-          setDiaQColOpt(`${DimondQualityColor[0]?.Quality}#${DimondQualityColor[0]?.color}`)
-        }
+      if (DimondQualityColor && DimondQualityColor?.length) {
+        setDiaQColOpt(`${DimondQualityColor[0]?.Quality}#${DimondQualityColor[0]?.color}`)
+      }
       // }
     }
 
@@ -278,17 +279,17 @@ const ProductList = () => {
       // if(selectedCombocs){
       //   setCSQOpt(selectedCombocs)
       // }else{
-        let csQualColor = `${csQCVar?.QualityId}-${csQCVar?.ColorId}`
-        setCSQOpt(csQualColor)
+      let csQualColor = `${csQCVar?.QualityId}-${csQCVar?.ColorId}`
+      setCSQOpt(csQualColor)
       // }
-    } 
+    }
     else {
       // if(selectedCombocs){
       //   setCSQOpt(selectedCombocs)
       // }else{
-        if (ColorStoneQualityColor && ColorStoneQualityColor?.length) {
-          setCSQOpt(`${ColorStoneQualityColor[0].Quality}-${ColorStoneQualityColor[0].color}`)
-        }
+      if (ColorStoneQualityColor && ColorStoneQualityColor?.length) {
+        setCSQOpt(`${ColorStoneQualityColor[0].Quality}-${ColorStoneQualityColor[0].color}`)
+      }
       // }
     }
 
@@ -487,7 +488,7 @@ const ProductList = () => {
       setFilterProdLoding(false);
     });
 
-  }, [priceDataApi,mtTypeOption,diaQColOpt,cSQopt]);
+  }, [priceDataApi, mtTypeOption, diaQColOpt, cSQopt]);
 
 
   const toggleDeatilList = () => {
@@ -2147,7 +2148,7 @@ const ProductList = () => {
         setIsProdLoading(false);
       }
     }
-  }, [newProData, ProductApiData2,location?.state])
+  }, [newProData, ProductApiData2, location?.state])
 
   console.log('proDcount--', prodCount);
 
@@ -2217,15 +2218,15 @@ const ProductList = () => {
   }
 
   const ShortcutComboFunc = async (event, type) => {
-    if (type === "metal"){
+    if (type === "metal") {
       setmtTypeOption(event)
       // localStorage.setItem("selectedCombomt",JSON.stringify(event))
     }
-    if (type === "dia"){
+    if (type === "dia") {
       setDiaQColOpt(event)
       // localStorage.setItem("selectedCombodia",JSON.stringify(event))
     }
-    if (type === "cs"){ 
+    if (type === "cs") {
       setCSQOpt(event)
       // localStorage.setItem("selectedCombocs",JSON.stringify(event))
     }
@@ -2459,14 +2460,14 @@ const ProductList = () => {
               </div>
               <div className="filterDivcontainer">
                 <div className="part" style={{ flex: '20%' }}>
-                  <div className="part-content" onClick={handleFilterShow}>
-                    {isShowfilter ? "Hide Filter" : "Show Filter"}
+                  <div className="part-content" onClick={handleFilterShow} style={{ fontSize: '12px' }}>
+                    {isShowfilter ? "HIDE FILTER" : "SHOW FILTER"}
                     <FilterListIcon />
                   </div>
                 </div>
                 <div className="divider"></div>
                 <div className="part" style={{ flex: '20%' }}>
-                    {/* <div className={`custom-select ${isActive ? 'active' : ''}`}>
+                  {/* <div className={`custom-select ${isActive ? 'active' : ''}`}>
                       <button
                         ref={dropdownRef}
                         className="select-button"
@@ -2488,27 +2489,27 @@ const ProductList = () => {
                         </ul>
                       )}
                     </div> */}
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        width: '95%',
-                        gap: '5px'
-                      }}
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      width: '95%',
+                      gap: '5px'
+                    }}
+                  >
+                    <select
+                      className='menuitemSelectoreMain'
+                      onChange={handleSortChange}
+                      value={selectedSortOption}
+                      style={{ color: '#7b7b7b', fontSize: '12px', fontWeight: 400, cursor: 'pointer' }}
                     >
-                      <select
-                        className='menuitemSelectoreMain'
-                        onChange={handleSortChange}
-                        value={selectedSortOption}
-                        style={{ color: '#7b7b7b', fontSize: '12px', fontWeight: 400, cursor: 'pointer' }}
-                      >
-                        {sortOptions?.map((option, index) => (
-                          <option key={index} value={option.label}>
-                            {(option.label).toUpperCase()}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
+                      {sortOptions?.map((option, index) => (
+                        <option key={index} value={option.label}>
+                          {(option.label).toUpperCase()}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
                 <div className="divider"></div>
 
@@ -2623,7 +2624,7 @@ const ProductList = () => {
                   className="smilingProductSubMain"
                   style={{ width: "100%", display: "flex", position: "relative" }}
                 >
-                  <div className="smilingWebProductListSideBar" style={{ transition: "1s ease", width: `19%`, left: `${isShowfilter ? "0" : "-500%"}` }}>
+                  <div className="smilingWebProductListSideBar" style={{ transition: "1s ease", width: `19%`, left: `${isShowfilter ? "0" : "-500%"}`, position: newProData?.length != 0 || ProductApiData2?.length != 0 && "absolute"}}>
                     <ul className="d-flex" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', padding: '0px 20px 0px 0px' }}>
                       <li className="finejwelery me-4" id="finejwelery" style={{ fontSize: '14px' }}>
                         Filters
@@ -2834,7 +2835,7 @@ const ProductList = () => {
                             </div>
                           </div>
                           <div className="part secondfilteDiv" style={{ flex: '20%' }}>
-                              {/* <div className={`custom-select ${isMobileActive ? 'active' : ''}`}>
+                            {/* <div className={`custom-select ${isMobileActive ? 'active' : ''}`}>
                                 <button
                                   ref={dropdownRef}
                                   className="select-button"
@@ -2856,27 +2857,28 @@ const ProductList = () => {
                                   </ul>
                                 )}
                               </div> */}
-                              <div
-                                style={{
-                                  display: "flex",
-                                  flexDirection: "column",
-                                  // width: '95%',
-                                  // gap: '5px'
-                                }}
+                            <div
+                              style={{
+                                display: "flex",
+                                // width: '95%',
+                                // gap: '5px'
+                                alignItems: 'center'
+                              }}
+                            >
+                              <select
+                                className='menuitemSelectoreMainMobile'
+                                onChange={handleSortChange}
+                                value={selectedSortOption}
+                                style={{ color: '#7b7b7b', cursor: 'pointer', backgroundColor: 'transparent', fontWeight: 400 }}
                               >
-                                <select
-                                  className='menuitemSelectoreMain'
-                                  onChange={handleSortChange}
-                                  value={selectedSortOption}
-                                  style={{ color: '#7b7b7b', cursor: 'pointer' }}
-                                >
-                                  {sortOptions?.map((option, index) => (
-                                    <option key={index} value={option.label}>
-                                      {(option.label)}
-                                    </option>
-                                  ))}
-                                </select>
-                              </div>
+                                {sortOptions?.map((option, index) => (
+                                  <option key={index} value={option.label}>
+                                    {(option.label)}
+                                  </option>
+                                ))}
+                              </select>
+                              <FaChevronDown style={{ color: '#7b7b7b' }} />
+                            </div>
                           </div>
 
                           <div className="part secondfilteDiv" style={{ flex: '20%' }}>
@@ -2895,8 +2897,12 @@ const ProductList = () => {
 
                           <div className="part thirdfilteDiv" style={{ flex: '60%', justifyContent: 'end' }}>
                             <div className="part-content">
-                              <IoGrid style={{ height: '18px', width: '18px', opacity: 0.7, color: '#7b7b7b' }} onClick={() => handle2ImageShow()} />
-                              <AppsIcon style={{ height: '22px', width: '22px', opacity: 0.8, color: '#1f1919' }} onClick={() => handle3ImageShow()} />
+                              <Button style={{minWidth: '0px' , padding: '0px'}}>
+                                <IoGrid style={{ height: '18px', width: '18px', opacity: 0.7, color: '#7b7b7b' }} onClick={() => handle2ImageShow()} />
+                              </Button>
+                              <Button style={{minWidth: '0px' , padding: '0px'}}>
+                                <AppsIcon style={{ height: '22px', width: '22px', opacity: 0.8, color: '#1f1919' }} onClick={() => handle3ImageShow()} />
+                              </Button>
                               {/* <TfiLayoutGrid4Alt style={{ height: '17px', width: '17px', opacity: 0.6 }} onClick={() => handle4ImageShow()} /> */}
                             </div>
                           </div>
@@ -3001,7 +3007,7 @@ const ProductList = () => {
                                         }}
                                         onClick={() => handelProductSubmit(products)}
                                       />
-                                      <div className="cart-icon">
+                                      <Button className="cart-icon">
                                         <Checkbox
                                           icon={
                                             <LocalMallOutlinedIcon
@@ -3019,8 +3025,8 @@ const ProductList = () => {
                                           checked={products?.checkFlag}
                                           onChange={(e) => handelCartList(e, products)}
                                         />
-                                      </div>
-                                      <div className="wishlist-icon">
+                                      </Button>
+                                      <Button className="wishlist-icon">
                                         <Checkbox
                                           icon={
                                             <FavoriteBorderIcon
@@ -3038,15 +3044,13 @@ const ProductList = () => {
                                           checked={products?.wishCheck}
                                           onChange={(e) => handelWishList(e, products)}
                                         />
-                                      </div>
+                                      </Button>
                                     </div>
                                   </div>
                                   <div className={show4ImagesView ? 'listing4-details' : "listing-details"} onClick={() => handelProductSubmit(products)}>
                                     <p className={show4ImagesView ? "productDetails property4-type" : "productDetails property-type"} style={{ textAlign: 'center', margin: '5px' }}>
                                       {products?.TitleLine}
                                     </p>
-                                    <div>
-                                    </div>
                                   </div>
                                   <div className={show4ImagesView ? "listing-features4" : "listing-features"}>
                                     <div>
@@ -3244,7 +3248,7 @@ const ProductList = () => {
                   </div>
                 } */}
                 </div>
-                { newProData?.length != 0 || ProductApiData2?.length != 0 && <div style={{ display: 'flex', width: '100%', justifyContent: 'center', marginTop: '100px', marginBottom: '50px' }}>
+                {newProData?.length != 0 || ProductApiData2?.length != 0 && <div style={{ display: 'flex', width: '100%', justifyContent: 'center', marginTop: '100px', marginBottom: '50px' }}>
                   <Pagination count={Math.ceil(prodCount / prodPageSize)} onChange={handlePageChange} />
                 </div>}
                 {/* <SmilingRock /> */}

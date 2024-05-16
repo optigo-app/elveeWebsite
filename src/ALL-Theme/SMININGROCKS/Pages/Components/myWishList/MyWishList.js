@@ -17,6 +17,7 @@ import { toast } from "react-toastify";
 
 export default function MyWishList() {
   const [wishlistData, setWishlistData] = useState([]);
+  const [wishlistDataNew, setWishlistDataNew] = useState([]);
   const [yKey, setYouKey] = useState("");
   const [imageURL, setImageURL] = useState("");
   const [customerID, setCustomerID] = useState("");
@@ -126,6 +127,7 @@ export default function MyWishList() {
       }
     };
     fetchData();
+    getCartAndWishListData();
   }, []);
 
   const handleAddToCart = async (autoCode) => {
@@ -229,6 +231,7 @@ export default function MyWishList() {
   };
 
   const handleRemoveAllWishList = async () => {
+    handleClose();
     try {
       setIsLoading(true);
       const storeInit = JSON.parse(localStorage.getItem("storeInit"));
@@ -274,7 +277,7 @@ export default function MyWishList() {
     return txt.value;
   };
 
-  const handelBrowse = async() =>{
+  const handelBrowse = async () => {
 
     let finalData = JSON.parse(localStorage.getItem("menuparams"))
 
@@ -286,14 +289,14 @@ export default function MyWishList() {
           localStorage.setItem("finalAllData", JSON.stringify(res))
         }
         return res
-      }).then(async(res)=>{
-        if(res){
+      }).then(async (res) => {
+        if (res) {
           let autoCodeList = JSON.parse(localStorage.getItem("autoCodeList"))
-          await getDesignPriceList(finalData,1,{},{},autoCodeList)
+          await getDesignPriceList(finalData, 1, {}, {}, autoCodeList)
           navigation("/productpage")
         }
-      }).catch((err)=>{
-        if(err) toast.error("Something Went Wrong!!!")
+      }).catch((err) => {
+        if (err) toast.error("Something Went Wrong!!!")
       })
     }
   }
@@ -310,6 +313,48 @@ export default function MyWishList() {
     setOpen(false);
   };
 
+
+  const getCartAndWishListData = async () => {
+
+    const UserEmail = localStorage.getItem("registerEmail")
+    const storeInit = JSON.parse(localStorage.getItem("storeInit"))
+    const Customer_id = JSON.parse(localStorage.getItem("loginUserDetail"));
+
+    let EncodeData = { FrontEnd_RegNo: `${storeInit?.FrontEnd_RegNo}`, Customerid: `${Customer_id?.id}` }
+
+    const encodedCombinedValue = btoa(JSON.stringify(EncodeData));
+
+    const body = {
+      "con": `{\"id\":\"Store\",\"mode\":\"getdesignnolist\",\"appuserid\":\"${UserEmail}\"}`,
+      "f": " useEffect_login ( getdataofcartandwishlist )",
+      "p": encodedCombinedValue
+    }
+
+    await CommonAPI(body).then((res) => {
+      if (res?.Message === "Success") {
+
+        const compareAndSetMatch = (arr1, arr2) => {
+          // Create a set of autocodes from the first array for quick lookup
+          const autocodeSet = new Set(arr1.map(item => item.autocode));
+
+          // Loop through the second array and set the 'match' property
+          return arr2.map(item => {
+            // Check if the current item's autocode exists in the set
+            if (autocodeSet.has(item.autocode)) {
+              return { ...item, match: "true" };
+            } else {
+              return { ...item, match: "false" };
+            }
+          });
+        };
+        const result = compareAndSetMatch(res?.Data?.rd, res?.Data?.rd1);
+        setWishlistDataNew(result);
+      }
+    })
+
+  }
+
+  console.log('sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss', wishlistDataNew);
 
   return (
     <div
@@ -340,15 +385,15 @@ export default function MyWishList() {
           {wishlistData?.length !== 0 && (
             <div className="smilingListTopButton">
               {/* <button className='smiTopShareBtn'>SHARE WISHLIST</button> */}
-              <button
+              <Button
                 className="smiTopAddAllBtn"
                 onClick={handleClickOpen}
               >
                 Clear All
-              </button>
-              <button className="smiTopAddAllBtn" onClick={handleAddAll}>
+              </Button>
+              <Button className="smiTopAddAllBtn" onClick={handleAddAll}>
                 Add To Cart All
-              </button>
+              </Button>
               {/* <button
                 className="smiTopAddAllBtn"
                 onClick={() => navigation("/productpage")}
@@ -359,7 +404,7 @@ export default function MyWishList() {
           )}
 
           <div className="smiWishLsitBoxMain">
-            {wishlistData?.length === 0
+            {wishlistDataNew?.length === 0
               ? !isLoading && (
                 <div
                   style={{
@@ -368,6 +413,7 @@ export default function MyWishList() {
                     flexDirection: "column",
                     justifyContent: "center",
                     alignItems: "center",
+                    marginTop: '50px'
                   }}
                 >
                   <p
@@ -460,36 +506,57 @@ export default function MyWishList() {
                     className="mobileViewDeac"
                   >
                     <p className="smiWishLsitBoxDesc2">
-                      GWT: {(item.ActualGrossweight).toFixed(2)}
+                      GWT: {(item.ActualGrossweight)?.toFixed(2)}
                     </p>
                     <p className="smiWishLsitBoxDesc2">
-                      DWT: {(item.totaldiamondweight).toFixed(2)}
+                      DWT: {(item.totaldiamondweight)?.toFixed(2)}
                     </p>
                   </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      position: "absolute",
-                      bottom: "0px",
-                      width: "100%",
-                      justifyContent: "center",
-                      marginBlock: "15px",
-                    }}
-                    className="mobilkeAddToCartBtn"
-                  >
-                    <button
-                      className="smiWishLsitBoxDesc3"
-                      onClick={() => handleAddToCart(item.autocode)}
+                  {
+                  item.match === 'true' ?
+                    <div
+                      style={{
+                        display: "flex",
+                        position: "absolute",
+                        bottom: "0px",
+                        width: "100%",
+                        justifyContent: "center",
+                        marginBlock: "15px",
+                      }}
+                      className="mobilkeAddToCartBtn"
                     >
-                      ADD TO CART +
-                    </button>
-                  </div>
+                      <button
+                        className="smiWishLsitBoxDesc3"
+                      >
+                        Item In A Cart
+                      </button>
+                    </div>
+                    :
+                    <div
+                      style={{
+                        display: "flex",
+                        position: "absolute",
+                        bottom: "0px",
+                        width: "100%",
+                        justifyContent: "center",
+                        marginBlock: "15px",
+                      }}
+                      className="mobilkeAddToCartBtn"
+                    >
+                      <button
+                        className="smiWishLsitBoxDesc3"
+                        onClick={() => handleAddToCart(item.autocode)}
+                      >
+                        ADD TO CART +
+                      </button>
+                    </div>
+                  }
                 </div>
               ))}
           </div>
         </div>
       </div>
-      <div className="mobileFootreCs" style={{ position: wishlistData?.length === 0 && 'absolute', bottom: '0px',top:'40%', width: '100%' }}>
+      <div className="mobileFootreCs" style={{ position: wishlistData?.length === 0 && 'absolute', bottom: '0px', width: '100%' }}>
         <Footer />
       </div>
     </div>

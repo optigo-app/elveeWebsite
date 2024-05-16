@@ -147,7 +147,7 @@ export default function CartPage() {
   useEffect(() => {
     // console.log("cartListData1111",cartListData)
     cartSingalDataAPICalling()
-  },[cartListData])
+  }, [cartListData])
 
 
   console.log('singleProdData', singleProdData, mtrdData, diaqcData, csData)
@@ -777,6 +777,7 @@ export default function CartPage() {
   };
 
   const handleRemoveAllWishList = async () => {
+    handleClose();
     try {
       setIsLoading(true);
       const storeInit = JSON.parse(localStorage.getItem("storeInit"));
@@ -1211,7 +1212,7 @@ export default function CartPage() {
 
   console.log('prodSelectDataprodSelectData', cartSelectData);
 
-  const handelBrowse = async() =>{
+  const handelBrowse = async () => {
 
     let finalData = JSON.parse(localStorage.getItem("menuparams"))
 
@@ -1223,18 +1224,18 @@ export default function CartPage() {
           localStorage.setItem("finalAllData", JSON.stringify(res))
         }
         return res
-      }).then(async(res)=>{
-        if(res){
+      }).then(async (res) => {
+        if (res) {
           let autoCodeList = JSON.parse(localStorage.getItem("autoCodeList"))
-          await getDesignPriceList(finalData,1,{},{},autoCodeList)
+          await getDesignPriceList(finalData, 1, {}, {}, autoCodeList)
           navigation("/productpage")
         }
-      }).catch((err)=>{
-        if(err) toast.error("Something Went Wrong!!!")
+      }).catch((err) => {
+        if (err) toast.error("Something Went Wrong!!!")
       })
     }
   }
-  
+
   return (
     <>
       <div
@@ -1267,18 +1268,19 @@ export default function CartPage() {
             }}
           >
 
-            {cartListData?.length !== 0 && (
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              {cartListData?.length !== 0 && (
                 <div className="backErrorMobile">
                   <IoArrowBackOutline style={{ height: '30px', marginLeft: '5px', width: '30px', color: 'rgb(192 182 182)' }} onClick={() => navigation("/productpage")} />
-                </div>
-                <p className="SmiCartTitle" style={{ paddingTop: "30px" }}>
-                  My Cart
-                </p>
+                </div>)}
+              <p className="SmiCartTitle" style={{ paddingTop: "30px" }}>
+                My Cart
+              </p>
+              {cartListData?.length !== 0 && (
                 <div className="ClreareAllMobilee">
                   <p style={{ fontWeight: 600, margin: '0px', textDecoration: 'underline', width: '80px', cursor: 'pointer', color: 'rgb(192 182 182)' }} onClick={handleClickOpen}>Clear All</p>
-                </div>
-              </div>)}
+                </div>)}
+            </div>
 
 
 
@@ -1305,21 +1307,21 @@ export default function CartPage() {
                   </button> */}
                   {/* </div> */}
 
-                  <button
+                  <Button
                     className="cartPageTopBtn"
                     onClick={handleClickOpen}
                   >
                     Clear All
-                  </button>
+                  </Button>
                   {/* <button
                     className={`cartPageTopBtn ${value === 3 ? "activec" : ""}`}
                     onClick={() => navigation("/productpage")}
                   >
                     Show ProductList
                   </button> */}
-              
 
-                  <button
+
+                  <Button
                     className="cartPageTopBtn"
                     onClick={(event) => {
                       navigation("/Delivery");
@@ -1327,16 +1329,16 @@ export default function CartPage() {
                     }}
                   >
                     Place Order
-                  </button>
+                  </Button>
                 </div>
                 <button
-                    className="placeOrderCartPageBtnMobile"
-                    onClick={(event) => {
-                      navigation("/Delivery");
-                    }}
-                  >
-                    Place Order
-                  </button>
+                  className="placeOrderCartPageBtnMobile"
+                  onClick={(event) => {
+                    navigation("/Delivery");
+                  }}
+                >
+                  Place Order
+                </button>
 
                 <div
                   className="smilingListCartTopButtonMobile"
@@ -1398,7 +1400,7 @@ export default function CartPage() {
                         flexDirection: "column",
                         justifyContent: "center",
                         alignItems: "center",
-                        marginBlock: "200px",
+                        marginBlock: "90px",
                       }}
                     >
                       <p
@@ -1685,7 +1687,7 @@ export default function CartPage() {
                                               display: "flex",
                                               flexDirection: "column",
                                               width: "45%",
-                                              marginTop: "30px",
+                                              marginTop: "20px",
                                             }}
                                           >
                                             <label
@@ -1702,6 +1704,7 @@ export default function CartPage() {
                                                 outline: "none",
                                                 color: "#7d7f85",
                                                 fontSize: "12.5px",
+                                                height: '30px'
                                               }}
                                               onChange={(e) =>
                                                 handelSize(e.target.value)
@@ -1905,9 +1908,10 @@ export default function CartPage() {
                                       padding: '6px 17px',
                                       borderRadius: '4px',
                                     }}
+
                                     onClick={handleCartUpdate}
                                   >
-                                    <span style={{ fontSize: '16px', fontWeight: '500' }}>Save</span>
+                                    <span style={{ fontSize: '16px', fontWeight: '500' }} className="SaveBtnCart">Save</span>
                                   </button>
                                   <div className="mt-3">
                                     <div className="container-fluid mainRenarkConatiner" style={{ border: '1px solid rgb(225, 225, 225)', borderRadius: '12px' }}>
@@ -2160,14 +2164,14 @@ export default function CartPage() {
                                 <Card.Body>
                                   <div className="d-flex justify-content-between align-items-center">
                                     <div >
-                                      <span style={{ color: '#7d7f85', fontWeight: '500', fontSize: '16px' }}>Design in Cart: </span>
-                                      <span style={{ color: '#7d7f85', fontSize: '16px' }}>{cartListData?.length}</span>
+                                      <span style={{ color: '#7d7f85', fontSize: '16px' }}>Design in Cart: </span>
+                                      <span style={{ color: '#7d7f85', fontWeight: '500', fontSize: '16px' }}>{cartListData?.length}</span>
                                     </div>
                                     <div style={{ display: 'flex' }}>
-                                      <span style={{ color: '#7d7f85', fontWeight: '500', fontSize: '16px', marginRight: '3px' }}>Total Price: </span>
+                                      <span style={{ color: '#7d7f85', fontSize: '16px', marginRight: '3px' }}>Total Price: </span>
                                       <div style={{ display: 'flex' }}>
                                         <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />
-                                        <span style={{ color: '#7d7f85', fontSize: '16px' }}>{cartListData.reduce((total, item) => total + item.UnitCost, 0).toFixed(2)}</span>
+                                        <span style={{ color: '#7d7f85', fontSize: '16px', fontWeight: '500', }}>{cartListData.reduce((total, item) => total + item.UnitCost, 0).toFixed(2)}</span>
                                       </div>
                                     </div>
                                   </div>
@@ -2711,6 +2715,7 @@ export default function CartPage() {
                             fontSize: "16px",
                             fontWeight: "500",
                           }}
+                          className="SaveBtnCart"
                           onClick={handleCartUpdate}
                         >
                           Save

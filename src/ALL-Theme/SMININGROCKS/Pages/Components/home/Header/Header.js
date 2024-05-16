@@ -1173,7 +1173,8 @@ export default function Header() {
             display: "flex",
             justifyContent: "space-between",
             // padding: "20px",
-            height: '65px'
+            height: '65px',
+            marginInline: '7px'
           }}
           className="smilingMobileSubDiv"
         >
@@ -1186,7 +1187,7 @@ export default function Header() {
           // onClick={() => setDrawerOpen(true)}
           >
             <IconButton
-              style={{ color: "white" }}
+              style={{ color: "#7D7F85" }}
               onClick={() => setDrawerOpen(true)}
               aria-label="open menu"
             >
@@ -1281,6 +1282,13 @@ export default function Header() {
                       onClick={() => navigation("/account")}
                     >
                       <IoPersonOutline color="#7D7F85" fontSize='30px' style={{ marginTop: '-5px' }} className="mobileViewSmilingTop3Icone" />
+                    </li>
+                    <li
+                      className="nav-li-smining"
+                      style={{ cursor: "pointer", marginTop: "0" }}
+                      onClick={handleLogout}
+                    >
+                      <FaPowerOff color="#7D7F85" style={{ fontSize: '20px' }} />
                     </li>
                   </div>
                 </div>

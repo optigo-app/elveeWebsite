@@ -48,7 +48,7 @@
 }
 
 .cartImageShow {
-    width: 200px;
+    width: 100%;
     height: 200px;
     object-fit: cover;
     border-bottom: 1px solid #e1e1e1;
@@ -58,14 +58,15 @@
 .cartPageTopBtn {
     height: 60px;
     width: 150px;
-    color: #7d7f85;
+    color: #7d7f85!important;
     background-color: white;
-    border: 1px solid #7d7f85;
+    border: 1px solid #7d7f85!important;
     font-size: 13px;
     font-weight: 500;
-    margin: 10px;
+    margin: 10px!important;
     justify-content: center;
 }
+
 .cartPageTopBtn:hover {
     color: white;
     background-color: #7d7f85;
@@ -216,11 +217,11 @@
 }
 
 .cartProdSection .cartProdpart {
-    padding: 15px;
+    padding: 10px 0px 10px 0px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     /* Four columns with equal width */
-    gap: 15px;
+    gap: 7px;
 }
 
 .cartProdSection .cartProdpart .smiling-cartPageBoxMain {
@@ -466,6 +467,18 @@
     width: 100%;
 }
 
+.SmilingUpdateQuantityBtn {
+    color: black;
+}
+
+.simlingQualityBox {
+    border-radius: 0px !important;
+}
+
+.SaveBtnCart {
+    color: black;
+}
+
 
 @media screen and (max-width: 18200px) {
     .cartProdSection .cartProdpart {
@@ -499,7 +512,7 @@
         font-size: 12px;
     }
 
-    
+
 
     .feature p {
         margin: 0 0 5px 1px !important;
@@ -635,7 +648,10 @@
         width: 100% !important;
     }
 
-    
+    .SmiCartTitle {
+        padding-top: 0px !important;
+    }
+
     .placeOrderCartPageBtnMobile {
         width: 100%;
         margin-top: 10px;
@@ -691,13 +707,13 @@
         margin: 20px;
     }
 
-    .SmiCartTitle{
+    .SmiCartTitle {
         font-size: 25px;
         padding: 5px;
         margin: 0px;
     }
 
-   
+
 }
 
 
