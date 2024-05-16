@@ -198,7 +198,7 @@
     width: 100%;
     position: absolute;
     background: rgba(255, 255, 255, 0.8);
-    top: 72px;  
+    top: 72px;
     left: 0;
     backdrop-filter: blur(8px);
     border-radius: 0 0 15px 15px;
@@ -649,6 +649,18 @@
     gap: 20px;
 }
 
+.drawermenuImage {
+    width: 45% !important;
+}
+
+.level2menuData {
+    color: #7d7f85 !important;
+}
+
+.level2menuData:hover {
+    color: black !important
+}
+
 @media (max-width:1640px) {
     .menuImages {
         height: 200px;
@@ -673,7 +685,7 @@
     .mobileHeaderSmining {
         display: block !important;
         background-color: #e1e1e1 !important;
-        height: 80px !important;
+        height: 65px !important;
     }
 
     .placeOrderBtn {
@@ -716,7 +728,7 @@
     }
 
     .mobileViewFirstDiv2 {
-        /* width: 50% !important; */
+        width: 40% !important;
         display: flex !important;
         justify-content: center !important;
         align-items: center !important;
@@ -724,6 +736,68 @@
 
     .mobileViewFirstDiv3 {
         width: 25% !important;
+    }
+}
+
+@media screen and (max-width:1300px) {
+    .css-i8mxf8-MuiModal-root-MuiDrawer-root .MuiDrawer-paper {
+        width: 80% !important;
+        max-width: 80% !important;
+    }
+
+}
+
+@media (min-width: 768px) and (max-width: 1440px) {
+    .MainlogogMobileImage {
+        width: 60% !important;
+        margin-left: 0px !important;
+    }
+}
+
+@media screen and (max-width: 850px) {
+
+    .cartDrawerMainMobile .MuiDrawer-paper.MuiDrawer-paperAnchorRight {
+        min-width: 100% !important;
+    }
+
+    .css-i8mxf8-MuiModal-root-MuiDrawer-root .MuiDrawer-paper {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .mobileHeaderFixedMobileLastDiv {
+        display: flex !important;
+        justify-content: flex-end !important;
+        width: 45% !important;
+    }
+
+    .smlingTopSerachOver {
+        margin: 0px !important;
+    }
+
+    .drawrTitle {
+        font-size: 12px !important;
+        letter-spacing: 0.5px;
+    }
+
+    .drawrTitlem {
+        font-size: 12px !important;
+        letter-spacing: 0.5px;
+    }
+
+    .mobileViewFirstDiv2 {
+        width: 47% !important;
+    }
+
+}
+
+
+
+@media (min-width: 600px) and (max-width: 769px) {
+    .MainlogogMobileImage {
+        width: 50% !important;
+        margin-top: -11px;
+        margin-left: 0px !important;
     }
 }
 
@@ -796,10 +870,6 @@
         width: 95% !important;
     }
 
-    .smilingMobileSubDiv {
-        padding: 5px 0px 12px 0px !important;
-    }
-
     .Smining-Top-Header-fixed {
         margin-inline: 0px !important;
     }
@@ -839,7 +909,7 @@
     .mobileViewSmilingTop3Icone {
         height: 25px !important;
         width: 25px !important;
-        margin-top: -5px!important;
+        margin-top: -5px !important;
     }
 
     .mobileViewFirstDiv3Sub{
@@ -848,75 +918,9 @@
     .mobileViewFirstDiv3Sub-sub{
         gap: 8px!important;
     }
-}
 
-@media screen and (max-width:1300px) {
-    .css-i8mxf8-MuiModal-root-MuiDrawer-root .MuiDrawer-paper {
-        width: 80% !important;
-        max-width: 80% !important;
-    }
-
-}
-
-
-@media screen and (max-width: 850px) {
-
-    .cartDrawerMainMobile .MuiDrawer-paper.MuiDrawer-paperAnchorRight {
-        min-width: 100% !important;
-    }
-
-    .css-i8mxf8-MuiModal-root-MuiDrawer-root .MuiDrawer-paper {
-        width: 100% !important;
-        max-width: 100% !important;
-    }
-
-    .mobileHeaderFixedMobileLastDiv {
-        display: flex !important;
-        justify-content: flex-end !important;
-        width: 45% !important;
-    }
-
-    .smlingTopSerachOver {
-        margin: 0px !important;
-    }
-
-    .drawrTitle {
-        font-size: 12px !important;
-        letter-spacing: 0.5px;
-    }
-
-    .drawrTitlem {
-        font-size: 12px !important;
-        letter-spacing: 0.5px;
-    }
-
-}
-
-.css-19kzrtu {
-    padding: 0px !important;
-}
-
-@media (min-width: 768px) and (max-width: 1440px) {
-    .MainlogogMobileImage {
+    .mobileViewFirstDiv2 {
         width: 60% !important;
-        margin-top: -11px;
-        margin-left: 0px !important;
-    }
-    
-    .smilingMobileSubDiv {
-        padding: 15px 10px 15px 10px !important;
-    }
-}
-
-@media (min-width: 600px) and (max-width: 769px) {
-    .MainlogogMobileImage {
-        width: 50% !important;
-        margin-top: -11px;
-        margin-left: 0px !important;
-    }
-    
-    .smilingMobileSubDiv {
-        padding: 15px 10px 15px 10px !important;
     }
 }
 
@@ -927,12 +931,10 @@
         margin-left: 0px !important;
     }
 
-    .smilingMobileSubDiv {
-        padding: 15px 10px 15px 10px !important;
-    }
     .mobileHeaderSmining {
         height: 70px !important;
     }
+
     .searchiconInMobile {
         display: none;
     }
@@ -960,7 +962,7 @@
     }
 
 
- 
+
 
     .mobileViewSmilingTop3Icone {
         height: 25px !important;
@@ -969,6 +971,10 @@
 
 
 
+}
+
+.css-19kzrtu {
+    padding: 0px !important;
 }
 
 .smilingCartTabMain .MuiTabs-scroller {
