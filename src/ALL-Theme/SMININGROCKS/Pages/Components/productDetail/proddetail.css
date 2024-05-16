@@ -272,47 +272,55 @@
     background-color: #d2815f0d;
 }
 
-.proDeatilList{
+.proDeatilList {
     width: 25%;
     font-weight: 600;
 }
-.proDeatilList1{
-    width: 25%;
-    color: gray;
-    font-size: 14px;
-}
-.proDeatilList2{
+
+.proDeatilList1 {
     width: 25%;
     color: gray;
     font-size: 14px;
 }
-.proDeatilList3{
+
+.proDeatilList2 {
+    width: 25%;
+    color: gray;
+    font-size: 14px;
+}
+
+.proDeatilList3 {
     font-size: 14px;
     width: 25%;
     color: gray;
 
 }
-.proDeatilList4{
+
+.proDeatilList4 {
     color: gray;
     font-size: 14px;
     width: 25%;
 }
 
-.proDeatilList1.one{
+.proDeatilList1.one {
     font-weight: 600;
 }
-.proDeatilList2.one{
+
+.proDeatilList2.one {
     font-weight: 600;
 
 }
-.proDeatilList3.one{
+
+.proDeatilList3.one {
     font-weight: 600;
 
 }
-.proDeatilList4.one{
+
+.proDeatilList4.one {
     font-weight: 600;
 
 }
+
 @media screen and (max-width:1731px) {
     .prodDetailWhitecont {
         background-color: white;
@@ -372,8 +380,9 @@
         margin-bottom: 0px;
         margin: 0px 20px;
     }
-    .product-detail-container{
-        max-height: fit-content!important;
+
+    .product-detail-container {
+        max-height: fit-content !important;
     }
 }
 
@@ -388,15 +397,18 @@
         z-index: auto;
     }
 
+    .smilingProdutDetltTitle{
+        font-size: 25px;
+    }
     .srprodetail2-cont {
         margin: 120px 50px 0px;
     }
 
-    .tellmeMoreMain{
-        width: 100%!important;
+    .tellmeMoreMain {
+        width: 100% !important;
     }
 
-    .tellmeMoreMainMobileDiv{
+    .tellmeMoreMainMobileDiv {
         margin-bottom: 30px;
     }
 }
@@ -470,6 +482,10 @@
     .srprodetail2-cont {
         margin: 10px !important;
     }
+
+    .smilingProdutDetltTitle{
+        font-size: 20px;
+    }
 }
 
 @media screen and (max-width:621px) {
@@ -485,6 +501,15 @@
     .completethelook_outer {
         padding: 0;
         border: none;
+    }
+}
+
+@media screen and (max-width:375px) {
+
+    .menuitemSelectoreMain {
+        font-size: 11px !important;
+        font-family: "PT Sans", sans-serif !important;
+        letter-spacing: 0px !important;
     }
 }
 
