@@ -13,6 +13,7 @@ import {
   Divider,
   Drawer,
   Grid,
+  Snackbar,
   Tab,
   Tabs,
   Typography,
@@ -36,7 +37,8 @@ import { ToastContainer, toast } from "react-toastify";
 import { Card, CardHeader, Col, Container, Row } from "react-bootstrap";
 import noFoundImage from "../../../../assets/image-not-found.png"
 import { FullProInfoAPI } from "../../../../../Utils/API/FullProInfoAPI";
-import { findCsQcIdDiff, findDiaQcId, findMetalTypeId } from "../../../../../Utils/globalFunctions/GlobalFunction";
+import { findCsQcIdDiff, findDiaQcId, findMetalType, findMetalTypeId, findValueFromId } from "../../../../../Utils/globalFunctions/GlobalFunction";
+import { SingleProductAPI } from "../../../../../Utils/API/SingleProductAPI";
 import { IoArrowBackOutline } from "react-icons/io5";
 
 function CustomTabPanel(props) {
@@ -116,6 +118,8 @@ export default function CartPage() {
   const [csData, setCsData] = useState([])
   const [fullprodData, setFullProdData] = useState();
   const [cartPageLoding, setCartPageloding] = useState(false);
+  const [singleProdData,setSingleProdData] = useState();
+  const [cartUpdateSnackbar,setCartUpdateSnackbar] = useState("")
 
 
 
@@ -128,8 +132,25 @@ export default function CartPage() {
     })
   }
 
-  useEffect(() => {
-    if (cartListData?.length > 0) {
+  const cartSingalDataAPICalling = async() =>{
+    if(cartListData){
+      await SingleProductAPI(cartListData[0]?.designno).then((res)=>{
+        let data = res[0]
+        setSingleProdData(data)
+      })
+    }
+  }
+
+  useEffect(()=>{
+    cartSingalDataAPICalling()
+  },[])
+
+  
+  console.log('singleProdData',singleProdData,mtrdData,diaqcData,csData)
+
+
+  useEffect(()=>{
+    if(cartListData?.length > 0){
       setProdFullInfo(cartListData[0]?.designno)
     }
   }, [cartListData])
@@ -410,7 +431,7 @@ export default function CartPage() {
     }
     // let gt = showPrice + showPrice1 + showPrice2;
     // setGrandTotal(gt ?? 0);
-  }, [fullprodData, mtTypeOption, diaQColOpt, cSQopt, cartSelectData])
+  }, [fullprodData, mtTypeOption, diaQColOpt, cSQopt, cartSelectData,singleProdData])
 
   useEffect(() => {
     let finalmetalTypeName = cartSelectData?.metaltypename?.length > 4 ? `${cartSelectData?.metaltypename?.split(" ")[0]}` : `${cartSelectData?.metaltypename}`
@@ -892,7 +913,7 @@ export default function CartPage() {
   //     }
   // };
 
-  // console.log('cartListData', cartListData);
+  console.log('cartListData', cartListData);
   // console.log('dqcData', dqcData);
   // console.log('csqcData', csqcData);
   // console.log('mtrdData', mtrdData);
@@ -924,13 +945,17 @@ export default function CartPage() {
 
   const handleCartUpdate = async () => {
 
-    const allproductlist = JSON.parse(localStorage.getItem("allproductlist"));
+    // const allproductlist = JSON.parse(localStorage.getItem("allproductlist"));
 
-    const filterProdData = allproductlist?.filter(
-      (allpd) =>
-        allpd?.autocode === cartListData[0]?.autocode &&
-        allpd?.designno === cartListData[0]?.designno
-    );
+    // const filterProdData = allproductlist?.filter(
+    //   (allpd) =>
+    //     allpd?.autocode == cartListData[0]?.autocode &&
+    //     allpd?.designno == cartListData[0]?.designno
+    // );
+    // const filterProdData = allproductlist?.filter(
+    //   (allpd) =>
+    //     cartListData.find((item)=>allpd?.autocode == item?.autocode && allpd?.designno == item?.designno )
+    // );
 
     const storeInit = JSON.parse(localStorage.getItem("storeInit"))
     const UserEmail = localStorage.getItem("registerEmail")
@@ -938,100 +963,99 @@ export default function CartPage() {
 
 
 
-    let product = filterProdData[0]
 
     const finalJSON = {
       "stockweb_event": "",
-      "designno": `${product?.designno}`,
-      "autocode": `${product?.autocode}`,
-      "imgrandomno": `${product?.imgrandomno}`,
-      "producttypeid": `${product?.Producttypeid}`,
-      "metaltypeid": `${product?.MetalTypeid}`,
-      "metalcolorid": `${product?.MetalColorid}`,
+      "designno": `${singleProdData?.designno}`,
+      "autocode": `${singleProdData?.autocode}`,
+      "imgrandomno": `${singleProdData?.imgrandomno ?? ""}`,
+      "producttypeid": Number(`${singleProdData?.Producttypeid}`),
+      "metaltypeid": Number(`${singleProdData?.MetalTypeid}`),
+      "metalcolorid": Number(`${singleProdData?.MetalColorid}`),
       "stockno": "",
-      "DQuality": `${(diaQColOpt ? diaQColOpt?.split('#')[0] : product?.diamondquality?.split(",")[0])}`,
-      "DColor": `${diaQColOpt ? diaQColOpt?.split('#')[1] : product?.diamondcolorname}`,
-      "cmboMetalType": `${product?.MetalTypeName} ${product?.MetalPurity}`,
-      "AdditionalValWt": `${product?.AdditionalValWt}`,
-      "BrandName": `${product?.BrandName ?? ""}`,
-      "Brandid": `${product?.Brandid}`,
-      "CategoryName": `${product?.CategoryName}`,
-      "Categoryid": `${product?.Categoryid}`,
-      "CenterStoneId": `${product?.CenterStoneId}`,
-      "CenterStonePieces": `${product?.CenterStonePieces}`,
-      "CollectionName": `${product?.CollectionName}`,
-      "Collectionid": `${product?.Collectionid}`,
-      "ColorWiseRollOverImageName": `${product?.ColorWiseRollOverImageName}`,
-      "DefaultImageName": `${product?.DefaultImageName}`,
-      "DisplayOrder": `${product?.DisplayOrder}`,
-      "FrontEnd_OrderCnt": `${product?.FrontEnd_OrderCnt}`,
-      "GenderName": `${product?.GenderName}`,
-      "Genderid": `${product?.Genderid}`,
-      "Grossweight": `${product?.Grossweight}`,
-      "InReadyStockCnt": `${product?.InReadyStockCnt}`,
-      "IsBestSeller": `${product?.IsBestSeller}`,
-      "IsColorWiseImageExists": `${product?.IsColorWiseImageExists ?? 0}`,
-      "IsInReadyStock": `${product?.IsInReadyStock}`,
-      "IsNewArrival": `${product?.IsNewArrival}`,
-      "IsRollOverColorWiseImageExists": `${product?.IsRollOverColorWiseImageExists ?? ""}`,
-      "IsTrending": `${product?.IsTrending}`,
-      "MasterManagement_labid": `${product?.MasterManagement_labid}`,
+      "DQuality": `${diaQColOpt?.split('#')[0] ?? ""}`,
+      "DColor": `${diaQColOpt?.split('#')[1] ?? ""}`,
+      "cmboMetalType": `${findMetalType(singleProdData?.MetalTypeid)}`,
+      "AdditionalValWt":  Number(`${singleProdData?.AdditionalValWt ?? 0}`),
+      "BrandName": `${findValueFromId("cate", singleProdData?.Categoryid)?.CategoryName ?? ""}`,
+      "Brandid": Number(`${singleProdData?.Brandid ?? 0}`),
+      "CategoryName": `${findValueFromId("cate", singleProdData?.Categoryid)?.CategoryName ?? ""}`,
+      "Categoryid": Number(`${singleProdData?.Categoryid??0}`),
+      "CenterStoneId": Number(`${singleProdData?.CenterStoneId??0}`),
+      "CenterStonePieces": Number(`${singleProdData?.CenterStonePieces??0}`),
+      "CollectionName": `${findValueFromId("collect", singleProdData?.Collectionid)?.CollectionName ?? ""}`,
+      "Collectionid": Number(`${singleProdData?.Collectionid ?? 0}`),
+      "ColorWiseRollOverImageName": `${singleProdData?.ColorWiseRollOverImageName ?? ""}`,
+      "DefaultImageName": `${singleProdData?.DefaultImageName}`,
+      "DisplayOrder": Number(`${singleProdData?.DisplayOrder??0}`),
+      "FrontEnd_OrderCnt": Number(`${singleProdData?.FrontEnd_OrderCnt??0}`),
+      "GenderName": `${findValueFromId("gender", singleProdData?.Genderid)?.GenderName ?? ""}`,
+      "Genderid": Number(`${singleProdData?.Genderid ?? 0}`),
+      "Grossweight": `${Number(`${mtrdData?.N ?? 0}`)}`,
+      "InReadyStockCnt": Number(`${singleProdData?.InReadyStockCnt ?? 0}`),
+      "IsBestSeller": Number(`${singleProdData?.IsBestSeller ?? 0}`),
+      "IsColorWiseImageExists": Number(`${singleProdData?.IsColorWiseImageExists ?? 0}`),
+      "IsInReadyStock": Number(`${singleProdData?.IsInReadyStock ?? 0}`),
+      "IsNewArrival": Number(`${singleProdData?.IsNewArrival ?? 0}`),
+      "IsRollOverColorWiseImageExists": Number(`${singleProdData?.IsRollOverColorWiseImageExists ?? 0}`),
+      "IsTrending": Number(`${singleProdData?.IsTrending ?? 0}`),
+      "MasterManagement_labid": Number(`${singleProdData?.MasterManagement_labid}`),
       "MasterManagement_labname": "",
-      "MetalColorName": `${selectedColor ?? product?.MetalColorName}`,
-      "MetalColorid": `${product?.MetalColorid}`,
-      "MetalPurity": `${mtTypeOption ? (mtTypeOption?.split(' ')[1]) : product?.MetalPurity}`,
-      "MetalPurityid": `${product?.MetalTypeid}`,
-      "MetalTypeName": `${mtTypeOption ? mtTypeOption?.split(' ')[0] : product?.MetalTypeName}`,
-      "MetalTypeid": `${product?.IsInReadyStock}`,
-      "MetalWeight": `${product?.MetalWeight}`,
-      "OcassionName": `${product?.OcassionName ?? ""}`,
-      "Ocassionid": `${product?.Ocassionid}`,
-      "ProducttypeName": `${product?.ProducttypeName}`,
-      "Producttypeid": `${product?.Producttypeid}`,
-      "RollOverImageName": `${product?.RollOverImageName}`,
-      "SubCategoryName": `${product?.SubCategoryName ?? ""}`,
-      "SubCategoryid": `${product?.SubCategoryid}`,
-      "ThemeName": `${product?.ThemeName ?? ""}`,
-      "Themeid": `${product?.Themeid}`,
-      "TitleLine": `${product?.TitleLine}`,
-      "UnitCost": `${product?.UnitCost ?? 0}`,
-      "UnitCostWithmarkup": (`${(product?.UnitCost ?? 0) + (product?.markup ?? 0)}`),
-      "colorstonecolorname": `${cSQopt ? cSQopt?.split('#')[1] : product?.colorstonecolorname}`,
-      "colorstonequality": `${cSQopt ? cSQopt?.split('#')[0] : product?.colorstonequality}`,
-      "diamondcolorname": `${diaQColOpt ? diaQColOpt?.split('#')[1] : product?.diamondcolorname}`,
-      "diamondpcs": `${product?.diamondpcs}`,
-      "diamondquality": `${(diaQColOpt ? diaQColOpt?.split('#')[0] : product?.diamondquality?.split(",")[0])}`,
-      "diamondsetting": `${product?.diamondsetting}`,
-      "diamondshape": `${product?.diamondshape}`,
-      "diamondweight": `${product?.diamondweight}`,
-      "encrypted_designno": `${product?.encrypted_designno ?? ""}`,
-      "hashtagid": `${product?.Hashtagid ?? ""}`,
-      "hashtagname": `${product?.Hashtagname ?? ""}`,
-      "imagepath": `${product?.imagepath}`,
-      "mediumimage": `${product?.MediumImagePath ?? ""}`,
-      "originalimage": `${product?.OriginalImagePath}`,
-      "storyline_html": `${product?.storyline_html ?? ""}`,
-      "storyline_video": `${product?.storyline_video ?? ""}`,
-      "thumbimage": `${product?.ThumbImagePath}`,
-      "totaladditionalvalueweight": `${product?.totaladditionalvalueweight}`,
-      "totalcolorstoneweight": `${product?.totalcolorstoneweight}`,
-      "totaldiamondweight": `${product?.totaldiamondweight}`,
-      "updatedate": `${product?.UpdateDate}`,
-      "videoname": `${product?.videoname ?? ""}`,
+      "MetalColorName": `${selectedColor ?? ""}`,
+      "MetalColorid": Number(`${singleProdData?.MetalColorid ?? 0}`),
+      "MetalPurity": `${(mtTypeOption?.split(' ')[1]) ?? ""}`,
+      "MetalPurityid": Number(`${singleProdData?.MetalTypeid ?? 0}`),
+      "MetalTypeName": `${mtTypeOption?.split(' ')[0]}`,
+      "MetalTypeid": Number(`${singleProdData?.MetalTypeid ?? 0}`),
+      "MetalWeight": Number(`${mtrdData?.I ?? 0}`),
+      "OcassionName":  `${findValueFromId("ocass", singleProdData?.Ocassionid)?.OcassionName ?? ""}`,
+      "Ocassionid": Number(`${singleProdData?.Ocassionid ?? 0}`),
+      "ProducttypeName":`${findValueFromId("prodtype", singleProdData?.Producttypeid)?.ProducttypeName ?? ""}`,
+      "Producttypeid": Number(`${singleProdData?.Producttypeid ?? 0}`),
+      "RollOverImageName": `${singleProdData?.RollOverImageName}`,
+      "SubCategoryName": `${findValueFromId("subcate", singleProdData?.SubCategoryid)?.SubCategoryName ?? ""}`,
+      "SubCategoryid": Number(`${singleProdData?.SubCategoryid ?? 0}`),
+      "ThemeName": `${findValueFromId("theme", singleProdData?.Themeid)?.ThemeName ?? ""}`,
+      "Themeid": Number(`${singleProdData?.Themeid ?? 0}`),
+      "TitleLine": `${singleProdData?.TitleLine}`,
+      "UnitCost": Number(`${singleProdData?.UnitCost ?? 0}`),
+      "UnitCostWithmarkup": Number(`${(singleProdData?.UnitCost ?? 0) + (singleProdData?.markup ?? 0)}`),
+      "colorstonecolorname": `${cSQopt?.split('-')[1] ?? "" }`,
+      "colorstonequality": `${cSQopt?.split('-')[0] ?? ""}`,
+      "diamondcolorname": `${ diaQColOpt?.split('#')[1] ?? ""}`,
+      "diamondpcs": Number(`${mtrdData?.J ?? 0}`),
+      "diamondquality": `${diaQColOpt?.split('#')[0] ?? ""}`,
+      "diamondsetting": `${singleProdData?.diamondsetting ?? ""}`,
+      "diamondshape": `${diaqcData?.diamondshape ?? ""}`,
+      "diamondweight": Number(`${diaqcData?.N ?? 0}`),
+      "encrypted_designno": `${singleProdData?.encrypted_designno ?? ""}`,
+      "hashtagid": Number(`${singleProdData?.Hashtagid ?? 0}`),
+      "hashtagname": `${singleProdData?.Hashtagname ?? ""}`,
+      "imagepath": `${singleProdData?.imagepath ?? ""}`,
+      "mediumimage": `${singleProdData?.MediumImagePath ?? ""}`,
+      "originalimage": `${singleProdData?.ImageName ?? ""}`,
+      "storyline_html": `${singleProdData?.storyline_html ?? ""}`,
+      "storyline_video": `${singleProdData?.storyline_video ?? ""}`,
+      "thumbimage": `${singleProdData?.ThumbImagePath ?? ""}`,
+      "totaladditionalvalueweight":Number( `${singleProdData?.totaladditionalvalueweight ?? ""}`),
+      "totalcolorstoneweight": Number(`${singleProdData?.totalcolorstoneweight ?? ""}`),
+      "totaldiamondweight": Number(`${singleProdData?.totaldiamondweight ?? ""}`),
+      "updatedate": `${singleProdData?.UpdateDate ?? ""}`,
+      "videoname": `${singleProdData?.videoname ?? ""}`,
       "FrontEnd_RegNo": `${storeInit?.FrontEnd_RegNo}`,
-      "Customerid": `${Customer_id?.id}`,
-      "PriceMastersetid": `${product?.PriceMastersetid ?? ""}`,
-      "quantity": `${lastEnteredQuantity ?? "1"}`,
-      "CurrencyRate": `${product?.CurrencyRate ?? ""}`,
-      "remarks_design": `${product?.remarks_design ?? ""}`,
-      "diamondcolorid": `${product?.diamondcolorid ?? ""}`,
-      "diamondqualityid": `${product?.diamondqualityid ?? ""}`,
-      "detail_ringsize": `${sizeOption ? (sizeOption ?? "") : (product?.detail_ringsize ?? "")}`,
-      "ProjMode": `${product?.ProjMode ?? ""}`,
-      "AlbumMasterid": `${product?.AlbumMasterid ?? ""}`,
-      "AlbumMastername": `${product?.AlbumMastername ?? ""}`,
-      "Albumcode": `${product?.Albumcode ?? ""}`,
-      "Designid": `${product?.Designid ?? ""}`
+      "Customerid": Number(`${Customer_id?.id}`),
+      "PriceMastersetid": Number(`${singleProdData?.PriceMastersetid ?? ""}`),
+      "quantity": Number(`${lastEnteredQuantity ?? "1"}`),
+      "CurrencyRate": `${mtrdData?.AA ?? ""}`,
+      "remarks_design": `${singleProdData?.remarks_design ?? ""}`,
+      "diamondcolorid": `${diaqcData?.I ?? ""}`,
+      "diamondqualityid": `${diaqcData?.G ?? ""}`,
+      "detail_ringsize": `${sizeOption ? (sizeOption ?? "") : (singleProdData?.detail_ringsize ?? "")}`,
+      "ProjMode": `${singleProdData?.ProjMode ?? ""}`,
+      "AlbumMasterid": Number(`${singleProdData?.AlbumMasterid ?? 0}`),
+      "AlbumMastername": `${singleProdData?.AlbumMastername ?? ""}`,
+      "Albumcode": `${singleProdData?.Albumcode ?? ""}`,
+      "Designid": Number(`${singleProdData?.Designid ?? 0}`)
     }
 
     let Data = { "designno": `${cartSelectData?.designno}`, "autocode": `${cartSelectData?.autocode}`, "metalcolorid": 0, "isSolStockNo": 0, "is_show_stock_website": "0", "isdelete_all": 0, "FrontEnd_RegNo": `${storeInit?.FrontEnd_RegNo}`, "Customerid": `${Customer_id?.id}`, "cartidlist": "" }
@@ -1063,15 +1087,17 @@ export default function CartPage() {
         await CommonAPI(body).then(async (res) => {
           if (res?.Data?.rd[0]?.msg === "success") {
             await getCartAndWishListData()
-            getCountFunc()
-            getCartData()
-            console.log("done", res);
+            await getCountFunc()
+            await getCartData()
+            toast.success("Product Updated successFully !!!")
           }
           else {
             console.log("error", res);
+            toast.error("Something Went Wrong!!")
           }
         }).catch((error) => {
           console.log("error", error);
+          toast.error("Something Went Wrong!!")
 
         })
 
@@ -1179,6 +1205,7 @@ export default function CartPage() {
   };
 
 
+  console.log('prodSelectDataprodSelectData', cartSelectData);
   return (
     <>
       <div
@@ -1211,17 +1238,18 @@ export default function CartPage() {
             }}
           >
 
-            <div style={{display: 'flex' , justifyContent: 'space-between', alignItems: 'center'}}>
-              <div className="backErrorMobile">
-                <IoArrowBackOutline style={{ height: '30px', width: '30px' }} onClick={() => navigation("/productpage")} />
-              </div>
-              <p className="SmiWishListTitle" style={{ paddingTop: "30px" }}>
-                My Cart
-              </p>
-              <div className="ClreareAllMobilee">
-                <p style={{ fontWeight: 600, textDecoration: 'underline',width:'80px', cursor: 'pointer' }} onClick={handleClickOpen}>Clear All</p>
-              </div>
-            </div>
+            {cartListData?.length !== 0 && (
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div className="backErrorMobile">
+                  <IoArrowBackOutline style={{ height: '30px', marginLeft: '5px', width: '30px', color: 'rgb(192 182 182)' }} onClick={() => navigation("/productpage")} />
+                </div>
+                <p className="SmiWishListTitle" style={{ paddingTop: "30px" }}>
+                  My Cart
+                </p>
+                <div className="ClreareAllMobilee">
+                  <p style={{ fontWeight: 600, margin: '0px', textDecoration: 'underline', width: '80px', cursor: 'pointer', color: 'rgb(192 182 182)' }} onClick={handleClickOpen}>Clear All</p>
+                </div>
+              </div>)}
 
 
 
@@ -1239,13 +1267,13 @@ export default function CartPage() {
                   >
                     List View
                   </button>
-                  <button
+                  {/* <button
                     className={`cartPageTopBtn ${value === 1 ? "activec" : ""}`}
                     onClick={() => handleChange(1)}
                     style={{ margin: '5px' }}
                   >
                     Image View
-                  </button>
+                  </button> */}
                   {/* </div> */}
 
                   <button
@@ -1254,12 +1282,12 @@ export default function CartPage() {
                   >
                     Clear All
                   </button>
-                  <button
+                  {/* <button
                     className={`cartPageTopBtn ${value === 3 ? "activec" : ""}`}
                     onClick={() => navigation("/productpage")}
                   >
                     Show ProductList
-                  </button>
+                  </button> */}
                   <button
                     className="placeOrderCartPageBtnMobile"
                     onClick={(event) => {
@@ -1282,7 +1310,7 @@ export default function CartPage() {
                     Show ProductList
                   </button> */}
 
-                  <div style={{ display: 'flex' }}>
+                  {/* <div style={{ display: 'flex' }}>
                     <button
                       className={`cartPageTopBtn ${value === 0 ? "activec" : ""}`}
                       onClick={() => handleChange(0)}
@@ -1297,7 +1325,7 @@ export default function CartPage() {
                     >
                       Image View
                     </button>
-                  </div>
+                  </div> */}
 
                   {/* <button
                     className={`cartPageTopBtn ${value === 2 ? "activec" : ""}`}
@@ -1356,7 +1384,7 @@ export default function CartPage() {
                         flexDirection: "column",
                         justifyContent: "center",
                         alignItems: "center",
-                        marginBlock: "150px",
+                        marginBlock: "200px",
                       }}
                     >
                       <p
@@ -1369,12 +1397,12 @@ export default function CartPage() {
                         No Data Available
                       </p>
                       <p>Please First Add To Cart Data</p>
-                      <button
+                      {/* <button
                         className="browseBtnMore"
                         onClick={() => navigation("/productpage")}
                       >
                         BROWSE OUR COLLECTION
-                      </button>
+                      </button> */}
                     </div>
                   )
                 ) : (
@@ -1389,22 +1417,36 @@ export default function CartPage() {
                           }}
                         >
                           <div className="popUpcontainer">
-                            <img
-                              src={
-                                storeInitData?.DesignImageFol +
-                                cartSelectData?.DefaultImageName?.slice(13)
-                              }
+
+                            <div
                               style={{
-                                border: "1px solid #e1e1e1",
                                 borderRadius: "12px",
-                                width: "350px",
-                                height: "350px"
+                                width: "370px",
+                                height: "410px",
+                                border: "1px solid #e1e1e1",
+                                overflow: 'hidden',
+                                position: 'relative'
                               }}
-                              onError={(e) => {
-                                e.target.src = noFoundImage;
-                              }}
-                            />
-                            <div style={{ width: "550px" }}>
+                              className="CartPageMainImageShowMobile"
+                            >
+                              <img
+                                src={
+                                  storeInitData?.DesignImageFol +
+                                  cartSelectData?.DefaultImageName?.slice(13)
+                                }
+                                style={{
+                                  borderRadius: "12px",
+                                  width: "370px",
+                                  height: "410px"
+                                }}
+                                onError={(e) => {
+                                  e.target.src = noFoundImage;
+                                }}
+                              />
+                              <p style={{ position: 'absolute', top: '5px', left: '5px', fontSize: '14px' }}>{cartSelectData?.designno}</p>
+                            </div>
+
+                            <div style={{ width: "550px" }} className="cartCustomizationMainMobile">
                               <div
                                 style={{
                                   width: "100%",
@@ -1413,7 +1455,7 @@ export default function CartPage() {
                                 }}
                                 className="srcolorsizecarat"
                               >
-                                <div
+                                {/* <div
                                   style={{
                                     fontSize: "40px",
                                     fontFamily: "FreightDisp Pro Medium",
@@ -1429,12 +1471,12 @@ export default function CartPage() {
                                   className="prodTitleLine"
                                 >
                                   {prodSelectData?.TitleLine}
-                                </div>
+                                </div> */}
 
                                 {isProductCuFlag === 1 && (
                                   <div
                                     style={{
-                                      borderTop: "1px solid #e1e1e1",
+                                      // borderTop: "1px solid #e1e1e1",
                                       marginInline: "-10px",
                                       padding: "20px",
                                     }}
@@ -1936,12 +1978,18 @@ export default function CartPage() {
                             <div
                               key={item.id}
                               className={`smiling-cartPageBoxMain ${cartSelectData && cartSelectData.id === item.id ? 'selected' : ''}`}
-                              onClick={() => {
+                              onClick={async() => {
                                 setCartSelectData(item);
-                                setProdFullInfo(item.designno)
+                                setProdFullInfo(item.designno);
                                 getSizeData(item.autocode);
                                 window.innerWidth <= 1080 &&
                                   setDialogOpen(true);
+                                
+                                  await SingleProductAPI(item?.designno).then((res)=>{
+                                      let data = res[0]
+                                      setSingleProdData(data)
+                                  })
+
                               }}
                             >
                               <div
@@ -2086,7 +2134,7 @@ export default function CartPage() {
                           </div>
 
                         </div>
-                        {/* `<div className="container-fluid totalpriceConatiner">
+                        <div className="container-fluid totalpriceConatiner">
                           <div className="row">
                             <div className="col-md-12" style={{ padding: '0' }}>
                               <Card className="text-center" style={{ border: '1px solid rgb(225, 225, 225', borderRadius: '12px' }}>
@@ -2108,7 +2156,7 @@ export default function CartPage() {
                               </Card>
                             </div>
                           </div>
-                        </div>` */}
+                        </div>
                       </div>
                     )}
                   </div>
@@ -2126,7 +2174,7 @@ export default function CartPage() {
                       flexDirection: "column",
                       justifyContent: "center",
                       alignItems: "center",
-                      marginTop: "150px",
+                      marginTop: "200px",
                     }}
                   >
                     <p
@@ -2139,12 +2187,12 @@ export default function CartPage() {
                       No Data Available
                     </p>
                     <p>Please First Add To Cart Data</p>
-                    <button
+                    {/* <button
                       className="browseBtnMore"
                       onClick={() => navigation("/productpage")}
                     >
                       BROWSE OUR COLLECTION
-                    </button>
+                    </button> */}
                   </div>
                 )
               ) : (
@@ -2248,7 +2296,7 @@ export default function CartPage() {
           </CustomTabPanel>
         </div>
 
-        <div className="mobileFootreCs">
+        <div style={{position: cartListData?.length === 0 && 'absolute', bottom: '0px', width: '100%'}} className="mobileFootreCs">
           <Footer />
         </div>
       </div>
@@ -2276,27 +2324,23 @@ export default function CartPage() {
               </div>
             </div>
             <div
-              className="smilingCartDeatilSub1"
+              className="smilingCartDeatilSub11"
               style={{ display: !prodSelectData && !cartSelectData && "none" }}
             >
               <div className="popUpcontainer">
                 <img
-                  // src={
-                  //   prodSelectData?.imagepath +
-                  //   prodSelectData?.MediumImagePath?.split(",")[0]
-                  // }
                   src={
                     storeInitData?.DesignImageFol +
-                    prodSelectData?.MediumImagePath?.split(",")[0]
+                    cartSelectData?.DefaultImageName?.slice(13)
                   }
                   style={{
                     border: "1px solid #e1e1e1",
                     borderRadius: "12px",
-                    width: "35%",
+                    width: "60%",
                   }}
                 />
 
-                <div>
+                <div style={{ width: '100%' }}>
                   <div
                     style={{
                       width: "100%",
@@ -2417,6 +2461,7 @@ export default function CartPage() {
                           style={{
                             display: "flex",
                             justifyContent: "space-between",
+                            flexWrap: 'wrap'
                           }}
                         >
                           {isDaimondCstoFlag == 1 && (
@@ -2494,55 +2539,56 @@ export default function CartPage() {
                               </select>
                             </div>
                           )}
+
+                          {(sizeData?.length !== 0 ||
+                            (productData?.DefaultSize &&
+                              productData.DefaultSize.length !== 0)) && (
+                              <div
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "column",
+                                  width: "49%",
+                                  marginTop: "30px",
+                                }}
+                              >
+                                <label
+                                  style={{ fontSize: "12.5px", color: "#7d7f85" }}
+                                >
+                                  SIZE:
+                                </label>
+                                <select
+                                  style={{
+                                    border: "none",
+                                    outline: "none",
+                                    color: "#7d7f85",
+                                    fontSize: "12.5px",
+                                  }}
+                                  onChange={(e) => handelSize(e.target.value)}
+                                  defaultValue={
+                                    productData && productData.DefaultSize
+                                      ? productData.DefaultSize
+                                      : sizeData.find(
+                                        (size) => size.IsDefaultSize === 1
+                                      )?.id
+                                  }
+                                >
+                                  {sizeData?.map((size) => (
+                                    <option
+                                      key={size.id}
+                                      value={sizeOption} // Pass sizename as value
+                                      selected={
+                                        productData &&
+                                        productData.DefaultSize === size.sizename
+                                      }
+                                    >
+                                      {size.sizename}
+                                    </option>
+                                  ))}
+                                </select>
+                              </div>
+                            )}
                         </div>
 
-                        {(sizeData?.length !== 0 ||
-                          (productData?.DefaultSize &&
-                            productData.DefaultSize.length !== 0)) && (
-                            <div
-                              style={{
-                                display: "flex",
-                                flexDirection: "column",
-                                width: "49%",
-                                marginTop: "30px",
-                              }}
-                            >
-                              <label
-                                style={{ fontSize: "12.5px", color: "#7d7f85" }}
-                              >
-                                SIZE:
-                              </label>
-                              <select
-                                style={{
-                                  border: "none",
-                                  outline: "none",
-                                  color: "#7d7f85",
-                                  fontSize: "12.5px",
-                                }}
-                                onChange={(e) => handelSize(e.target.value)}
-                                defaultValue={
-                                  productData && productData.DefaultSize
-                                    ? productData.DefaultSize
-                                    : sizeData.find(
-                                      (size) => size.IsDefaultSize === 1
-                                    )?.id
-                                }
-                              >
-                                {sizeData?.map((size) => (
-                                  <option
-                                    key={size.id}
-                                    value={sizeOption} // Pass sizename as value
-                                    selected={
-                                      productData &&
-                                      productData.DefaultSize === size.sizename
-                                    }
-                                  >
-                                    {size.sizename}
-                                  </option>
-                                ))}
-                              </select>
-                            </div>
-                          )}
                       </div>
                     )}
                   </div>
@@ -2652,59 +2698,6 @@ export default function CartPage() {
                         </span>
                       </button>
                     </div>
-                    {/* <div
-                      className="smilingQualityMain"
-                      style={{ display: "flex", alignItems: "center" }}
-                    >
-                      <input
-                        type="text"
-                        style={{
-                          border: "0px",
-                          textAlign: "center",
-                          outline: "none",
-                          width: "80px",
-                          height: "35px",
-                          border: "1px solid #7d7f85",
-                        }}
-                        maxLength={2}
-                        className="simlingQualityBox"
-                        inputMode="numeric"
-                        onClick={(event) => event.target.select()}
-                        value={lastEnteredQuantity}
-                        onChange={(event) => handleInputChange(event)}
-                      />
-                      <button
-                        className="SmilingUpdateQuantityBtn"
-                        onClick={() =>
-                          handleUpdateQuantity(prodSelectData?.designno)
-                        }
-                      >
-                        QTY
-                      </button>
-                    </div> */}
-
-                    {/* <div
-                      className="smilingAddresingleMobileMain"
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        marginLeft: "30px",
-                      }}
-                    >
-                      <textarea
-                        type="text"
-                        placeholder="Enter Remarks..."
-                        value={remarks}
-                        onChange={(event) => handleInputChangeRemarks(event)}
-                        className="YourCartMainRemkarBoxSingle"
-                      />
-                      <button
-                        onClick={() => handleSubmit(cartSelectData)}
-                        className="SmilingAddSingleRemkarBtn"
-                      >
-                        Add
-                      </button>
-                    </div> */}
                     <div className="mt-3">
                       <div className="container-fluid mainRenarkConatiner" style={{ border: '1px solid rgb(225, 225, 225)', borderRadius: '12px' }}>
                         <div className="d-flex justify-content-center row">

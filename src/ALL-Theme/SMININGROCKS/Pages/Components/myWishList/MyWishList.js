@@ -294,12 +294,12 @@ export default function MyWishList() {
               <button className="smiTopAddAllBtn" onClick={handleAddAll}>
                 ADD TO CART ALL
               </button>
-              <button
+              {/* <button
                 className="smiTopAddAllBtn"
                 onClick={() => navigation("/productpage")}
               >
                 Show ProductList
-              </button>
+              </button> */}
             </div>
           )}
 
@@ -325,12 +325,12 @@ export default function MyWishList() {
                     No Data Available
                   </p>
                   <p>Please First Add To Wishlist Data</p>
-                  <button
+                  {/* <button
                     className="browseBtnMore"
                     onClick={() => navigation("/productpage")}
                   >
                     BROWSE OUR COLLECTION
-                  </button>
+                  </button> */}
                 </div>
               )
               : wishlistData?.map((item) => (

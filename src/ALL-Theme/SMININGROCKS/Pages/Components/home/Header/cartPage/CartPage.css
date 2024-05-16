@@ -5,21 +5,26 @@
 
 
 .smilingCartDeatilSub1 {
-    /* width: 75%; */
     display: flex;
     justify-content: center;
-    /* background-color: whitesmoke; */
-    /* border:1px solid #e1e1e1; */
     margin: 2px 20px;
     border-radius: 12px;
     height: 100%;
     padding: 70px 0px;
+}
 
-    /* border:1px solid red */
+.smilingCartDeatilSub11 {
+    display: flex;
+    justify-content: center;
+    margin: 2px 20px;
+    border-radius: 12px;
+    height: 100%;
+    padding: 10px 0px;
 }
 
 .smilingCartDeatilSub2 {
     width: 100%;
+    min-height: 400px;
 }
 
 .prodTitleLine {
@@ -461,6 +466,13 @@
     }
 }
 
+@media screen and (max-width: 1600px) {
+
+    .smilingCartPageMain {
+        margin-inline: 0% !important;
+    }
+}
+
 @media screen and (min-width: 1450px) {
     .placeOrderCartPageBtnMobile {
         display: none !important;
@@ -468,7 +480,32 @@
 
 }
 
+
 @media screen and (max-width: 1450px) {
+
+    .cartCustomizationMainMobile {
+        width: 400px !important;
+    }
+
+    .mainRenarkConatiner {
+        width: 400px !important;
+    }
+
+    .resCon {
+        width: 45% !important;
+    }
+
+    .mainCartContainer {
+        gap: 5px !important;
+        margin-top: 5px;
+    }
+
+    .smilingCartDeatilSub1 {
+        padding: 0px !important;
+        width: 100%;
+    }
+
+
 
     .smilingCartPagePlaceOrderBtnMainWeb {
         display: none !important;
@@ -477,12 +514,14 @@
     .placeOrderCartPageBtnMobile {
         background-color: #888;
         color: white;
+        height: 60px;
+        width: 150px;
         border: none;
-        outline: none;
-        height: 45px;
-        border-radius: 5px;
-        width: 200px;
+        font-size: 13px;
+        cursor: pointer;
         font-weight: 500;
+        font-family: 'PT Sans', sans-serif;
+        margin: 10px;
     }
 
     .smilingCartPageDataMain {
@@ -524,6 +563,29 @@
     }
 }
 
+@media (min-width : 1070px) and (max-width: 1290px) {
+
+    .CartPageMainImageShowMobile {
+        height: 680px !important;
+    }
+}
+
+@media screen and (max-width: 1070px) {
+    .cartImageShow {
+        height: 220px !important;
+        width: 100% !important;
+    }
+
+    .resCon {
+        width: 70% !important;
+    }
+
+    .mainCartContainer {
+        display: flex;
+        justify-content: center;
+    }
+}
+
 @media screen and (min-width: 599px) {
     .smilingListCartTopButtonMobile {
         display: none !important;
@@ -538,12 +600,21 @@
     }
 }
 
+/* .mobileFootreCs {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+} */
+
 @media screen and (max-width: 600px) {
 
     .smilingListCartTopButton {
         display: none !important;
     }
 
+    .resCon {
+        width: 100% !important;
+    }
 
     .placeOrderCartPageBtnMobile {
         width: 100%;
@@ -551,6 +622,7 @@
         height: 50px !important;
         position: fixed;
         bottom: 0px;
+        margin: 0px !important;
         z-index: 1111111111111;
     }
 
@@ -566,7 +638,7 @@
 
     .similingCartPageBotttomMain {
         margin: 0px !important;
-        padding: 10px !important;
+        padding: 10px 0px !important;
     }
 
     .feature {
@@ -601,11 +673,15 @@
 
     .SmiWishListTitle {
         padding-top: 0px !important;
+        margin: 5px;
     }
 
     .SmiWishListTitle {
-        font-size: 30px;
+        font-size: 25px;
+        margin-left: 30px;
     }
+
+
 }
 
 
@@ -616,11 +692,12 @@
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
+        margin-bottom: 50px !important;
     }
 
     .smilingQualityMain {
         margin-block: 10px !important;
-        width: 100% !important;
+        width: 50% !important;
         margin-right: 0px !important;
     }
 
@@ -679,7 +756,11 @@
     }
 
     .mainRenarkConatiner {
-        width: 285px;
+        width: 100%;
+    }
+
+    .mt-3 {
+        width: 100%;
     }
 
     .mainOrderRenarkConatiner {

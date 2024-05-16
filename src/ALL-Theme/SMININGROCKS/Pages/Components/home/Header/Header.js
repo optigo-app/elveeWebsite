@@ -133,28 +133,30 @@ export default function Header() {
     setMenul2data(tempMenu2data)
   };
 
-  const handelNewMenuData = async (param) => {
-    setNewMenuData(param)
-    setIsDropdownOpen(false)
-    setDrawerShowOverlay(false)
-    setDrawerShowOverlay(false)
-    localStorage.setItem("menuparams", JSON.stringify(param))
-    await productListApiCall(param).then((res) => {
-      if (res) {
-        console.log("res", res);
-        localStorage.setItem("allproductlist", JSON.stringify(res))
-      }
-      return res
-    }).then(async (res) => {
-      if (res) {
-        let autoCodeList = JSON.parse(localStorage.getItem("autoCodeList"))
-        console.log("autoCodeList", autoCodeList)
-        await getDesignPriceList(param, 1, {}, {}, autoCodeList)
-        navigation("/productpage", { state: { menuFlag: true } })
-      }
-
-    })
-  }
+  // const handelNewMenuData = async (param) => {
+  //   setNewMenuData(param)
+  //   setIsDropdownOpen(false)
+  //   setDrawerShowOverlay(false)
+  //   setDrawerShowOverlay(false)
+  //   localStorage.setItem("menuparams", JSON.stringify(param))
+  //   navigation("/productpage", { state: { menuFlag: true }})
+    
+  //   await productListApiCall(param).then((res) => {
+  //     if (res) {
+  //       console.log("res", res);
+  //       localStorage.setItem("allproductlist", JSON.stringify(res))
+  //     }
+  //     return res
+  //   }).then(async(res)=>{
+  //     if(res){
+  //       let autoCodeList = JSON.parse(localStorage.getItem("autoCodeList"))
+  //       console.log("autoCodeList",autoCodeList)
+  //       await getDesignPriceList(param,1,{},{},autoCodeList)
+  //     }
+      
+  //   })
+    
+  // }
 
 
   useEffect(() => {
@@ -546,6 +548,10 @@ export default function Header() {
   };
 
   const handleMenuClick = async (param1Item, param2Item) => {
+    // localStorage.removeItem("selectedCombomt")
+    // localStorage.removeItem("selectedCombodia")
+    // localStorage.removeItem("selectedCombocs")
+
     let menuDataWithoutParam1;
 
     if (param1Item?.param0dataid) {
@@ -569,6 +575,8 @@ export default function Header() {
     }
 
     console.log('finalData', finalData);
+    navigation("/productpage", { state: { menuFlag: true, filtervalue: finalData } })
+
 
     if (finalData) {
       let resData;
@@ -1140,84 +1148,89 @@ export default function Header() {
                     <img src={`${storImagePath()}/images/Menu/Menu2.jpg`} alt="#" className="menuImages" />
                   </div>
 
-                </div>
               </div>
-            </>
-          </div >
-        }
+            </div>
+          </>
+        </div >
+      }
+      <div
+        style={{
+          top: 0,
+          width: "100%",
+          zIndex: "100",
+        }}
+        className="mobileHeaderSmining"
+      >
         <div
           style={{
-            top: 0,
-            width: "100%",
-            zIndex: "100",
+            display: "flex",
+            justifyContent: "space-between",
+            // padding: "20px",
+            height: '65px'
           }}
-          className="mobileHeaderSmining"
+          className="smilingMobileSubDiv"
         >
           <div
             style={{
               display: "flex",
-              justifyContent: "space-between",
-              // padding: "20px",
+              alignItems: "center",
             }}
-            className="smilingMobileSubDiv"
+            className="mobileViewFirstDiv1"
+          // onClick={() => setDrawerOpen(true)}
           >
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-              }}
-              className="mobileViewFirstDiv1"
-            // onClick={() => setDrawerOpen(true)}
+            <IconButton
+              style={{ color: "white" }}
+              onClick={() => setDrawerOpen(true)}
+              aria-label="open menu"
             >
-              <IconButton
-                style={{ color: "white" }}
-                onClick={() => setDrawerOpen(true)}
-                aria-label="open menu"
-              >
-                <MenuIcon style={{ fontSize: "35px" }} />
-              </IconButton>
-            </div>
-            <div
-              className="mobileViewFirstDiv2"
-            >
-              <a href="/" className="mobileViewFirstDiv2">
-                <img src={titleImg} className="MainlogogMobileImage" style={islogin == 'true' ? containerStyle : alternateStyle} />
-              </a>
-            </div>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "flex-end",
-              }}
+              <MenuIcon style={{ fontSize: "35px" }} />
+            </IconButton>
+          </div>
+          <div
+            className="mobileViewFirstDiv2"
+          >
+            <a href="/" className="mobileViewFirstDiv2">
+              <img src={titleImg} className="MainlogogMobileImage" style={islogin == 'true' ? containerStyle : alternateStyle} />
+            </a>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-end",
+            }}
 
               className="mobileViewFirstDiv3"
             >
 
-              {islogin === "false" ? (
-                <li
-                  className="nav-li-smining"
-                  style={{ cursor: "pointer", color: 'black', marginRight: '15px' }}
-                  onClick={() => navigation('/LoginOption')}
-                >
-                  Log in
-                </li>
-              ) :
+            {islogin === "false" ? (
+              <li
+                className="nav-li-smining"
+                style={{ cursor: "pointer", color: 'black', marginRight: '15px' }}
+                onClick={() => navigation('/LoginOption')}
+              >
+                Log in
+              </li>
+            ) :
+              <div
+                style={{
+                  display: "flex",
+                  margin: "20px",
+                }}
+            className="mobileViewFirstDiv3Sub"
+
+              >
                 <div
                   style={{
                     display: "flex",
-                    margin: "20px",
+                    alignItems: "center",
+                    width: "20%",
+                    gap: '20px'
                   }}
+            className="mobileViewFirstDiv3Sub-sub"
+
                 >
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      width: "20%",
-                      gap: '20px'
-                    }}
-                  >
-                    {/* {location?.pathname == '/productpage' &&
+                  {/* {location?.pathname == '/productpage' &&
                     <li className="searchiconInMobile" onClick={toggleOverlay} style={{ listStyle: 'none', width: '40px', textAlign: 'center', cursor: 'pointer' }}>
                       <IoSearch color="#7D7F85" fontSize='30px' />
                     </li>
