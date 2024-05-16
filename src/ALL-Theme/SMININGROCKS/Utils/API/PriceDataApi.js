@@ -2,15 +2,10 @@ import { CommonAPI } from "./CommonAPI";
 
 export const getDesignPriceList = async (param,page=1,obj={},filterObj={},autocodeList) => {
 
-  
-  
-  
   const storeInit = JSON.parse(localStorage.getItem("storeInit"))
   const loginUserDetail = JSON.parse(localStorage.getItem("loginUserDetail"));
   const UserEmail = localStorage.getItem("registerEmail")
 
-  
-  
   let mtid =  obj?.mt ?? loginUserDetail?.MetalId
   let diaqcId = obj?.dqc?.length > 0  && obj?.dqc[0] !== undefined && obj?.dqc[1] !== undefined ? `${obj?.dqc[0]},${obj?.dqc[1]}` :loginUserDetail?.cmboDiaQCid
   let csqcId = obj?.csqc?.length > 0 && obj?.csqc[0] !== undefined && obj?.csqc[1] !== undefined ? `${obj?.csqc[0]},${obj?.csqc[1]}` :loginUserDetail?.cmboCSQCid
@@ -81,9 +76,11 @@ export const getDesignPriceList = async (param,page=1,obj={},filterObj={},autoco
   let finalData;
 
   await CommonAPI(body).then((res) => {
-    localStorage.setItem("getPriceData", JSON.stringify(res?.Data))
+    if(res){
+      localStorage.setItem("getPriceData", JSON.stringify(res?.Data))
+      finalData = res?.Data 
+    }
     //   setpriceDataApi(res?.Data)
-    finalData = res?.Data 
   })
 
   return finalData
