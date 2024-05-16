@@ -118,8 +118,8 @@ export default function CartPage() {
   const [csData, setCsData] = useState([])
   const [fullprodData, setFullProdData] = useState();
   const [cartPageLoding, setCartPageloding] = useState(false);
-  const [singleProdData,setSingleProdData] = useState();
-  const [cartUpdateSnackbar,setCartUpdateSnackbar] = useState("")
+  const [singleProdData, setSingleProdData] = useState();
+  const [cartUpdateSnackbar, setCartUpdateSnackbar] = useState("")
 
 
 
@@ -132,25 +132,25 @@ export default function CartPage() {
     })
   }
 
-  const cartSingalDataAPICalling = async() =>{
-    if(cartListData){
-      await SingleProductAPI(cartListData[0]?.designno).then((res)=>{
+  const cartSingalDataAPICalling = async () => {
+    if (cartListData) {
+      await SingleProductAPI(cartListData[0]?.designno).then((res) => {
         let data = res[0]
         setSingleProdData(data)
       })
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     cartSingalDataAPICalling()
-  },[])
-
-  
-  console.log('singleProdData',singleProdData,mtrdData,diaqcData,csData)
+  }, [])
 
 
-  useEffect(()=>{
-    if(cartListData?.length > 0){
+  console.log('singleProdData', singleProdData, mtrdData, diaqcData, csData)
+
+
+  useEffect(() => {
+    if (cartListData?.length > 0) {
       setProdFullInfo(cartListData[0]?.designno)
     }
   }, [cartListData])
@@ -431,7 +431,7 @@ export default function CartPage() {
     }
     // let gt = showPrice + showPrice1 + showPrice2;
     // setGrandTotal(gt ?? 0);
-  }, [fullprodData, mtTypeOption, diaQColOpt, cSQopt, cartSelectData,singleProdData])
+  }, [fullprodData, mtTypeOption, diaQColOpt, cSQopt, cartSelectData, singleProdData])
 
   useEffect(() => {
     let finalmetalTypeName = cartSelectData?.metaltypename?.length > 4 ? `${cartSelectData?.metaltypename?.split(" ")[0]}` : `${cartSelectData?.metaltypename}`
@@ -976,19 +976,19 @@ export default function CartPage() {
       "DQuality": `${diaQColOpt?.split('#')[0] ?? ""}`,
       "DColor": `${diaQColOpt?.split('#')[1] ?? ""}`,
       "cmboMetalType": `${findMetalType(singleProdData?.MetalTypeid)}`,
-      "AdditionalValWt":  Number(`${singleProdData?.AdditionalValWt ?? 0}`),
+      "AdditionalValWt": Number(`${singleProdData?.AdditionalValWt ?? 0}`),
       "BrandName": `${findValueFromId("cate", singleProdData?.Categoryid)?.CategoryName ?? ""}`,
       "Brandid": Number(`${singleProdData?.Brandid ?? 0}`),
       "CategoryName": `${findValueFromId("cate", singleProdData?.Categoryid)?.CategoryName ?? ""}`,
-      "Categoryid": Number(`${singleProdData?.Categoryid??0}`),
-      "CenterStoneId": Number(`${singleProdData?.CenterStoneId??0}`),
-      "CenterStonePieces": Number(`${singleProdData?.CenterStonePieces??0}`),
+      "Categoryid": Number(`${singleProdData?.Categoryid ?? 0}`),
+      "CenterStoneId": Number(`${singleProdData?.CenterStoneId ?? 0}`),
+      "CenterStonePieces": Number(`${singleProdData?.CenterStonePieces ?? 0}`),
       "CollectionName": `${findValueFromId("collect", singleProdData?.Collectionid)?.CollectionName ?? ""}`,
       "Collectionid": Number(`${singleProdData?.Collectionid ?? 0}`),
       "ColorWiseRollOverImageName": `${singleProdData?.ColorWiseRollOverImageName ?? ""}`,
       "DefaultImageName": `${singleProdData?.DefaultImageName}`,
-      "DisplayOrder": Number(`${singleProdData?.DisplayOrder??0}`),
-      "FrontEnd_OrderCnt": Number(`${singleProdData?.FrontEnd_OrderCnt??0}`),
+      "DisplayOrder": Number(`${singleProdData?.DisplayOrder ?? 0}`),
+      "FrontEnd_OrderCnt": Number(`${singleProdData?.FrontEnd_OrderCnt ?? 0}`),
       "GenderName": `${findValueFromId("gender", singleProdData?.Genderid)?.GenderName ?? ""}`,
       "Genderid": Number(`${singleProdData?.Genderid ?? 0}`),
       "Grossweight": `${Number(`${mtrdData?.N ?? 0}`)}`,
@@ -1008,9 +1008,9 @@ export default function CartPage() {
       "MetalTypeName": `${mtTypeOption?.split(' ')[0]}`,
       "MetalTypeid": Number(`${singleProdData?.MetalTypeid ?? 0}`),
       "MetalWeight": Number(`${mtrdData?.I ?? 0}`),
-      "OcassionName":  `${findValueFromId("ocass", singleProdData?.Ocassionid)?.OcassionName ?? ""}`,
+      "OcassionName": `${findValueFromId("ocass", singleProdData?.Ocassionid)?.OcassionName ?? ""}`,
       "Ocassionid": Number(`${singleProdData?.Ocassionid ?? 0}`),
-      "ProducttypeName":`${findValueFromId("prodtype", singleProdData?.Producttypeid)?.ProducttypeName ?? ""}`,
+      "ProducttypeName": `${findValueFromId("prodtype", singleProdData?.Producttypeid)?.ProducttypeName ?? ""}`,
       "Producttypeid": Number(`${singleProdData?.Producttypeid ?? 0}`),
       "RollOverImageName": `${singleProdData?.RollOverImageName}`,
       "SubCategoryName": `${findValueFromId("subcate", singleProdData?.SubCategoryid)?.SubCategoryName ?? ""}`,
@@ -1020,9 +1020,9 @@ export default function CartPage() {
       "TitleLine": `${singleProdData?.TitleLine}`,
       "UnitCost": Number(`${singleProdData?.UnitCost ?? 0}`),
       "UnitCostWithmarkup": Number(`${(singleProdData?.UnitCost ?? 0) + (singleProdData?.markup ?? 0)}`),
-      "colorstonecolorname": `${cSQopt?.split('-')[1] ?? "" }`,
+      "colorstonecolorname": `${cSQopt?.split('-')[1] ?? ""}`,
       "colorstonequality": `${cSQopt?.split('-')[0] ?? ""}`,
-      "diamondcolorname": `${ diaQColOpt?.split('#')[1] ?? ""}`,
+      "diamondcolorname": `${diaQColOpt?.split('#')[1] ?? ""}`,
       "diamondpcs": Number(`${mtrdData?.J ?? 0}`),
       "diamondquality": `${diaQColOpt?.split('#')[0] ?? ""}`,
       "diamondsetting": `${singleProdData?.diamondsetting ?? ""}`,
@@ -1037,7 +1037,7 @@ export default function CartPage() {
       "storyline_html": `${singleProdData?.storyline_html ?? ""}`,
       "storyline_video": `${singleProdData?.storyline_video ?? ""}`,
       "thumbimage": `${singleProdData?.ThumbImagePath ?? ""}`,
-      "totaladditionalvalueweight":Number( `${singleProdData?.totaladditionalvalueweight ?? ""}`),
+      "totaladditionalvalueweight": Number(`${singleProdData?.totaladditionalvalueweight ?? ""}`),
       "totalcolorstoneweight": Number(`${singleProdData?.totalcolorstoneweight ?? ""}`),
       "totaldiamondweight": Number(`${singleProdData?.totaldiamondweight ?? ""}`),
       "updatedate": `${singleProdData?.UpdateDate ?? ""}`,
@@ -1243,7 +1243,7 @@ export default function CartPage() {
                 <div className="backErrorMobile">
                   <IoArrowBackOutline style={{ height: '30px', marginLeft: '5px', width: '30px', color: 'rgb(192 182 182)' }} onClick={() => navigation("/productpage")} />
                 </div>
-                <p className="SmiWishListTitle" style={{ paddingTop: "30px" }}>
+                <p className="SmiCartTitle" style={{ paddingTop: "30px" }}>
                   My Cart
                 </p>
                 <div className="ClreareAllMobilee">
@@ -1260,13 +1260,13 @@ export default function CartPage() {
                   style={{ marginTop: "0px" }}
                 >
                   {/* <div style={{ display: 'flex' }}> */}
-                  <button
+                  {/* <button
                     className={`cartPageTopBtn ${value === 0 ? "activec" : ""}`}
                     onClick={() => handleChange(0)}
                     style={{ margin: '5px' }}
                   >
                     List View
-                  </button>
+                  </button> */}
                   {/* <button
                     className={`cartPageTopBtn ${value === 1 ? "activec" : ""}`}
                     onClick={() => handleChange(1)}
@@ -1277,8 +1277,8 @@ export default function CartPage() {
                   {/* </div> */}
 
                   <button
-                    className={`cartPageTopBtn ${value === 2 ? "activec" : ""}`}
-                    onClick={handleRemoveAllWishList}
+                    className="cartPageTopBtn"
+                    onClick={handleClickOpen}
                   >
                     Clear All
                   </button>
@@ -1288,7 +1288,19 @@ export default function CartPage() {
                   >
                     Show ProductList
                   </button> */}
+              
+
                   <button
+                    className="cartPageTopBtn"
+                    onClick={(event) => {
+                      navigation("/Delivery");
+                      window.scrollTo(0, 0);
+                    }}
+                  >
+                    Place Order
+                  </button>
+                </div>
+                <button
                     className="placeOrderCartPageBtnMobile"
                     onClick={(event) => {
                       navigation("/Delivery");
@@ -1296,7 +1308,6 @@ export default function CartPage() {
                   >
                     Place Order
                   </button>
-                </div>
 
                 <div
                   className="smilingListCartTopButtonMobile"
@@ -1334,35 +1345,9 @@ export default function CartPage() {
                     Clear All
                   </button> */}
 
-                  <button
-                    className="placeOrderCartPageBtnMobile"
-                    onClick={(event) => {
-                      navigation("/Delivery");
-                      window.scrollTo(0, 0);
-                    }}
-                  >
-                    Place Order
-                  </button>
+
                 </div>
-                <div
-                  className="smilingCartPagePlaceOrderBtnMainWeb"
-                  style={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    margin: "-50px 70px 0px 20px",
-                    paddingBottom: "50px",
-                  }}
-                >
-                  <button
-                    className="cartPageTopBtn"
-                    onClick={(event) => {
-                      navigation("/Delivery");
-                      window.scrollTo(0, 0);
-                    }}
-                  >
-                    Place Order
-                  </button>
-                </div>
+
               </div>
             )}
           </div>
@@ -1478,7 +1463,7 @@ export default function CartPage() {
                                     style={{
                                       // borderTop: "1px solid #e1e1e1",
                                       marginInline: "-10px",
-                                      padding: "20px",
+                                      padding: "10px",
                                     }}
                                   >
                                     <div
@@ -1511,6 +1496,7 @@ export default function CartPage() {
                                               outline: "none",
                                               color: "#7d7f85",
                                               fontSize: "12.5px",
+                                              height: '30px'
                                             }}
                                             // value={mtTypeOption ?? cartSelectData?.metal}
                                             value={mtTypeOption}
@@ -1552,6 +1538,8 @@ export default function CartPage() {
                                               outline: "none",
                                               color: "#7d7f85",
                                               fontSize: "12.5px",
+                                              height: '30px'
+
                                             }}
                                             value={selectedColor}
                                             onChange={(e) =>
@@ -1576,7 +1564,7 @@ export default function CartPage() {
                                             display: "flex",
                                             flexDirection: "column",
                                             width: "45%",
-                                            marginTop: "30px",
+                                            marginTop: "20px",
                                           }}
                                         >
                                           <label
@@ -1593,6 +1581,7 @@ export default function CartPage() {
                                               outline: "none",
                                               color: "#7d7f85",
                                               fontSize: "12.5px",
+                                              height: '30px'
                                             }}
                                             value={diaQColOpt}
                                             onChange={(e) =>
@@ -1637,6 +1626,7 @@ export default function CartPage() {
                                                 outline: "none",
                                                 color: "#7d7f85",
                                                 fontSize: "12.5px",
+                                                height: '30px'
                                               }}
                                               value={cSQopt}
                                               onChange={(e) =>
@@ -1978,17 +1968,17 @@ export default function CartPage() {
                             <div
                               key={item.id}
                               className={`smiling-cartPageBoxMain ${cartSelectData && cartSelectData.id === item.id ? 'selected' : ''}`}
-                              onClick={async() => {
+                              onClick={async () => {
                                 setCartSelectData(item);
                                 setProdFullInfo(item.designno);
                                 getSizeData(item.autocode);
                                 window.innerWidth <= 1080 &&
                                   setDialogOpen(true);
-                                
-                                  await SingleProductAPI(item?.designno).then((res)=>{
-                                      let data = res[0]
-                                      setSingleProdData(data)
-                                  })
+
+                                await SingleProductAPI(item?.designno).then((res) => {
+                                  let data = res[0]
+                                  setSingleProdData(data)
+                                })
 
                               }}
                             >
@@ -2017,7 +2007,7 @@ export default function CartPage() {
                                   e.target.src = noFoundImage;
                                 }}
                               />
-                              <div className="listing-features" >
+                              <div className="listing-featuresN" >
                                 <div>
                                   <div className='feature'>
                                     <p>
@@ -2026,7 +2016,7 @@ export default function CartPage() {
                                   </div>
                                   <div className='feature'>
                                     <p>
-                                      <span className="feature-count">DWT :{" "} </span>  {item?.Rec_DiamondWeight} /{" "}
+                                      <span className="feature-count">DWT :{" "} </span>  {(item?.Rec_DiamondWeight).toFixed(2)} /{" "}
                                       {item?.totaldiamondpcs}
                                     </p>
                                   </div>
@@ -2045,7 +2035,7 @@ export default function CartPage() {
                                   </div>
                                   <div className='feature'>
                                     <p>
-                                      <span className="feature-count">GWT :{" "}  </span>   {item?.grossweight}
+                                      <span className="feature-count">GWT :{" "}  </span>   {(item?.grossweight).toFixed(2)} /
                                       {item?.totaldiamondpcs}
                                     </p>
                                   </div>
@@ -2296,7 +2286,7 @@ export default function CartPage() {
           </CustomTabPanel>
         </div>
 
-        <div style={{position: cartListData?.length === 0 && 'absolute', bottom: '0px', width: '100%'}} className="mobileFootreCs">
+        <div style={{ position: cartListData?.length === 0 && 'absolute', bottom: '0px', width: '100%' }} className="mobileFootreCs">
           <Footer />
         </div>
       </div>
@@ -2374,7 +2364,7 @@ export default function CartPage() {
                         style={{
                           borderTop: "1px solid #e1e1e1",
                           marginInline: "-10px",
-                          padding: "20px",
+                          padding: "10px",
                         }}
                       >
                         <div

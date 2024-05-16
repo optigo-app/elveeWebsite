@@ -725,7 +725,22 @@
     .mobileViewFirstDiv3 {
         width: 25% !important;
     }
+
+    .mobileViewSmilingTop4Icone{
+        font-size: 22px!important;
+    }
+    .mobileViewSmilingTop1Icone{
+        font-size: 22px;
+    }
+    .mobileViewSmilingTop2Icone{
+        font-size: 22px;
+    }
+    .mobileViewSmilingTop3Icone{
+        font-size: 22px;
+        margin-top: -2px!important;
+    }
 }
+
 
 @media screen and (max-width:1300px) {
     .css-i8mxf8-MuiModal-root-MuiDrawer-root .MuiDrawer-paper {
@@ -737,7 +752,7 @@
 
 @media (min-width: 768px) and (max-width: 1440px) {
     .MainlogogMobileImage {
-        width: 60% !important;
+        width: 45% !important;
         margin-left: 0px !important;
     }
 }
@@ -889,17 +904,6 @@
         margin-top: -12px;
     }
 
-    .mobileViewSmilingTop2Icone {
-        height: 25px !important;
-        width: 25px !important;
-    }
-
-    .mobileViewSmilingTop3Icone {
-        height: 25px !important;
-        width: 25px !important;
-        margin-top: -5px!important;
-    }
-
     .mobileViewFirstDiv3Sub{
         margin: 20px 10px!important;
     }
@@ -920,7 +924,7 @@
     }
 
     .mobileHeaderSmining {
-        height: 70px !important;
+        height: 60px !important;
     }
     .searchiconInMobile {
         display: none;
