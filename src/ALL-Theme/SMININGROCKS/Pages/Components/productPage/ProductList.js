@@ -397,6 +397,7 @@ const ProductList = () => {
       setProductApiData2(data)
     }
     if (!prodCount?.length) setProdCount(prodCount)
+    setFilterChecked({})
   }, [getMenuTransData])
 
   useEffect(() => {
@@ -1097,7 +1098,7 @@ const ProductList = () => {
       output[key] = output[key].slice(0, -2);
     }
 
-    // console.log("activeFilters",output)
+    console.log("activeFilters",output)
 
     console.log("priceDataApi", priceDataApi);
 
@@ -2276,6 +2277,23 @@ const ProductList = () => {
 
 
   const handlePageChange = async (event, value) => {
+    const activeFilters = Object.values(filterChecked).filter(ele => ele.checked);
+
+    const output = {};
+
+    activeFilters.forEach(item => {
+      if (!output[item.type]) {
+        output[item.type] = '';
+      }
+      output[item.type] += `${item.value}, `;
+    });
+
+    for (const key in output) {
+      output[key] = output[key].slice(0, -2);
+    }
+
+    console.log("filterData",output);
+
     setFilterProdLoding(true);
     let param = JSON.parse(localStorage.getItem("menuparams"))
     setCurrentPage(value)
@@ -2290,14 +2308,14 @@ const ProductList = () => {
       window.scroll(0, 0)
     }, 100);
 
-    await productListApiCall(param, value).then((res) => {
+    await productListApiCall(param, value , output).then((res) => {
       if (res) return res
       return res
     }).then(async (res) => {
       if (res) {
         let autoCodeList = JSON.parse(localStorage.getItem("autoCodeList"))
         console.log("priceCall1");
-        await getDesignPriceList(param, value, obj, {}, autoCodeList)
+        await getDesignPriceList(param, value, obj, output, autoCodeList)
         return res
       }
     }).then((res) => {
@@ -3114,7 +3132,7 @@ const ProductList = () => {
                                         <div className={show4ImagesView ? "feature4" : 'feature'}>
                                           <p>
                                             <span className="feature-count">CWT :</span>
-                                            {(isStoneWShow === 1 && products?.totalcolorstoneweight !== 0) && (products?.updCWT).toFixed(2) +  '/'}  {(isStonePShow === 1 && products?.totalcolorstonepcs !== 0) && products?.updCPCS}
+                                            {(isStoneWShow === 1 && products?.totalcolorstoneweight !== 0) && (Number(products?.updCWT ?? 0)).toFixed(2) +  '/'}  {(isStonePShow === 1 && products?.totalcolorstonepcs !== 0) && products?.updCPCS}
                                           </p>
                                         </div>
                                       }
@@ -3164,8 +3182,9 @@ const ProductList = () => {
                     }
                   </div>
                 </div>
-                {newProData?.length != 0 || ProductApiData2?.length != 0 && <div style={{ display: 'flex', width: '100%', justifyContent: 'center', marginTop: '100px', marginBottom: '50px' }}>
-                  <Pagination count={Math.ceil(prodCount / prodPageSize)} onChange={handlePageChange} />
+                {(newProData?.length != 0 || ProductApiData2?.length != 0) &&  <div style={{ display: 'flex', width: '100%', justifyContent: 'center', marginTop: '100px', marginBottom: '50px' }}>
+                   {!((prodCount / prodPageSize) < 1) && <Pagination count={Math.ceil(prodCount / prodPageSize)} onChange={handlePageChange} />}
+                   {console.log("pagination",(prodCount / prodPageSize)<1)}
                 </div>}
                 {/* <SmilingRock /> */}
                 {/* <Footer /> */}
