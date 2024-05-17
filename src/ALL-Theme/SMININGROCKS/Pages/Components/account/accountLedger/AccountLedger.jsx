@@ -1186,9 +1186,11 @@ const AccountLedger = () => {
         {/* <div className='fs-4 fw-bold text-center text-secondary ledger_title'>Ledger</div> */}
         <div>
             <div className='border'>
-            <div className='p-2 ps-4 border-bottom fs_Al_mq' style={{letterSpacing:'1px'}}>Account Detail for &nbsp; <b className='fs_Al_mq'>{userName}</b>
+            { moment(showStartDate).format('DD MMM YYYY') !== 'Invalid date' && <div className='p-2 ps-4 border-bottom fs_Al_mq' style={{letterSpacing:'1px'}}>
+                Account Detail for &nbsp; <b className='fs_Al_mq'>{userName}</b>
                 &nbsp; Period of &nbsp;<b className='fs_Al_mq'>{moment(showStartDate).format('DD MMM YYYY') === 'Invalid date' ? '' : moment(showStartDate).format('DD MMM YYYY')}</b>&nbsp; to 
-                &nbsp;<b className='fs_Al_mq'>{moment(showEndDate).format('DD MMM YYYY') === 'Invalid date' ? '' : moment(showEndDate).format('DD MMM YYYY')}</b>&nbsp;</div>
+                &nbsp;<b className='fs_Al_mq'>{moment(showEndDate).format('DD MMM YYYY') === 'Invalid date' ? '' : moment(showEndDate).format('DD MMM YYYY')}</b>&nbsp;
+            </div>}
 
                 {/* <div className='p-2 ps-4 border-bottom' style={{letterSpacing:'1px'}}>Account Detail for &nbsp; <b>{userName}</b>&nbsp; Period of &nbsp;<b>{formatDate(startDate)}</b>&nbsp; to &nbsp;<b>{formatDate(endDate)}</b>&nbsp;</div> */}
                 
@@ -1324,8 +1326,7 @@ const AccountLedger = () => {
                         {/* <div onClick={() => handleExcel()}><img src="https://cdn22.optigoapps.com/lib/jo/28/images/ExcelExport.png" alt="#excelexport" className='eeal' /></div> */}
                         {/* <div onClick={() => navigate("/accountledgertable")}><img src="	https://cdn22.optigoapps.com/lib/jo/28/images/print_icon.png" alt="#excelexport" className='eeal' /></div> */}
                         {/* <div onClick={() => window.open("http://localhost:3000/accountledgertable")}><img src="	https://cdn22.optigoapps.com/lib/jo/28/images/print_icon.png" alt="#printtable" className='eeal' /></div> */}
-                        <Box sx={{paddingBottom: "35px", paddingRight: "15px"}}>
-    
+                        <Box sx={{paddingBottom: "35px", paddingRight: "15px"}} className="pad_r_acc center_acc w_all_acc">
                        
                         <div className='d-flex pt-2'>
                             <button className='ms-2 mx-1 btn border p-2 py-0 daybtn mb-2' title='previous' 
@@ -1363,13 +1364,13 @@ const AccountLedger = () => {
                 
                 <div className='text-secondary fs_al d-flex justify-content-between align-items-start p-2 my-3 mt-0'>
                     <div className='d-flex justify-content-start align-items-start flex-wrap'>
-                        <div className='px-4 px_2_al d-flex align-items-center mb-2 ps-0'><span>Balance Gold :&nbsp;</span> <span className='bal_Amt_ac'>
+                        <div className='px-4 px_2_al d-flex align-items-center mb-2 ps-0 w_all_acc'><span className='w_40_acc'>Balance Gold :&nbsp;</span> <span className='bal_Amt_ac  w_60_acc end_acc'>
                             { ((((resultTotal?.debit_metalgold  + Math.abs(debit_mg_diff) ) - ( resultTotal?.credit_metalgold + Math.abs(credit_mg_diff)))?.toFixed(3)) === 'NaN' ? '0.00' :  (((resultTotal?.debit_metalgold  + Math.abs(debit_mg_diff) ) - ( resultTotal?.credit_metalgold + Math.abs(credit_mg_diff)))?.toFixed(3))) }
                             { ((resultTotal?.debit_metalgold + Math.abs(debit_mg_diff)) - (resultTotal?.credit_metalgold + Math.abs(credit_mg_diff))) > 0 ? 'Dr' : ' Cr' }</span></div>
-                        <div className='px-4 px_2_al d-flex align-items-center mb-2'><span>Balance Diam. :&nbsp;</span> <span className='bal_Amt_ac'>
+                        <div className='px-4 px_2_al d-flex align-items-center mb-2 w_all_acc'><span className='w_40_acc'>Balance Diam. :&nbsp;</span> <span className='bal_Amt_ac w_60_acc end_acc'>
                             { ((((Math.abs(debit_dia_diff) + resultTotal?.debit_diamondwt) - (Math.abs(credit_dia_diff) + resultTotal?.credit_diamondwt))?.toFixed(3)) === 'NaN' ? '0.00' : (((Math.abs(debit_dia_diff) + resultTotal?.debit_diamondwt) - (Math.abs(credit_dia_diff) + resultTotal?.credit_diamondwt))?.toFixed(3))) }
                             { ((Math.abs(debit_dia_diff) + resultTotal?.debit_diamondwt) - (Math.abs(credit_dia_diff) + resultTotal?.credit_diamondwt)) > 0 ? 'Dr' : ' Cr' }</span></div>
-                        <div className='px-4 px_2_al d-flex align-items-center mb-2'><span>Balance Amount :&nbsp;</span> <span className='bal_Amt_ac'>
+                        <div className='px-4 px_2_al d-flex align-items-center mb-2 w_all_acc'><span className='w_40_acc'>Balance Amount :&nbsp;</span> <span className='bal_Amt_ac w_60_acc end_acc'>
                             {/* { (formatAmount(resultTotal?.debit_totalcurrency - resultTotal?.credit_totalcurrency))}&nbsp;{(((Math.abs(debit_amt_diff) + resultTotal?.debit_totalamount) - (Math.abs(credit_amt_diff) + resultTotal?.credit_totalamount)) ? 'Dr' : 'Cr' ) }</span></div> */}
                             {currencySymbol}&nbsp;
                             { ((formatAmount(

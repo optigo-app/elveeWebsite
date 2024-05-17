@@ -107,4 +107,23 @@
     .w_all_acc{
         width: 100%;
     }
+    .w_40_acc{
+        width: 48%;
+    }
+    .w_60_acc{
+        width: 52%;
+    }
+    .end_acc{
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+    .pad_r_acc{
+        padding-right: 0px !important;
+    }
+    .center_acc{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 }
