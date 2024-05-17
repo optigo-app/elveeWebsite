@@ -628,17 +628,15 @@
 }
 
 .muilistMenutext span {
-    color: #7d7f85 !important;
-    font-weight: 600 !important;
+    color: rgba(88, 88, 88, 1) !important;
 }
 
 .muilistSubMenutext span {
-    color: #7d7f85 !important;
-    font-weight: 400px !important;
+    color: rgba(88, 88, 88, .8) !important;
 }
 
 .muilist2ndSubMenutext span {
-    color: #7d7f85 !important;
+    color: rgba(88, 88, 88, .6) !important;
 }
 
 .HeaderMenuItemMainDiv {
@@ -650,7 +648,7 @@
 }
 
 .drawermenuImage {
-    width: 45% !important;
+    width: 40% !important;
 }
 
 .level2menuData {
@@ -660,7 +658,15 @@
 .level2menuData:hover {
     color: black !important
 }
+.underline-button {
+    color: rgba(88, 88, 88, .6);
+    border: none;
+    background: none;
+    text-decoration: underline;
+    cursor: pointer;
+  }
 
+  
 @media (max-width:1640px) {
     .menuImages {
         height: 200px;
@@ -904,6 +910,7 @@
     .mobileViewSmilingTop2Icone {
         height: 25px !important;
         width: 25px !important;
+        margin-top: -5px !important;
     }
 
     .mobileViewSmilingTop3Icone {
@@ -911,6 +918,13 @@
         width: 25px !important;
         margin-top: -5px !important;
     }
+
+    .mobileViewSmilingTop4Icone {
+        height: 25px !important;
+        width: 25px !important;
+        /* margin-top: -5px !important; */
+    }
+
 
     .mobileViewFirstDiv3Sub{
         margin: 20px 10px!important;

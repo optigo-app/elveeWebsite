@@ -2444,10 +2444,10 @@ const ProductList = () => {
                 <div class="text-container">
                   <div className='textContainerData'>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                      <p style={{ fontSize: '20px', fontWeight: '500', letterSpacing: '1px', textTransform: 'uppercase' }}>
+                      <p className="designCounttext" style={{ fontSize: '20px', fontWeight: '500', letterSpacing: '1px', textTransform: 'uppercase' }}>
                         {location?.state?.filtervalue?.FilterVal2 ? location?.state?.filtervalue?.FilterVal2 : location?.state?.filtervalue?.FilterVal1 ? location?.state?.filtervalue?.FilterVal1 : location?.state?.filtervalue?.menuname}
                         {' '}
-                        {prodCount} <span style={{ textTransform: 'capitalize' }}>Designs</span>
+                        {newProData?.length != 0 || ProductApiData2?.length != 0 ? prodCount : 0} <span style={{ textTransform: 'capitalize' }}>Designs</span>
                         <br />
                         <span style={{ fontSize: '10px' }}>{`${location?.state?.filtervalue?.menuname || ''}${location?.state?.filtervalue?.FilterVal1 ? ` > ${location?.state?.filtervalue?.FilterVal1}` : ''}${location?.state?.filtervalue?.FilterVal2 ? ` > ${location?.state?.filtervalue?.FilterVal2}` : ''}`}</span>
                       </p>
