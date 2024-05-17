@@ -117,17 +117,16 @@ export default function MyWishList() {
         };
         const response = await CommonAPI(body);
         if (response.Data) {
-          wishlistData.length === 0 && setIsLoading(false);
-          setWishlistData(response.Data.rd);
+          setWishlistData(response?.Data?.rd);
+          getCartAndWishListData(response?.Data?.rd);
         }
       } catch (error) {
         console.error("Error:", error);
       } finally {
-        setIsLoading(false);
+        // setIsLoading(false);
       }
     };
     fetchData();
-    getCartAndWishListData();
   }, []);
 
   const handleAddToCart = async (autoCode) => {
@@ -253,6 +252,7 @@ export default function MyWishList() {
         // alert('Remove Success');
         // window.location.reload();
         setWishlistData([]);
+        setWishlistDataNew([]);
         getCountFunc();
         navigation("/myWishList");
       } else {
@@ -314,7 +314,7 @@ export default function MyWishList() {
   };
 
 
-  const getCartAndWishListData = async () => {
+  const getCartAndWishListData = async (wishListData) => {
 
     const UserEmail = localStorage.getItem("registerEmail")
     const storeInit = JSON.parse(localStorage.getItem("storeInit"))
@@ -332,14 +332,9 @@ export default function MyWishList() {
 
     await CommonAPI(body).then((res) => {
       if (res?.Message === "Success") {
-
         const compareAndSetMatch = (arr1, arr2) => {
-          // Create a set of autocodes from the first array for quick lookup
           const autocodeSet = new Set(arr1.map(item => item.autocode));
-
-          // Loop through the second array and set the 'match' property
           return arr2.map(item => {
-            // Check if the current item's autocode exists in the set
             if (autocodeSet.has(item.autocode)) {
               return { ...item, match: "true" };
             } else {
@@ -347,14 +342,16 @@ export default function MyWishList() {
             }
           });
         };
-        const result = compareAndSetMatch(res?.Data?.rd, res?.Data?.rd1);
+        const result = compareAndSetMatch(res?.Data?.rd, wishListData);
         setWishlistDataNew(result);
+        wishlistDataNew.length === 0 && setIsLoading(false);
       }
     })
 
   }
 
-  console.log('sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss', wishlistDataNew);
+  console.log('wishlistData New', wishlistDataNew);
+  console.log('wishlistData', wishlistData);
 
   return (
     <div
@@ -434,7 +431,7 @@ export default function MyWishList() {
                   </button>
                 </div>
               )
-              : wishlistData?.map((item) => (
+              : wishlistDataNew?.map((item) => (
                 <div key={item.id} className="smiWishLsitBox">
                   <div
                     style={{
@@ -466,8 +463,6 @@ export default function MyWishList() {
                   <p className="smiWishLsitBoxTitltLine">
                     {item.TitleLine}
                   </p>
-
-
                   <div
                     style={{
                       display: "flex",
@@ -493,8 +488,6 @@ export default function MyWishList() {
                       </p>
                     )}
                   </div>
-
-
                   <div
                     style={{
                       display: "flex",
@@ -513,43 +506,44 @@ export default function MyWishList() {
                     </p>
                   </div>
                   {
-                  item.match === 'true' ?
-                    <div
-                      style={{
-                        display: "flex",
-                        position: "absolute",
-                        bottom: "0px",
-                        width: "100%",
-                        justifyContent: "center",
-                        marginBlock: "15px",
-                      }}
-                      className="mobilkeAddToCartBtn"
-                    >
-                      <button
-                        className="smiWishLsitBoxDesc3"
+                    item.match === 'true' ?
+                      <div
+                        style={{
+                          display: "flex",
+                          position: "absolute",
+                          bottom: "0px",
+                          width: "100%",
+                          justifyContent: "center",
+                          marginBlock: "15px",
+                        }}
+                        className="mobilkeAddToCartBtn"
                       >
-                        Item In A Cart
-                      </button>
-                    </div>
-                    :
-                    <div
-                      style={{
-                        display: "flex",
-                        position: "absolute",
-                        bottom: "0px",
-                        width: "100%",
-                        justifyContent: "center",
-                        marginBlock: "15px",
-                      }}
-                      className="mobilkeAddToCartBtn"
-                    >
-                      <button
-                        className="smiWishLsitBoxDesc3"
-                        onClick={() => handleAddToCart(item.autocode)}
+                        <button
+                          className="smiWishLsitBoxDesc4"
+                          disabled
+                        >
+                          ITEM IN A CART
+                        </button>
+                      </div>
+                      :
+                      <div
+                        style={{
+                          display: "flex",
+                          position: "absolute",
+                          bottom: "0px",
+                          width: "100%",
+                          justifyContent: "center",
+                          marginBlock: "15px",
+                        }}
+                        className="mobilkeAddToCartBtn"
                       >
-                        ADD TO CART +
-                      </button>
-                    </div>
+                        <button
+                          className="smiWishLsitBoxDesc3"
+                          onClick={() => handleAddToCart(item.autocode)}
+                        >
+                          ADD TO CART +
+                        </button>
+                      </div>
                   }
                 </div>
               ))}
