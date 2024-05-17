@@ -88,7 +88,7 @@ export default function Footer() {
                     <p className='ElveFooterDesc' onClick={() => handleNavigte('/term&condition')}>Terms and Conditions</p>
                 </div>
                 <div className='ElveFooter3'>
-                    <p className='ElevFooterBoxTitle' onClick={() => handleNavigte('/customerCare')}>Customer Care</p>
+                    <p className='ElevFooterBoxTitle'>Customer Care</p>
                     <p className='ElveFooterDesc' onClick={() => handleNavigte('/customerServices')}>Customer Services</p>
                     <p className='ElveFooterDesc'>Book an Appoinment</p>
                     <p className='ElveFooterDesc' onClick={() => handleNavigte('/customize')}>Customize</p>
