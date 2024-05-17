@@ -1115,6 +1115,7 @@
     }
 
     .bg-image {
+        height: 80px;
         margin: 0px 0px 10px 0px;
     }
 
@@ -1183,5 +1184,13 @@
         font-family: "PT Sans", sans-serif;
         align-items: center;
         justify-content: end !important;
+    }
+    .designCounttext{
+        font-size: 12px !important;
+    }
+    .featherImage {
+        width: 40px;
+        height: 60px;
+        margin-right: 30px;
     }
 }
