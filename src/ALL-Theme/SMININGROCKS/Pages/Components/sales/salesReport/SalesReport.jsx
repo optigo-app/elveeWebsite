@@ -418,6 +418,7 @@ const SalesReport = () => {
   );
 
   const handleSearch = ( eve, searchValue, fromDates, toDates, grossWtFrom, grossWtTo ) => { 
+    setPage(0);
     let datass = [];
     let count = 0;
     let checkIt = false;
@@ -454,7 +455,6 @@ const SalesReport = () => {
             if(moment(fromdat).isSameOrBefore(todat)){
                 const isBetween = cutDat.isBetween(fromdat, todat);
                 if (isBetween || cutDat.isSame(fromdat) || cutDat.isSame(todat)) {
-                    console.log("in if");
                     flags.toDate = true;
                     flags.fromDate = true;
                 }
@@ -467,7 +467,6 @@ const SalesReport = () => {
             }
             
         } else if (fromdates?.includes(undefined) && !todates?.includes(undefined)) {
-          console.log("2",flags);
             // let todat = new Date(todates);
             // let cutDat = new Date(cutDate);
             // if (cutDat < todat) {

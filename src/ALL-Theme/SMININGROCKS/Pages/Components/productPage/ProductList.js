@@ -32,7 +32,7 @@ import { TfiLayoutGrid4Alt } from "react-icons/tfi";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { getDesignPriceList } from "../../../Utils/API/PriceDataApi";
-import { findCsQcId, findDiaQcId, findMetalColor, findMetalType, findMetalTypeId, findValueFromId } from "../../../Utils/globalFunctions/GlobalFunction";
+import { findCsQcId, findDiaQcId, findMetalColor, findMetalType, findMetalTypeId, findValueFromId, storImagePath } from "../../../Utils/globalFunctions/GlobalFunction";
 import ProductListSkeleton from "./ProductListSkelton";
 
 import { Card } from "react-bootstrap";
@@ -2484,7 +2484,7 @@ const ProductList = () => {
                         <span style={{ fontSize: '10px' }}>{`${location?.state?.filtervalue?.menuname || ''}${location?.state?.filtervalue?.FilterVal1 ? ` > ${location?.state?.filtervalue?.FilterVal1}` : ''}${location?.state?.filtervalue?.FilterVal2 ? ` > ${location?.state?.filtervalue?.FilterVal2}` : ''}`}</span>
                       </p>
                     </div>
-                    <img src={featherImg} className='featherImage' />
+                    <img src={`${storImagePath()}/images/HomePage/MainBanner/image/featuresImage.png`} className='featherImage' />
                   </div>
 
                 </div>
@@ -3145,9 +3145,10 @@ const ProductList = () => {
                                         {isPriceShow === 1 &&
                                           <div className={show4ImagesView ? "feature4" : 'feature'}>
                                             <p>
-                                              <span className="feature-count" style={{ display: 'flex' }}>
+                                              <span className="property-type" style={{ display: 'flex' }}>
                                                 <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />
-                                                {products?.ismrpbase === 1 ? products?.mrpbaseprice  : PriceWithMarkupFunction(products?.markup, products?.price, currData?.CurrencyRate)?.toFixed(2)}</span>
+                                                {products?.ismrpbase === 1 ? products?.mrpbaseprice  : PriceWithMarkupFunction(products?.markup, products?.price, currData?.CurrencyRate)?.toFixed(2)}
+                                                </span>
                                             </p>
                                           </div>
                                         }
@@ -3156,7 +3157,7 @@ const ProductList = () => {
                                       </div>
                                     </div>
                                     <div>
-                                      <p className="property-type" style={{ margin: '0px 0px 10px 8px' }}>
+                                      <p className="property-type" style={{ margin: '0px 0px 10px 0px' }}>
                                         {isMetalTCShow === 1 && <span>
                                           {products?.updMC} -
                                           {products?.updMT}

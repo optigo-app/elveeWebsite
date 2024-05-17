@@ -192,6 +192,8 @@ const DesignWiseSalesReport = () => {
     }
 
     const handleSearch = (eve, date_From, date_To, netWt1, netWt2, grossWt1, grossWt2, purchase_Count, design_No, Metal_Name, product_Type, metal_Color, category_name, sub_category, orderPromDate) => {
+        setOffset(0);
+        setPerPage(10);
         let fromdates = `${date_From?.["$y"]}-${checkMonth(date_From?.["$M"])}-${date_From?.["$D"]}`
         let todates = `${date_To?.["$y"]}-${checkMonth(date_To?.["$M"])}-${date_To?.["$D"]}`
         // handleSearch(eve, fromDate, toDate, netWtSlider[0], netWtSlider[1], grossWtSlider[0], grossWtSlider[1], purchaseCount, designNo, metal, productType, metalColor, category, subCategory);

@@ -75,19 +75,55 @@
     margin-left: 0px;
     margin-right: 0px;
 }
-@media (max-width:576px){
+@media (min-width: 320px) and (max-width: 576px){
     .fs_Al_mq *{
-        font-size: 11px !important;
-    }
-    .fs_Al_mq{
-        
+        font-size: 15px !important;
         padding-left: 0.65rem !important;
     }
+    /* .fs_Al_mq{
+        
+        padding-left: 0.65rem !important;
+    } */
     .flex_col_Al{
         flex-direction: column !important;
         align-items: start !important;
     }
     .px_2_al{
         padding: 0 0.3rem !important;
+    }
+    .date_margin_acc{
+        margin-top: 10px !important;
+        width: 100%;
+    }
+    .mb_acc{
+        margin-bottom: 15px;
+    }
+    .w_30_acc{
+        width: 20%;
+    }
+    .w_70_acc{
+        width: 70%;
+    }
+    .w_all_acc{
+        width: 100%;
+    }
+    .w_40_acc{
+        width: 48%;
+    }
+    .w_60_acc{
+        width: 52%;
+    }
+    .end_acc{
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+    .pad_r_acc{
+        padding-right: 0px !important;
+    }
+    .center_acc{
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 }
