@@ -10,13 +10,13 @@ import { storImagePath } from '../../../../Utils/globalFunctions/GlobalFunction'
 
 const sliderData = [
   {
-    imageUrl: storImagePath() + "/images/HomePage/Craftmenship/craftingImg01.jpg",
+    imageUrl: "/images/HomePage/Craftmenship/craftingImg01.jpg",
   },
   {
-    imageUrl: storImagePath() + "/images/HomePage/Craftmenship/craftingImg02.jpg",
+    imageUrl:"/images/HomePage/Craftmenship/craftingImg02.jpg",
   },
   {
-    imageUrl: storImagePath() + "/images/HomePage/Craftmenship/craftingImg03.jpg",
+    imageUrl:"/images/HomePage/Craftmenship/craftingImg03.jpg",
   },
 ];
 
@@ -33,7 +33,7 @@ export default function App() {
       >
       {sliderData.map((slide, index) => (
           <SwiperSlide key={index}>
-            <img src={slide.imageUrl} alt={`Slide ${index}`} style={{width:'100%', height:'40vh', objectFit:'cover'}} />
+            <img src={storImagePath() + slide.imageUrl} alt={`Slide ${index}`} style={{width:'100%', height:'40vh', objectFit:'cover'}} />
           </SwiperSlide>
         ))}
       </Swiper>
