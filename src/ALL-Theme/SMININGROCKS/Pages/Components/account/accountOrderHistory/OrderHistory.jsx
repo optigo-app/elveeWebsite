@@ -5,6 +5,7 @@ import { Accordion, AccordionDetails, AccordionSummary, Box, CircularProgress } 
 import AccountOrderHistory from "../../../jsonFile/account/AccountOrderHistoryApi.json";
 import axios from "axios";
 import { CommonAPI } from "../../../../Utils/API/CommonAPI";
+import { formatAmount } from "../../../../Utils/globalFunctions/GlobalFunction";
 // import ReactPaginate from 'react-paginate';
 const OrderHistory = () => {
   const [orderHistoryData, setOrderHistoryData] = useState([]);
@@ -172,7 +173,6 @@ const OrderHistory = () => {
       console.log(error);
     }
   };
-  console.log('oderder----', orderDetails);
 
   return (
     <div>
@@ -185,7 +185,6 @@ const OrderHistory = () => {
         <div className="orderedItems user-select-none">
           {orderHistoryData?.length > 0 ?
             orderHistoryData?.map((e) => {
-              console.log('e----', e);
               return (
                 <div className="border orderHistory p-1 px-0 my-4" key={e?.id} onClick={() => handleClick(e)}>
                   <div className=" d-flex w-100 justify-content-between align-items-center p-1 d_block">
@@ -195,11 +194,7 @@ const OrderHistory = () => {
                           {e?.OrderPrefix}
                           {e?.orderno}
                         </div>
-                        <div
-                          className={`d-flex align-items-center  ${getStatusColor(e?.b2c_MasterManagement_ProgressStatusId
-                          )} fs-5 fs_small fs_Small_2 pad_Setup`}
-                          style={{ textTransform: 'uppercase' }}
-                        >
+                        <div className={`d-flex align-items-center  ${getStatusColor(e?.b2c_MasterManagement_ProgressStatusId )} fs-5 fs_small fs_Small_2 pad_Setup`} style={{ textTransform: 'uppercase' }} >
                           <div className="px-2">
                             <CircleIcon sx={{ fontSize: "10px" }} />
                           </div>
@@ -215,11 +210,10 @@ const OrderHistory = () => {
                         <span className="text-danger">{e?.TotalQuantity}</span>)
                       </div>
                     </div>
+                    
                     <div className="py-2 pe-5 w-50 d-flex fs_price_oh _color fw-bold center_price px_change">
-                      <div
-                        dangerouslySetInnerHTML={{ __html: e?.Currencysymbol }}
-                      ></div>{" "}
-                      <div className="px-1">{e?.orderAmountwithvat}</div>
+                      <div dangerouslySetInnerHTML={{ __html: e?.Currencysymbol }} ></div>{" "}
+                      <div className="px-1">{formatAmount(e?.orderAmountwithvat)}</div>
                     </div>
                   </div>
                   {/* <Accordion sx={{boxShadow:'none'}}>
@@ -263,7 +257,7 @@ const OrderHistory = () => {
                                             <h5 className="card-title">{el?.metaltypename} {el?.metalcolorname}</h5>
                                             <p className="card-text">{el?.designno}</p>
                                             <p className="card-text">
-                                              <span dangerouslySetInnerHTML={{ __html: e?.Currencysymbol }}></span> {el?.TotalUnitCostWithDiscount}
+                                              <span dangerouslySetInnerHTML={{ __html: e?.Currencysymbol }}></span> {formatAmount(el?.TotalUnitCostWithDiscount)}
                                             </p>
                                           </div>
                                         </div>
@@ -275,9 +269,7 @@ const OrderHistory = () => {
                             <div className="pt-2 _end">
                               <div className="d-flex justify-content-between align-items-center fs-4 w-25 w25_oh  text-secondary _w50_oh_2 fs_small " style={{ width: '30% !important' }}>
                                 <div style={{ width: '40%' }}>Total :</div>
-                                <div style={{ width: '60%' }} className="d-flex align-items-center"> <div className="pe-1"
-                                  dangerouslySetInnerHTML={{ __html: e?.Currencysymbol }}
-                                ></div>{e?.orderAmountwithvat}</div>
+                                <div style={{ width: '60%' }} className="d-flex align-items-center"> <div className="pe-1" dangerouslySetInnerHTML={{ __html: e?.Currencysymbol }} ></div>{formatAmount(e?.orderAmountwithvat)}</div>
                               </div>
                             </div>
                           </div>
