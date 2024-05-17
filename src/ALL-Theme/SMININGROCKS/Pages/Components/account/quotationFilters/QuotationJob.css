@@ -89,7 +89,8 @@
 .quotaionFiltertable th>span {
     position: absolute;
     top: 50%;
-    right: 0;
+    /* right: 0; */
+    right: 20%;
     transform: translateY(-50%);
 }
 

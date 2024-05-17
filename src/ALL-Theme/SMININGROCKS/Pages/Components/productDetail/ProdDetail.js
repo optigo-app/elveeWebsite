@@ -290,7 +290,7 @@ const ProdDetail = () => {
 
     if (srProdPriceData?.cSQopt) {
       let csQCVar = ColorStoneQualityColor?.find(item => item?.QualityId === findCsQcId(srProdPriceData?.cSQopt)[0]?.QualityId && item?.ColorId === findCsQcId(srProdPriceData?.cSQopt)[0]?.ColorId)
-      let csQualColor = `${csQCVar?.QualityId}-${csQCVar?.ColorId}`
+      let csQualColor = `${csQCVar?.Quality}-${csQCVar?.color}`
       setCSQOpt(csQualColor)
       setCSQOptId([csQCVar?.QualityId, csQCVar?.ColorId])
 
@@ -1003,7 +1003,7 @@ const ProdDetail = () => {
           "MetalPurity": `${mtPurity.split(" ")[1]}`,
           "MetalPurityid": Number(`${findMetalTypeId(mtPurity)[0]?.Metalid ?? 0}`),
           "MetalTypeName": `${mtPurity.split(" ")[0]}`,
-          "MetalTypeid": Number(`${product?.IsInReadyStock}`),
+          "MetalTypeid": Number(`${product?.MetalTypeid ?? 0}`),
           "MetalWeight": Number(`${product?.updNWT}`),
           "OcassionName": `${findValueFromId("ocass", product?.Ocassionid)?.OcassionName}`,
           "Ocassionid": Number(`${product?.Ocassionid}`),
@@ -1174,10 +1174,10 @@ const ProdDetail = () => {
           "MasterManagement_labname": "",
           "MetalColorName": `${product?.updMC}`,
           "MetalColorid": Number(`${product?.MetalColorid}`),
-          "MetalPurity": `${JSON.stringify(product?.mtPurity)?.split(" ")[1] ?? '18K'}`,
-          "MetalPurityid": Number(`${findMetalTypeId(mtPurity)[0]?.MetalId}`),
-          "MetalTypeName": `${JSON?.stringify(product?.mtPurity)?.split(" ")[0] ?? 'GOLD'}`,
-          "MetalTypeid": Number(`${product?.IsInReadyStock}`),
+          "MetalPurity": `${mtPurity.split(" ")[1]}`,
+          "MetalPurityid": Number(`${findMetalTypeId(mtPurity)[0]?.Metalid ?? 0}`),
+          "MetalTypeName": `${mtPurity.split(" ")[0]}`,
+          "MetalTypeid": Number(`${product?.MetalTypeid ?? 0}`),
           "MetalWeight": Number(`${product?.updNWT}`),
           "OcassionName": `${findValueFromId("ocass", product?.Ocassionid)?.OcassionName}`,
           "Ocassionid": Number(`${product?.Ocassionid}`),
@@ -1200,8 +1200,8 @@ const ProdDetail = () => {
           "diamondcolorname": `${diaQColOpt.split("#")[1]}`,
           "diamondpcs": Number(`${product?.updDPCS}`),
           "diamondquality": `${diaQColOpt.split("#")[0]}`,
-          "diamondsetting": `${product?.diamondsetting}`,
-          "diamondshape": `${product?.diamondshape}`,
+          "diamondsetting": `${product?.diamondsetting ?? ""}`,
+          "diamondshape": `${product?.diamondshape ?? ""}`,
           "diamondweight": Number(`${product?.updDWT}`),
           "encrypted_designno": `${product?.encrypted_designno ?? ""}`,
           "hashtagid": Number(`${product?.Hashtagid ?? 0}`),
@@ -1209,7 +1209,7 @@ const ProdDetail = () => {
           "imagepath": `${globImagePath}`,
           "imgrandomno": `${product?.imgrandomno}`,
           "mediumimage": `${product?.MediumImagePath ?? ""}`,
-          "originalimage": `${product?.OriginalImagePath}`,
+          "originalimage": `${product?.OriginalImagePath ?? ""}`,
           "storyline_html": `${product?.storyline_html ?? ""}`,
           "storyline_video": `${product?.storyline_video ?? ""}`,
           "thumbimage": `${product?.ThumbImagePath ?? ''}`,
@@ -1702,7 +1702,8 @@ const ProdDetail = () => {
                     </label>
                     {mtrdData.U === 1 ?
                       <span style={{ fontSize: "13px", color: "rgb(66, 66, 66)" }}>
-                        {`${productData.MetalPurity} ${productData.MetalTypeName}`}
+                        {/* {`${productData.MetalPurity} ${productData.MetalTypeName}`} */}
+                        {mtPurity ? mtPurity : mtTypeOption ? mtTypeOption?.split(" ")[1] : productData?.MetalPurity}
                       </span>
                       :
                       <select
@@ -1722,16 +1723,6 @@ const ProdDetail = () => {
                       </select>}
                   </div>}
 
-                  {/* {isMetalCutoMizeFlag == 1 && <Divider
-                    orientation="vertical"
-                    flexItem
-                    style={{
-                      opacity: 1,
-                      height: "30px",
-                      margin: "10px 10px 0px 10px",
-                      marginTop: '20px'
-                    }}
-                  />} */}
 
                   {isMetalCutoMizeFlag == 1 &&
                     <div
@@ -1750,7 +1741,8 @@ const ProdDetail = () => {
                       </label>
                       {mtrdData.U === 1 ?
                         <span style={{ fontSize: "12.5px", color: "#7d7f85" }}>
-                          {productData.MetalColorName}
+                          {/* {productData.MetalColorName} */}
+                          {mtColorName ? mtColorName : selectedColor ? selectedColor : productData?.updMC}
                         </span>
                         :
                         <select
@@ -1766,10 +1758,6 @@ const ProdDetail = () => {
                         </select>}
                     </div>}
 
-                  {/* <Divider sx={{
-                    marginTop: '20px', background: '#a9a7a7',
-                    marginTop: '20px'
-                  }} /> */}
 
                   {((isDaimondCstoFlag == 1) && (productData?.diamondweight !== 0 || productData?.diamondpcs !== 0)) && <div
                     style={{
@@ -1788,7 +1776,7 @@ const ProdDetail = () => {
                     </label>
                     {mtrdData?.U === 1 ?
                       <span style={{ fontSize: "12.5px", color: "#7d7f85" }}>
-                        {`${productData.diamondquality}_${productData.diamondcolorname}`}
+                        {diaQColOpt ? diaQColOpt : `${productData?.diamondquality}-${productData?.diamondcolorname}`}
                       </span>
                       :
                       <select
@@ -1808,19 +1796,7 @@ const ProdDetail = () => {
                         ))}
                       </select>}
                   </div>}
-                  {/* <Divider
-                    orientation="vertical"
-                    flexItem
-                    style={{
-                      opacity: 1,
-                      height: "30px",
-                      margin: "0px 10px 0px 10px",
-                      marginTop: '20px'
-                    }}
-                  />
-
-                  <Divider sx={{ marginTop: '20px', background: '#a9a7a7' }} /> */}
-
+                 
                   {isCColrStoneCustFlag === 1 &&
                     (productData?.totalcolorstonepcs !== 0 ||
                       productData?.totalcolorstoneweight !== 0) && (
@@ -1843,7 +1819,7 @@ const ProdDetail = () => {
                           <span
                             style={{ fontSize: "12.5px", color: "#7d7f85" }}
                           >
-                            {`${productData.colorstonequality}-${productData?.colorstonecolorname}`}
+                            {cSQopt? cSQopt :`${productData.colorstonequality}-${productData?.colorstonecolorname}`}
                           </span>
                         ) : (
                           <select
@@ -2101,7 +2077,7 @@ const ProdDetail = () => {
                       {/* Price:{" "} */}
                       <span className='mainpriceDeatilPage'>
                         <div dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />
-                        {FinalPrice()}
+                        {mtrdData?.U === 1 ? mtrdData?.Z : FinalPrice()}
                         {/* {`${(
                           (((mtrdData?.V ?? 0)/currData?.CurrencyRate) + (mtrdData?.W ?? 0) + (mtrdData?.X ?? 0))+
                           (dqcData ?? 0) +

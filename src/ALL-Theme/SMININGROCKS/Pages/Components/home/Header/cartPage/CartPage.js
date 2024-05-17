@@ -1026,7 +1026,7 @@ export default function CartPage() {
       // "UnitCost": Number(`${singleProdData?.UnitCost ?? 0}`),
       "UnitCost": Number(`${(FinalPrice() * lastEnteredQuantity).toFixed(2) ?? 0}`),
       "UnitCostWithmarkup": Number(`${((FinalPrice() * lastEnteredQuantity).toFixed(2) ?? 0) + (singleProdData?.markup ?? 0)}`),
-      "colorstonecolorname": `${cSQopt?.split('-')[1] ?? "" }`,
+      "colorstonecolorname": `${cSQopt?.split('-')[1] ?? ""}`,
       "colorstonequality": `${cSQopt?.split('-')[0] ?? ""}`,
       "diamondcolorname": `${diaQColOpt?.split('#')[1] ?? ""}`,
       "diamondpcs": Number(`${mtrdData?.J ?? 0}`),
@@ -1211,7 +1211,7 @@ export default function CartPage() {
   };
 
 
-  console.log('prodSelectDataprodSelectData', cartSelectData);
+  console.log('sizeData', sizeData.length);
 
   const handelBrowse = async () => {
 
@@ -1237,6 +1237,12 @@ export default function CartPage() {
     }
   }
 
+  const handlePlaceOrder = () => {
+    let priceData = cartListData.reduce((total, item) => total + item.UnitCost, 0).toFixed(2)
+    localStorage.setItem('TotalPriceData', priceData)
+    navigation("/Delivery");
+    window.scrollTo(0, 0);
+  }
   return (
     <>
       <div
@@ -1249,7 +1255,7 @@ export default function CartPage() {
         )}
         <ToastContainer />
         <Dialog open={open} onClose={handleClose}>
-          <DialogTitle>Are You Sure To Delete Alll This Item?</DialogTitle>
+          <p style={{ padding: '15px 15px 0px 15px', fontWeight: 500 }}>Are You Sure To Delete Alll This Item?</p>
 
           <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' }}>
             <Button onClick={handleClose} color="primary">
@@ -1269,7 +1275,7 @@ export default function CartPage() {
             }}
           >
 
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div className="backErrorMobile" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               {cartListData?.length !== 0 && (
                 <div className="backErrorMobile">
                   <IoArrowBackOutline style={{ height: '30px', marginLeft: '5px', width: '30px', color: 'rgb(192 182 182)' }} onClick={() => navigation("/productpage")} />
@@ -1291,95 +1297,36 @@ export default function CartPage() {
                   className="smilingListCartTopButton"
                   style={{ marginTop: "0px" }}
                 >
-                  {/* <div style={{ display: 'flex' }}> */}
-                  {/* <button
-                    className={`cartPageTopBtn ${value === 0 ? "activec" : ""}`}
-                    onClick={() => handleChange(0)}
-                    style={{ margin: '5px' }}
-                  >
-                    List View
-                  </button> */}
-                  {/* <button
-                    className={`cartPageTopBtn ${value === 1 ? "activec" : ""}`}
-                    onClick={() => handleChange(1)}
-                    style={{ margin: '5px' }}
-                  >
-                    Image View
-                  </button> */}
-                  {/* </div> */}
+                  <p className="SmiCartTitleWeb">
+                    My Cart
+                  </p>
 
-                  <Button
-                    className="cartPageTopBtn"
+                </div>
+                <div
+                  className="smilingListCartTopButtonNew"
+                  style={{ marginTop: "0px" }}
+
+                >
+                  <p
+                    className="cartPageTopLink"
                     onClick={handleClickOpen}
                   >
                     Clear All
-                  </Button>
-                  {/* <button
-                    className={`cartPageTopBtn ${value === 3 ? "activec" : ""}`}
-                    onClick={() => navigation("/productpage")}
-                  >
-                    Show ProductList
-                  </button> */}
-
-
+                  </p>
                   <Button
                     className="cartPageTopBtn"
-                    onClick={(event) => {
-                      navigation("/Delivery");
-                      window.scrollTo(0, 0);
-                    }}
+                    onClick={handlePlaceOrder}
+                    style={{ position: 'absolute', right: '0px', height: '50px' }}
                   >
                     Place Order
                   </Button>
                 </div>
                 <button
                   className="placeOrderCartPageBtnMobile"
-                  onClick={(event) => {
-                    navigation("/Delivery");
-                  }}
+                  onClick={handlePlaceOrder}
                 >
                   Place Order
                 </button>
-
-                <div
-                  className="smilingListCartTopButtonMobile"
-                  style={{ marginTop: "0px" }}
-                >
-
-                  {/* <button
-                    className={`cartPageTopBtn ${value === 3 ? "activec" : ""}`}
-                    onClick={() => navigation("/productpage")}
-                  >
-                    Show ProductList
-                  </button> */}
-
-                  {/* <div style={{ display: 'flex' }}>
-                    <button
-                      className={`cartPageTopBtn ${value === 0 ? "activec" : ""}`}
-                      onClick={() => handleChange(0)}
-                      style={{ margin: '5px' }}
-                    >
-                      List View
-                    </button>
-                    <button
-                      className={`cartPageTopBtn ${value === 1 ? "activec" : ""}`}
-                      onClick={() => handleChange(1)}
-                      style={{ margin: '5px' }}
-                    >
-                      Image View
-                    </button>
-                  </div> */}
-
-                  {/* <button
-                    className={`cartPageTopBtn ${value === 2 ? "activec" : ""}`}
-                    onClick={handleRemoveAllWishList}
-                  >
-                    Clear All
-                  </button> */}
-
-
-                </div>
-
               </div>
             )}
           </div>
@@ -1472,24 +1419,6 @@ export default function CartPage() {
                                 }}
                                 className="srcolorsizecarat"
                               >
-                                {/* <div
-                                  style={{
-                                    fontSize: "40px",
-                                    fontFamily: "FreightDisp Pro Medium",
-                                    color: "#7d7f85",
-                                    lineHeight: "40px",
-                                    marginBottom: "14px",
-                                    textOverflow: "ellipsis",
-                                    overflow: "hidden",
-                                    whiteSpace: "none",
-                                    height: "40px",
-                                    width: "70%",
-                                  }}
-                                  className="prodTitleLine"
-                                >
-                                  {prodSelectData?.TitleLine}
-                                </div> */}
-
                                 {isProductCuFlag === 1 && (
                                   <div
                                     style={{
@@ -1639,7 +1568,7 @@ export default function CartPage() {
                                             style={{
                                               display: "flex",
                                               flexDirection: "column",
-                                              width: "4%",
+                                              width: "45%",
                                               marginTop: "20px",
                                             }}
                                           >
@@ -1679,65 +1608,61 @@ export default function CartPage() {
                                           </div>
                                         )}
 
-                                      {(sizeData?.length !== 0 ||
-                                        (productData?.DefaultSize &&
-                                          productData.DefaultSize.length !==
-                                          0)) && (
-                                          <div
+                                      {(sizeData?.length !== 0 && (productData?.DefaultSize && productData.DefaultSize.length !== 0)) && (
+                                        <div
+                                          style={{
+                                            display: "flex",
+                                            flexDirection: "column",
+                                            width: "45%",
+                                            marginTop: "20px",
+                                          }}
+                                        >
+                                          <label
                                             style={{
-                                              display: "flex",
-                                              flexDirection: "column",
-                                              width: "45%",
-                                              marginTop: "20px",
+                                              fontSize: "12.5px",
+                                              color: "#7d7f85",
                                             }}
                                           >
-                                            <label
-                                              style={{
-                                                fontSize: "12.5px",
-                                                color: "#7d7f85",
-                                              }}
-                                            >
-                                              SIZE :
-                                            </label>
-                                            <select
-                                              style={{
-                                                border: "none",
-                                                outline: "none",
-                                                color: "#7d7f85",
-                                                fontSize: "12.5px",
-                                                height: '30px'
-                                              }}
-                                              onChange={(e) =>
-                                                handelSize(e.target.value)
-                                              }
-                                              value={
-                                                sizeOption
-                                                // ??
-                                                // (productData && productData.DefaultSize
-                                                //   ? productData.DefaultSize
-                                                //   : sizeData.find(
-                                                //     (size) =>
-                                                //       size.IsDefaultSize === 1
-                                                //   )?.id)
-                                              }
-                                            >
-                                              {sizeData?.map((size) => (
-                                                <option
-                                                  key={size.id}
-                                                  // value={cartSelectData?.detail_ringsize ?? size.sizename} // Pass sizename as value
-                                                  value={size.sizename} // Pass sizename as value
-                                                // selected={
-                                                //   productData &&
-                                                //   productData.DefaultSize ===
-                                                //   size.sizename
-                                                // }
-                                                >
-                                                  {size.sizename}
-                                                </option>
-                                              ))}
-                                            </select>
-                                          </div>
-                                        )}
+                                            SIZE :
+                                          </label>
+                                          <select
+                                            style={{
+                                              border: "none",
+                                              outline: "none",
+                                              color: "#7d7f85",
+                                              fontSize: "12.5px",
+                                              height: '30px'
+                                            }}
+                                            onChange={(e) =>
+                                              handelSize(e.target.value)
+                                            }
+                                            value={sizeOption
+                                              // ??
+                                              // (productData && productData.DefaultSize
+                                              //   ? productData.DefaultSize
+                                              //   : sizeData.find(
+                                              //     (size) =>
+                                              //       size.IsDefaultSize === 1
+                                              //   )?.id)
+                                            }
+                                          >
+                                            {sizeData?.map((size) => (
+                                              <option
+                                                key={size.id}
+                                                // value={cartSelectData?.detail_ringsize ?? size.sizename} // Pass sizename as value
+                                                value={size.sizename} // Pass sizename as value
+                                              // selected={
+                                              //   productData &&
+                                              //   productData.DefaultSize ===
+                                              //   size.sizename
+                                              // }
+                                              >
+                                                {size.sizename}
+                                              </option>
+                                            ))}
+                                          </select>
+                                        </div>
+                                      )}
                                     </div>
                                   </div>
                                 )}
@@ -2251,7 +2176,7 @@ export default function CartPage() {
               )}
               {cartListData.length > 0 &&
                 <div className="mt-2" style={{ display: 'flex', justifyContent: 'end', margin: '0px 10px 0px 0px' }}>
-                  <div className="container-fluid mainOrderRenarkConatiner m-3" style={{ border: '1px solid rgb(225, 225, 225)', borderRadius: '12px' }}>
+                  <div className="container-fluid mainOrderRenarkConatiner" style={{ border: '1px solid rgb(225, 225, 225)', borderRadius: '12px' }}>
                     <div className="d-flex justify-content-center row">
                       <div className="col-md-12">
                         <div className="d-flex flex-column comment-section">
