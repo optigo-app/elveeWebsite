@@ -364,7 +364,7 @@ export default function MyWishList() {
       )}
 
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Are You Sure To Delete Alll This Item?</DialogTitle>
+        <p style={{padding: '15px 15px 0px 15px',fontWeight: 500}}>Are You Sure To Delete Alll This Item?</p>
 
         <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' }}>
           <Button onClick={handleClose} color="primary">

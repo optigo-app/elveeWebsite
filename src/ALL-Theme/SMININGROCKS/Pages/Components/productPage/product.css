@@ -556,7 +556,7 @@
     opacity: 0.7;
     font-family: "PT Sans", sans-serif;
     color: #1f1919;
-    height: 40px;
+    /* height: 40px; */
 }
 
 .property4-type {

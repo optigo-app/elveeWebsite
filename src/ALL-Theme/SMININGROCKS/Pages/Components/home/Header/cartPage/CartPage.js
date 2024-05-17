@@ -1237,6 +1237,12 @@ export default function CartPage() {
     }
   }
 
+  const handlePlaceOrder = () => {
+    let priceData = cartListData.reduce((total, item) => total + item.UnitCost, 0).toFixed(2)
+    localStorage.setItem('TotalPriceData', priceData)
+    navigation("/Delivery");
+    window.scrollTo(0, 0);
+  }
   return (
     <>
       <div
@@ -1249,7 +1255,7 @@ export default function CartPage() {
         )}
         <ToastContainer />
         <Dialog open={open} onClose={handleClose}>
-          <DialogTitle>Are You Sure To Delete Alll This Item?</DialogTitle>
+          <p style={{ padding: '15px 15px 0px 15px', fontWeight: 500 }}>Are You Sure To Delete Alll This Item?</p>
 
           <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' }}>
             <Button onClick={handleClose} color="primary">
@@ -1309,20 +1315,15 @@ export default function CartPage() {
                   </p>
                   <Button
                     className="cartPageTopBtn"
-                    onClick={(event) => {
-                      navigation("/Delivery");
-                      window.scrollTo(0, 0);
-                    }}
-                    style={{position: 'absolute', right: '0px', height: '50px'}}
+                    onClick={handlePlaceOrder}
+                    style={{ position: 'absolute', right: '0px', height: '50px' }}
                   >
                     Place Order
                   </Button>
                 </div>
                 <button
                   className="placeOrderCartPageBtnMobile"
-                  onClick={(event) => {
-                    navigation("/Delivery");
-                  }}
+                  onClick={handlePlaceOrder}
                 >
                   Place Order
                 </button>
