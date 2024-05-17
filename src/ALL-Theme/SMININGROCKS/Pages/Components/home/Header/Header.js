@@ -597,7 +597,8 @@ export default function Header() {
             if(res){
               // console.log("test",res);
               localStorage.setItem("getPriceData", JSON.stringify(res))
-              navigation(`/productpage/?${finalData?.FilterKey}=${finalData?.FilterVal}/${finalData?.FilterKey1}=${finalData?.FilterVal1}/${finalData?.FilterKey2}=${finalData?.FilterVal2}`, { state: { menuFlag: finalData?.menuname, filtervalue: finalData } })
+              // navigation(`/productpage/?${finalData?.FilterKey}=${finalData?.FilterVal}/${finalData?.FilterKey1}=${finalData?.FilterVal1}/${finalData?.FilterKey2}=${finalData?.FilterVal2}`, { state: { menuFlag: finalData?.menuname, filtervalue: finalData } })
+              navigation(`/productpage`, { state: { menuFlag: finalData?.menuname, filtervalue: finalData } })
             }
             setTimeout(() => {
               setDrawerOpen(false);
