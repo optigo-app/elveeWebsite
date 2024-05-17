@@ -5,14 +5,19 @@ import Footer from "../home/Footer/Footer";
 import { CommonAPI } from "../../../Utils/API/CommonAPI";
 import { useNavigate } from "react-router-dom";
 import { IoClose } from "react-icons/io5";
-import { CircularProgress } from "@mui/material";
+import { Button, CircularProgress, Dialog, DialogTitle } from "@mui/material";
 import { useSetRecoilState } from "recoil";
 import { CartListCounts, WishListCounts } from "../../../../../Recoil/atom";
 import { GetCount } from "../../../Utils/API/GetCount";
 import notFound from "../../assets/image-not-found.png";
+import { FilterListAPI } from "../../../Utils/API/FilterListAPI";
+import { productListApiCall } from "../../../Utils/API/ProductListAPI";
+import { getDesignPriceList } from "../../../Utils/API/PriceDataApi";
+import { toast } from "react-toastify";
 
 export default function MyWishList() {
   const [wishlistData, setWishlistData] = useState([]);
+  const [wishlistDataNew, setWishlistDataNew] = useState([]);
   const [yKey, setYouKey] = useState("");
   const [imageURL, setImageURL] = useState("");
   const [customerID, setCustomerID] = useState("");
@@ -112,13 +117,13 @@ export default function MyWishList() {
         };
         const response = await CommonAPI(body);
         if (response.Data) {
-          wishlistData.length === 0 && setIsLoading(false);
-          setWishlistData(response.Data.rd);
+          setWishlistData(response?.Data?.rd);
+          getCartAndWishListData(response?.Data?.rd);
         }
       } catch (error) {
         console.error("Error:", error);
       } finally {
-        setIsLoading(false);
+        // setIsLoading(false);
       }
     };
     fetchData();
@@ -143,7 +148,7 @@ export default function MyWishList() {
       };
       const response = await CommonAPI(body);
       if (response.Data.rd[0].stat === 1) {
-        setWishlistData((prevData) =>
+        setWishlistDataNew((prevData) =>
           prevData.filter((item) => item.autocode !== autoCode)
         );
         getCountFunc();
@@ -178,6 +183,7 @@ export default function MyWishList() {
       const response = await CommonAPI(body);
       if (response.Data.rd[0].stat === 1) {
         setWishlistData([]);
+        setWishlistDataNew([]);
         getCountFunc();
         navigation("/myWishList");
       } else {
@@ -209,7 +215,7 @@ export default function MyWishList() {
       };
       const response = await CommonAPI(body);
       if (response.Data.rd[0].stat === 1) {
-        setWishlistData((prevData) =>
+        setWishlistDataNew((prevData) =>
           prevData.filter((item) => item.designno !== data.designno)
         );
         getCountFunc();
@@ -225,6 +231,7 @@ export default function MyWishList() {
   };
 
   const handleRemoveAllWishList = async () => {
+    handleClose();
     try {
       setIsLoading(true);
       const storeInit = JSON.parse(localStorage.getItem("storeInit"));
@@ -246,6 +253,7 @@ export default function MyWishList() {
         // alert('Remove Success');
         // window.location.reload();
         setWishlistData([]);
+        setWishlistDataNew([]);
         getCountFunc();
         navigation("/myWishList");
       } else {
@@ -270,6 +278,82 @@ export default function MyWishList() {
     return txt.value;
   };
 
+  const handelBrowse = async () => {
+
+    let finalData = JSON.parse(localStorage.getItem("menuparams"))
+
+    if (finalData) {
+      await FilterListAPI(finalData)
+      await productListApiCall(finalData).then((res) => {
+        if (res) {
+          localStorage.setItem("allproductlist", JSON.stringify(res))
+          localStorage.setItem("finalAllData", JSON.stringify(res))
+        }
+        return res
+      }).then(async (res) => {
+        if (res) {
+          let autoCodeList = JSON.parse(localStorage.getItem("autoCodeList"))
+          await getDesignPriceList(finalData, 1, {}, {}, autoCodeList)
+          navigation("/productpage")
+        }
+      }).catch((err) => {
+        if (err) toast.error("Something Went Wrong!!!")
+      })
+    }
+  }
+
+
+
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+
+  const getCartAndWishListData = async (wishListData) => {
+
+    const UserEmail = localStorage.getItem("registerEmail")
+    const storeInit = JSON.parse(localStorage.getItem("storeInit"))
+    const Customer_id = JSON.parse(localStorage.getItem("loginUserDetail"));
+
+    let EncodeData = { FrontEnd_RegNo: `${storeInit?.FrontEnd_RegNo}`, Customerid: `${Customer_id?.id}` }
+
+    const encodedCombinedValue = btoa(JSON.stringify(EncodeData));
+
+    const body = {
+      "con": `{\"id\":\"Store\",\"mode\":\"getdesignnolist\",\"appuserid\":\"${UserEmail}\"}`,
+      "f": " useEffect_login ( getdataofcartandwishlist )",
+      "p": encodedCombinedValue
+    }
+
+    await CommonAPI(body).then((res) => {
+      if (res?.Message === "Success") {
+        const compareAndSetMatch = (arr1, arr2) => {
+          const autocodeSet = new Set(arr1.map(item => item.autocode));
+          return arr2.map(item => {
+            if (autocodeSet.has(item.autocode)) {
+              return { ...item, match: "true" };
+            } else {
+              return { ...item, match: "false" };
+            }
+          });
+        };
+        const result = compareAndSetMatch(res?.Data?.rd, wishListData);
+        setWishlistDataNew(result);
+        wishlistDataNew.length === 0 && setIsLoading(false);
+      }
+    })
+
+  }
+
+  console.log('wishlistData New', wishlistDataNew);
+  console.log('wishlistData', wishlistData);
+
   return (
     <div
       className="paddingTopMobileSet">
@@ -278,6 +362,20 @@ export default function MyWishList() {
           <CircularProgress className="loadingBarManage" />
         </div>
       )}
+
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Are You Sure To Delete Alll This Item?</DialogTitle>
+
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' }}>
+          <Button onClick={handleClose} color="primary">
+            NO
+          </Button>
+          <Button onClick={handleRemoveAllWishList} color="primary">
+            YES
+          </Button>
+        </div>
+      </Dialog>
+
       <div>
         <div className="smiling-wishlist">
           <p className="SmiWishListTitle">My Wishlist</p>
@@ -285,26 +383,26 @@ export default function MyWishList() {
           {wishlistData?.length !== 0 && (
             <div className="smilingListTopButton">
               {/* <button className='smiTopShareBtn'>SHARE WISHLIST</button> */}
-              <button
+              <Button
                 className="smiTopAddAllBtn"
-                onClick={handleRemoveAllWishList}
+                onClick={handleClickOpen}
               >
-                CLEAR ALL
-              </button>
-              <button className="smiTopAddAllBtn" onClick={handleAddAll}>
-                ADD TO CART ALL
-              </button>
-              <button
+                Clear All
+              </Button>
+              <Button className="smiTopAddAllBtn" onClick={handleAddAll}>
+                Add To Cart All
+              </Button>
+              {/* <button
                 className="smiTopAddAllBtn"
                 onClick={() => navigation("/productpage")}
               >
                 Show ProductList
-              </button>
+              </button> */}
             </div>
           )}
 
           <div className="smiWishLsitBoxMain">
-            {wishlistData?.length === 0
+            {wishlistDataNew?.length === 0
               ? !isLoading && (
                 <div
                   style={{
@@ -313,6 +411,7 @@ export default function MyWishList() {
                     flexDirection: "column",
                     justifyContent: "center",
                     alignItems: "center",
+                    marginTop: '50px'
                   }}
                 >
                   <p
@@ -327,13 +426,13 @@ export default function MyWishList() {
                   <p>Please First Add To Wishlist Data</p>
                   <button
                     className="browseBtnMore"
-                    onClick={() => navigation("/productpage")}
+                    onClick={() => handelBrowse()}
                   >
                     BROWSE OUR COLLECTION
                   </button>
                 </div>
               )
-              : wishlistData?.map((item) => (
+              : wishlistDataNew?.map((item) => (
                 <div key={item.id} className="smiWishLsitBox">
                   <div
                     style={{
@@ -365,8 +464,6 @@ export default function MyWishList() {
                   <p className="smiWishLsitBoxTitltLine">
                     {item.TitleLine}
                   </p>
-
-
                   <div
                     style={{
                       display: "flex",
@@ -392,8 +489,6 @@ export default function MyWishList() {
                       </p>
                     )}
                   </div>
-
-
                   <div
                     style={{
                       display: "flex",
@@ -402,37 +497,61 @@ export default function MyWishList() {
                       marginInline: "2%",
                       paddingBottom: "18%",
                     }}
+                    className="mobileViewDeac"
                   >
                     <p className="smiWishLsitBoxDesc2">
-                      GWT: {item.ActualGrossweight}
+                      GWT: {(item.ActualGrossweight)?.toFixed(2)}
                     </p>
                     <p className="smiWishLsitBoxDesc2">
-                      DWT: {item.totaldiamondweight}
+                      DWT: {(item.totaldiamondweight)?.toFixed(2)}
                     </p>
                   </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      position: "absolute",
-                      bottom: "0px",
-                      width: "100%",
-                      justifyContent: "center",
-                      marginBlock: "15px",
-                    }}
-                  >
-                    <button
-                      className="smiWishLsitBoxDesc3"
-                      onClick={() => handleAddToCart(item.autocode)}
-                    >
-                      ADD TO CART +
-                    </button>
-                  </div>
+                  {
+                    item.match === 'true' ?
+                      <div
+                        style={{
+                          display: "flex",
+                          position: "absolute",
+                          bottom: "0px",
+                          width: "100%",
+                          justifyContent: "center",
+                          marginBlock: "15px",
+                        }}
+                        className="mobilkeAddToCartBtn"
+                      >
+                        <button
+                          className="smiWishLsitBoxDesc4"
+                          disabled
+                        >
+                          ITEM IN A CART
+                        </button>
+                      </div>
+                      :
+                      <div
+                        style={{
+                          display: "flex",
+                          position: "absolute",
+                          bottom: "0px",
+                          width: "100%",
+                          justifyContent: "center",
+                          marginBlock: "15px",
+                        }}
+                        className="mobilkeAddToCartBtn"
+                      >
+                        <button
+                          className="smiWishLsitBoxDesc3"
+                          onClick={() => handleAddToCart(item.autocode)}
+                        >
+                          ADD TO CART +
+                        </button>
+                      </div>
+                  }
                 </div>
               ))}
           </div>
         </div>
       </div>
-      <div style={{position: wishlistData?.length === 0 && 'absolute', bottom: '0px', width: '100%'}}>
+      <div className="mobileFootreCs" style={{ position: wishlistData?.length === 0 && 'absolute', bottom: '0px', width: '100%' }}>
         <Footer />
       </div>
     </div>

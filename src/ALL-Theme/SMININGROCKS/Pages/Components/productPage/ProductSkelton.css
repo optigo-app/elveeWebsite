@@ -10,3 +10,9 @@
 .skeltoncards{
     box-shadow: none !important;
 }
+
+@media (max-width:778px) {
+    .filtercards{
+        display: none;
+    }
+}

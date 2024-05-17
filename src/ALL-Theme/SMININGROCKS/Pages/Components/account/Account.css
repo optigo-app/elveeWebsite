@@ -107,7 +107,7 @@
 
 .smlingAccountTabWebView button.Mui-selected{
     color: #3b3c3d;
-    text-decoration: underline;
+    /* text-decoration: underline; */
 }
 
 .smlingAccountTabWebView span.MuiTabs-indicator{

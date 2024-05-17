@@ -40,6 +40,9 @@ import { FullProInfoAPI } from "../../../../../Utils/API/FullProInfoAPI";
 import { findCsQcIdDiff, findDiaQcId, findMetalType, findMetalTypeId, findValueFromId } from "../../../../../Utils/globalFunctions/GlobalFunction";
 import { SingleProductAPI } from "../../../../../Utils/API/SingleProductAPI";
 import { IoArrowBackOutline } from "react-icons/io5";
+import { getDesignPriceList } from "../../../../../Utils/API/PriceDataApi";
+import { productListApiCall } from "../../../../../Utils/API/ProductListAPI";
+import { FilterListAPI } from "../../../../../Utils/API/FilterListAPI";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -118,8 +121,8 @@ export default function CartPage() {
   const [csData, setCsData] = useState([])
   const [fullprodData, setFullProdData] = useState();
   const [cartPageLoding, setCartPageloding] = useState(false);
-  const [singleProdData,setSingleProdData] = useState();
-  const [cartUpdateSnackbar,setCartUpdateSnackbar] = useState("")
+  const [singleProdData, setSingleProdData] = useState();
+  const [cartUpdateSnackbar, setCartUpdateSnackbar] = useState("")
 
 
 
@@ -132,25 +135,26 @@ export default function CartPage() {
     })
   }
 
-  const cartSingalDataAPICalling = async() =>{
-    if(cartListData){
-      await SingleProductAPI(cartListData[0]?.designno).then((res)=>{
+  const cartSingalDataAPICalling = async () => {
+    if (cartListData) {
+      await SingleProductAPI(cartListData[0]?.designno).then((res) => {
         let data = res[0]
         setSingleProdData(data)
       })
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
+    // console.log("cartListData1111",cartListData)
     cartSingalDataAPICalling()
-  },[])
-
-  
-  console.log('singleProdData',singleProdData,mtrdData,diaqcData,csData)
+  }, [cartListData])
 
 
-  useEffect(()=>{
-    if(cartListData?.length > 0){
+  console.log('singleProdData', singleProdData, mtrdData, diaqcData, csData)
+
+
+  useEffect(() => {
+    if (cartListData?.length > 0) {
       setProdFullInfo(cartListData[0]?.designno)
     }
   }, [cartListData])
@@ -431,7 +435,7 @@ export default function CartPage() {
     }
     // let gt = showPrice + showPrice1 + showPrice2;
     // setGrandTotal(gt ?? 0);
-  }, [fullprodData, mtTypeOption, diaQColOpt, cSQopt, cartSelectData,singleProdData])
+  }, [fullprodData, mtTypeOption, diaQColOpt, cSQopt, cartSelectData, singleProdData])
 
   useEffect(() => {
     let finalmetalTypeName = cartSelectData?.metaltypename?.length > 4 ? `${cartSelectData?.metaltypename?.split(" ")[0]}` : `${cartSelectData?.metaltypename}`
@@ -773,6 +777,7 @@ export default function CartPage() {
   };
 
   const handleRemoveAllWishList = async () => {
+    handleClose();
     try {
       setIsLoading(true);
       const storeInit = JSON.parse(localStorage.getItem("storeInit"));
@@ -976,19 +981,19 @@ export default function CartPage() {
       "DQuality": `${diaQColOpt?.split('#')[0] ?? ""}`,
       "DColor": `${diaQColOpt?.split('#')[1] ?? ""}`,
       "cmboMetalType": `${findMetalType(singleProdData?.MetalTypeid)}`,
-      "AdditionalValWt":  Number(`${singleProdData?.AdditionalValWt ?? 0}`),
+      "AdditionalValWt": Number(`${singleProdData?.AdditionalValWt ?? 0}`),
       "BrandName": `${findValueFromId("cate", singleProdData?.Categoryid)?.CategoryName ?? ""}`,
       "Brandid": Number(`${singleProdData?.Brandid ?? 0}`),
       "CategoryName": `${findValueFromId("cate", singleProdData?.Categoryid)?.CategoryName ?? ""}`,
-      "Categoryid": Number(`${singleProdData?.Categoryid??0}`),
-      "CenterStoneId": Number(`${singleProdData?.CenterStoneId??0}`),
-      "CenterStonePieces": Number(`${singleProdData?.CenterStonePieces??0}`),
+      "Categoryid": Number(`${singleProdData?.Categoryid ?? 0}`),
+      "CenterStoneId": Number(`${singleProdData?.CenterStoneId ?? 0}`),
+      "CenterStonePieces": Number(`${singleProdData?.CenterStonePieces ?? 0}`),
       "CollectionName": `${findValueFromId("collect", singleProdData?.Collectionid)?.CollectionName ?? ""}`,
       "Collectionid": Number(`${singleProdData?.Collectionid ?? 0}`),
       "ColorWiseRollOverImageName": `${singleProdData?.ColorWiseRollOverImageName ?? ""}`,
       "DefaultImageName": `${singleProdData?.DefaultImageName}`,
-      "DisplayOrder": Number(`${singleProdData?.DisplayOrder??0}`),
-      "FrontEnd_OrderCnt": Number(`${singleProdData?.FrontEnd_OrderCnt??0}`),
+      "DisplayOrder": Number(`${singleProdData?.DisplayOrder ?? 0}`),
+      "FrontEnd_OrderCnt": Number(`${singleProdData?.FrontEnd_OrderCnt ?? 0}`),
       "GenderName": `${findValueFromId("gender", singleProdData?.Genderid)?.GenderName ?? ""}`,
       "Genderid": Number(`${singleProdData?.Genderid ?? 0}`),
       "Grossweight": `${Number(`${mtrdData?.N ?? 0}`)}`,
@@ -1008,9 +1013,9 @@ export default function CartPage() {
       "MetalTypeName": `${mtTypeOption?.split(' ')[0]}`,
       "MetalTypeid": Number(`${singleProdData?.MetalTypeid ?? 0}`),
       "MetalWeight": Number(`${mtrdData?.I ?? 0}`),
-      "OcassionName":  `${findValueFromId("ocass", singleProdData?.Ocassionid)?.OcassionName ?? ""}`,
+      "OcassionName": `${findValueFromId("ocass", singleProdData?.Ocassionid)?.OcassionName ?? ""}`,
       "Ocassionid": Number(`${singleProdData?.Ocassionid ?? 0}`),
-      "ProducttypeName":`${findValueFromId("prodtype", singleProdData?.Producttypeid)?.ProducttypeName ?? ""}`,
+      "ProducttypeName": `${findValueFromId("prodtype", singleProdData?.Producttypeid)?.ProducttypeName ?? ""}`,
       "Producttypeid": Number(`${singleProdData?.Producttypeid ?? 0}`),
       "RollOverImageName": `${singleProdData?.RollOverImageName}`,
       "SubCategoryName": `${findValueFromId("subcate", singleProdData?.SubCategoryid)?.SubCategoryName ?? ""}`,
@@ -1018,11 +1023,12 @@ export default function CartPage() {
       "ThemeName": `${findValueFromId("theme", singleProdData?.Themeid)?.ThemeName ?? ""}`,
       "Themeid": Number(`${singleProdData?.Themeid ?? 0}`),
       "TitleLine": `${singleProdData?.TitleLine}`,
-      "UnitCost": Number(`${singleProdData?.UnitCost ?? 0}`),
-      "UnitCostWithmarkup": Number(`${(singleProdData?.UnitCost ?? 0) + (singleProdData?.markup ?? 0)}`),
-      "colorstonecolorname": `${cSQopt?.split('-')[1] ?? "" }`,
+      // "UnitCost": Number(`${singleProdData?.UnitCost ?? 0}`),
+      "UnitCost": Number(`${(FinalPrice() * lastEnteredQuantity).toFixed(2) ?? 0}`),
+      "UnitCostWithmarkup": Number(`${((FinalPrice() * lastEnteredQuantity).toFixed(2) ?? 0) + (singleProdData?.markup ?? 0)}`),
+      "colorstonecolorname": `${cSQopt?.split('-')[1] ?? ""}`,
       "colorstonequality": `${cSQopt?.split('-')[0] ?? ""}`,
-      "diamondcolorname": `${ diaQColOpt?.split('#')[1] ?? ""}`,
+      "diamondcolorname": `${diaQColOpt?.split('#')[1] ?? ""}`,
       "diamondpcs": Number(`${mtrdData?.J ?? 0}`),
       "diamondquality": `${diaQColOpt?.split('#')[0] ?? ""}`,
       "diamondsetting": `${singleProdData?.diamondsetting ?? ""}`,
@@ -1037,7 +1043,7 @@ export default function CartPage() {
       "storyline_html": `${singleProdData?.storyline_html ?? ""}`,
       "storyline_video": `${singleProdData?.storyline_video ?? ""}`,
       "thumbimage": `${singleProdData?.ThumbImagePath ?? ""}`,
-      "totaladditionalvalueweight":Number( `${singleProdData?.totaladditionalvalueweight ?? ""}`),
+      "totaladditionalvalueweight": Number(`${singleProdData?.totaladditionalvalueweight ?? ""}`),
       "totalcolorstoneweight": Number(`${singleProdData?.totalcolorstoneweight ?? ""}`),
       "totaldiamondweight": Number(`${singleProdData?.totaldiamondweight ?? ""}`),
       "updatedate": `${singleProdData?.UpdateDate ?? ""}`,
@@ -1205,6 +1211,32 @@ export default function CartPage() {
   };
 
 
+  console.log('sizeData', sizeData.length);
+
+  const handelBrowse = async () => {
+
+    let finalData = JSON.parse(localStorage.getItem("menuparams"))
+
+    if (finalData) {
+      await FilterListAPI(finalData)
+      await productListApiCall(finalData).then((res) => {
+        if (res) {
+          localStorage.setItem("allproductlist", JSON.stringify(res))
+          localStorage.setItem("finalAllData", JSON.stringify(res))
+        }
+        return res
+      }).then(async (res) => {
+        if (res) {
+          let autoCodeList = JSON.parse(localStorage.getItem("autoCodeList"))
+          await getDesignPriceList(finalData, 1, {}, {}, autoCodeList)
+          navigation("/productpage")
+        }
+      }).catch((err) => {
+        if (err) toast.error("Something Went Wrong!!!")
+      })
+    }
+  }
+
   return (
     <>
       <div
@@ -1237,16 +1269,18 @@ export default function CartPage() {
             }}
           >
 
-            <div style={{display: 'flex' , justifyContent: 'space-between', alignItems: 'center'}}>
-              <div className="backErrorMobile">
-                <IoArrowBackOutline style={{ height: '30px', width: '30px' }} onClick={() => navigation("/productpage")} />
-              </div>
-              <p className="SmiWishListTitle" style={{ paddingTop: "30px" }}>
+            <div className="backErrorMobile" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              {cartListData?.length !== 0 && (
+                <div className="backErrorMobile">
+                  <IoArrowBackOutline style={{ height: '30px', marginLeft: '5px', width: '30px', color: 'rgb(192 182 182)' }} onClick={() => navigation("/productpage")} />
+                </div>)}
+              <p className="SmiCartTitle" style={{ paddingTop: "30px" }}>
                 My Cart
               </p>
-              <div className="ClreareAllMobilee">
-                <p style={{ fontWeight: 600, textDecoration: 'underline',width:'80px', cursor: 'pointer' }} onClick={handleClickOpen}>Clear All</p>
-              </div>
+              {cartListData?.length !== 0 && (
+                <div className="ClreareAllMobilee">
+                  <p style={{ fontWeight: 600, margin: '0px', textDecoration: 'underline', width: '80px', cursor: 'pointer', color: 'rgb(192 182 182)' }} onClick={handleClickOpen}>Clear All</p>
+                </div>)}
             </div>
 
 
@@ -1257,110 +1291,41 @@ export default function CartPage() {
                   className="smilingListCartTopButton"
                   style={{ marginTop: "0px" }}
                 >
-                  {/* <div style={{ display: 'flex' }}> */}
-                  <button
-                    className={`cartPageTopBtn ${value === 0 ? "activec" : ""}`}
-                    onClick={() => handleChange(0)}
-                    style={{ margin: '5px' }}
-                  >
-                    List View
-                  </button>
-                  <button
-                    className={`cartPageTopBtn ${value === 1 ? "activec" : ""}`}
-                    onClick={() => handleChange(1)}
-                    style={{ margin: '5px' }}
-                  >
-                    Image View
-                  </button>
-                  {/* </div> */}
+                  <p className="SmiCartTitleWeb">
+                    My Cart
+                  </p>
 
-                  <button
-                    className={`cartPageTopBtn ${value === 2 ? "activec" : ""}`}
-                    onClick={handleRemoveAllWishList}
-                  >
-                    Clear All
-                  </button>
-                  <button
-                    className={`cartPageTopBtn ${value === 3 ? "activec" : ""}`}
-                    onClick={() => navigation("/productpage")}
-                  >
-                    Show ProductList
-                  </button>
-                  <button
-                    className="placeOrderCartPageBtnMobile"
-                    onClick={(event) => {
-                      navigation("/Delivery");
-                    }}
-                  >
-                    Place Order
-                  </button>
                 </div>
-
                 <div
-                  className="smilingListCartTopButtonMobile"
+                  className="smilingListCartTopButtonNew"
                   style={{ marginTop: "0px" }}
+
                 >
-
-                  {/* <button
-                    className={`cartPageTopBtn ${value === 3 ? "activec" : ""}`}
-                    onClick={() => navigation("/productpage")}
-                  >
-                    Show ProductList
-                  </button> */}
-
-                  <div style={{ display: 'flex' }}>
-                    <button
-                      className={`cartPageTopBtn ${value === 0 ? "activec" : ""}`}
-                      onClick={() => handleChange(0)}
-                      style={{ margin: '5px' }}
-                    >
-                      List View
-                    </button>
-                    <button
-                      className={`cartPageTopBtn ${value === 1 ? "activec" : ""}`}
-                      onClick={() => handleChange(1)}
-                      style={{ margin: '5px' }}
-                    >
-                      Image View
-                    </button>
-                  </div>
-
-                  {/* <button
-                    className={`cartPageTopBtn ${value === 2 ? "activec" : ""}`}
-                    onClick={handleRemoveAllWishList}
+                  <p
+                    className="cartPageTopLink"
+                    onClick={handleClickOpen}
                   >
                     Clear All
-                  </button> */}
-
-                  <button
-                    className="placeOrderCartPageBtnMobile"
-                    onClick={(event) => {
-                      navigation("/Delivery");
-                      window.scrollTo(0, 0);
-                    }}
-                  >
-                    Place Order
-                  </button>
-                </div>
-                <div
-                  className="smilingCartPagePlaceOrderBtnMainWeb"
-                  style={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    margin: "-50px 70px 0px 20px",
-                    paddingBottom: "50px",
-                  }}
-                >
-                  <button
+                  </p>
+                  <Button
                     className="cartPageTopBtn"
                     onClick={(event) => {
                       navigation("/Delivery");
                       window.scrollTo(0, 0);
                     }}
+                    style={{position: 'absolute', right: '0px', height: '50px'}}
                   >
                     Place Order
-                  </button>
+                  </Button>
                 </div>
+                <button
+                  className="placeOrderCartPageBtnMobile"
+                  onClick={(event) => {
+                    navigation("/Delivery");
+                  }}
+                >
+                  Place Order
+                </button>
               </div>
             )}
           </div>
@@ -1382,7 +1347,7 @@ export default function CartPage() {
                         flexDirection: "column",
                         justifyContent: "center",
                         alignItems: "center",
-                        marginBlock: "150px",
+                        marginBlock: "90px",
                       }}
                     >
                       <p
@@ -1397,7 +1362,7 @@ export default function CartPage() {
                       <p>Please First Add To Cart Data</p>
                       <button
                         className="browseBtnMore"
-                        onClick={() => navigation("/productpage")}
+                        onClick={() => handelBrowse()}
                       >
                         BROWSE OUR COLLECTION
                       </button>
@@ -1415,22 +1380,36 @@ export default function CartPage() {
                           }}
                         >
                           <div className="popUpcontainer">
-                            <img
-                              src={
-                                storeInitData?.DesignImageFol +
-                                cartSelectData?.DefaultImageName?.slice(13)
-                              }
+
+                            <div
                               style={{
-                                border: "1px solid #e1e1e1",
                                 borderRadius: "12px",
-                                width: "350px",
-                                height: "350px"
+                                width: "370px",
+                                height: "410px",
+                                border: "1px solid #e1e1e1",
+                                overflow: 'hidden',
+                                position: 'relative'
                               }}
-                              onError={(e) => {
-                                e.target.src = noFoundImage;
-                              }}
-                            />
-                            <div style={{ width: "550px" }}>
+                              className="CartPageMainImageShowMobile"
+                            >
+                              <img
+                                src={
+                                  storeInitData?.DesignImageFol +
+                                  cartSelectData?.DefaultImageName?.slice(13)
+                                }
+                                style={{
+                                  borderRadius: "12px",
+                                  width: "370px",
+                                  height: "410px"
+                                }}
+                                onError={(e) => {
+                                  e.target.src = noFoundImage;
+                                }}
+                              />
+                              <p style={{ position: 'absolute', top: '5px', left: '5px', fontSize: '14px' }}>{cartSelectData?.designno}</p>
+                            </div>
+
+                            <div style={{ width: "550px" }} className="cartCustomizationMainMobile">
                               <div
                                 style={{
                                   width: "100%",
@@ -1439,30 +1418,12 @@ export default function CartPage() {
                                 }}
                                 className="srcolorsizecarat"
                               >
-                                <div
-                                  style={{
-                                    fontSize: "40px",
-                                    fontFamily: "FreightDisp Pro Medium",
-                                    color: "#7d7f85",
-                                    lineHeight: "40px",
-                                    marginBottom: "14px",
-                                    textOverflow: "ellipsis",
-                                    overflow: "hidden",
-                                    whiteSpace: "none",
-                                    height: "40px",
-                                    width: "70%",
-                                  }}
-                                  className="prodTitleLine"
-                                >
-                                  {prodSelectData?.TitleLine}
-                                </div>
-
                                 {isProductCuFlag === 1 && (
                                   <div
                                     style={{
-                                      borderTop: "1px solid #e1e1e1",
+                                      // borderTop: "1px solid #e1e1e1",
                                       marginInline: "-10px",
-                                      padding: "20px",
+                                      padding: "10px",
                                     }}
                                   >
                                     <div
@@ -1495,6 +1456,7 @@ export default function CartPage() {
                                               outline: "none",
                                               color: "#7d7f85",
                                               fontSize: "12.5px",
+                                              height: '30px'
                                             }}
                                             // value={mtTypeOption ?? cartSelectData?.metal}
                                             value={mtTypeOption}
@@ -1536,6 +1498,8 @@ export default function CartPage() {
                                               outline: "none",
                                               color: "#7d7f85",
                                               fontSize: "12.5px",
+                                              height: '30px'
+
                                             }}
                                             value={selectedColor}
                                             onChange={(e) =>
@@ -1560,7 +1524,7 @@ export default function CartPage() {
                                             display: "flex",
                                             flexDirection: "column",
                                             width: "45%",
-                                            marginTop: "30px",
+                                            marginTop: "20px",
                                           }}
                                         >
                                           <label
@@ -1577,6 +1541,7 @@ export default function CartPage() {
                                               outline: "none",
                                               color: "#7d7f85",
                                               fontSize: "12.5px",
+                                              height: '30px'
                                             }}
                                             value={diaQColOpt}
                                             onChange={(e) =>
@@ -1602,7 +1567,7 @@ export default function CartPage() {
                                             style={{
                                               display: "flex",
                                               flexDirection: "column",
-                                              width: "4%",
+                                              width: "45%",
                                               marginTop: "20px",
                                             }}
                                           >
@@ -1621,6 +1586,7 @@ export default function CartPage() {
                                                 outline: "none",
                                                 color: "#7d7f85",
                                                 fontSize: "12.5px",
+                                                height: '30px'
                                               }}
                                               value={cSQopt}
                                               onChange={(e) =>
@@ -1641,64 +1607,61 @@ export default function CartPage() {
                                           </div>
                                         )}
 
-                                      {(sizeData?.length !== 0 ||
-                                        (productData?.DefaultSize &&
-                                          productData.DefaultSize.length !==
-                                          0)) && (
-                                          <div
+                                      {(sizeData?.length !== 0 && (productData?.DefaultSize && productData.DefaultSize.length !== 0)) && (
+                                        <div
+                                          style={{
+                                            display: "flex",
+                                            flexDirection: "column",
+                                            width: "45%",
+                                            marginTop: "20px",
+                                          }}
+                                        >
+                                          <label
                                             style={{
-                                              display: "flex",
-                                              flexDirection: "column",
-                                              width: "45%",
-                                              marginTop: "30px",
+                                              fontSize: "12.5px",
+                                              color: "#7d7f85",
                                             }}
                                           >
-                                            <label
-                                              style={{
-                                                fontSize: "12.5px",
-                                                color: "#7d7f85",
-                                              }}
-                                            >
-                                              SIZE :
-                                            </label>
-                                            <select
-                                              style={{
-                                                border: "none",
-                                                outline: "none",
-                                                color: "#7d7f85",
-                                                fontSize: "12.5px",
-                                              }}
-                                              onChange={(e) =>
-                                                handelSize(e.target.value)
-                                              }
-                                              value={
-                                                sizeOption
-                                                // ??
-                                                // (productData && productData.DefaultSize
-                                                //   ? productData.DefaultSize
-                                                //   : sizeData.find(
-                                                //     (size) =>
-                                                //       size.IsDefaultSize === 1
-                                                //   )?.id)
-                                              }
-                                            >
-                                              {sizeData?.map((size) => (
-                                                <option
-                                                  key={size.id}
-                                                  // value={cartSelectData?.detail_ringsize ?? size.sizename} // Pass sizename as value
-                                                  value={size.sizename} // Pass sizename as value
-                                                // selected={
-                                                //   productData &&
-                                                //   productData.DefaultSize ===
-                                                //   size.sizename
-                                                // }
-                                                >
-                                                  {size.sizename}
-                                                </option>
-                                              ))}
-                                            </select>
-                                          </div>
-                                        )}
+                                            SIZE :
+                                          </label>
+                                          <select
+                                            style={{
+                                              border: "none",
+                                              outline: "none",
+                                              color: "#7d7f85",
+                                              fontSize: "12.5px",
+                                              height: '30px'
+                                            }}
+                                            onChange={(e) =>
+                                              handelSize(e.target.value)
+                                            }
+                                            value={sizeOption
+                                              // ??
+                                              // (productData && productData.DefaultSize
+                                              //   ? productData.DefaultSize
+                                              //   : sizeData.find(
+                                              //     (size) =>
+                                              //       size.IsDefaultSize === 1
+                                              //   )?.id)
+                                            }
+                                          >
+                                            {sizeData?.map((size) => (
+                                              <option
+                                                key={size.id}
+                                                // value={cartSelectData?.detail_ringsize ?? size.sizename} // Pass sizename as value
+                                                value={size.sizename} // Pass sizename as value
+                                              // selected={
+                                              //   productData &&
+                                              //   productData.DefaultSize ===
+                                              //   size.sizename
+                                              // }
+                                              >
+                                                {size.sizename}
+                                              </option>
+                                            ))}
+                                          </select>
+                                        </div>
+                                      )}
                                     </div>
                                   </div>
                                 )}
@@ -1870,9 +1833,10 @@ export default function CartPage() {
                                       padding: '6px 17px',
                                       borderRadius: '4px',
                                     }}
+
                                     onClick={handleCartUpdate}
                                   >
-                                    <span style={{ fontSize: '16px', fontWeight: '500' }}>Save</span>
+                                    <span style={{ fontSize: '16px', fontWeight: '500' }} className="SaveBtnCart">Save</span>
                                   </button>
                                   <div className="mt-3">
                                     <div className="container-fluid mainRenarkConatiner" style={{ border: '1px solid rgb(225, 225, 225)', borderRadius: '12px' }}>
@@ -1962,17 +1926,17 @@ export default function CartPage() {
                             <div
                               key={item.id}
                               className={`smiling-cartPageBoxMain ${cartSelectData && cartSelectData.id === item.id ? 'selected' : ''}`}
-                              onClick={async() => {
+                              onClick={async () => {
                                 setCartSelectData(item);
                                 setProdFullInfo(item.designno);
                                 getSizeData(item.autocode);
                                 window.innerWidth <= 1080 &&
                                   setDialogOpen(true);
-                                
-                                  await SingleProductAPI(item?.designno).then((res)=>{
-                                      let data = res[0]
-                                      setSingleProdData(data)
-                                  })
+
+                                await SingleProductAPI(item?.designno).then((res) => {
+                                  let data = res[0]
+                                  setSingleProdData(data)
+                                })
 
                               }}
                             >
@@ -2001,7 +1965,7 @@ export default function CartPage() {
                                   e.target.src = noFoundImage;
                                 }}
                               />
-                              <div className="listing-features" >
+                              <div className="listing-featuresN" >
                                 <div>
                                   <div className='feature'>
                                     <p>
@@ -2010,7 +1974,7 @@ export default function CartPage() {
                                   </div>
                                   <div className='feature'>
                                     <p>
-                                      <span className="feature-count">DWT :{" "} </span>  {item?.Rec_DiamondWeight} /{" "}
+                                      <span className="feature-count">DWT :{" "} </span>  {(item?.Rec_DiamondWeight).toFixed(2)} /{" "}
                                       {item?.totaldiamondpcs}
                                     </p>
                                   </div>
@@ -2029,7 +1993,7 @@ export default function CartPage() {
                                   </div>
                                   <div className='feature'>
                                     <p>
-                                      <span className="feature-count">GWT :{" "}  </span>   {item?.grossweight}
+                                      <span className="feature-count">GWT :{" "}  </span>   {(item?.grossweight).toFixed(2)} /
                                       {item?.totaldiamondpcs}
                                     </p>
                                   </div>
@@ -2125,14 +2089,14 @@ export default function CartPage() {
                                 <Card.Body>
                                   <div className="d-flex justify-content-between align-items-center">
                                     <div >
-                                      <span style={{ color: '#7d7f85', fontWeight: '500', fontSize: '16px' }}>Design in Cart: </span>
-                                      <span style={{ color: '#7d7f85', fontSize: '16px' }}>{cartListData?.length}</span>
+                                      <span style={{ color: '#7d7f85', fontSize: '16px' }}>Design in Cart: </span>
+                                      <span style={{ color: '#7d7f85', fontWeight: '500', fontSize: '16px' }}>{cartListData?.length}</span>
                                     </div>
                                     <div style={{ display: 'flex' }}>
-                                      <span style={{ color: '#7d7f85', fontWeight: '500', fontSize: '16px', marginRight: '3px' }}>Total Price: </span>
+                                      <span style={{ color: '#7d7f85', fontSize: '16px', marginRight: '3px' }}>Total Price: </span>
                                       <div style={{ display: 'flex' }}>
                                         <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />
-                                        <span style={{ color: '#7d7f85', fontSize: '16px' }}>{cartListData.reduce((total, item) => total + item.UnitCost, 0).toFixed(2)}</span>
+                                        <span style={{ color: '#7d7f85', fontSize: '16px', fontWeight: '500', }}>{cartListData.reduce((total, item) => total + item.UnitCost, 0).toFixed(2)}</span>
                                       </div>
                                     </div>
                                   </div>
@@ -2158,7 +2122,7 @@ export default function CartPage() {
                       flexDirection: "column",
                       justifyContent: "center",
                       alignItems: "center",
-                      marginTop: "150px",
+                      marginTop: "200px",
                     }}
                   >
                     <p
@@ -2171,12 +2135,12 @@ export default function CartPage() {
                       No Data Available
                     </p>
                     <p>Please First Add To Cart Data</p>
-                    <button
+                    {/* <button
                       className="browseBtnMore"
                       onClick={() => navigation("/productpage")}
                     >
                       BROWSE OUR COLLECTION
-                    </button>
+                    </button> */}
                   </div>
                 )
               ) : (
@@ -2211,7 +2175,7 @@ export default function CartPage() {
               )}
               {cartListData.length > 0 &&
                 <div className="mt-2" style={{ display: 'flex', justifyContent: 'end', margin: '0px 10px 0px 0px' }}>
-                  <div className="container-fluid mainOrderRenarkConatiner m-3" style={{ border: '1px solid rgb(225, 225, 225)', borderRadius: '12px' }}>
+                  <div className="container-fluid mainOrderRenarkConatiner" style={{ border: '1px solid rgb(225, 225, 225)', borderRadius: '12px' }}>
                     <div className="d-flex justify-content-center row">
                       <div className="col-md-12">
                         <div className="d-flex flex-column comment-section">
@@ -2280,7 +2244,7 @@ export default function CartPage() {
           </CustomTabPanel>
         </div>
 
-        <div className="mobileFootreCs">
+        <div style={{ position: cartListData?.length === 0 && 'absolute', bottom: '0px', width: '100%' }} className="mobileFootreCs">
           <Footer />
         </div>
       </div>
@@ -2308,27 +2272,23 @@ export default function CartPage() {
               </div>
             </div>
             <div
-              className="smilingCartDeatilSub1"
+              className="smilingCartDeatilSub11"
               style={{ display: !prodSelectData && !cartSelectData && "none" }}
             >
               <div className="popUpcontainer">
                 <img
-                  // src={
-                  //   prodSelectData?.imagepath +
-                  //   prodSelectData?.MediumImagePath?.split(",")[0]
-                  // }
                   src={
                     storeInitData?.DesignImageFol +
-                    prodSelectData?.MediumImagePath?.split(",")[0]
+                    cartSelectData?.DefaultImageName?.slice(13)
                   }
                   style={{
                     border: "1px solid #e1e1e1",
                     borderRadius: "12px",
-                    width: "35%",
+                    width: "60%",
                   }}
                 />
 
-                <div>
+                <div style={{ width: '100%' }}>
                   <div
                     style={{
                       width: "100%",
@@ -2362,7 +2322,7 @@ export default function CartPage() {
                         style={{
                           borderTop: "1px solid #e1e1e1",
                           marginInline: "-10px",
-                          padding: "20px",
+                          padding: "10px",
                         }}
                       >
                         <div
@@ -2449,6 +2409,7 @@ export default function CartPage() {
                           style={{
                             display: "flex",
                             justifyContent: "space-between",
+                            flexWrap: 'wrap'
                           }}
                         >
                           {isDaimondCstoFlag == 1 && (
@@ -2526,55 +2487,56 @@ export default function CartPage() {
                               </select>
                             </div>
                           )}
+
+                          {(sizeData?.length !== 0 ||
+                            (productData?.DefaultSize &&
+                              productData.DefaultSize.length !== 0)) && (
+                              <div
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "column",
+                                  width: "49%",
+                                  marginTop: "30px",
+                                }}
+                              >
+                                <label
+                                  style={{ fontSize: "12.5px", color: "#7d7f85" }}
+                                >
+                                  SIZE:
+                                </label>
+                                <select
+                                  style={{
+                                    border: "none",
+                                    outline: "none",
+                                    color: "#7d7f85",
+                                    fontSize: "12.5px",
+                                  }}
+                                  onChange={(e) => handelSize(e.target.value)}
+                                  defaultValue={
+                                    productData && productData.DefaultSize
+                                      ? productData.DefaultSize
+                                      : sizeData.find(
+                                        (size) => size.IsDefaultSize === 1
+                                      )?.id
+                                  }
+                                >
+                                  {sizeData?.map((size) => (
+                                    <option
+                                      key={size.id}
+                                      value={sizeOption} // Pass sizename as value
+                                      selected={
+                                        productData &&
+                                        productData.DefaultSize === size.sizename
+                                      }
+                                    >
+                                      {size.sizename}
+                                    </option>
+                                  ))}
+                                </select>
+                              </div>
+                            )}
                         </div>
 
-                        {(sizeData?.length !== 0 ||
-                          (productData?.DefaultSize &&
-                            productData.DefaultSize.length !== 0)) && (
-                            <div
-                              style={{
-                                display: "flex",
-                                flexDirection: "column",
-                                width: "49%",
-                                marginTop: "30px",
-                              }}
-                            >
-                              <label
-                                style={{ fontSize: "12.5px", color: "#7d7f85" }}
-                              >
-                                SIZE:
-                              </label>
-                              <select
-                                style={{
-                                  border: "none",
-                                  outline: "none",
-                                  color: "#7d7f85",
-                                  fontSize: "12.5px",
-                                }}
-                                onChange={(e) => handelSize(e.target.value)}
-                                defaultValue={
-                                  productData && productData.DefaultSize
-                                    ? productData.DefaultSize
-                                    : sizeData.find(
-                                      (size) => size.IsDefaultSize === 1
-                                    )?.id
-                                }
-                              >
-                                {sizeData?.map((size) => (
-                                  <option
-                                    key={size.id}
-                                    value={sizeOption} // Pass sizename as value
-                                    selected={
-                                      productData &&
-                                      productData.DefaultSize === size.sizename
-                                    }
-                                  >
-                                    {size.sizename}
-                                  </option>
-                                ))}
-                              </select>
-                            </div>
-                          )}
                       </div>
                     )}
                   </div>
@@ -2678,65 +2640,13 @@ export default function CartPage() {
                             fontSize: "16px",
                             fontWeight: "500",
                           }}
+                          className="SaveBtnCart"
                           onClick={handleCartUpdate}
                         >
                           Save
                         </span>
                       </button>
                     </div>
-                    {/* <div
-                      className="smilingQualityMain"
-                      style={{ display: "flex", alignItems: "center" }}
-                    >
-                      <input
-                        type="text"
-                        style={{
-                          border: "0px",
-                          textAlign: "center",
-                          outline: "none",
-                          width: "80px",
-                          height: "35px",
-                          border: "1px solid #7d7f85",
-                        }}
-                        maxLength={2}
-                        className="simlingQualityBox"
-                        inputMode="numeric"
-                        onClick={(event) => event.target.select()}
-                        value={lastEnteredQuantity}
-                        onChange={(event) => handleInputChange(event)}
-                      />
-                      <button
-                        className="SmilingUpdateQuantityBtn"
-                        onClick={() =>
-                          handleUpdateQuantity(prodSelectData?.designno)
-                        }
-                      >
-                        QTY
-                      </button>
-                    </div> */}
-
-                    {/* <div
-                      className="smilingAddresingleMobileMain"
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        marginLeft: "30px",
-                      }}
-                    >
-                      <textarea
-                        type="text"
-                        placeholder="Enter Remarks..."
-                        value={remarks}
-                        onChange={(event) => handleInputChangeRemarks(event)}
-                        className="YourCartMainRemkarBoxSingle"
-                      />
-                      <button
-                        onClick={() => handleSubmit(cartSelectData)}
-                        className="SmilingAddSingleRemkarBtn"
-                      >
-                        Add
-                      </button>
-                    </div> */}
                     <div className="mt-3">
                       <div className="container-fluid mainRenarkConatiner" style={{ border: '1px solid rgb(225, 225, 225)', borderRadius: '12px' }}>
                         <div className="d-flex justify-content-center row">
