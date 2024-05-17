@@ -148,7 +148,7 @@ export default function MyWishList() {
       };
       const response = await CommonAPI(body);
       if (response.Data.rd[0].stat === 1) {
-        setWishlistData((prevData) =>
+        setWishlistDataNew((prevData) =>
           prevData.filter((item) => item.autocode !== autoCode)
         );
         getCountFunc();
@@ -183,6 +183,7 @@ export default function MyWishList() {
       const response = await CommonAPI(body);
       if (response.Data.rd[0].stat === 1) {
         setWishlistData([]);
+        setWishlistDataNew([]);
         getCountFunc();
         navigation("/myWishList");
       } else {
@@ -214,7 +215,7 @@ export default function MyWishList() {
       };
       const response = await CommonAPI(body);
       if (response.Data.rd[0].stat === 1) {
-        setWishlistData((prevData) =>
+        setWishlistDataNew((prevData) =>
           prevData.filter((item) => item.designno !== data.designno)
         );
         getCountFunc();
