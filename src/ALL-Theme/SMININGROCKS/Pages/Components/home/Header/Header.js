@@ -1314,13 +1314,13 @@ export default function Header() {
                   >
                     <FaPowerOff fontSize='30px' style={{ marginTop: '-5px' }} className="mobileViewSmilingTop4Icone" />
                   </li>
-                    <li
+                    {/* <li
                       className="nav-li-smining"
                       style={{ cursor: "pointer", marginTop: "0" }}
                       onClick={handleLogout}
                     >
                       <FaPowerOff color="#7D7F85" style={{ fontSize: '20px' }} />
-                    </li>
+                    </li> */}
                 </div>
               </div>
 

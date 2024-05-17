@@ -15,11 +15,30 @@ export default function Payment() {
     const [isLoading, setIsLoading] = useState(false);
     const [selectedAdd, setSelectedAdd] = useState('');
     const navigation = useNavigate();
+    const [TotlaPrice, setTotalPrice] = useState('');
+    const [TotlaPriceText, setTotalPriceText] = useState('');
+    const [finalTotal, setFinlTotal] = useState('');
+    const [currData, setCurrData] = useState()
 
     const setCartCount = useSetRecoilState(CartListCounts)
     const setWishCount = useSetRecoilState(WishListCounts)
 
     useEffect(() => {
+        let loginData = JSON.parse(localStorage.getItem('loginUserDetail'));
+        let obj = { "CurrencyRate": loginData?.CurrencyRate, "Currencysymbol": loginData?.Currencysymbol }
+        if (obj) {
+            setCurrData(obj)
+        }
+
+        const totalPriceData = localStorage.getItem('TotalPriceData');
+        if (totalPriceData) {
+            const totalPriceNum = parseFloat(totalPriceData);
+            const newPrice = totalPriceNum * 0.03;
+            setTotalPriceText(newPrice.toFixed(2)); // Assuming you want to show 2 decimal places
+            setTotalPrice(totalPriceNum);
+            const finalTotalPrice = totalPriceNum + newPrice;
+            setFinlTotal(finalTotalPrice.toFixed(2)); // Assuming you want to show 2 decimal places
+        }
 
         const selectedAddressId = localStorage.getItem('selectedAddressId');
         const selctedid = JSON.parse(selectedAddressId);
@@ -120,6 +139,13 @@ export default function Payment() {
             setIsLoading(false);
         }
     }
+
+    const decodeEntities = (html) => {
+        var txt = document.createElement("textarea");
+        txt.innerHTML = html;
+        return txt.value;
+    }
+
     return (
         <div className='paddingTopMobileSet'>
             {isLoading && (
@@ -148,15 +174,17 @@ export default function Payment() {
                             <p style={{ fontSize: '25px', fontWeight: 500, color: '#5e5e5e' }}>Order Summary</p>
                             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                 <p>Subtotal</p>
-                                <p>0.00</p>
+                                <p style={{ fontWeight: 500 , display: 'flex' }}>
+
+                                    <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />{TotlaPrice}</p>
                             </div>
                             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <p>Estimated Tax</p>
-                                <p>0.00</p>
+                                <p>Estimated Tax(3%)</p>
+                                <p style={{ fontWeight: 500 , display: 'flex' }}> <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />{TotlaPriceText}</p>
                             </div>
                             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                 <p>Estimated Total</p>
-                                <p>0.00</p>
+                                <p style={{ fontWeight: 500 , display: 'flex' }}> <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />{finalTotal}</p>
                             </div>
 
                             <p style={{ fontSize: '25px', fontWeight: 500, color: '#5e5e5e' }}>Shipping Address</p>
@@ -188,7 +216,7 @@ export default function Payment() {
                             <p className='mainTitleMobileShiping' style={{ fontSize: '25px', fontWeight: 500, color: '#5e5e5e' }}>Payment Card Method</p>
 
                             <div className='BilingAdressMain' style={{ marginTop: '40px' }}>
-                                <p className='mainTitleMobileShiping' style={{ fontSize: '25px', fontWeight: 500, color: '#5e5e5e' ,margin: '0px' }}>Billing Address</p>
+                                <p className='mainTitleMobileShiping' style={{ fontSize: '25px', fontWeight: 500, color: '#5e5e5e', margin: '0px' }}>Billing Address</p>
                                 <p className='AddressTitle'>Name : <span className='AdressData'>{selectedAdd.shippingfirstname} {selectedAdd.shippinglastname}</span></p>
                                 <p className='AddressTitle'>Address : <span className='AdressData'>{selectedAdd.street}</span></p>
                                 <p className='AddressTitle'>City : <span className='AdressData'>{selectedAdd.city}-{selectedAdd.zip}</span></p>
@@ -209,15 +237,15 @@ export default function Payment() {
                             <p className='mainTitleMobileShiping' style={{ fontSize: '25px', fontWeight: 500, color: '#5e5e5e', marginTop: '30px' }}>Order Summary</p>
                             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                 <p>Subtotal</p>
-                                <p>0.00</p>
+                                <p style={{ fontWeight: 500 , display: 'flex' }}> <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />{TotlaPrice}</p>
                             </div>
                             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                 <p>Estimated Tax</p>
-                                <p>0.00</p>
+                                <p style={{ fontWeight: 500 , display: 'flex' }}> <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />{TotlaPriceText}</p>
                             </div>
                             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                 <p>Estimated Total</p>
-                                <p>0.00</p>
+                                <p style={{ fontWeight: 500 , display: 'flex' }}> <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />{finalTotal}</p>
                             </div>
                         </div>
                         <div className='smilingPaymentBtn'>

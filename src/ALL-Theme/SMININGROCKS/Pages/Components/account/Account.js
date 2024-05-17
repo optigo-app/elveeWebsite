@@ -126,18 +126,18 @@ export default function Account() {
                                 </Box>
                             </div>
                             <div className='smlingAccountTabMobileView YourAccountPageTabs'>
-                                <Box sx={{ display: 'flex', justifyContent: 'flex-start', borderBottom: 1, borderColor: 'divider' }}>
+                                <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
                                     <Tabs value={value} orientation="vertical" onChange={handleChange} sx={{ width: '100%' }} >   {/*  indicatorColor="#7d7f85" */}
-                                        <Tab label="Your Profile" {...a11yProps(0)} sx={{ textAlign: 'start', borderBottom: 1, width: '90%', borderColor: 'divider' }} />
+                                        <Tab label="Your Profile" {...a11yProps(0)} sx={{ textAlign: 'start', width: '90%', borderColor: 'divider' }} />
                                         <Tab label="ORDER HISTORY" {...a11yProps(1)} />
                                         <Tab label="MANAGE ADDRESSES" {...a11yProps(2)} />
                                         {accountValidation() && <Tab label="ACCOUNT" {...a11yProps(3)} />}
                                         <Tab label="CHANGE PASSWORD" {...a11yProps(accountValidation() ? 4 : 3)} />
                                     </Tabs>
                                 </Box>
-                                <div>
+                                {/* <div>
                                     <p className='smilingAccountLogoutMobile' onClick={handleLogout}>LOG OUT</p>
-                                </div>
+                                </div> */}
                             </div>
 
                             <CustomTabPanel value={value} index={0}>

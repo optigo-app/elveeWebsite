@@ -3127,9 +3127,10 @@ const ProductList = () => {
                                         {isPriceShow === 1 &&
                                           <div className={show4ImagesView ? "feature4" : 'feature'}>
                                             <p>
-                                              <span className="feature-count" style={{ display: 'flex' }}>
+                                              <span className="property-type" style={{ display: 'flex' }}>
                                                 <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />
-                                                {products?.ismrpbase === 1 ? products?.mrpbaseprice  : PriceWithMarkupFunction(products?.markup, products?.price, currData?.CurrencyRate)?.toFixed(2)}</span>
+                                                {products?.ismrpbase === 1 ? products?.mrpbaseprice  : PriceWithMarkupFunction(products?.markup, products?.price, currData?.CurrencyRate)?.toFixed(2)}
+                                                </span>
                                             </p>
                                           </div>
                                         }
@@ -3138,7 +3139,7 @@ const ProductList = () => {
                                       </div>
                                     </div>
                                     <div>
-                                      <p className="property-type" style={{ margin: '0px 0px 10px 8px' }}>
+                                      <p className="property-type" style={{ margin: '0px 0px 10px 0px' }}>
                                         {isMetalTCShow === 1 && <span>
                                           {products?.updMC} -
                                           {products?.updMT}
