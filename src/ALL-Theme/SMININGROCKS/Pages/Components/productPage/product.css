@@ -167,6 +167,28 @@
     gap: 12px;
 }
 
+.menuitemSelectoreMain {
+    border: none;
+    outline: none;
+    font-size: 13px;
+    color: rgb(66, 66, 66);
+    font-family: "PT Sans", sans-serif;
+    font-weight: bold;
+    letter-spacing: 2.2px;
+}
+
+.menuitemSelectoreMainMobile{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: none;
+    outline: none;
+    font-size: 13px;
+    color: rgb(66, 66, 66);
+    font-family: "PT Sans", sans-serif;
+    font-weight: bold;
+    letter-spacing: 2.2px;
+}
 
 .smilingAllProductDataMainMobile {
     width: 100%;
@@ -185,17 +207,21 @@
 }
 
 .cart-icon {
-    position: absolute;
+    position: absolute!important;
     top: 15px;
-    left: 15px;
-    width: 20px;
+    left: 10px;
+    width: 30px;
+    padding: 0px;
+    min-width: 0px;
 }
 
 .wishlist-icon {
-    position: absolute;
+    position: absolute!important;
     top: 15px;
-    right: 20px;
-    width: 20px;
+    right: 15px;
+    width: 30px;
+    padding: 0px;
+    min-width: 0px;
 }
 
 @media screen and (min-width: 1440px) {
@@ -212,7 +238,6 @@
 
 .smilingWebProductListSideBar {
     width: 20%;
-    position: absolute;
     /* padding: 52px 0px 40px 100px; */
 }
 
@@ -504,7 +529,7 @@
 
 .listing-details {
     padding: 5px 12px 0px 12px;
-    min-height: 50px;
+    /* min-height: 50px; */
     font-family: "PT Sans", sans-serif;
     overflow: hidden;
 }
@@ -549,7 +574,7 @@
     display: flex;
     justify-content: space-between;
     padding: 5px 10px 0px 0px;
-    font-size: 14.5px;
+    font-size: 11px;
     border-top: 1px solid rgba(0, 0, 0, 0.04);
     color: #4a5568;
 }
@@ -578,6 +603,9 @@
 
     .paddingTopMobileSet.mainProduct {
         margin-inline: 1% !important;
+    }
+    .property-type{
+        margin: 0px 0px 0px 10px!important;
     }
 }
 
@@ -608,7 +636,7 @@
     }
 
     .listing-details {
-        padding: 12px;
+        padding: 0px 12px 0px 12px;
     }
 
     .smilingAllProductDataMainMobile {
@@ -662,7 +690,7 @@
         width: 100%;
         font-size: 0.875rem;
         font-weight: 700;
-        height: 7vh;
+        /* height: 7vh; */
     }
 
     .price {
@@ -674,8 +702,8 @@
     }
 
     .listing-features {
-        padding: 7px;
-        font-size: 13.5px;
+        padding: 0px 7px 7px 7px;
+        font-size: 11px;
     }
 
     .filterMobileDivcontainer {
@@ -1142,6 +1170,13 @@
         letter-spacing: 0px !important;
     }
 
+    .menuitemSelectoreMainMobile {
+        font-size: 11px !important;
+        font-family: "PT Sans", sans-serif !important;
+        letter-spacing: 0px !important;
+    }
+
+    
     .part-content {
         display: flex;
         color: #7b7b7b;

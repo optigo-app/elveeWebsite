@@ -593,12 +593,21 @@ export default function Header() {
       }).then(async (res) => {
         if (res) {
           let autoCodeList = JSON.parse(localStorage.getItem("autoCodeList"))
-          await getDesignPriceList(finalData, 1, {}, {}, autoCodeList)
-          navigation("/productpage", { state: { menuFlag: true, filtervalue: finalData } })
-          setTimeout(() => {
-            setDrawerOpen(false);
-            handleMouseLeave();
-          }, 100)
+          await getDesignPriceList(finalData,1,{},{},autoCodeList).then((res)=>{
+            if(res){
+              // console.log("test",res);
+              localStorage.setItem("getPriceData", JSON.stringify(res))
+              navigation(`/productpage/?${finalData?.FilterKey}=${finalData?.FilterVal}/${finalData?.FilterKey1}=${finalData?.FilterVal1}/${finalData?.FilterKey2}=${finalData?.FilterVal2}`, { state: { menuFlag: finalData?.menuname, filtervalue: finalData } })
+            }
+            setTimeout(() => {
+              setDrawerOpen(false);
+              handleMouseLeave();
+            }, 50)
+          })
+        }
+      }).catch((err)=>{
+        if(err){
+          toast.error("Something Went Wrong!!");
         }
       })
     }
@@ -1186,7 +1195,8 @@ export default function Header() {
             display: "flex",
             justifyContent: "space-between",
             // padding: "20px",
-            height: '65px'
+            height: '65px',
+            marginInline: '7px'
           }}
           className="smilingMobileSubDiv"
         >
@@ -1199,11 +1209,11 @@ export default function Header() {
           // onClick={() => setDrawerOpen(true)}
           >
             <IconButton
-              style={{ color: "white" }}
+              style={{ color: "#7D7F85" }}
               onClick={() => setDrawerOpen(true)}
               aria-label="open menu"
             >
-              <MenuIcon style={{ fontSize: "35px" }} />
+              <MenuIcon style={{ fontSize: "35px" }} className="mobileViewSmilingTop4Icone"/>
             </IconButton>
           </div>
           <div
@@ -1302,6 +1312,13 @@ export default function Header() {
                   >
                     <FaPowerOff fontSize='30px' style={{ marginTop: '-5px' }} className="mobileViewSmilingTop4Icone" />
                   </li>
+                    <li
+                      className="nav-li-smining"
+                      style={{ cursor: "pointer", marginTop: "0" }}
+                      onClick={handleLogout}
+                    >
+                      <FaPowerOff color="#7D7F85" style={{ fontSize: '20px' }} />
+                    </li>
                 </div>
               </div>
 

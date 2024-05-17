@@ -149,7 +149,13 @@
 @media screen and (max-width: 1400px) {
 
     .elevBox1Btn {
-        width: 110px;
+        width: 100px;
+        color: black;
+        font-size: 14px;
+    }
+
+    .eleBox1InputBox{
+        border-radius: 0px!important;
     }
 }
 
