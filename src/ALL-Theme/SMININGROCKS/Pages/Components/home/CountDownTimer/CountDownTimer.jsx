@@ -4,6 +4,7 @@ import featherImg from '../../../assets/LV Feather.png';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { loginState } from '../../../../../../Recoil/atom';
+import { storImagePath } from '../../../../Utils/globalFunctions/GlobalFunction';
 
 const TwoPartDiv = () => {
     const navigation = useNavigate();
@@ -107,7 +108,7 @@ const TwoPartDiv = () => {
                         </span>
                         <span className='Logo'>
                             <p className='ptitle'>
-                                <img className='featherImg' src={featherImg} style={{ width: '100%', height: '20vh', objectFit: 'cover' }} alt="feather" />
+                                <img className='featherImg' src={`${storImagePath()}/images/HomePage/MainBanner/image/featuresImage.png`} style={{ width: '100%', height: '20vh', objectFit: 'cover' }} alt="feather" />
                             </p>
                         </span>
                     </div>

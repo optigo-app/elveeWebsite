@@ -542,37 +542,44 @@ export default function Header() {
     setExpandedMenu(index);
     setSelectedData(menuItems[index] || []);
     document.body.style.overflow = 'hidden';
+
   };
   const handleMouseLeave = (index) => {
     setExpandedMenu(null);
+    setHoveredIndex(null);
     document.body.style.overflow = 'auto';
   };
 
-  const handleMenuClick = async (param1Item, param2Item) => {
-    // localStorage.removeItem("selectedCombomt")
-    // localStorage.removeItem("selectedCombodia")
-    // localStorage.removeItem("selectedCombocs")
+  const handleMenuClick = async (menuItem, param1Item = null, param2Item = null) => {
+    const { param1, param2, ...cleanedMenuItem } = menuItem;
 
-    let menuDataWithoutParam1;
+    let menuDataObj = { ...cleanedMenuItem };
 
-    if (param1Item?.param0dataid) {
-      const { param1, ...menuData } = { ...param1Item, param2Item };
-      menuDataWithoutParam1 = menuData;
-    } else if (param1Item?.param1dataname) {
-      const { param2, ...menuData } = { ...param1Item, ...param2Item };
-      menuData.param0dataid = param1Item.param0dataid;
-      menuDataWithoutParam1 = menuData;
+    if (param1Item) {
+      const { param1, param2, ...cleanedParam1Item } = param1Item;
+      menuDataObj = { ...menuDataObj, ...cleanedParam1Item };
+
+      console.log('Menu Item:', cleanedMenuItem);
+      console.log('Submenu Item:', cleanedParam1Item);
+
+      if (param2Item) {
+        menuDataObj = { ...menuDataObj, ...param2Item };
+        console.log('Second Submenu Item:', param2Item);
+      }
+    } else {
+      console.log('Menu Item:', cleanedMenuItem);
     }
-    console.log('menuDataWithoutParam1', menuDataWithoutParam1);
+
+    console.log('Menu Data Object:', menuDataObj);
 
     let finalData = {
-      menuname: (leval0Data && leval0Data?.menuname) || (menuDataWithoutParam1 && menuDataWithoutParam1?.menuname) || "",
-      FilterKey: (leval0Data && leval0Data.param0name) || (menuDataWithoutParam1 && menuDataWithoutParam1.param0name) || "",
-      FilterVal: (leval0Data && leval0Data.param0dataname) || (menuDataWithoutParam1 && menuDataWithoutParam1.param0dataname) || "",
-      FilterKey1: menuDataWithoutParam1?.param1name ?? "",
-      FilterVal1: menuDataWithoutParam1?.param1dataname ?? "",
-      FilterKey2: menuDataWithoutParam1?.param2name ?? "",
-      FilterVal2: menuDataWithoutParam1?.param2dataname ?? ""
+      menuname: menuDataObj?.menuname ?? "",
+      FilterKey: menuDataObj.param0name ?? "",
+      FilterVal: menuDataObj.param0dataname ?? "",
+      FilterKey1: menuDataObj?.param1name ?? "",
+      FilterVal1: menuDataObj?.param1dataname ?? "",
+      FilterKey2: menuDataObj?.param2name ?? "",
+      FilterVal2: menuDataObj?.param2dataname ?? ""
     }
 
     console.log('finalData', finalData);
@@ -594,8 +601,8 @@ export default function Header() {
       }).then(async (res) => {
         if (res) {
           let autoCodeList = JSON.parse(localStorage.getItem("autoCodeList"))
-          await getDesignPriceList(finalData,1,{},{},autoCodeList).then((res)=>{
-            if(res){
+          await getDesignPriceList(finalData, 1, {}, {}, autoCodeList).then((res) => {
+            if (res) {
               // console.log("test",res);
               localStorage.setItem("getPriceData", JSON.stringify(res))
               // navigation(`/productpage/?${finalData?.FilterKey}=${finalData?.FilterVal}/${finalData?.FilterKey1}=${finalData?.FilterVal1}/${finalData?.FilterKey2}=${finalData?.FilterVal2}`, { state: { menuFlag: finalData?.menuname, filtervalue: finalData } })
@@ -607,8 +614,8 @@ export default function Header() {
             }, 50)
           })
         }
-      }).catch((err)=>{
-        if(err){
+      }).catch((err) => {
+        if (err) {
           toast.error("Something Went Wrong!!");
         }
       })
@@ -829,13 +836,33 @@ export default function Header() {
                   </a>
                 </div>
                 <Badge
+                  badgeContent={getWishListCount}
+                  max={1000}
+                  overlap={"rectangular"}
+                  color="secondary"
+                  style={{ marginInline: '15px' }}
+                >
+                    <li
+                      onClick={() => { setDrawerOpen(false); navigation('/myWishList') }}
+                      style={{
+                        marginLeft: "-10px",
+                        cursor: "pointer",
+                        listStyle: 'none',
+                        marginTop: "0px",
+                      }}
+                      sx={{ "& .MuiBadge-badge": { fontSize: 10, height: 20, minWidth: 20, width:20 } }}
+                    >
+                      <GoHeart color="#7D7F85" fontSize='20px' />
+                    </li>
+                </Badge>
+                <Badge
                   badgeContent={getCartListCount}
                   max={1000}
                   overlap={"rectangular"}
                   color="secondary"
-                  style={{ marginInline: '18px' }}
+                  style={{ marginInline: '15px'}}
+                  sx={{ "& .MuiBadge-badge": { fontSize: 10, height: 20, minWidth: 20, width:20 } }}
                 >
-                  <Tooltip title="Cart">
                     <li
                       onClick={() => { setDrawerOpen(false); navigation('/CartPage') }}
                       style={{
@@ -845,19 +872,18 @@ export default function Header() {
                         marginTop: "0px",
                       }}
                     >
-                      <HiOutlineShoppingBag fontSize='25px' />
+                      <HiOutlineShoppingBag fontSize='20px' />
                     </li>
-                  </Tooltip>
                 </Badge>
                 <li
                   className="nav-li-smining"
                   style={{ cursor: "pointer", marginTop: "0" }}
                   onClick={handleLogout}
                 >
-                  <FaPowerOff style={{ fontSize: '25px' }} />
+                  <FaPowerOff style={{ fontSize: '20px' }} />
                 </li>
               </div>
-              <List sx={{paddingTop:'0', marginBottom: '20px' }}>
+              <List sx={{ paddingTop: '0', marginBottom: '20px' }}>
                 {menuItems.map(menuItem => (
                   <div key={menuItem.menuid}>
                     <ButtonBase
@@ -866,7 +892,7 @@ export default function Header() {
                       className="muilistMenutext"
                       style={{ width: '100%' }}
                     >
-                      <ListItem style={{paddingBottom:'0px'}}>
+                      <ListItem style={{ paddingBottom: '0px' }}>
                         <ListItemText primary={menuItem.menuname} className="muilistMenutext" />
                       </ListItem>
                     </ButtonBase>
@@ -889,7 +915,7 @@ export default function Header() {
                                 onClick={() => handleSubMenuClick(menuItem, subMenuItem.param1dataname, subMenuItem)}
                                 style={{ width: '100%' }}
                               >
-                                <ListItem className="muilistSubMenutext" style={{ paddingLeft: '20px', paddingTop:'0px', paddingBottom:'0px' }}>
+                                <ListItem className="muilistSubMenutext" style={{ paddingLeft: '20px', paddingTop: '0px', paddingBottom: '0px' }}>
                                   <ListItemText primary={subMenuItem.param1dataname} />
                                 </ListItem>
                               </ButtonBase>
@@ -899,16 +925,16 @@ export default function Header() {
                                   {/* <div style={{ paddingLeft: '10px' }}>
                                     <button class="underline-button" onClick={() => handleSubMenuClick(menuItem, subMenuItem.param1dataname, subMenuItem)}>View All</button>
                                   </div> */}
-                                  <List style={{paddingTop:'0px', paddingBottom:'0px'}}>
+                                  <List style={{ paddingTop: '0px', paddingBottom: '0px' }}>
                                     {subMenuItem.param2.map(subSubMenuItem => (
-                                       <ButtonBase
-                                       component="div"
-                                       onClick={() => handleSubSubMenuClick(menuItem, subMenuItem, subSubMenuItem.param2dataname, subSubMenuItem)}
-                                       style={{ width: '100%' }}
-                                     >
-                                      <ListItem key={subSubMenuItem.param2dataid} style={{ paddingLeft: '30px', paddingTop:'0px', paddingBottom:'0px' }}>
-                                        <ListItemText primary={subSubMenuItem.param2dataname} className="muilist2ndSubMenutext" />
-                                      </ListItem>
+                                      <ButtonBase
+                                        component="div"
+                                        onClick={() => handleSubSubMenuClick(menuItem, subMenuItem, subSubMenuItem.param2dataname, subSubMenuItem)}
+                                        style={{ width: '100%' }}
+                                      >
+                                        <ListItem key={subSubMenuItem.param2dataid} style={{ paddingLeft: '30px', paddingTop: '0px', paddingBottom: '0px' }}>
+                                          <ListItemText primary={subSubMenuItem.param2dataname} className="muilist2ndSubMenutext" />
+                                        </ListItem>
                                       </ButtonBase>
                                     ))}
                                   </List>
@@ -1062,7 +1088,7 @@ export default function Header() {
                   {menuItems.map((item, index) => (
                     <li
                       className="nav-li-smining"
-                      style={{ height: '100%', display: 'flex', alignItems: 'center', cursor: "pointer", marginTop: '10px', textTransform: 'uppercase' }}
+                      style={{ height: '100%', display: 'flex', alignItems: 'center', cursor: "pointer", marginTop: '10px', textTransform: 'uppercase', textDecoration: hoveredIndex === index ? 'underline' : 'none' }}
                       key={index}
                       label={item.menuname}
                       onMouseEnter={() => { setLeval0Data(item); handleMouseEnter(index, item) }}
@@ -1157,14 +1183,15 @@ export default function Header() {
                 className="menuDropdownData"
               >
                 <div style={{}}>
+                  {console.log('menuItems--', menuItems[hoveredIndex])}
                   {/* Render selectedData outside the menuItems loop */}
                   <div style={{ width: '100%', display: 'flex', gap: '60px', textTransform: 'uppercase' }}>
                     {selectedData?.param1?.map((param1Item, param1Index) => (
                       <div key={param1Index}>
-                        <span onClick={() => handleMenuClick(param1Item)} className="level1MenuData" key={param1Index} style={{ fontSize: '15px', marginBottom: '10px', fontFamily: '"PT Sans", sans-serif', textAlign: 'start', letterSpacing: 1, fontWeight: 600, cursor: 'pointer' }} > {param1Item?.param1dataname}</span>
+                        <span onClick={() => handleMenuClick(menuItems[hoveredIndex], param1Item)} className="level1MenuData" key={param1Index} style={{ fontSize: '15px', marginBottom: '10px', fontFamily: '"PT Sans", sans-serif', textAlign: 'start', letterSpacing: 1, fontWeight: 600, cursor: 'pointer' }} > {param1Item?.param1dataname}</span>
                         <div style={{ height: '300px', display: 'flex', flexWrap: 'wrap', flexDirection: 'column' }}>
                           {param1Item?.param2?.map((param2Item, param2Index) => (
-                            <p className="level2menuData" key={param2Index} onClick={() => handleMenuClick(param1Item, param2Item)} style={{ fontSize: '13.5px', margin: '6px 15px 6px 0px', fontFamily: '"PT Sans", sans-serif', letterSpacing: 0.4, textAlign: 'start', cursor: 'pointer', textTransform: 'capitalize', paddingRight: '15px' }}>
+                            <p className="level2menuData" key={param2Index} onClick={() => handleMenuClick(menuItems[hoveredIndex], param1Item, param2Item)} style={{ fontSize: '13.5px', margin: '6px 15px 6px 0px', fontFamily: '"PT Sans", sans-serif', letterSpacing: 0.4, textAlign: 'start', cursor: 'pointer', textTransform: 'capitalize', paddingRight: '15px' }}>
                               {param2Item?.param2dataname}
                             </p>
                           ))}
@@ -1215,7 +1242,7 @@ export default function Header() {
               onClick={() => setDrawerOpen(true)}
               aria-label="open menu"
             >
-              <MenuIcon style={{ fontSize: "35px" }} className="mobileViewSmilingTop4Icone"/>
+              <MenuIcon style={{ fontSize: "35px" }} className="mobileViewSmilingTop4Icone" />
             </IconButton>
           </div>
           <div
