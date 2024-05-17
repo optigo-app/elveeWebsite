@@ -1722,16 +1722,6 @@ const ProdDetail = () => {
                       </select>}
                   </div>}
 
-                  {/* {isMetalCutoMizeFlag == 1 && <Divider
-                    orientation="vertical"
-                    flexItem
-                    style={{
-                      opacity: 1,
-                      height: "30px",
-                      margin: "10px 10px 0px 10px",
-                      marginTop: '20px'
-                    }}
-                  />} */}
 
                   {isMetalCutoMizeFlag == 1 &&
                     <div
@@ -1766,10 +1756,6 @@ const ProdDetail = () => {
                         </select>}
                     </div>}
 
-                  {/* <Divider sx={{
-                    marginTop: '20px', background: '#a9a7a7',
-                    marginTop: '20px'
-                  }} /> */}
 
                   {((isDaimondCstoFlag == 1) && (productData?.diamondweight !== 0 || productData?.diamondpcs !== 0)) && <div
                     style={{
@@ -1808,19 +1794,7 @@ const ProdDetail = () => {
                         ))}
                       </select>}
                   </div>}
-                  {/* <Divider
-                    orientation="vertical"
-                    flexItem
-                    style={{
-                      opacity: 1,
-                      height: "30px",
-                      margin: "0px 10px 0px 10px",
-                      marginTop: '20px'
-                    }}
-                  />
-
-                  <Divider sx={{ marginTop: '20px', background: '#a9a7a7' }} /> */}
-
+                 
                   {isCColrStoneCustFlag === 1 &&
                     (productData?.totalcolorstonepcs !== 0 ||
                       productData?.totalcolorstoneweight !== 0) && (

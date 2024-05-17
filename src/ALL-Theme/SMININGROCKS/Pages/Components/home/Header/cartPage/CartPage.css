@@ -11,7 +11,7 @@
     border-radius: 12px;
     height: 100%;
     width: 100%;
-    padding: 70px 0px;
+    /* padding: 70px 0px; */
 }
 
 .smilingCartDeatilSub11 {
@@ -68,10 +68,21 @@
 }
 
 .cartPageTopBtn:hover {
-    color: white;
-    background-color: #7d7f85;
+    color: white!important;
+    background-color: #7d7f85!important;
 }
+.cartPageTopLink{
+    color: #7d7f85!important;
+    font-size: 20px;
+    text-decoration: underline!important;
+    font-weight: 500;
+    margin-right: 10%!important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80px;
 
+}
 .smilingCartPageDataMain {
     display: flex;
     flex-wrap: wrap;
@@ -217,7 +228,7 @@
 }
 
 .cartProdSection .cartProdpart {
-    padding: 10px 0px 10px 0px;
+    padding: 5px 0px 10px 0px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     /* Four columns with equal width */
@@ -258,6 +269,7 @@
     width: 30%;
     height: 600px;
     overflow-y: scroll;
+    margin-bottom: 10px;
 }
 
 .designNo {
@@ -289,6 +301,7 @@
 
 .mainOrderRenarkConatiner {
     width: 443px;
+    margin: 0px!important;
     font-size: 13px;
 }
 
@@ -370,8 +383,9 @@
     text-align: center;
     margin-top: 10px;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     margin-inline: 1%;
+    align-items: center;
 }
 
 @media (max-width: 1284px) {
@@ -466,6 +480,13 @@
     text-align: center;
     width: 100%;
 }
+.SmiCartTitleWeb{
+    color: #7d7f85;
+    font-family: 'FreightDispProBook-Regular,Times New Roman,serif';
+    font-size: 40px;
+    text-align: center;
+    margin: 0px;
+}
 
 .SmilingUpdateQuantityBtn {
     color: black;
@@ -479,6 +500,13 @@
     color: black;
 }
 
+.smilingListCartTopButtonNew {
+    position: absolute;
+    right: 7%;
+    top: 8%;
+    width: 25%;
+    display: flex;
+}
 
 @media screen and (max-width: 18200px) {
     .cartProdSection .cartProdpart {
@@ -490,6 +518,14 @@
 
     .smilingCartPageMain {
         margin-inline: 0% !important;
+    }
+
+    .smilingListCartTopButtonNew {
+        position: absolute;
+        right: 4%;
+        top: 8%;
+        width: 25%;
+        display: flex;
     }
 }
 
@@ -512,7 +548,13 @@
         font-size: 12px;
     }
 
-
+    .smilingListCartTopButtonNew {
+        position: absolute;
+        right: 7%;
+        top: 8%;
+        width: 32%!important;
+        display: flex;
+    }
 
     .feature p {
         margin: 0 0 5px 1px !important;
@@ -598,12 +640,12 @@
     }
 }
 
-@media (min-width : 1070px) and (max-width: 1290px) {
+/* @media (min-width : 1070px) and (max-width: 1290px) {
 
     .CartPageMainImageShowMobile {
         height: 680px !important;
     }
-}
+} */
 
 @media screen and (max-width: 1070px) {
 
@@ -641,6 +683,10 @@
 @media screen and (max-width: 600px) {
 
     .smilingListCartTopButton {
+        display: none !important;
+    }
+
+    .smilingListCartTopButtonNew {
         display: none !important;
     }
 
