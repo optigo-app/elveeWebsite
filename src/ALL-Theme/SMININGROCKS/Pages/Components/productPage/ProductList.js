@@ -450,8 +450,10 @@ const ProductList = () => {
         let csQid = "";
         let csC = "";
         let csCid = "";
+        let ismrpbase;
+        let mrpbaseprice;
 
-        // console.log("test",data,priceDataApi,priceDataApi?.rd?.find((pda) => pda.A === product.autocode))
+        console.log("newPriceData",newPriceData)
 
         if (newPriceData || newPriceData1 || newPriceData2) {
           price = (((newPriceData?.V ?? 0) / currData?.CurrencyRate ?? 0) + (newPriceData?.W ?? 0) + (newPriceData?.X ?? 0)) + (newPriceData1 ?? 0) + (newPriceData2 ?? 0);
@@ -475,13 +477,15 @@ const ProductList = () => {
           csQid = ""
           csC = ""
           csCid = ""
+          ismrpbase = newPriceData?.U
+          mrpbaseprice = newPriceData?.Z
         }
         // console.log("priceprod", product?.designno, metalrd, diard1, csrd2);
         return {
           ...product, price, markup, metalrd, diard1, csrd2, updNWT, updGWT,
           updDWT, updDPCS, updCWT, updCPCS, updMT, updMC,
           diaQ, diaQid,
-          diaC, diaCid, csQ, csQid, csC, csCid
+          diaC, diaCid, csQ, csQid, csC, csCid,ismrpbase,mrpbaseprice
         }
       }));
 
@@ -3120,7 +3124,7 @@ const ProductList = () => {
                                             <p>
                                               <span className="feature-count" style={{ display: 'flex' }}>
                                                 <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />
-                                                {PriceWithMarkupFunction(products?.markup, products?.price, currData?.CurrencyRate)?.toFixed(2)}</span>
+                                                {products?.ismrpbase === 1 ? products?.mrpbaseprice  : PriceWithMarkupFunction(products?.markup, products?.price, currData?.CurrencyRate)?.toFixed(2)}</span>
                                             </p>
                                           </div>
                                         }

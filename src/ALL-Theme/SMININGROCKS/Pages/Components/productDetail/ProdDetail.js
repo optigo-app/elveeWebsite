@@ -290,7 +290,7 @@ const ProdDetail = () => {
 
     if (srProdPriceData?.cSQopt) {
       let csQCVar = ColorStoneQualityColor?.find(item => item?.QualityId === findCsQcId(srProdPriceData?.cSQopt)[0]?.QualityId && item?.ColorId === findCsQcId(srProdPriceData?.cSQopt)[0]?.ColorId)
-      let csQualColor = `${csQCVar?.QualityId}-${csQCVar?.ColorId}`
+      let csQualColor = `${csQCVar?.Quality}-${csQCVar?.color}`
       setCSQOpt(csQualColor)
       setCSQOptId([csQCVar?.QualityId, csQCVar?.ColorId])
 
@@ -1702,7 +1702,8 @@ const ProdDetail = () => {
                     </label>
                     {mtrdData.U === 1 ?
                       <span style={{ fontSize: "13px", color: "rgb(66, 66, 66)" }}>
-                        {`${productData.MetalPurity} ${productData.MetalTypeName}`}
+                        {/* {`${productData.MetalPurity} ${productData.MetalTypeName}`} */}
+                        {mtPurity ? mtPurity : mtTypeOption ? mtTypeOption?.split(" ")[1] : productData?.MetalPurity}
                       </span>
                       :
                       <select
@@ -1750,7 +1751,8 @@ const ProdDetail = () => {
                       </label>
                       {mtrdData.U === 1 ?
                         <span style={{ fontSize: "12.5px", color: "#7d7f85" }}>
-                          {productData.MetalColorName}
+                          {/* {productData.MetalColorName} */}
+                          {mtColorName ? mtColorName : selectedColor ? selectedColor : productData?.updMC}
                         </span>
                         :
                         <select
@@ -1788,7 +1790,7 @@ const ProdDetail = () => {
                     </label>
                     {mtrdData?.U === 1 ?
                       <span style={{ fontSize: "12.5px", color: "#7d7f85" }}>
-                        {`${productData.diamondquality}_${productData.diamondcolorname}`}
+                        {diaQColOpt ? diaQColOpt : `${productData?.diamondquality}-${productData?.diamondcolorname}`}
                       </span>
                       :
                       <select
@@ -1843,7 +1845,7 @@ const ProdDetail = () => {
                           <span
                             style={{ fontSize: "12.5px", color: "#7d7f85" }}
                           >
-                            {`${productData.colorstonequality}-${productData?.colorstonecolorname}`}
+                            {cSQopt? cSQopt :`${productData.colorstonequality}-${productData?.colorstonecolorname}`}
                           </span>
                         ) : (
                           <select
@@ -2101,7 +2103,7 @@ const ProdDetail = () => {
                       {/* Price:{" "} */}
                       <span className='mainpriceDeatilPage'>
                         <div dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />
-                        {FinalPrice()}
+                        {mtrdData?.U === 1 ? mtrdData?.Z : FinalPrice()}
                         {/* {`${(
                           (((mtrdData?.V ?? 0)/currData?.CurrencyRate) + (mtrdData?.W ?? 0) + (mtrdData?.X ?? 0))+
                           (dqcData ?? 0) +
