@@ -79,7 +79,6 @@ const AccountLedger = () => {
         let storeinit = JSON.parse(localStorage.getItem("storeInit"));
         let loginInfo = JSON.parse(localStorage.getItem("loginUserDetail"));
         const UserEmail = localStorage.getItem("userEmail");
-        console.log(UserEmail);
         try {
             
         let EncodeData = {
@@ -113,7 +112,6 @@ const AccountLedger = () => {
             }
             
           const response2 = await CommonAPI(body);
-            console.log(response2);
           if(response2?.Status === '200'){
 
               if(response2?.Data?.rd?.length > 0)
@@ -226,7 +224,6 @@ const AccountLedger = () => {
       const backToInitial2 = () => {
           const firstDayOfMonth = dayjs().startOf('month');
           const lastDayOfMonth = dayjs().endOf('month');
-          console.log("back ini", firstDayOfMonth, lastDayOfMonth);
           setFromDate(null);
           setToDate(null);
           setSelectedDays(null)
@@ -1189,9 +1186,11 @@ const AccountLedger = () => {
         {/* <div className='fs-4 fw-bold text-center text-secondary ledger_title'>Ledger</div> */}
         <div>
             <div className='border'>
-            <div className='p-2 ps-4 border-bottom fs_Al_mq' style={{letterSpacing:'1px'}}>Account Detail for &nbsp; <b>{userName}</b>
-                &nbsp; Period of &nbsp;<b>{moment(showStartDate).format('DD MMM YYYY') === 'Invalid date' ? '' : moment(showStartDate).format('DD MMM YYYY')}</b>&nbsp; to 
-                &nbsp;<b>{moment(showEndDate).format('DD MMM YYYY') === 'Invalid date' ? '' : moment(showEndDate).format('DD MMM YYYY')}</b>&nbsp;</div>
+            { moment(showStartDate).format('DD MMM YYYY') !== 'Invalid date' && <div className='p-2 ps-4 border-bottom fs_Al_mq' style={{letterSpacing:'1px'}}>
+                Account Detail for &nbsp; <b className='fs_Al_mq'>{userName}</b>
+                &nbsp; Period of &nbsp;<b className='fs_Al_mq'>{moment(showStartDate).format('DD MMM YYYY') === 'Invalid date' ? '' : moment(showStartDate).format('DD MMM YYYY')}</b>&nbsp; to 
+                &nbsp;<b className='fs_Al_mq'>{moment(showEndDate).format('DD MMM YYYY') === 'Invalid date' ? '' : moment(showEndDate).format('DD MMM YYYY')}</b>&nbsp;
+            </div>}
 
                 {/* <div className='p-2 ps-4 border-bottom' style={{letterSpacing:'1px'}}>Account Detail for &nbsp; <b>{userName}</b>&nbsp; Period of &nbsp;<b>{formatDate(startDate)}</b>&nbsp; to &nbsp;<b>{formatDate(endDate)}</b>&nbsp;</div> */}
                 
@@ -1200,11 +1199,11 @@ const AccountLedger = () => {
                     {
                         // filterVisible ? 
                         <div className='fs_al2 p-2 d-flex justify-content-start  align-items-center flex-wrap mb-0'>
-                            <div>
-                            <Box sx={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}>
-                            <Box sx={{ display: "flex", alignItems: "center", paddingRight: "15px", paddingBottom: "35px" }} className="QuotePadSec">
-                            <p className='fs-6 mb-0' style={{ paddingRight: "8px" }}>Date : </p>
-                            <Box>
+                            <div className='mb_acc'>
+                                <Box sx={{ display: "flex", alignItems: "center", flexWrap: "wrap" }} className="">
+                            <Box sx={{ display: "flex", alignItems: "center", paddingRight: "15px", paddingBottom: "35px" }} className="QuotePadSec date_margin_acc">
+                            <p className='fs-6 mb-0 w_30_acc' style={{ paddingRight: "8px" }}>Date : </p>
+                            <Box className="w_70_acc">
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                                     <DatePicker
                                         label="Date From"
@@ -1215,7 +1214,6 @@ const AccountLedger = () => {
                                         // onChange={(newValue) => setFromDate(newValue)}
                                         // onChange={handleFromDateChange}
                                         onChange={(newValue) => {
-                                            console.log(moment(newValue));
                                             if (newValue === null) {
                                               setFromDate(null)
                                             } else {
@@ -1248,16 +1246,16 @@ const AccountLedger = () => {
                                           }}
                                         format="DD MM YYYY"
                                         placeholder="DD MM YYYY"
-                                        className='quotationFilterDates'
+                                        className='quotationFilterDates w_all_acc'
                                         name="date" 
                                         id="startdate" 
                                     />
                                 </LocalizationProvider>
                             </Box>
                         </Box>
-                        <Box sx={{ display: "flex", alignItems: "center", paddingBottom: "35px", paddingRight: "15px" }} className="QuotePadSec">
-                            <p className='fs-6 mb-0' style={{ paddingRight: "8px" }}>To : </p>
-                            <Box>
+                        <Box sx={{ display: "flex", alignItems: "center", paddingBottom: "35px", paddingRight: "15px" }} className="QuotePadSec date_margin_acc">
+                            <p className='fs-6 mb-0 w_30_acc' style={{ paddingRight: "8px" }}>To : </p>
+                            <Box className="w_70_acc">
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                                     <DatePicker
                                         label="Date To"
@@ -1290,32 +1288,32 @@ const AccountLedger = () => {
                                           }}
                                         format="DD MM YYYY"
                                         placeholder="DD MM YYYY"
-                                        className='quotationFilterDates'
+                                        className='quotationFilterDates w_all_acc'
                                         name="date" 
                                         id="enddate"
                                     />
                                 </LocalizationProvider>
                             </Box>
                         </Box>
-                    </Box>
+                        </Box>
                             </div>
-                        <div>
-                            {/* <input type="date" name="date" id="startdate" className='mx-2 p-1 mb-2' value={startDate} onChange={(e) => setStartDate(e.target.value)} title='find data'  />
-                                To 
-                            <input type="date" name="date" id="enddate" className='mx-2 p-1 mb-2'   value={endDate} onChange={(e) => setEndDate(e.target.value)}  title='enddate' /> */}
-                            {/* <Box sx={{paddingBottom: "35px", paddingRight: "15px"}}>
-                                <SearchIcon titleAccess='search here' sx={{cursor:'pointer'}}   onClick={(e) => handleSearchBtn(e, fromDate, toDate, selectedDays)}/>
-                            </Box> */}
-                            <Box sx={{ paddingBottom: "35px", paddingRight: "15px"}}>
-    
-                             <Button variant='contained' className='muiSmilingRocksBtn' title='search here'
-                                sx={{ padding: "7px 10px", minWidth: "max-content", background: "#7d7f85",  }}
-                                onClick={(e) => handleSearchBtn(e, fromDate, toDate, selectedDays)}
-                                // onClick={(eve) => handleSearch(eve, fromDate, toDate, netWtSlider[0], netWtSlider[1], grossWtSlider[0], grossWtSlider[1], purchaseCount, designNo, metal, productType, metalColor, category, subCategory, orderProm)}
-                                >
-                                <SearchIcon sx={{ color: "#fff !important", cursor:'pointer' }} /></Button>
-                            </Box>
-                        </div>
+                            <div>
+                                {/* <input type="date" name="date" id="startdate" className='mx-2 p-1 mb-2' value={startDate} onChange={(e) => setStartDate(e.target.value)} title='find data'  />
+                                    To 
+                                <input type="date" name="date" id="enddate" className='mx-2 p-1 mb-2'   value={endDate} onChange={(e) => setEndDate(e.target.value)}  title='enddate' /> */}
+                                {/* <Box sx={{paddingBottom: "35px", paddingRight: "15px"}}>
+                                    <SearchIcon titleAccess='search here' sx={{cursor:'pointer'}}   onClick={(e) => handleSearchBtn(e, fromDate, toDate, selectedDays)}/>
+                                </Box> */}
+                                <Box sx={{ paddingBottom: "35px", paddingRight: "15px"}}>
+        
+                                <Button variant='contained' className='muiSmilingRocksBtn' title='search here'
+                                    sx={{ padding: "7px 10px", minWidth: "max-content", background: "#7d7f85",  }}
+                                    onClick={(e) => handleSearchBtn(e, fromDate, toDate, selectedDays)}
+                                    // onClick={(eve) => handleSearch(eve, fromDate, toDate, netWtSlider[0], netWtSlider[1], grossWtSlider[0], grossWtSlider[1], purchaseCount, designNo, metal, productType, metalColor, category, subCategory, orderProm)}
+                                    >
+                                    <SearchIcon sx={{ color: "#fff !important", cursor:'pointer' }} /></Button>
+                                </Box>
+                            </div>
                         <Box sx={{paddingBottom: "35px", paddingRight: "15px"}}>
                             {/* <div className='mb-2'><button className='btn btn-secondary mx-2 py-1' onClick={() => backToInitial()}>All</button></div> */}
                             <Button variant="contained" className="muiSmilingRocksBtn" sx={{ background: "#7d7f85", display: "flex", alignItems: "center", marginBottom: 0, padding: "6px 0", }}  
@@ -1328,8 +1326,7 @@ const AccountLedger = () => {
                         {/* <div onClick={() => handleExcel()}><img src="https://cdn22.optigoapps.com/lib/jo/28/images/ExcelExport.png" alt="#excelexport" className='eeal' /></div> */}
                         {/* <div onClick={() => navigate("/accountledgertable")}><img src="	https://cdn22.optigoapps.com/lib/jo/28/images/print_icon.png" alt="#excelexport" className='eeal' /></div> */}
                         {/* <div onClick={() => window.open("http://localhost:3000/accountledgertable")}><img src="	https://cdn22.optigoapps.com/lib/jo/28/images/print_icon.png" alt="#printtable" className='eeal' /></div> */}
-                        <Box sx={{paddingBottom: "35px", paddingRight: "15px"}}>
-    
+                        <Box sx={{paddingBottom: "35px", paddingRight: "15px"}} className="pad_r_acc center_acc w_all_acc">
                        
                         <div className='d-flex pt-2'>
                             <button className='ms-2 mx-1 btn border p-2 py-0 daybtn mb-2' title='previous' 
@@ -1367,13 +1364,13 @@ const AccountLedger = () => {
                 
                 <div className='text-secondary fs_al d-flex justify-content-between align-items-start p-2 my-3 mt-0'>
                     <div className='d-flex justify-content-start align-items-start flex-wrap'>
-                        <div className='px-4 px_2_al d-flex align-items-center mb-2 ps-0'><span>Balance Gold :&nbsp;</span> <span className='bal_Amt_ac'>
+                        <div className='px-4 px_2_al d-flex align-items-center mb-2 ps-0 w_all_acc'><span className='w_40_acc'>Balance Gold :&nbsp;</span> <span className='bal_Amt_ac  w_60_acc end_acc'>
                             { ((((resultTotal?.debit_metalgold  + Math.abs(debit_mg_diff) ) - ( resultTotal?.credit_metalgold + Math.abs(credit_mg_diff)))?.toFixed(3)) === 'NaN' ? '0.00' :  (((resultTotal?.debit_metalgold  + Math.abs(debit_mg_diff) ) - ( resultTotal?.credit_metalgold + Math.abs(credit_mg_diff)))?.toFixed(3))) }
                             { ((resultTotal?.debit_metalgold + Math.abs(debit_mg_diff)) - (resultTotal?.credit_metalgold + Math.abs(credit_mg_diff))) > 0 ? 'Dr' : ' Cr' }</span></div>
-                        <div className='px-4 px_2_al d-flex align-items-center mb-2'><span>Balance Diam. :&nbsp;</span> <span className='bal_Amt_ac'>
+                        <div className='px-4 px_2_al d-flex align-items-center mb-2 w_all_acc'><span className='w_40_acc'>Balance Diam. :&nbsp;</span> <span className='bal_Amt_ac w_60_acc end_acc'>
                             { ((((Math.abs(debit_dia_diff) + resultTotal?.debit_diamondwt) - (Math.abs(credit_dia_diff) + resultTotal?.credit_diamondwt))?.toFixed(3)) === 'NaN' ? '0.00' : (((Math.abs(debit_dia_diff) + resultTotal?.debit_diamondwt) - (Math.abs(credit_dia_diff) + resultTotal?.credit_diamondwt))?.toFixed(3))) }
                             { ((Math.abs(debit_dia_diff) + resultTotal?.debit_diamondwt) - (Math.abs(credit_dia_diff) + resultTotal?.credit_diamondwt)) > 0 ? 'Dr' : ' Cr' }</span></div>
-                        <div className='px-4 px_2_al d-flex align-items-center mb-2'><span>Balance Amount :&nbsp;</span> <span className='bal_Amt_ac'>
+                        <div className='px-4 px_2_al d-flex align-items-center mb-2 w_all_acc'><span className='w_40_acc'>Balance Amount :&nbsp;</span> <span className='bal_Amt_ac w_60_acc end_acc'>
                             {/* { (formatAmount(resultTotal?.debit_totalcurrency - resultTotal?.credit_totalcurrency))}&nbsp;{(((Math.abs(debit_amt_diff) + resultTotal?.debit_totalamount) - (Math.abs(credit_amt_diff) + resultTotal?.credit_totalamount)) ? 'Dr' : 'Cr' ) }</span></div> */}
                             {currencySymbol}&nbsp;
                             { ((formatAmount(
