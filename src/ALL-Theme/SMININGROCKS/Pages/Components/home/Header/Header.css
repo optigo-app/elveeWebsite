@@ -219,7 +219,7 @@
 
 .shop-dropdown.open {
     display: block;
-    position: absolute;
+    position: absolute; 
     z-index: 111111;
     width: 100%;
     margin-top: 0px;
@@ -240,7 +240,9 @@
     transition: transform 0.4s ease; */
     text-decoration: underline;
 }
-
+.activeMenu{
+    text-decoration: underline;
+}
 
 .nav-li {
     font-weight: 500;

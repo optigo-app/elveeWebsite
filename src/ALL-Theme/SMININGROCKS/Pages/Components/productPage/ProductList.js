@@ -32,7 +32,7 @@ import { TfiLayoutGrid4Alt } from "react-icons/tfi";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { getDesignPriceList } from "../../../Utils/API/PriceDataApi";
-import { findCsQcId, findDiaQcId, findMetalColor, findMetalType, findMetalTypeId, findValueFromId } from "../../../Utils/globalFunctions/GlobalFunction";
+import { findCsQcId, findDiaQcId, findMetalColor, findMetalType, findMetalTypeId, findValueFromId, storImagePath } from "../../../Utils/globalFunctions/GlobalFunction";
 import ProductListSkeleton from "./ProductListSkelton";
 
 import { Card } from "react-bootstrap";
@@ -2462,7 +2462,7 @@ const ProductList = () => {
                         <span style={{ fontSize: '10px' }}>{`${location?.state?.filtervalue?.menuname || ''}${location?.state?.filtervalue?.FilterVal1 ? ` > ${location?.state?.filtervalue?.FilterVal1}` : ''}${location?.state?.filtervalue?.FilterVal2 ? ` > ${location?.state?.filtervalue?.FilterVal2}` : ''}`}</span>
                       </p>
                     </div>
-                    <img src={featherImg} className='featherImage' />
+                    <img src={`${storImagePath()}/images/HomePage/MainBanner/image/featuresImage.png`} className='featherImage' />
                   </div>
 
                 </div>
