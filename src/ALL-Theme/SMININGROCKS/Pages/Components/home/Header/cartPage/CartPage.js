@@ -122,7 +122,7 @@ export default function CartPage() {
   const [fullprodData, setFullProdData] = useState();
   const [cartPageLoding, setCartPageloding] = useState(false);
   const [singleProdData, setSingleProdData] = useState();
-  const [cartUpdateSnackbar, setCartUpdateSnackbar] = useState("")
+  const [isLodingSave, setIsLoadingSave] = useState(false);
 
 
 
@@ -1071,7 +1071,7 @@ export default function CartPage() {
       f: "RemoveFromCartIconClick (removeFromCartList)",
       p: encodedCombinedValue1,
     }
-
+    setIsLoadingSave(true);
     await CommonAPI(body1).then((res) => {
       return res
     }).then(async (prevRes) => {
@@ -1094,14 +1094,15 @@ export default function CartPage() {
             await getCountFunc()
             await getCartData()
             toast.success("Product Updated successFully !!!")
+            setIsLoadingSave(false);
+
           }
           else {
             console.log("error", res);
-            toast.error("Something Went Wrong!!")
+            // toast.error("Something Went Wrong!!")
           }
         }).catch((error) => {
           console.log("error", error);
-          toast.error("Something Went Wrong!!")
 
         })
 
@@ -1211,7 +1212,7 @@ export default function CartPage() {
   console.log('sizeData', FinalPrice())
 
   const handelBrowse = async () => {
-
+    navigation("/productpage")
     let finalData = JSON.parse(localStorage.getItem("menuparams"))
 
     if (finalData) {
@@ -1226,7 +1227,6 @@ export default function CartPage() {
         if (res) {
           let autoCodeList = JSON.parse(localStorage.getItem("autoCodeList"))
           await getDesignPriceList(finalData, 1, {}, {}, autoCodeList)
-          navigation("/productpage")
         }
       }).catch((err) => {
         if (err) toast.error("Something Went Wrong!!!")
@@ -1288,44 +1288,30 @@ export default function CartPage() {
 
 
 
-            {cartListData?.length !== 0 && (
-              <div>
-                <div
-                  className="smilingListCartTopButton"
-                  style={{ marginTop: "0px" }}
-                >
-                  <p className="SmiCartTitleWeb">
-                    My Cart
-                  </p>
+            <div>
+              <div
+                className="smilingListCartTopButton"
+                style={{ marginTop: "0px" }}
+              >
+                <p className="SmiCartTitleWeb">
+                  My Cart
+                </p>
 
-                </div>
-                <div
-                  className="smilingListCartTopButtonNew"
-                  style={{ marginTop: "0px" }}
+              </div>
+              {cartListData?.length !== 0 && (
+                <>
 
-                >
-                  <p
-                    className="cartPageTopLink"
-                    onClick={handleClickOpen}
-                  >
-                    Clear All
-                  </p>
-                  <Button
-                    className="cartPageTopBtn"
+
+                  <button
+                    className="placeOrderCartPageBtnMobile"
                     onClick={handlePlaceOrder}
-                    style={{ position: 'absolute', right: '0px', height: '50px' }}
                   >
                     Place Order
-                  </Button>
-                </div>
-                <button
-                  className="placeOrderCartPageBtnMobile"
-                  onClick={handlePlaceOrder}
-                >
-                  Place Order
-                </button>
-              </div>
-            )}
+                  </button>
+                </>
+              )}
+
+            </div>
           </div>
 
           <CustomTabPanel value={value} index={0}>
@@ -1429,7 +1415,7 @@ export default function CartPage() {
                                         display: "flex",
                                         justifyContent: "space-between",
                                         flexWrap: "wrap",
-                                        marginTop: "12px",
+                                        marginTop: "50px",
                                       }}
                                     >
                                       {isMetalCutoMizeFlag == 1 && (
@@ -1573,7 +1559,6 @@ export default function CartPage() {
                                               style={{
                                                 fontSize: "12.5px",
                                                 color: "#7d7f85",
-                                                marginTop: "10px",
                                               }}
                                             >
                                               COLOR STONE :
@@ -1834,7 +1819,26 @@ export default function CartPage() {
 
                                     onClick={handleCartUpdate}
                                   >
-                                    <span style={{ fontSize: '16px', fontWeight: '500' }} className="SaveBtnCart">Save</span>
+                                    {!isLodingSave ?
+                                      <span
+                                        style={{
+                                          fontSize: "16px",
+                                          fontWeight: "500",
+                                        }}
+                                        className="SaveBtnCart"
+                                        onClick={handleCartUpdate}
+                                      >
+                                        Save
+                                      </span>
+                                      :
+                                      <span
+                                        className="SaveBtnCart"
+                                        style={{ display: 'flex' }}
+                                      >
+                                        <CircularProgress style={{ height: '20px', width: '20px' }} />
+                                      </span>
+
+                                    }
                                   </button>
                                   <div className="mt-3">
                                     <div className="container-fluid mainRenarkConatiner" style={{ border: '1px solid rgb(225, 225, 225)', borderRadius: '12px' }}>
@@ -1910,92 +1914,112 @@ export default function CartPage() {
                       </div>
                     )}
                     {!isLoading && (
-                      <div className="cartProdSection resCon">
+                      <div>
                         <div
-                          // style={{
-                          //   display: "flex",
-                          //   flexWrap: "wrap",
-                          //   height: "565px",
-                          //   overflowY: "auto",
-                          // }}
-                          className="cartProdpart"
+                          className="smilingListCartTopButtonNew"
+                          style={{ marginTop: "0px" }}
+
                         >
-                          {cartListData?.map((item, index) => (
-                            <div
-                              key={item.id}
-                              className={`smiling-cartPageBoxMain ${cartSelectData && cartSelectData.id === item.id ? 'selected' : ''}`}
-                              onClick={async () => {
-                                setCartSelectData(item);
-                                setProdFullInfo(item.designno);
-                                getSizeData(item.autocode);
-                                window.innerWidth <= 1080 &&
-                                  setDialogOpen(true);
+                          <p
+                            className="cartPageTopLink"
+                            onClick={handleClickOpen}
+                          >
+                            Clear All
+                          </p>
+                          <Button
+                            className="cartPageTopBtn"
+                            onClick={handlePlaceOrder}
+                          // style={{ position: 'absolute', right: '0px', height: '50px' }}
+                          >
+                            Place Order
+                          </Button>
+                        </div>
+                        <div className="cartProdSection resCon" style={{ scrollbarWidth: cartListData?.length <= 2 && 'none' }}>
 
-                                await SingleProductAPI(item?.designno).then((res) => {
-                                  let data = res[0]
-                                  setSingleProdData(data)
-                                })
-
-                              }}
-                            >
+                          <div
+                            // style={{
+                            //   display: "flex",
+                            //   flexWrap: "wrap",
+                            //   height: "565px",
+                            //   overflowY: "auto",
+                            // }}
+                            className="cartProdpart"
+                          >
+                            {cartListData?.map((item, index) => (
                               <div
-                                style={{
-                                  cursor: "pointer",
-                                  position: "absolute",
-                                  right: "0px",
-                                  top: "0px",
-                                  backgroundColor: "black",
-                                  borderRadius: "2px",
-                                  opacity: "0.8",
+                                key={item.id}
+                                className={`smiling-cartPageBoxMain ${cartSelectData && cartSelectData.id === item.id ? 'selected' : ''}`}
+                                onClick={async () => {
+                                  setCartSelectData(item);
+                                  setProdFullInfo(item.designno);
+                                  getSizeData(item.autocode);
+                                  window.innerWidth <= 1080 &&
+                                    setDialogOpen(true);
+
+                                  await SingleProductAPI(item?.designno).then((res) => {
+                                    let data = res[0]
+                                    setSingleProdData(data)
+                                  })
+
                                 }}
-                                onClick={() => handleRemove(item)}
                               >
-                                <CloseIcon
-                                  sx={{ color: "white", fontSize: "22px" }}
-                                />
-                              </div>
-                              <p className="designNo">{item.designno}</p>
-                              <img
-                                src={item.DefaultImageName != '' ? `${imageURL}/${yKey}/${item.DefaultImageName}` : noFoundImage}
-                                alt="#"
-                                className="cartImageShow"
-                                onError={(e) => {
-                                  e.target.src = noFoundImage;
-                                }}
-                              />
-                              <div className="listing-featuresN" >
-                                <div>
-                                  <div className='feature'>
-                                    <p>
-                                      <span className="feature-count">NWT :{" "} </span> {item?.MetalWeight}
-                                    </p>
-                                  </div>
-                                  <div className='feature'>
-                                    <p>
-                                      <span className="feature-count">DWT :{" "} </span>  {(item?.Rec_DiamondWeight).toFixed(2)} /{" "}
-                                      {item?.totaldiamondpcs}
-                                    </p>
-                                  </div>
-                                  <div className='feature'>
-                                    <p>
-                                      {/* <span className="feature-count">{item?.designno}</span> */}
-                                    </p>
-                                  </div>
+                                <div
+                                  style={{
+                                    cursor: "pointer",
+                                    position: "absolute",
+                                    right: "0px",
+                                    top: "0px",
+                                    backgroundColor: "black",
+                                    borderRadius: "2px",
+                                    opacity: "0.8",
+                                  }}
+                                  onClick={() => handleRemove(item)}
+                                >
+                                  <CloseIcon
+                                    sx={{ color: "white", fontSize: "22px" }}
+                                  />
                                 </div>
-                                <div>
-                                  <div className='feature'>
-                                    <p>
-                                      <span className="feature-count">CWT :{" "} </span>  {item?.Rec_CSWeight} /{" "}
-                                      {item?.totalcolorstonepcs}
-                                    </p>
+                                <img
+                                  src={item.DefaultImageName != '' ? `${imageURL}/${yKey}/${item.DefaultImageName}` : noFoundImage}
+                                  alt="#"
+                                  className="cartImageShow"
+                                  onError={(e) => {
+                                    e.target.src = noFoundImage;
+                                  }}
+                                />
+                                <p className="designNo">{item.designno}</p>
+                                <div className="listing-featuresN" >
+                                  <div>
+                                    <div className='feature'>
+                                      <p>
+                                        <span className="feature-count">NWT :{" "} </span> {item?.MetalWeight}
+                                      </p>
+                                    </div>
+                                    <div className='feature'>
+                                      <p style={{ margin: '0px' }}>
+                                        <span className="feature-count">DWT :{" "} </span>  {(item?.Rec_DiamondWeight).toFixed(2)} /{" "}
+                                        {item?.totaldiamondpcs}
+                                      </p>
+                                    </div>
+                                    <div className='feature'>
+                                      <p>
+                                        {/* <span className="feature-count">{item?.designno}</span> */}
+                                      </p>
+                                    </div>
                                   </div>
-                                  <div className='feature'>
-                                    <p>
-                                      <span className="feature-count">GWT :{" "}  </span>   {(item?.grossweight).toFixed(2)} /
-                                      {item?.totaldiamondpcs}
-                                    </p>
-                                  </div>
-                                  {/* <div className='feature'>
+                                  <div>
+                                    <div className='feature'>
+                                      <p>
+                                        <span className="feature-count">CWT :{" "} </span>  {item?.Rec_CSWeight} /{" "}
+                                        {item?.totalcolorstonepcs}
+                                      </p>
+                                    </div>
+                                    <div className='feature'>
+                                      <p style={{ margin: '0px' }}>
+                                        <span className="feature-count">GWT :{" "}  </span>   {(item?.grossweight).toFixed(2)}
+                                      </p>
+                                    </div>
+                                    {/* <div className='feature'>
                                     <p>
                                       <span className="feature-count" style={{ display: 'flex' }}>
                                         <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />
@@ -2011,95 +2035,96 @@ export default function CartPage() {
                                     </span>
                                     </p>
                                   </div> */}
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                          ))}
-                        </div>
-                        <div className="">
-                          <div className="container-fluid mainOrderRenarkConatiner m-3" style={{ border: '1px solid rgb(225, 225, 225)', borderRadius: '12px' }}>
-                            <div className="d-flex justify-content-center row">
-                              <div className="col-md-12">
-                                <div className="d-flex flex-column comment-section">
-                                  <div className="bg-white p-2">
-                                    <div className="d-flex flex-row user-info">
-                                      <h6 className="remarkText">Order Remark</h6>
-                                    </div>
-                                    <div className="mt-2">
-                                      <p className="comment-text remarkText w-100" style={{ wordWrap: 'break-word' }}>
-                                        {MainremarksApires != '' ? MainremarksApires : cartSelectData?.OrderRemarks}
-                                      </p>
-                                    </div>
-                                  </div>
-                                  {!showOrderRemarkFields &&
-                                    <div className="mt-2 mb-2 text-right Orderremarkbtn">
-                                      <button
-                                        className="btn btn-primary btn-sm shadow-none showremarkbtn me-2"
-                                        type="button"
-                                        onClick={handleShowOrderReamrkFields}
-                                      >
-                                        Add Order Remark
-                                      </button>
-                                    </div>
-                                  }
-                                  {showOrderRemarkFields &&
-                                    <div className={`p-2 remark-fields ${showOrderRemarkFields ? 'active' : ''}`}>
-                                      <div className="d-flex flex-row align-items-start">
-                                        <textarea
-                                          className="form-control ml-1 shadow-none textarea"
-                                          defaultValue={""}
-                                          value={Mainremarks}
-                                          style={{
-                                            height: '100px',
-                                            fontSize: '13px'
-                                          }}
-                                          onChange={(e) => handleInputChangeMainRemarks(e)}
-                                        />
+                            ))}
+                          </div>
+                          <div className="">
+                            <div className="container-fluid mainOrderRenarkConatiner m-3" style={{ border: '1px solid rgb(225, 225, 225)', borderRadius: '12px' }}>
+                              <div className="d-flex justify-content-center row">
+                                <div className="col-md-12">
+                                  <div className="d-flex flex-column comment-section">
+                                    <div className="bg-white p-2">
+                                      <div className="d-flex flex-row user-info">
+                                        <h6 className="remarkText">Order Remark</h6>
                                       </div>
-                                      <div className="mt-2 text-right Orderremarkbtn">
+                                      <div className="mt-2">
+                                        <p className="comment-text remarkText w-100" style={{ wordWrap: 'break-word' }}>
+                                          {MainremarksApires != '' ? MainremarksApires : cartSelectData?.OrderRemarks}
+                                        </p>
+                                      </div>
+                                    </div>
+                                    {!showOrderRemarkFields &&
+                                      <div className="mt-2 mb-2 text-right Orderremarkbtn">
                                         <button
                                           className="btn btn-primary btn-sm shadow-none showremarkbtn me-2"
                                           type="button"
-                                          onClick={submitMainRemrks}
+                                          onClick={handleShowOrderReamrkFields}
                                         >
-                                          Save
-                                        </button>
-                                        <button
-                                          className="btn btn-outline-primary btn-sm cancelremarkbtn ml-1 shadow-none"
-                                          type="button"
-                                          onClick={() => setShowOrderRemarkFields(!showOrderRemarkFields)}
-                                        >
-                                          Cancel
+                                          Add Order Remark
                                         </button>
                                       </div>
-                                    </div>
-                                  }
+                                    }
+                                    {showOrderRemarkFields &&
+                                      <div className={`p-2 remark-fields ${showOrderRemarkFields ? 'active' : ''}`}>
+                                        <div className="d-flex flex-row align-items-start">
+                                          <textarea
+                                            className="form-control ml-1 shadow-none textarea"
+                                            defaultValue={""}
+                                            value={Mainremarks}
+                                            style={{
+                                              height: '100px',
+                                              fontSize: '13px'
+                                            }}
+                                            onChange={(e) => handleInputChangeMainRemarks(e)}
+                                          />
+                                        </div>
+                                        <div className="mt-2 text-right Orderremarkbtn">
+                                          <button
+                                            className="btn btn-primary btn-sm shadow-none showremarkbtn me-2"
+                                            type="button"
+                                            onClick={submitMainRemrks}
+                                          >
+                                            Save
+                                          </button>
+                                          <button
+                                            className="btn btn-outline-primary btn-sm cancelremarkbtn ml-1 shadow-none"
+                                            type="button"
+                                            onClick={() => setShowOrderRemarkFields(!showOrderRemarkFields)}
+                                          >
+                                            Cancel
+                                          </button>
+                                        </div>
+                                      </div>
+                                    }
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
 
-                        </div>
-                        <div className="container-fluid totalpriceConatiner">
-                          <div className="row">
-                            <div className="col-md-12" style={{ padding: '0' }}>
-                              <Card className="text-center" style={{ border: '1px solid rgb(225, 225, 225', borderRadius: '12px' }}>
-                                <Card.Body>
-                                  <div className="d-flex justify-content-between align-items-center">
-                                    <div >
-                                      <span style={{ color: '#7d7f85', fontSize: '16px' }}>Design in Cart: </span>
-                                      <span style={{ color: '#7d7f85', fontWeight: '500', fontSize: '16px' }}>{cartListData?.length}</span>
-                                    </div>
-                                    <div style={{ display: 'flex' }}>
-                                      <span style={{ color: '#7d7f85', fontSize: '16px', marginRight: '3px' }}>Total Price: </span>
+                          </div>
+                          <div className="container-fluid totalpriceConatiner">
+                            <div className="row">
+                              <div className="col-md-12" style={{ padding: '0' }}>
+                                <Card className="text-center" style={{ border: '1px solid rgb(225, 225, 225', borderRadius: '12px' }}>
+                                  <Card.Body>
+                                    <div className="d-flex justify-content-between align-items-center">
+                                      <div >
+                                        <span style={{ color: '#7d7f85', fontSize: '16px' }}>Design in Cart: </span>
+                                        <span style={{ color: '#7d7f85', fontWeight: '500', fontSize: '16px' }}>{cartListData?.length}</span>
+                                      </div>
                                       <div style={{ display: 'flex' }}>
-                                        <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />
-                                        <span style={{ color: '#7d7f85', fontSize: '16px', fontWeight: '500', }}>{cartListData.reduce((total, item) => total + item.UnitCost, 0).toFixed(2)}</span>
+                                        <span style={{ color: '#7d7f85', fontSize: '16px', marginRight: '3px' }}>Total Price: </span>
+                                        <div style={{ display: 'flex' }}>
+                                          <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />
+                                          <span style={{ color: '#7d7f85', fontSize: '16px', fontWeight: '500', }}>{cartListData.reduce((total, item) => total + item.UnitCost, 0).toFixed(2)}</span>
+                                        </div>
                                       </div>
                                     </div>
-                                  </div>
-                                </Card.Body>
-                              </Card>
+                                  </Card.Body>
+                                </Card>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -2327,7 +2352,6 @@ export default function CartPage() {
                           style={{
                             display: "flex",
                             justifyContent: "space-between",
-                            marginTop: "12px",
                           }}
                         >
                           {isMetalCutoMizeFlag == 1 && (
@@ -2349,6 +2373,7 @@ export default function CartPage() {
                                   outline: "none",
                                   color: "#7d7f85",
                                   fontSize: "12.5px",
+                                  height: '25px'
                                 }}
                                 value={selectedColor}
                                 onChange={(e) =>
@@ -2386,6 +2411,8 @@ export default function CartPage() {
                                   outline: "none",
                                   color: "#7d7f85",
                                   fontSize: "12.5px",
+                                  height: '25px'
+
                                 }}
                                 // value={mtTypeOption ?? cartSelectData?.metal}
                                 value={mtTypeOption}
@@ -2416,7 +2443,7 @@ export default function CartPage() {
                                 display: "flex",
                                 flexDirection: "column",
                                 width: "49%",
-                                marginTop: "30px",
+                                marginTop: "10px",
                               }}
                             >
                               <label
@@ -2430,6 +2457,7 @@ export default function CartPage() {
                                   outline: "none",
                                   color: "#7d7f85",
                                   fontSize: "12.5px",
+                                  height: '25px'
                                 }}
                                 value={diaQColOpt}
                                 onChange={(e) => setDiaQColOpt(e.target.value)}
@@ -2452,7 +2480,6 @@ export default function CartPage() {
                                 display: "flex",
                                 flexDirection: "column",
                                 width: "49%",
-                                marginTop: "20px",
                               }}
                             >
                               <label
@@ -2470,6 +2497,7 @@ export default function CartPage() {
                                   outline: "none",
                                   color: "#7d7f85",
                                   fontSize: "12.5px",
+                                  height: '25px'
                                 }}
                                 value={cSQopt}
                                 onChange={(e) => setCSQOpt(e.target.value)}
@@ -2494,7 +2522,7 @@ export default function CartPage() {
                                   display: "flex",
                                   flexDirection: "column",
                                   width: "49%",
-                                  marginTop: "30px",
+                                  marginTop: "10px",
                                 }}
                               >
                                 <label
@@ -2508,6 +2536,7 @@ export default function CartPage() {
                                     outline: "none",
                                     color: "#7d7f85",
                                     fontSize: "12.5px",
+                                    height: '25px'
                                   }}
                                   onChange={(e) => handelSize(e.target.value)}
                                   defaultValue={
@@ -2540,7 +2569,6 @@ export default function CartPage() {
                   </div>
                   <div
                     style={{
-                      marginTop: "20px",
                       color: "#7d7f85",
                       fontSize: "14px",
                       display: 'flex',
@@ -2633,16 +2661,26 @@ export default function CartPage() {
                           borderRadius: "4px",
                         }}
                       >
-                        <span
-                          style={{
-                            fontSize: "16px",
-                            fontWeight: "500",
-                          }}
-                          className="SaveBtnCart"
-                          onClick={handleCartUpdate}
-                        >
-                          Save
-                        </span>
+                        {!isLodingSave ?
+                          <span
+                            style={{
+                              fontSize: "16px",
+                              fontWeight: "500",
+                            }}
+                            className="SaveBtnCart"
+                            onClick={handleCartUpdate}
+                          >
+                            Save
+                          </span>
+                          :
+                          <span
+                            className="SaveBtnCart"
+                            style={{ display: 'flex' }}
+                          >
+                            <CircularProgress style={{ height: '20px', width: '20px' }} />
+                          </span>
+
+                        }
                       </button>
                     </div>
                     <div className="mt-3">
