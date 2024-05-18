@@ -339,7 +339,6 @@ export default function CartPage() {
         ele?.A == cartSelectData?.autocode
     );
 
-
     let showPrice = 0;
     if (mtrd && mtrd.length > 0) {
       // showPrice = cartSelectData?.price - ((cartSelectData?.price - cartSelectData?.metalrd) + (mtrd[0]?.Z ?? 0));
@@ -375,15 +374,15 @@ export default function CartPage() {
 
 
     let showPrice1 = 0;
-    if (diaqcprice && diaqcprice.length > 0) {
+    if (diaqcprice && diaqcprice.length > 0 && !isNaN(diaqcprice)) {
       // showPrice1 = cartSelectData?.price - ((srProductsData?.price - srProductsData?.diard1) + (diaqcprice[0]?.S ?? 0));
       let totalPrice = diaqcprice?.reduce((acc, obj) => acc + obj.S, 0)
       let diaRate = diaqcprice?.reduce((acc, obj) => acc + obj.O, 0)
       let diaSettRate = diaqcprice?.reduce((acc, obj) => acc + obj.Q, 0)
 
-      setDqcRate(diaRate)
-      setDqcSettRate(diaSettRate)
-      setDqcData(totalPrice)
+      setDqcRate(diaRate ?? 0)
+      setDqcSettRate(diaSettRate ?? 0)
+      setDqcData(totalPrice ?? 0)
       setDiaQcData(diaqcprice[0] ?? [])
       // setDQCPrice(diaqcprice[0]?.S ?? 0)
     } else {
@@ -415,17 +414,16 @@ export default function CartPage() {
         ele.A == srProductsData?.autocode
 
     );
-
-
+    
     let showPrice2 = 0;
-    if (csqcpirce && csqcpirce.length > 0) {
+    if (csqcpirce && csqcpirce.length > 0 && !isNaN(csqcpirce)) {
       // showPrice2 = srProductsData?.price - ((srProductsData?.price - srProductsData?.csrd2) + (csqcpirce[0]?.S ?? 0));
       let totalPrice = csqcpirce?.reduce((acc, obj) => acc + obj.S, 0)
       let diaRate = csqcpirce?.reduce((acc, obj) => acc + obj.O, 0)
       let diaSettRate = csqcpirce?.reduce((acc, obj) => acc + obj.Q, 0)
-      setCsqcData(totalPrice)
-      setCsqcRate(diaRate)
-      setCsqcSettRate(diaSettRate)
+      setCsqcData(totalPrice ?? 0)
+      setCsqcRate(diaRate ?? 0)
+      setCsqcSettRate(diaSettRate ?? 0)
       setCsData(csqcpirce[0] ?? [])
       // setCSQCPrice(csqcpirce[0]?.S ?? 0)
     } else {
@@ -1193,7 +1191,6 @@ export default function CartPage() {
         (diaUpdatedPrice() ?? 0) +
         (colUpdatedPrice() ?? 0)
       ).toFixed(2)
-      console.log("finalPrice", CalcPrice, percentMarkupPlus);
       return PriceWithMarkupFunction(percentMarkupPlus, CalcPrice, currData?.CurrencyRate).toFixed(2)
     }
   }
@@ -1211,7 +1208,7 @@ export default function CartPage() {
   };
 
 
-  console.log('sizeData', sizeData.length);
+  console.log('sizeData', FinalPrice())
 
   const handelBrowse = async () => {
 
