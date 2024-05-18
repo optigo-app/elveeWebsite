@@ -11,8 +11,8 @@
     box-shadow: none !important;
 }
 
-@media (max-width:778px) {
-    .filtercards{
-        display: none;
+@media (max-width:1440px) {
+    .filtercard{
+        display: none !important;
     }
 }

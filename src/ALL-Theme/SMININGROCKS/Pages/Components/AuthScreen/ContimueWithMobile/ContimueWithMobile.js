@@ -100,7 +100,7 @@ export default function ContimueWithMobile() {
                             textAlign: 'center',
                             marginTop: '-70px',
                             fontSize: '15px',
-                            color: '#7d7f85',
+                            // color: '#7d7f85',
                             fontFamily: 'PT Sans, sans-serif'
                         }}
                             className='AuthScreenSubTitle'
