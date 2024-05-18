@@ -90,3 +90,26 @@ body{
     justify-content: flex-end;
     padding-right: 1rem;
 }
+
+
+@media screen and (max-width: 778px) {
+.mainbanner_h{
+    max-height: 100%;
+    min-height: 100%;
+    object-fit: cover;
+    width: 100%;
+}
+.history_journey{
+    display: block;
+}
+.history_journey_1{
+    width: 100%;
+}
+.history_journey_2{
+    margin-top: 20px;
+    max-height: 100%;
+    min-height: 100%;
+    object-fit: cover;
+    width: 100%;
+}
+}
