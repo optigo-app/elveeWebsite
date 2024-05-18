@@ -1851,10 +1851,14 @@ const ProductList = () => {
     let path = `${designimgfol}${dfoldername}/${imgSize}/${roleoverImage}`
 
     if (roleoverImage.length !== 0) {
+
+
       setHoveredImageUrls(prevHoveredImageUrls => {
         return { ...prevHoveredImageUrls, [index]: path };
       });
+      console.log('hoverimage',hoveredImageUrls[10]);
     }
+
   };
 
   // console.log("prod_img", hoveredImageUrls);

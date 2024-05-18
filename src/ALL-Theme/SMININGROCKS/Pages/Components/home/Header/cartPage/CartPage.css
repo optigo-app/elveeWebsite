@@ -51,7 +51,7 @@
     width: 100%;
     height: 200px;
     object-fit: cover;
-    border-bottom: 1px solid #e1e1e1;
+    /* border-bottom: 1px solid #e1e1e1; */
 }
 
 
@@ -63,7 +63,7 @@
     border: 1px solid #7d7f85!important;
     font-size: 13px;
     font-weight: 500;
-    margin: 10px!important;
+    margin: 0px!important;
     justify-content: center;
 }
 
@@ -76,11 +76,11 @@
     font-size: 20px;
     text-decoration: underline!important;
     font-weight: 500;
-    margin-right: 10%!important;
+    margin: 0px!important;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 80px;
+    height: 70px;
     cursor: pointer;
 }
 .smilingCartPageDataMain {
@@ -266,7 +266,7 @@
 }
 
 .resCon {
-    width: 30%;
+    width: 100%;
     height: 600px;
     overflow-y: scroll;
     margin-bottom: 10px;
@@ -274,13 +274,12 @@
 }
 
 .designNo {
-    position: absolute;
-    top: 67%;
-    left: 40%;
     font-size: 12px;
     color: #212529;
     font-weight: 500;
     opacity: .8;
+    margin: 0px 0px 2px 0px;
+    text-align: center;
 }
 
 .ImageViewdesignNo {
@@ -353,6 +352,8 @@
     font-size: 12px;
     border-top: 1px solid rgba(0, 0, 0, 0.04);
     color: #4a5568;
+    box-shadow: rgba(0, 0, 0, 0.20) 0px 5px 15px;
+    padding-inline: 3px;
 }
 
 .feature {
@@ -370,9 +371,8 @@
 }
 
 .feature-count {
-    font-weight: 500;
-    color: #1f1919c7;
-    opacity: .7;
+    color: #635656c7;
+    opacity: .6;
 }
 
 .currencyFont {
@@ -502,11 +502,8 @@
 }
 
 .smilingListCartTopButtonNew {
-    position: absolute;
-    right: 7%;
-    top: 8%;
-    width: 25%;
     display: flex;
+    justify-content: space-between;
 }
 
 @media screen and (max-width: 18200px) {
@@ -520,22 +517,7 @@
     .smilingCartPageMain {
         margin-inline: 0% !important;
     }
-
-    .smilingListCartTopButtonNew {
-        position: absolute;
-        right: 4%;
-        top: 8%;
-        width: 25%;
-        display: flex;
-    }
 }
-
-@media screen and (min-width: 600px) {
-    .placeOrderCartPageBtnMobile {
-        display: none !important;
-    }
-}
-
 
 @media screen and (max-width: 1450px) {
 
@@ -549,13 +531,7 @@
         font-size: 12px;
     }
 
-    .smilingListCartTopButtonNew {
-        position: absolute;
-        right: 7%;
-        top: 8%;
-        width: 32%!important;
-        display: flex;
-    }
+    
 
     .feature p {
         margin: 0 0 5px 1px !important;
@@ -570,7 +546,7 @@
     }
 
     .resCon {
-        width: 45% !important;
+        width: 100% !important;
     }
 
     .mainCartContainer {
@@ -641,27 +617,55 @@
     }
 }
 
-/* @media (min-width : 1070px) and (max-width: 1290px) {
-
-    .CartPageMainImageShowMobile {
-        height: 680px !important;
+@media (min-width : 1070px) and (max-width: 1285px){
+    .CartPageMainImageShowMobile{
+        height: 650px!important;
     }
-} */
-
+}
 @media screen and (max-width: 1070px) {
 
 
-    .resCon {
-        width: 70% !important;
+    .smilingListCartTopButton {
+        display: none !important;
     }
+
+    .smilingListCartTopButtonNew {
+        display: none !important;
+    }
+
 
     .mainCartContainer {
         display: flex;
         justify-content: center;
     }
+
+    .mainRenarkConatiner {
+        width: 100% !important;
+    }
+
+    .mt-3{
+        width: 100% !important;
+    }
+
+    
+    .placeOrderCartPageBtnMobile {
+        width: 100%;
+        margin-top: 10px;
+        height: 50px !important;
+        position: fixed;
+        bottom: 0px;
+        margin: 0px !important;
+        z-index: 1111111111111;
+    }
+    .SmiCartTitle {
+        font-size: 25px;
+        padding: 5px;
+        margin: 0px;
+        padding-top: 5px!important;
+    }
 }
 
-@media screen and (min-width: 599px) {
+@media screen and (min-width: 1071px) {
     .smilingListCartTopButtonMobile {
         display: none !important;
     }
@@ -673,6 +677,12 @@
     .ClreareAllMobilee {
         display: none !important;
     }
+
+    .placeOrderCartPageBtnMobile {
+        display: none !important;
+    }
+
+    
 }
 
 /* .mobileFootreCs {
@@ -683,13 +693,7 @@
 
 @media screen and (max-width: 600px) {
 
-    .smilingListCartTopButton {
-        display: none !important;
-    }
 
-    .smilingListCartTopButtonNew {
-        display: none !important;
-    }
 
     .resCon {
         width: 100% !important;
@@ -699,15 +703,6 @@
         padding-top: 0px !important;
     }
 
-    .placeOrderCartPageBtnMobile {
-        width: 100%;
-        margin-top: 10px;
-        height: 50px !important;
-        position: fixed;
-        bottom: 0px;
-        margin: 0px !important;
-        z-index: 1111111111111;
-    }
 
     .cartPageTopBtn {
         width: 100%;
@@ -754,11 +749,7 @@
         margin: 20px;
     }
 
-    .SmiCartTitle {
-        font-size: 25px;
-        padding: 5px;
-        margin: 0px;
-    }
+
 
 
 }

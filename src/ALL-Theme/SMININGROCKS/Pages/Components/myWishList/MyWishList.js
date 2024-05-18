@@ -279,6 +279,7 @@ export default function MyWishList() {
   };
 
   const handelBrowse = async () => {
+    navigation("/productpage")
 
     let finalData = JSON.parse(localStorage.getItem("menuparams"))
 
@@ -294,7 +295,6 @@ export default function MyWishList() {
         if (res) {
           let autoCodeList = JSON.parse(localStorage.getItem("autoCodeList"))
           await getDesignPriceList(finalData, 1, {}, {}, autoCodeList)
-          navigation("/productpage")
         }
       }).catch((err) => {
         if (err) toast.error("Something Went Wrong!!!")
