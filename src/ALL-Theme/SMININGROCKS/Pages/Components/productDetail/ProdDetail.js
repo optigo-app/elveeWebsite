@@ -998,7 +998,7 @@ const ProdDetail = () => {
           "IsTrending": Number(`${product?.IsTrending}`),
           "MasterManagement_labid": Number(`${product?.MasterManagement_labid}`),
           "MasterManagement_labname": "",
-          "MetalColorName": `${product?.updMC}`,
+          "MetalColorName": `${selectedColor ?? product?.updMC}`,
           "MetalColorid": Number(`${product?.MetalColorid}`),
           "MetalPurity": `${mtPurity.split(" ")[1]}`,
           "MetalPurityid": Number(`${findMetalTypeId(mtPurity)[0]?.Metalid ?? 0}`),
@@ -1172,7 +1172,7 @@ const ProdDetail = () => {
           "IsTrending": Number(`${product?.IsTrending}`),
           "MasterManagement_labid": Number(`${product?.MasterManagement_labid}`),
           "MasterManagement_labname": "",
-          "MetalColorName": `${product?.updMC}`,
+          "MetalColorName": `${selectedColor ?? product?.updMC}`,
           "MetalColorid": Number(`${product?.MetalColorid}`),
           "MetalPurity": `${mtPurity.split(" ")[1]}`,
           "MetalPurityid": Number(`${findMetalTypeId(mtPurity)[0]?.Metalid ?? 0}`),
@@ -1624,6 +1624,15 @@ const ProdDetail = () => {
                     >
                       Diamond Quality Color:{" "}
                       <span style={{ fontWeight: 'bold', letterSpacing: '2px' }}>{diaQColOpt ? diaQColOpt : `${productData?.diamondquality}-${productData?.diamondcolorname}`}</span>
+                    </sapn>
+                    <sapn
+                      style={{
+                        fontSize: "16px",
+                        color: "rgb(66, 66, 66)",
+                      }}
+                    >
+                      Net Wt:{" "}
+                      <span style={{ fontWeight: 'bold', letterSpacing: '2px' }}>{mtrdData?.I}</span>
                     </sapn>
                   </div>
                   {/* {productData?.IsColorWiseImageExists !== null && (
