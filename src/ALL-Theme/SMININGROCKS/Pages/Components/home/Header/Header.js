@@ -583,7 +583,7 @@ export default function Header() {
     }
 
     console.log('finalData', finalData);
-    navigation("/productpage", { state: { menuFlag: true, filtervalue: finalData } })
+    // navigation("/productpage", { state: { menuFlag: true, filtervalue: finalData } })
 
 
     if (finalData) {
@@ -603,10 +603,11 @@ export default function Header() {
           let autoCodeList = JSON.parse(localStorage.getItem("autoCodeList"))
           await getDesignPriceList(finalData, 1, {}, {}, autoCodeList).then((res) => {
             if (res) {
+              debugger
               // console.log("test",res);
               localStorage.setItem("getPriceData", JSON.stringify(res))
               // navigation(`/productpage/?${finalData?.FilterKey}=${finalData?.FilterVal}/${finalData?.FilterKey1}=${finalData?.FilterVal1}/${finalData?.FilterKey2}=${finalData?.FilterVal2}`, { state: { menuFlag: finalData?.menuname, filtervalue: finalData } })
-              navigation(`/productpage`, { state: { menuFlag: finalData?.menuname, filtervalue: finalData } })
+                navigation(`/productpage`, { state: { menuFlag: finalData?.menuname, filtervalue: finalData }})
             }
             setTimeout(() => {
               setDrawerOpen(false);

@@ -2152,7 +2152,6 @@ const ProductList = () => {
   useEffect(() => {
     if ((newProData?.length != 0 || ProductApiData2?.length != 0)) {
       setIsProdLoading(true)
-      console.log('first++++');
     } else {
       if (newProData?.length == 0 || ProductApiData2?.length == 0) {
         setTimeout(() => {
@@ -2162,7 +2161,7 @@ const ProductList = () => {
         setIsProdLoading(false);
       }
     }
-  }, [newProData, ProductApiData2, priceDataApi])
+  }, [newProData, ProductApiData2])
 
   console.log('proDcount--', prodCount);
 
