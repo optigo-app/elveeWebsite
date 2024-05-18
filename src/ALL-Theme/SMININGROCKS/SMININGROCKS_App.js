@@ -50,8 +50,9 @@ import History from './Pages/Static Page/History/HistoryPage'
 import TermsAndConditions from './Pages/Static Page/Terms&Condition/TermsCondition'
 import PrivateRoutes from './PrivateRoutes'
 import ProductListSkeleton from './Pages/Components/productPage/ProductListSkelton'
-import PageNotFound from "./Pages/404Page/PageNotFound"
+import PageNotFound from "./Pages/Components/404Page/PageNotFound"
 import CartPageSkelton from './Pages/Components/home/Header/cartPage/CartPageSkelton'
+import ProductFilterSkelton from './Pages/Components/productPage/ProductFilterSkelton'
 
 export default function SMININGROCKS_App() {
     const isLoginStatus = useRecoilValue(loginState);
@@ -140,7 +141,6 @@ export default function SMININGROCKS_App() {
                         </Route>
                         <Route path="/CurrentVersion" element={<CurrentVersion />} />
                         <Route path="*" element={<PageNotFound />} />
-                        <Route path="/skelton" element={<CartPageSkelton />} />
                     </Routes>
                 </div>
             </div>
