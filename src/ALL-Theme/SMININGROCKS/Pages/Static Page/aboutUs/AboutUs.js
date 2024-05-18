@@ -111,7 +111,7 @@ function AboutUs() {
       <div className="aboutuscompany">
         <div className="aboutuscompany_w_1">
           <div className="aboutuscompany_w_1_info">Established Excellence</div>
-          <div>A Legacy of success, dream by passion and innovation</div>
+          <div className='aboutdesc'>A Legacy of success, dream by passion and innovation</div>
         </div>
         <div className="aboutuscompany_w">
           <div className="aboutuscompany_w_1_info">6</div>
