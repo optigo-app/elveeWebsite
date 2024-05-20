@@ -414,7 +414,7 @@ export default function CartPage() {
         ele.A == srProductsData?.autocode
 
     );
-    
+
     let showPrice2 = 0;
     if (csqcpirce && csqcpirce.length > 0 && !isNaN(csqcpirce)) {
       // showPrice2 = srProductsData?.price - ((srProductsData?.price - srProductsData?.csrd2) + (csqcpirce[0]?.S ?? 0));
@@ -1286,6 +1286,14 @@ export default function CartPage() {
                 </div>)}
             </div>
 
+            <div
+              className="smilingListCartTopButtonNew"
+              style={{ marginTop: "0px" }}
+
+            >
+
+            </div>
+
 
 
             <div>
@@ -1293,10 +1301,23 @@ export default function CartPage() {
                 className="smilingListCartTopButton"
                 style={{ marginTop: "0px" }}
               >
+                <p
+                  className="cartPageTopLink"
+                  onClick={handleClickOpen}
+                >
+                  Clear All
+                </p>
                 <p className="SmiCartTitleWeb">
                   My Cart
                 </p>
 
+                <Button
+                  className="cartPageTopBtn"
+                  onClick={handlePlaceOrder}
+                // style={{ position: 'absolute', right: '0px', height: '50px' }}
+                >
+                  Place Order
+                </Button>
               </div>
               {cartListData?.length !== 0 && (
                 <>
@@ -1725,88 +1746,8 @@ export default function CartPage() {
                                     {(FinalPrice() * lastEnteredQuantity).toFixed(2)}
                                   </span>
                                 </span>
-                                {/* <button
-                                  style={{
-                                    border: "none",
-                                    outline: "none",
-                                    backgroundColor: "#e1e1e1",
-                                    padding: "6px 17px",
-                                    borderRadius: "4px",
-                                  }}
-                                >
-                                  <span
-                                    style={{
-                                      fontSize: "16px",
-                                      fontWeight: "500",
-                                    }}
-                                    onClick={handleCartUpdate}
-                                  >
-                                    Save
-                                  </span>
-                                </button> */}
                               </div>
                               <div className="similingCartPageBotttomMain">
-                                {/* <div
-                                  className="smilingQualityMain"
-                                  style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                  }}
-                                >
-                                  <input
-                                    type="text"
-                                    style={{
-                                      border: "0px",
-                                      textAlign: "center",
-                                      outline: "none",
-                                      width: "80px",
-                                      height: "35px",
-                                      border: "1px solid #7d7f85",
-                                    }}
-                                    maxLength={2}
-                                    className="simlingQualityBox"
-                                    inputMode="numeric"
-                                    onClick={(event) => event.target.select()}
-                                    value={lastEnteredQuantity}
-                                    onChange={(event) =>
-                                      handleInputChange(event)
-                                    }
-                                  />
-                                  <button
-                                    className="SmilingUpdateQuantityBtn"
-                                    onClick={() =>
-                                      handleUpdateQuantity(
-                                        prodSelectData?.designno
-                                      )
-                                    }
-                                  >
-                                    QTY
-                                  </button>
-                                </div> */}
-                                {/* <div
-                                  className="smilingAddresingleMobileMain"
-                                  style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    marginLeft: "30px",
-                                  }}
-                                >
-                                  <textarea
-                                    type="text"
-                                    placeholder="Enter Remarks..."
-                                    value={remarks}
-                                    onChange={(event) =>
-                                      handleInputChangeRemarks(event)
-                                    }
-                                    className="YourCartMainRemkarBoxSingle"
-                                  />
-                                  <button
-                                    onClick={() => handleSubmit(cartSelectData)}
-                                    className="SmilingAddSingleRemkarBtn"
-                                  >
-                                    Add
-                                  </button>
-                                </div> */}
                                 <div style={{ textAlign: 'right' }}>
                                   <button
                                     style={{
@@ -1841,31 +1782,39 @@ export default function CartPage() {
                                     }
                                   </button>
                                   <div className="mt-3">
-                                    <div className="container-fluid mainRenarkConatiner" style={{ border: '1px solid rgb(225, 225, 225)', borderRadius: '12px' }}>
+                                    <div className="container-fluid mainRenarkConatiner" style={{ border: remarksApires != '' && '1px solid rgb(225, 225, 225)', borderRadius: '12px' }}>
                                       <div className="d-flex justify-content-center row">
                                         <div className="col-md-12">
                                           <div className="d-flex flex-column comment-section">
-                                            <div className="bg-white p-2">
-                                              <div className="d-flex flex-row user-info">
-                                                <h6 className="remarkText">Product Remark</h6>
-                                              </div>
-                                              <div className="mt-2">
-                                                <p className="comment-text remarkText w-100" style={{ wordWrap: 'break-word' }}>
-                                                  {remarksApires != '' ? remarksApires : cartSelectData?.Remarks}
-                                                </p>
-                                              </div>
-                                            </div>
-                                            {!showRemarkFields &&
-                                              <div className="mt-2 mb-2 text-right">
-                                                <button
-                                                  className="btn btn-primary btn-sm shadow-none showremarkbtn me-2"
-                                                  type="button"
-                                                  onClick={handleShowReamrkFields}
-                                                >
-                                                  Add Remark
-                                                </button>
-                                              </div>
+                                            {remarksApires != '' ?
+                                              <>
+                                                <div className="bg-white p-2">
+                                                  <div className="d-flex flex-row user-info">
+                                                    <h6 className="remarkText">Product Remark</h6>
+                                                  </div>
+                                                  <div className="mt-2">
+                                                    <p className="comment-text remarkText w-100" style={{ wordWrap: 'break-word' }}>
+                                                      {remarksApires != '' ? remarksApires : cartSelectData?.Remarks}
+                                                    </p>
+                                                  </div>
+                                                </div>
+                                                {!showRemarkFields &&
+                                                  <div className="mt-2 mb-2 text-right">
+                                                    <button
+                                                      className="btn btn-primary btn-sm shadow-none showremarkbtn me-2"
+                                                      type="button"
+                                                      onClick={handleShowReamrkFields}
+                                                    >
+                                                      Add Remark
+                                                    </button>
+                                                  </div>
+                                                }
+                                              </>
+                                              :
+                                              <p onClick={handleShowReamrkFields} style={{ margin: '0px', fontSize: '18px', cursor: 'pointer', color: '#7d7f85', textDecoration: 'underline' }}>Add Product Remark</p>
                                             }
+
+
                                             {showRemarkFields &&
                                               <div className={`p-2 remark-fields ${showRemarkFields ? 'active' : ''}`}>
                                                 <div className="d-flex flex-row align-items-start">
@@ -1915,36 +1864,10 @@ export default function CartPage() {
                     )}
                     {!isLoading && (
                       <div>
-                        <div
-                          className="smilingListCartTopButtonNew"
-                          style={{ marginTop: "0px" }}
 
-                        >
-                          <p
-                            className="cartPageTopLink"
-                            onClick={handleClickOpen}
-                          >
-                            Clear All
-                          </p>
-                          <Button
-                            className="cartPageTopBtn"
-                            onClick={handlePlaceOrder}
-                          // style={{ position: 'absolute', right: '0px', height: '50px' }}
-                          >
-                            Place Order
-                          </Button>
-                        </div>
                         <div className="cartProdSection resCon" style={{ scrollbarWidth: cartListData?.length <= 2 && 'none' }}>
 
-                          <div
-                            // style={{
-                            //   display: "flex",
-                            //   flexWrap: "wrap",
-                            //   height: "565px",
-                            //   overflowY: "auto",
-                            // }}
-                            className="cartProdpart"
-                          >
+                          <div className="cartProdpart" >
                             {cartListData?.map((item, index) => (
                               <div
                                 key={item.id}
@@ -1987,39 +1910,39 @@ export default function CartPage() {
                                     e.target.src = noFoundImage;
                                   }}
                                 />
-                                <p className="designNo">{item.designno}</p>
                                 <div className="listing-featuresN" >
-                                  <div>
-                                    <div className='feature'>
-                                      <p>
-                                        <span className="feature-count">NWT :{" "} </span> {item?.MetalWeight}
-                                      </p>
+                                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <div>
+                                      <div className='feature'>
+                                        <p>
+                                          <span className="feature-count">NWT :{" "} </span> {item?.MetalWeight}
+                                        </p>
+                                      </div>
+                                      <div className='feature'>
+                                        <p style={{ margin: '0px' }}>
+                                          <span className="feature-count">DWT :{" "} </span>  {(item?.Rec_DiamondWeight).toFixed(2)} /{" "}
+                                          {item?.totaldiamondpcs}
+                                        </p>
+                                      </div>
+                                      <div className='feature'>
+                                        <p>
+                                          {/* <span className="feature-count">{item?.designno}</span> */}
+                                        </p>
+                                      </div>
                                     </div>
-                                    <div className='feature'>
-                                      <p style={{ margin: '0px' }}>
-                                        <span className="feature-count">DWT :{" "} </span>  {(item?.Rec_DiamondWeight).toFixed(2)} /{" "}
-                                        {item?.totaldiamondpcs}
-                                      </p>
-                                    </div>
-                                    <div className='feature'>
-                                      <p>
-                                        {/* <span className="feature-count">{item?.designno}</span> */}
-                                      </p>
-                                    </div>
-                                  </div>
-                                  <div>
-                                    <div className='feature'>
-                                      <p>
-                                        <span className="feature-count">CWT :{" "} </span>  {item?.Rec_CSWeight} /{" "}
-                                        {item?.totalcolorstonepcs}
-                                      </p>
-                                    </div>
-                                    <div className='feature'>
-                                      <p style={{ margin: '0px' }}>
-                                        <span className="feature-count">GWT :{" "}  </span>   {(item?.grossweight).toFixed(2)}
-                                      </p>
-                                    </div>
-                                    {/* <div className='feature'>
+                                    <div>
+                                      <div className='feature'>
+                                        <p>
+                                          <span className="feature-count">CWT :{" "} </span>  {item?.Rec_CSWeight} /{" "}
+                                          {item?.totalcolorstonepcs}
+                                        </p>
+                                      </div>
+                                      <div className='feature'>
+                                        <p style={{ margin: '0px' }}>
+                                          <span className="feature-count">GWT :{" "}  </span>   {(item?.grossweight).toFixed(2)}
+                                        </p>
+                                      </div>
+                                      {/* <div className='feature'>
                                     <p>
                                       <span className="feature-count" style={{ display: 'flex' }}>
                                         <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />
@@ -2035,36 +1958,67 @@ export default function CartPage() {
                                     </span>
                                     </p>
                                   </div> */}
+                                    </div>
                                   </div>
+                                  <p className="designNo">{item.designno}</p>
                                 </div>
                               </div>
                             ))}
                           </div>
+                          <div className="container-fluid totalpriceConatiner">
+                            <div className="row">
+                              <div className="col-md-12" style={{ padding: '0' }}>
+                                <Card className="text-center" style={{ border: '1px solid rgb(225, 225, 225', borderRadius: '12px' }}>
+                                  <Card.Body>
+                                    <div className="d-flex justify-content-between align-items-center">
+                                      <div >
+                                        <span style={{ color: '#7d7f85', fontSize: '16px' }}>Design in Cart: </span>
+                                        <span style={{ color: '#7d7f85', fontWeight: '500', fontSize: '16px' }}>{cartListData?.length}</span>
+                                      </div>
+                                      <div style={{ display: 'flex' }}>
+                                        <span style={{ color: '#7d7f85', fontSize: '16px', marginRight: '3px' }}>Total Price: </span>
+                                        <div style={{ display: 'flex' }}>
+                                          <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />
+                                          <span style={{ color: '#7d7f85', fontSize: '16px', fontWeight: '500', }}>{cartListData.reduce((total, item) => total + item.UnitCost, 0).toFixed(2)}</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </Card.Body>
+                                </Card>
+                              </div>
+                            </div>
+                          </div>
                           <div className="">
-                            <div className="container-fluid mainOrderRenarkConatiner m-3" style={{ border: '1px solid rgb(225, 225, 225)', borderRadius: '12px' }}>
+                            <div className="container-fluid mainOrderRenarkConatiner m-3" style={{ border: MainremarksApires != '' && '1px solid rgb(225, 225, 225)', borderRadius: '12px' }}>
                               <div className="d-flex justify-content-center row">
                                 <div className="col-md-12">
                                   <div className="d-flex flex-column comment-section">
-                                    <div className="bg-white p-2">
-                                      <div className="d-flex flex-row user-info">
-                                        <h6 className="remarkText">Order Remark</h6>
-                                      </div>
-                                      <div className="mt-2">
-                                        <p className="comment-text remarkText w-100" style={{ wordWrap: 'break-word' }}>
-                                          {MainremarksApires != '' ? MainremarksApires : cartSelectData?.OrderRemarks}
-                                        </p>
-                                      </div>
-                                    </div>
-                                    {!showOrderRemarkFields &&
-                                      <div className="mt-2 mb-2 text-right Orderremarkbtn">
-                                        <button
-                                          className="btn btn-primary btn-sm shadow-none showremarkbtn me-2"
-                                          type="button"
-                                          onClick={handleShowOrderReamrkFields}
-                                        >
-                                          Add Order Remark
-                                        </button>
-                                      </div>
+                                    {MainremarksApires != '' ?
+                                      <>
+                                        <div className="bg-white p-2">
+                                          <div className="d-flex flex-row user-info">
+                                            <h6 className="remarkText">Order Remark</h6>
+                                          </div>
+                                          <div className="mt-2">
+                                            <p className="comment-text remarkText w-100" style={{ wordWrap: 'break-word' }}>
+                                              {MainremarksApires != '' ? MainremarksApires : cartSelectData?.OrderRemarks}
+                                            </p>
+                                          </div>
+                                        </div>
+                                        {!showOrderRemarkFields &&
+                                          <div className="mt-2 mb-2 text-right Orderremarkbtn">
+                                            <button
+                                              className="btn btn-primary btn-sm shadow-none showremarkbtn me-2"
+                                              type="button"
+                                              onClick={handleShowOrderReamrkFields}
+                                            >
+                                              Add Order Remark
+                                            </button>
+                                          </div>
+                                        }
+                                      </>
+                                      :
+                                      <p onClick={handleShowOrderReamrkFields} style={{ margin: '10px 0px', textAlign: 'end', fontSize: '18px', cursor: 'pointer', color: '#7d7f85', textDecoration: 'underline' }}>Add Order Remark</p>
                                     }
                                     {showOrderRemarkFields &&
                                       <div className={`p-2 remark-fields ${showOrderRemarkFields ? 'active' : ''}`}>
@@ -2102,31 +2056,8 @@ export default function CartPage() {
                                 </div>
                               </div>
                             </div>
+                          </div>
 
-                          </div>
-                          <div className="container-fluid totalpriceConatiner">
-                            <div className="row">
-                              <div className="col-md-12" style={{ padding: '0' }}>
-                                <Card className="text-center" style={{ border: '1px solid rgb(225, 225, 225', borderRadius: '12px' }}>
-                                  <Card.Body>
-                                    <div className="d-flex justify-content-between align-items-center">
-                                      <div >
-                                        <span style={{ color: '#7d7f85', fontSize: '16px' }}>Design in Cart: </span>
-                                        <span style={{ color: '#7d7f85', fontWeight: '500', fontSize: '16px' }}>{cartListData?.length}</span>
-                                      </div>
-                                      <div style={{ display: 'flex' }}>
-                                        <span style={{ color: '#7d7f85', fontSize: '16px', marginRight: '3px' }}>Total Price: </span>
-                                        <div style={{ display: 'flex' }}>
-                                          <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />
-                                          <span style={{ color: '#7d7f85', fontSize: '16px', fontWeight: '500', }}>{cartListData.reduce((total, item) => total + item.UnitCost, 0).toFixed(2)}</span>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </Card.Body>
-                                </Card>
-                              </div>
-                            </div>
-                          </div>
                         </div>
                       </div>
                     )}
@@ -2265,12 +2196,12 @@ export default function CartPage() {
               }
             </div>
           </CustomTabPanel>
-        </div>
+        </div >
 
         <div style={{ position: cartListData?.length === 0 && 'absolute', bottom: '0px', width: '100%' }} className="mobileFootreCs">
           <Footer />
         </div>
-      </div>
+      </div >
       <Dialog
         onClose={() => setDialogOpen(false)}
         open={dialogOpen}

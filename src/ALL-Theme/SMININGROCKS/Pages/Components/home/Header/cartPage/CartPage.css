@@ -56,10 +56,10 @@
 
 
 .cartPageTopBtn {
-    height: 60px;
+    height: 50px;
     width: 150px;
-    color: #7d7f85!important;
-    background-color: white;
+    color: white!important;
+    background-color: #7d7f85!important;
     border: 1px solid #7d7f85!important;
     font-size: 13px;
     font-weight: 500;
@@ -68,18 +68,19 @@
 }
 
 .cartPageTopBtn:hover {
-    color: white!important;
-    background-color: #7d7f85!important;
+    color: #7d7f85!important;
+    background-color: white;
 }
+
 .cartPageTopLink{
     color: #7d7f85!important;
-    font-size: 20px;
+    font-size: 18px;
     text-decoration: underline!important;
     font-weight: 500;
     margin: 0px!important;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: end;
     height: 70px;
     cursor: pointer;
 }
@@ -278,7 +279,7 @@
     color: #212529;
     font-weight: 500;
     opacity: .8;
-    margin: 0px 0px 2px 0px;
+    margin: 0px;
     text-align: center;
 }
 
@@ -301,7 +302,7 @@
 
 .mainOrderRenarkConatiner {
     width: 100%;
-    margin: 0px!important;
+    margin: 5px 0px!important;
     font-size: 13px;
 }
 
@@ -346,8 +347,6 @@
 
 
 .listing-featuresN {
-    display: flex;
-    justify-content: space-between;
     padding: 5px 0px 0px 0px;
     font-size: 12px;
     border-top: 1px solid rgba(0, 0, 0, 0.04);
@@ -384,7 +383,7 @@
     text-align: center;
     margin-top: 10px;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     margin-inline: 1%;
     align-items: center;
 }

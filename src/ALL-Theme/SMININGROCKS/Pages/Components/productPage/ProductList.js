@@ -234,13 +234,18 @@ const ProductList = () => {
     if (loginData?.MetalId !== 0) {
       let metalType = MetalTypeData?.find(item => item?.Metalid == loginData?.MetalId)
       if (selectedCombomt) {
+      if (selectedCombomt) {
         setmtTypeOption(selectedCombomt)
+      } else {
       } else {
         setmtTypeOption(metalType?.metaltype)
       }
     } else {
       if (selectedCombomt) {
+      if (selectedCombomt) {
         setmtTypeOption(selectedCombomt)
+      } else {
+        setmtTypeOption(MetalTypeData[0]?.metaltype)
       } else {
         setmtTypeOption(MetalTypeData[0]?.metaltype)
       }
@@ -253,7 +258,11 @@ const ProductList = () => {
     let diaQCVar = DimondQualityColor?.find(item => item.QualityId == loginData?.cmboDiaQCid?.split(',')[0] && item.ColorId == loginData?.cmboDiaQCid?.split(',')[1]);
     if (loginData?.cmboDiaQCid !== "0,0") {
       if (selectedCombodia) {
+      if (selectedCombodia) {
         setDiaQColOpt(selectedCombodia)
+      } else {
+        let qualityColor = `${diaQCVar?.Quality}#${diaQCVar?.color}`
+        setDiaQColOpt(qualityColor)
       } else {
         let qualityColor = `${diaQCVar?.Quality}#${diaQCVar?.color}`
         setDiaQColOpt(qualityColor)
@@ -261,7 +270,12 @@ const ProductList = () => {
     }
     else {
       if (selectedCombodia) {
+      if (selectedCombodia) {
         setDiaQColOpt(selectedCombodia)
+      } else {
+        if (DimondQualityColor && DimondQualityColor?.length) {
+          setDiaQColOpt(`${DimondQualityColor[0]?.Quality}#${DimondQualityColor[0]?.color}`)
+        }
       } else {
         if (DimondQualityColor && DimondQualityColor?.length) {
           setDiaQColOpt(`${DimondQualityColor[0]?.Quality}#${DimondQualityColor[0]?.color}`)
@@ -276,7 +290,11 @@ const ProductList = () => {
     let csQCVar = ColorStoneQualityColor?.find(item => item?.QualityId === loginData?.cmboCSQCid?.split(',')[0] && item?.ColorId === loginData?.cmboCSQCid?.split(',')[1])
     if (loginData?.cmboCSQCid !== "0,0") {
       if (selectedCombocs) {
+      if (selectedCombocs) {
         setCSQOpt(selectedCombocs)
+      } else {
+        let csQualColor = `${csQCVar?.QualityId}-${csQCVar?.ColorId}`
+        setCSQOpt(csQualColor)
       } else {
         let csQualColor = `${csQCVar?.QualityId}-${csQCVar?.ColorId}`
         setCSQOpt(csQualColor)
@@ -284,7 +302,12 @@ const ProductList = () => {
     }
     else {
       if (selectedCombocs) {
+      if (selectedCombocs) {
         setCSQOpt(selectedCombocs)
+      } else {
+        if (ColorStoneQualityColor && ColorStoneQualityColor?.length) {
+          setCSQOpt(`${ColorStoneQualityColor[0].Quality}-${ColorStoneQualityColor[0].color}`)
+        }
       } else {
         if (ColorStoneQualityColor && ColorStoneQualityColor?.length) {
           setCSQOpt(`${ColorStoneQualityColor[0].Quality}-${ColorStoneQualityColor[0].color}`)
@@ -455,6 +478,7 @@ const ProductList = () => {
         let mrpbaseprice;
 
         console.log("newPriceData", newPriceData)
+        console.log("newPriceData", newPriceData)
 
         if (newPriceData || newPriceData1 || newPriceData2) {
           price = (((newPriceData?.V ?? 0) / currData?.CurrencyRate ?? 0) + (newPriceData?.W ?? 0) + (newPriceData?.X ?? 0)) + (newPriceData1 ?? 0) + (newPriceData2 ?? 0);
@@ -486,6 +510,7 @@ const ProductList = () => {
           ...product, price, markup, metalrd, diard1, csrd2, updNWT, updGWT,
           updDWT, updDPCS, updCWT, updCPCS, updMT, updMC,
           diaQ, diaQid,
+          diaC, diaCid, csQ, csQid, csC, csCid, ismrpbase, mrpbaseprice
           diaC, diaCid, csQ, csQid, csC, csCid, ismrpbase, mrpbaseprice
         }
       }));
@@ -1098,6 +1123,7 @@ const ProductList = () => {
       output[key] = output[key].slice(0, -2);
     }
 
+    console.log("activeFilters", output)
     console.log("activeFilters", output)
 
     console.log("priceDataApi", priceDataApi);
@@ -1857,6 +1883,7 @@ const ProductList = () => {
         return { ...prevHoveredImageUrls, [index]: path };
       });
       console.log('hoverimage', hoveredImageUrls[10]);
+      console.log('hoverimage', hoveredImageUrls[10]);
     }
 
   };
@@ -2249,13 +2276,16 @@ const ProductList = () => {
     if (type === "metal") {
       setmtTypeOption(event)
       localStorage.setItem("selectedCombomt", JSON.stringify(event))
+      localStorage.setItem("selectedCombomt", JSON.stringify(event))
     }
     if (type === "dia") {
       setDiaQColOpt(event)
       localStorage.setItem("selectedCombodia", JSON.stringify(event))
+      localStorage.setItem("selectedCombodia", JSON.stringify(event))
     }
     if (type === "cs") {
       setCSQOpt(event)
+      localStorage.setItem("selectedCombocs", JSON.stringify(event))
       localStorage.setItem("selectedCombocs", JSON.stringify(event))
     }
 
@@ -2307,6 +2337,7 @@ const ProductList = () => {
     }
 
     console.log("filterData", output);
+    console.log("filterData", output);
 
     setFilterProdLoding(true);
     let param = JSON.parse(localStorage.getItem("menuparams"))
@@ -2322,6 +2353,7 @@ const ProductList = () => {
       window.scroll(0, 0)
     }, 100);
 
+    await productListApiCall(param, value, output).then((res) => {
     await productListApiCall(param, value, output).then((res) => {
       if (res) return res
       return res
@@ -2621,7 +2653,7 @@ const ProductList = () => {
                 {((isDaimondCstoFlag == 1) && (productData?.diamondweight !== 0 || productData?.diamondpcs !== 0)) &&
                   <div className="divider"></div>}
 
-                {isCColrStoneCustFlag === 1 &&
+                {isCColrStoneCustFlag === 1 && DaimondQualityColor?.length !== 0 &&
                   <div className="part" style={{ flex: '20%' }}>
                     <div
                       style={{
@@ -3008,8 +3040,13 @@ const ProductList = () => {
                             {(rangeProData.length ? rangeProData : (newProData?.length ? newProData : ProductApiData2))?.map((products, i) =>
                             (
                               <div className={`main-ProdcutListConatiner
+                            {(rangeProData.length ? rangeProData : (newProData?.length ? newProData : ProductApiData2))?.map((products, i) =>
+                            (
+                              <div className={`main-ProdcutListConatiner
                       ${show2ImagesView ? "main-ProdcutListConatiner2ImageShow" : ""}
                       ${show4ImagesView ? "main-ProdcutListConatiner4ImageShow" : ""}`}
+                              >
+                                <div className={`listing-card
                               >
                                 <div className={`listing-card
                           ${show2ImagesView ? "listing-cardShow2Image" : ""}
@@ -3022,10 +3059,59 @@ const ProductList = () => {
                                     <div>
                                       <img
                                         className={`${isShowfilter ? "prod_img" : "prod_imgFiletrHide"}
+                                  <div className="listing-image">
+                                    {products?.designno === "S24705E" && <p id="labelTag_0002388" className="instockP">IN STOCK</p>}
+                                    {products?.designno === "S24705" && <p id="labelTag_0002388" className="instockP">IN STOCK</p>}
+                                    {products?.designno === "MCJ2" && <p id="labelTag_0002388" className="instockP">IN STOCK</p>}
+
+                                    <div>
+                                      <img
+                                        className={`${isShowfilter ? "prod_img" : "prod_imgFiletrHide"}
                                 ${show2ImagesView ?
                                             isShowfilter ?
                                               "prod_img2" : "prod_img2FiletrHider" : ""}
+                                            isShowfilter ?
+                                              "prod_img2" : "prod_img2FiletrHider" : ""}
                                 ${show4ImagesView ? "prod_img4" : ""}`}
+                                        src={
+                                          hoveredImageUrls[i] ? hoveredImageUrls[i] : updatedColorImage[i] ? updatedColorImage[i] :
+                                            (storeInitData ?
+                                              `${storeInitData?.DesignImageFol}${products?.DesignFolderName}/${storeInitData?.ImgMe}/${products?.DefaultImageName}`
+                                              :
+                                              notFound)
+                                        }
+                                        // src={
+                                        //   hoveredImageUrls[i] ? hoveredImageUrls[i] : updatedColorImage[i] ? updatedColorImage[i] :
+                                        //     (products?.MediumImagePath ?
+                                        //       (globImagePath + products?.MediumImagePath?.split(",")[0])
+                                        //       :
+                                        //       notFound)
+                                        // }
+                                        onMouseEnter={() => handleHoverImageShow(i, storeInitData?.DesignImageFol, products?.DesignFolderName, storeInitData?.ImgMe, products?.RollOverImageName)}
+                                        // onMouseEnter={() => handleHoverImageShow(products?.MediumImagePath?.split(",")[0], i, products?.RollOverImageName, globImagePath)}
+                                        // onMouseEnter={() => handleHoverImageShow(products?.MediumImagePath?.split(",")[0], i, isColorWiseImageShow === 1 ? products?.ColorWiseRollOverImageName : products?.RollOverImageName, products?.imagepath)}
+                                        onMouseLeave={() => handleMouseLeave(i)}
+                                        style={{ objectFit: 'cover' }}
+                                        alt="#"
+                                        onError={(e) => {
+                                          e.target.src = notFound;
+                                        }}
+                                        onClick={() => handelProductSubmit(products)}
+                                      />
+                                      <Button className="cart-icon">
+                                        <Checkbox
+                                          icon={
+                                            <LocalMallOutlinedIcon
+                                              sx={{ fontSize: "22px", color: "#7d7f85", opacity: '.7' }}
+                                            />
+                                          }
+                                          checkedIcon={
+                                            <LocalMallIcon
+                                              sx={{ fontSize: "22px", color: "#009500" }}
+                                            />
+                                          }
+                                          disableRipple={true}
+                                          sx={{ padding: "5px" }}
                                         src={
                                           hoveredImageUrls[i] ? hoveredImageUrls[i] : updatedColorImage[i] ? updatedColorImage[i] :
                                             (storeInitData ?
@@ -3084,6 +3170,24 @@ const ProductList = () => {
                                           }
                                           disableRipple={true}
                                           sx={{ padding: "5px" }}
+                                          checked={products?.checkFlag}
+                                          onChange={(e) => handelCartList(e, products)}
+                                        />
+                                      </Button>
+                                      <Button className="wishlist-icon">
+                                        <Checkbox
+                                          icon={
+                                            <FavoriteBorderIcon
+                                              sx={{ fontSize: "22px", color: "#7d7f85", opacity: '.7' }}
+                                            />
+                                          }
+                                          checkedIcon={
+                                            <FavoriteIcon
+                                              sx={{ fontSize: "22px", color: "#e31b23" }}
+                                            />
+                                          }
+                                          disableRipple={true}
+                                          sx={{ padding: "5px" }}
 
                                           checked={products?.wishCheck}
                                           onChange={(e) => handelWishList(e, products)}
@@ -3092,15 +3196,23 @@ const ProductList = () => {
                                     </div>
                                   </div>
                                   <div className={show4ImagesView ? 'listing4-details' : "listing-details"} onClick={() => handelProductSubmit(products)}>
-                                    <p className={show4ImagesView ? "productDetails property4-type" : "productDetails property-type"} style={{ textAlign: 'center', margin: '5px' }}>
+                                    <p className={show4ImagesView ? "productDetails property4-type" : "productDetails property-type"} style={{ textAlign: 'center', margin: '0px 5px 0px 5px' }}>
                                       {products?.TitleLine}
                                     </p>
+                                    <div>
+                                      <p className="property-type" style={{ margin: '0px' , textAlign: 'center' }}>
+                                        {isMetalTCShow === 1 && <span>
+                                          {products?.updMC} -
+                                          {products?.updMT}
+                                        </span>}
+                                      </p>
+                                    </div>
                                   </div>
-                                  <div className={show4ImagesView ? "listing-features4" : "listing-features"}>
+                                  <div className={show4ImagesView ? "listing-features4" : "listing-features"} style={{ marginLeft: '2px' }}>
                                     <div>
                                       {ismetalWShow === 1 &&
                                         <div className={show4ImagesView ? "feature4" : 'feature'}>
-                                          <p>
+                                          <p style={{margin: '0px'}}>
                                             <span className="feature-count">NWT :
                                             </span> {parseFloat(products?.updNWT).toFixed(2)}
                                           </p>
@@ -3109,7 +3221,7 @@ const ProductList = () => {
 
                                       {(isDaaimongWShow === 1 && (products?.diamondweight !== 0 || products?.diamondpcs !== 0)) &&
                                         <div className={show4ImagesView ? "feature4" : 'feature'}>
-                                          <p>
+                                          <p style={{margin: '0px'}}>
                                             <span className="feature-count">DWT : </span>
                                             {(isDaaimongWShow === 1 && products?.diamondweight !== 0) && products?.updDWT + '/'}  {(isDaaimonPShow === 1 && products?.diamondpcs !== 0) && products?.updDPCS}</p>
                                         </div>
@@ -3117,8 +3229,17 @@ const ProductList = () => {
 
                                       {isGrossWShow === 1 &&
                                         <div className={show4ImagesView ? "feature4" : 'feature'}>
-                                          <p>
+                                          <p style={{margin: '0px'}}>
                                             <span className="feature-count">GWT : </span> {parseFloat(products?.updGWT).toFixed(2)}
+                                          </p>
+                                        </div>
+                                      }
+
+                                      {((isStoneWShow || isStonePShow) === 1 && (products?.totalcolorstoneweight !== 0 || products?.totalcolorstonepcs !== 0)) &&
+                                        <div className={show4ImagesView ? "feature4" : 'feature'}>
+                                          <p style={{margin: '0px'}}>
+                                            <span className="feature-count">CWT :</span>
+                                            {(isStoneWShow === 1 && products?.totalcolorstoneweight !== 0) && (Number(products?.updCWT ?? 0)).toFixed(2) + '/'}  {(isStonePShow === 1 && products?.totalcolorstonepcs !== 0) && products?.updCPCS}
                                           </p>
                                         </div>
                                       }
@@ -3138,18 +3259,11 @@ const ProductList = () => {
 
                                     <div>
                                       <div className={show4ImagesView ? "feature4" : 'feature'}>
-                                        <p>
+                                        <p style={{margin: '0px' , fontSize: '15px'}}>
                                           <span className="feature-count">{products?.designno}</span>
                                         </p>
                                       </div>
-                                      {((isStoneWShow || isStonePShow) === 1 && (products?.totalcolorstoneweight !== 0 || products?.totalcolorstonepcs !== 0)) &&
-                                        <div className={show4ImagesView ? "feature4" : 'feature'}>
-                                          <p>
-                                            <span className="feature-count">CWT :</span>
-                                            {(isStoneWShow === 1 && products?.totalcolorstoneweight !== 0) && (Number(products?.updCWT ?? 0)).toFixed(2) + '/'}  {(isStonePShow === 1 && products?.totalcolorstonepcs !== 0) && products?.updCPCS}
-                                          </p>
-                                        </div>
-                                      }
+
                                       <p style={{ display: 'flex', margin: '0px' }}>
                                         {/* {products?.MetalTypeName} - */}
                                         {/* {isMetalTCShow === 1 && <span>
@@ -3158,8 +3272,8 @@ const ProductList = () => {
                                 </span>} */}
                                         {isPriceShow === 1 &&
                                           <div className={show4ImagesView ? "feature4" : 'feature'}>
-                                            <p>
-                                              <span className="property-type" style={{ display: 'flex' }}>
+                                            <p style={{margin: '0px', fontSize: '15px'}}>
+                                              <span className="property-type" style={{ display: 'flex' ,fontSize: '15px', fontWeight: 600 }}>
                                                 <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />
                                                 {products?.ismrpbase === 1 ? products?.mrpbaseprice : PriceWithMarkupFunction(products?.markup, products?.price, currData?.CurrencyRate)?.toFixed(2)}
                                               </span>
@@ -3170,14 +3284,7 @@ const ProductList = () => {
                                       </p>
                                     </div>
                                   </div>
-                                  <div>
-                                    <p className="property-type" style={{ margin: '0px 0px 10px 0px' }}>
-                                      {isMetalTCShow === 1 && <span>
-                                        {products?.updMC} -
-                                        {products?.updMT}
-                                      </span>}
-                                    </p>
-                                  </div>
+
                                 </div>
                               </div>
                             )

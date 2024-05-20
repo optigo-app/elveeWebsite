@@ -831,18 +831,18 @@ export default function Header() {
               onClose={() => setDrawerOpen(false)}
               PaperProps={{ style: { width: drawerWidth, padding: '0px 10px 0px 10px' } }}
             >
-              <div className="smilingMobileSubDiv" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '9px 0px 8px 0px' }}>
-                <div  className="mobileViewFirstDiv1" style={{display:'flex', alignItems:'center'}}>
+              <div className="smilingMobileSubDivDrawr" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' , marginTop: '3px' }}>
+                <div  className="mobileViewFirstDiv1" style={{display:'flex', alignItems:'center',width: '33.33%'}}>
                 <IconButton onClick={() => setDrawerOpen(false)}>
                   <CloseIcon />
                 </IconButton>
                 </div>
-                <div className="mobileViewFirstDiv2" style={{display:'flex', alignItems:'center'}}>
-                  <a className="mobileViewFirstDiv2" href="/">
-                  {titleImg && <img src={titleImg} className="MainlogogMobileImage" style={islogin == 'true' ? containerStyle : alternateStyle} /> }
+                <div className="mobileViewFirstDiv2Drawer" style={{display:'flex', alignItems:'center',width: '33.33%'}}>
+                  <a className="mobileViewFirstDiv2Drawer" href="/">
+                  {titleImg && <img src={titleImg} className="MainlogogMobileImageDrawer" style={islogin == 'true' ? containerStyle : alternateStyle} /> }
                   </a>
                 </div>
-                <div className="mobileViewFirstDiv3" style={{display:'flex', alignItems:'center'}}>
+                <div className="mobileViewFirstDiv3Drawer" style={{display:'flex', alignItems:'center',width: '33.33%' , justifyContent: 'flex-end'}}>
                 <Badge
                   badgeContent={getWishListCount}
                   max={1000}
@@ -1232,8 +1232,6 @@ export default function Header() {
           style={{
             display: "flex",
             justifyContent: "space-between",
-            // padding: "20px",
-            height: '65px',
             marginInline: '7px'
           }}
           className="smilingMobileSubDiv"
