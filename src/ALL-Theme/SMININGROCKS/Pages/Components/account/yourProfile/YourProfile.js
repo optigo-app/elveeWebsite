@@ -85,7 +85,7 @@ export default function YourProfile() {
                 </div>
             )}
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom:'20px' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' , width: '100%'}}>
+                <div className='userProfileMain' style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
                     {userData && (
                         <>
                             <div className='mobileEditProfileDiv'>
