@@ -10,7 +10,7 @@ const TwoPartDiv = () => {
     const navigation = useNavigate();
     const [showTimer, setShowTimer] = useState(true);
     const setIsLoginState = useSetRecoilState(loginState)
-    const [countdown, setCountdown] = useState({});
+    const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0 });
     const [startDateData, setStartDateData] = useState();
     const [endDateData, setEndDateData] = useState();
 
@@ -57,15 +57,12 @@ const TwoPartDiv = () => {
     }
 
     useEffect(() => {
-        setTimeout(() => {
-            if (countdown.days == 0 && countdown.hours == 0 && countdown.minutes == 0) {
-                setShowTimer(false);
-                // handleLogout();
-            }
-        }, 1000);
+        if (countdown.days == 0 && countdown.hours == 0 && countdown.minutes == 0) {
+            setShowTimer(false);
+            // handleLogout();
+        }
     }, [countdown]);
 
-    console.log('showtimer--', showTimer);
     const handleLogout = () => {
         setIsLoginState('false')
         localStorage.clear();
