@@ -140,6 +140,7 @@ const ProductList = () => {
   const [storeInitData, setStoreInitData] = useState({})
   const [currentPage, setCurrentPage] = useState(1)
   const [ListReloadData, setListReloadData] = useState()
+  const [menuParamsState,setMenuParamsState] = useState();
 
   const getMenuTransData = useRecoilValue(menuTransfData)
 
@@ -179,6 +180,14 @@ const ProductList = () => {
   //       }
   //     }
   // }  
+
+  useEffect(()=>{
+
+    let param = JSON.parse(localStorage.getItem("menuparams"))
+
+    setMenuParamsState(param ?? {})
+
+  },[])
 
 
   useEffect(() => {
@@ -2476,11 +2485,11 @@ const ProductList = () => {
                   <div className='textContainerData'>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                       <p className="designCounttext" style={{ fontSize: '20px', fontWeight: '500', letterSpacing: '1px', textTransform: 'uppercase' }}>
-                        {location?.state?.filtervalue?.FilterVal2 ? location?.state?.filtervalue?.FilterVal2 : location?.state?.filtervalue?.FilterVal1 ? location?.state?.filtervalue?.FilterVal1 : location?.state?.filtervalue?.menuname}
-                        {' '}
-                        {newProData?.length != 0 || ProductApiData2?.length != 0 ? prodCount : 0} <span style={{ textTransform: 'capitalize' }}>Designs</span>
+                        {/* {location?.state?.filtervalue?.FilterVal2 ? location?.state?.filtervalue?.FilterVal2 : location?.state?.filtervalue?.FilterVal1 ? location?.state?.filtervalue?.FilterVal1 : location?.state?.filtervalue?.menuname} */}
+                        {menuParamsState?.FilterVal2 ? menuParamsState?.FilterVal2 : menuParamsState?.FilterVal1 ? menuParamsState?.FilterVal1 : menuParamsState?.menuname}
+                        &nbsp;{newProData?.length != 0 || ProductApiData2?.length != 0 ? prodCount : 0} <span style={{ textTransform: 'capitalize' }}>Designs</span>
                         <br />
-                        <span style={{ fontSize: '10px' }}>{`${location?.state?.filtervalue?.menuname || ''}${location?.state?.filtervalue?.FilterVal1 ? ` > ${location?.state?.filtervalue?.FilterVal1}` : ''}${location?.state?.filtervalue?.FilterVal2 ? ` > ${location?.state?.filtervalue?.FilterVal2}` : ''}`}</span>
+                        <span style={{ fontSize: '10px' }}>{`${menuParamsState?.menuname || ''}${menuParamsState?.FilterVal1 ? ` > ${menuParamsState?.FilterVal1}` : ''}${menuParamsState?.FilterVal2 ? ` > ${menuParamsState?.FilterVal2}` : ''}`}</span>
                       </p>
                     </div>
                     <img src={`${storImagePath()}/images/HomePage/MainBanner/image/featuresImage.png`} className='featherImage' />

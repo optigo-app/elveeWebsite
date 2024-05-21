@@ -339,6 +339,8 @@ export default function CartPage() {
         ele?.A == cartSelectData?.autocode
     );
 
+    console.log("cartmtrd",mtrd)
+
     let showPrice = 0;
     if (mtrd && mtrd.length > 0) {
       // showPrice = cartSelectData?.price - ((cartSelectData?.price - cartSelectData?.metalrd) + (mtrd[0]?.Z ?? 0));
@@ -371,15 +373,15 @@ export default function CartPage() {
         ele.A == cartSelectData?.autocode
 
     )
-
+    // console.log("cartdiaqcprice",diaqcprice)
 
     let showPrice1 = 0;
-    if (diaqcprice && diaqcprice.length > 0 && !isNaN(diaqcprice)) {
+    if (diaqcprice && diaqcprice.length > 0) {
       // showPrice1 = cartSelectData?.price - ((srProductsData?.price - srProductsData?.diard1) + (diaqcprice[0]?.S ?? 0));
       let totalPrice = diaqcprice?.reduce((acc, obj) => acc + obj.S, 0)
       let diaRate = diaqcprice?.reduce((acc, obj) => acc + obj.O, 0)
       let diaSettRate = diaqcprice?.reduce((acc, obj) => acc + obj.Q, 0)
-
+      console.log("cartdiaqcprice",totalPrice)
       setDqcRate(diaRate ?? 0)
       setDqcSettRate(diaSettRate ?? 0)
       setDqcData(totalPrice ?? 0)
@@ -414,9 +416,11 @@ export default function CartPage() {
         ele.A == srProductsData?.autocode
 
     );
+
+    console.log("cartcsqcpirce",csqcpirce)
     
     let showPrice2 = 0;
-    if (csqcpirce && csqcpirce.length > 0 && !isNaN(csqcpirce)) {
+    if (csqcpirce && csqcpirce.length > 0) {
       // showPrice2 = srProductsData?.price - ((srProductsData?.price - srProductsData?.csrd2) + (csqcpirce[0]?.S ?? 0));
       let totalPrice = csqcpirce?.reduce((acc, obj) => acc + obj.S, 0)
       let diaRate = csqcpirce?.reduce((acc, obj) => acc + obj.O, 0)
