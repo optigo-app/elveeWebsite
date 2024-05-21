@@ -51,7 +51,7 @@ export default function Home() {
         Authorization: 'Bearer optigo_json_api',
         domain: (window.location.hostname === 'localhost' || window.location.hostname === 'zen') ? 'estore.orail.co.in' : window.location.hostname,
         // domain: 'estore.orail.co.in',
-        version: 'Live',
+        version: 'V7',
         sp: "1"
         // domain: 'zen',
       };
