@@ -79,7 +79,12 @@ export default function Home() {
           let companyLogo = response?.data?.Data?.rd[0]?.companylogo
           setTitle(title);
           setFavIcon(favIcon)
-          setCompanyTitleLogo(companyLogo)
+          setCompanyTitleLogo(companyLogo);
+          window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: 'smooth'
+          });
         }
       } catch (error) {
         console.error('Error:', error);
@@ -294,6 +299,7 @@ export default function Home() {
   useEffect(() => {
     if (islogin) {
       setIsloginStatus(islogin)
+      window.scrollTo(0, 0);
     }
   }, [])
 

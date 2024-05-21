@@ -1,15 +1,14 @@
 .smilingDelivery {
-    margin-inline: 6%;
     background-color: white;
 }
 
 .smilingOrderMain {
     display: flex;
-    margin-inline: 10%;
+    margin-inline: 13%;
+    padding-top: 30px;
 }
 
 .smilingdeliverBox1 {
-    margin-top: 8%;
     width: 100%;
 }
 

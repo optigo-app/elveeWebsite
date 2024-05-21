@@ -5,6 +5,7 @@
 .css-1x5jdmq.Mui-disabled {
     -webkit-text-fill-color: black !important;
 }
+
 .SmilingAddEditAddrwess {
     height: 40px;
     width: 160px;
@@ -17,7 +18,8 @@
     outline: none;
     font-weight: 500;
 }
-.SmilingAddEditAddrwess:hover{
+
+.SmilingAddEditAddrwess:hover {
     background-color: #fff !important;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -25,12 +27,20 @@
 
 
 @media screen and (max-width: 1000px) {
-
-    .mobileEditProfileDiv{
-        display: flex!important;
-        flex-direction: column!important;
-        align-items: center!important;
+    .mobileEditProfileDiv {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        width: 100% !important;
     }
+}
+
+
+@media screen and (max-width: 700px) {
+    .userProfileMain{
+        width: 100%;
+    }
+
 }
     @media screen and (max-width: 500px) {
 

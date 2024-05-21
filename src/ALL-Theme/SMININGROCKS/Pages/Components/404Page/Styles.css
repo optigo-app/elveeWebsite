@@ -110,3 +110,13 @@
   background: #69a6ce;
   color: #fff;
 }
+
+
+
+@media screen and (max-width: 778px) {
+
+  #error-page{
+    bottom: 2%;
+  }
+}
+
