@@ -32,6 +32,8 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import { List, ListItem, ListItemText, Button, IconButton } from '@mui/material';
 import { FilterAPI, FilterListAPI } from "../../../../Utils/API/FilterListAPI";
 import { toast } from "react-toastify";
+import { SearchProductDataAPI } from "../../../../Utils/API/SearchProductDataAPI";
+import { SearchPriceDataAPI } from "../../../../Utils/API/SearchPriceDataAPI";
 
 export default function Header() {
   // const [titleImg, setTitleImg ] = useState() 
@@ -387,7 +389,7 @@ export default function Header() {
     }
 
     await CommonAPI(body).then((res) => {
-      console.log("getmenuData", res?.Data?.rd)
+      // console.log("getmenuData", res?.Data?.rd)
       setMenuData(res?.Data?.rd)
       // transformData(res?.Data?.rd)
       separateData(res?.Data?.rd)
@@ -459,34 +461,65 @@ export default function Header() {
 
 
   const setGSearch = useSetRecoilState(searchData);
-  function searchDataFucn(e) {
+  
+  async function searchDataFucn(e) {
     if (e.key === 'Enter') {
-      let ProductApiData2 = JSON.parse(localStorage.getItem("allproductlist"));
-      console.log('ProductApiData2', ProductApiData2);
-      if (ProductApiData2) {
-        let searchText = e.target.value.toLowerCase();
-        console.log('searchhhhhhh', searchText);
-        let data = ProductApiData2.filter((pd) => {
-          for (const key in pd) {
-            if (pd.hasOwnProperty(key) && pd[key]?.toString().toLowerCase().includes(searchText)) {
-              return true;
-            }
-          }
-          return false;
-        });
-        console.log('searchhhhhhhdddddddddd', data);
-        if (data.length > 0) {
-          setGSearch(data);
-          navigation('/productpage');
-          toggleOverlay();
-        } else {
-          setGSearch([]);
+      let finalData = JSON.parse(localStorage.getItem("menuparams"))
+      let searchVar = e.target.value.toLowerCase()
+
+    if (finalData) {
+      await SearchProductDataAPI(searchVar).then((res) => {
+        if (res) {
+          localStorage.setItem("allproductlist", JSON.stringify(res))
+          // localStorage.setItem("finalAllData", JSON.stringify(res))
         }
-      } else {
-        setGSearch([]);
-      }
+        return res
+      }).then(async (res) => {
+        if (res) {
+          let autoCodeList = JSON.parse(localStorage.getItem("autoCodeList"))
+          await SearchPriceDataAPI(autoCodeList,searchVar)
+          // .then((res)=>{
+          //     if(res){
+          //     localStorage.setItem("getSearchPriceData", JSON.stringify(res))
+          //     }
+          // })
+          navigation("/productpage",{state:{"search":true}})
+          toggleOverlay();
+        }
+      }).catch((err) => {
+        if (err) toast.error("Something Went Wrong!!!")
+      })
+    }
     }
   }
+  // function searchDataFucn(e) {
+  //   if (e.key === 'Enter') {
+  //     let ProductApiData2 = JSON.parse(localStorage.getItem("allproductlist"));
+  //     console.log('ProductApiData2', ProductApiData2);
+  //     if (ProductApiData2) {
+  //       let searchText = e.target.value.toLowerCase();
+  //       console.log('searchhhhhhh', searchText);
+  //       let data = ProductApiData2.filter((pd) => {
+  //         for (const key in pd) {
+  //           if (pd.hasOwnProperty(key) && pd[key]?.toString().toLowerCase().includes(searchText)) {
+  //             return true;
+  //           }
+  //         }
+  //         return false;
+  //       });
+  //       console.log('searchhhhhhhdddddddddd', data);
+  //       if (data.length > 0) {
+  //         setGSearch(data);
+  //         navigation('/productpage');
+  //         toggleOverlay();
+  //       } else {
+  //         setGSearch([]);
+  //       }
+  //     } else {
+  //       setGSearch([]);
+  //     }
+  //   }
+  // }
 
   function capitalizeText(text) {
     return text?.toLowerCase()?.split(' ').map((word) => {
@@ -607,7 +640,6 @@ export default function Header() {
           let autoCodeList = JSON.parse(localStorage.getItem("autoCodeList"))
           await getDesignPriceList(finalData, 1, {}, {}, autoCodeList).then((res) => {
             if (res) {
-              debugger
               // console.log("test",res);
               localStorage.setItem("getPriceData", JSON.stringify(res))
               // navigation(`/productpage/?${finalData?.FilterKey}=${finalData?.FilterVal}/${finalData?.FilterKey1}=${finalData?.FilterVal1}/${finalData?.FilterKey2}=${finalData?.FilterVal2}`, { state: { menuFlag: finalData?.menuname, filtervalue: finalData } })
@@ -648,7 +680,7 @@ export default function Header() {
   //   setIsDropdownOpen(!isDropdownOpen)
   //   setSelectedData(menuItems[index]?.param1 || []);
   // }
-  console.log('exapndmenu--', expandedMenu);
+  // console.log('exapndmenu--', expandedMenu);
   const [menuItems, setMenuItems] = useState([]);
   useEffect(() => {
     const uniqueMenuIds = [...new Set(menuData?.map(item => item?.menuid))];
@@ -711,8 +743,8 @@ export default function Header() {
     handleMenuClick(menuItemWithoutParam1)
     console.log('MenuItemDtata--', menuItemWithoutParam1);
   };
-  console.log('FinalMenuData--', finalMenuData);
-  console.log('mrnuclicked--', selectedMenu);
+  // console.log('FinalMenuData--', finalMenuData);
+  // console.log('mrnuclicked--', selectedMenu);
   const handleSubMenuClick = (menuItem, subMenuName, subMenuItem, iconclicked) => {
     if (iconclicked == 'iconclicked') {
       setSelectedSubMenu(prevSubMenu => (prevSubMenu === subMenuName ? null : subMenuName));
@@ -1122,11 +1154,11 @@ export default function Header() {
               >
                 <ul className="nav-ul-shop" style={{ marginTop: '24px' }}>
                   <>
-                    {location?.pathname == '/productpage' &&
+                    {/* {location?.pathname == '/productpage' &&
                       <li style={{ cursor: "pointer", textDecoration: 'none', marginTop: '0' }} onClick={toggleOverlay}>
-                        {/* <IoSearch color="#7D7F85" fontSize='25px' /> */}
+                        <IoSearch color="#7D7F85" fontSize='25px' />
                       </li>
-                    }
+                    } */}
                     <Badge
                       badgeContent={getWishListCount}
                       max={1000}
@@ -1192,7 +1224,7 @@ export default function Header() {
                 className="menuDropdownData"
               >
                 <div style={{}}>
-                  {console.log('menuItems--', menuItems[hoveredIndex])}
+                  {/* {console.log('menuItems--', menuItems[hoveredIndex])} */}
                   {/* Render selectedData outside the menuItems loop */}
                   <div style={{ width: '100%', display: 'flex', gap: '60px', textTransform: 'uppercase' }}>
                     {selectedData?.param1?.map((param1Item, param1Index) => (

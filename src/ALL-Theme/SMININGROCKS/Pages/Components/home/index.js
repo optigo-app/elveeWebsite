@@ -95,14 +95,14 @@ export default function Home() {
     const getMetalTypeData = async () => {
       try {
         const storedEmail = localStorage.getItem('registerEmail') || '';
-        const storedCustomerId = localStorage.getItem('LogdinCustomerId') || '0';
+        const storedCustomerId = JSON.parse(localStorage.getItem('loginUserDetail'));
 
         const storeInit = JSON.parse(localStorage.getItem('storeInit'));
         const { FrontEnd_RegNo } = storeInit;
         // {"FrontEnd_RegNo":"95oztttesi0o50vr","Customerid":"856"}
 
         const combinedValue = JSON.stringify({
-          FrontEnd_RegNo: `${FrontEnd_RegNo}`, Customerid: `${storedCustomerId}`
+          FrontEnd_RegNo: `${FrontEnd_RegNo}`, Customerid: `${storedCustomerId?.id ?? 0}`
         });
         const encodedCombinedValue = btoa(combinedValue);
         const body = {

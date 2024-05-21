@@ -9,6 +9,7 @@ import { storImagePath } from '../../../../Utils/globalFunctions/GlobalFunction'
 const TwoPartDiv = () => {
     const navigation = useNavigate();
     const [showTimer, setShowTimer] = useState(true);
+    const [checkTimeStatus, setShowTimeStatus] = useState();
     const setIsLoginState = useSetRecoilState(loginState)
     const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0 });
     const [startDateData, setStartDateData] = useState();
@@ -18,6 +19,7 @@ const TwoPartDiv = () => {
         const storedData = JSON.parse(localStorage.getItem('loginUserDetail')) || {};
         const entryDate = storedData.adhoc_startdate1;
         const expiryDate = storedData.adhoc_enddate1;
+        setShowTimeStatus(storedData?.IsTimeShow)
 
         if (entryDate && expiryDate) {
             setStartDateData(entryDate);
@@ -57,9 +59,9 @@ const TwoPartDiv = () => {
     }
 
     useEffect(() => {
-        if (countdown.days == 0 && countdown.hours == 0 && countdown.minutes == 0) {
-            setShowTimer(false);
-            // handleLogout();
+        if (countdown.days == 0 && countdown.hours == 0 && countdown.minutes == 0 && checkTimeStatus == 0) {
+                handleLogout();
+                setShowTimer(false);
         }
     }, [countdown]);
 
