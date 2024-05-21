@@ -2489,7 +2489,6 @@ const ProductList = () => {
                     </div>
                     <img src={`${storImagePath()}/images/HomePage/MainBanner/image/featuresImage.png`} className='featherImage' />
                   </div>
-
                 </div>
               </div>
               <div className="filterDivcontainer">
@@ -2501,28 +2500,6 @@ const ProductList = () => {
                 </div>
                 <div className="divider"></div>
                 <div className="part" style={{ flex: '20%' }}>
-                  {/* <div className={`custom-select ${isActive ? 'active' : ''}`}>
-                      <button
-                        ref={dropdownRef}
-                        className="select-button"
-                        onClick={toggleDropdown}
-                        aria-haspopup="listbox"
-                        aria-expanded={isActive}
-                      >
-                        <span className="selected-value">{selectedOptionData ? selectedOptionData : 'Featured'}
-                          <SortIcon />
-                        </span>
-                      </button>
-                      {isActive && (
-                        <ul className="select-dropdown">
-                          {options.map((option, index) => (
-                            <li key={index} role="option" onClick={() => handleSortChange(option)}>
-                              <label htmlFor={`option-${index}`}>{option.label}</label>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </div> */}
                   <div
                     style={{
                       display: "flex",
@@ -2546,7 +2523,6 @@ const ProductList = () => {
                   </div>
                 </div>
                 <div className="divider"></div>
-
                 <div className="part" style={{ flex: '20%' }}>
                   {isMetalCutoMizeFlag == 1 && <div
                     style={{
@@ -3082,11 +3058,11 @@ const ProductList = () => {
                                   </div>
                                   <div className={show4ImagesView ? 'listing4-details' : "listing-details"} onClick={() => handelProductSubmit(products)}>
                                     <p className={show4ImagesView ? "productDetails property4-type" : "productDetails property-type"} style={{ textAlign: 'center', margin: '0px 5px 0px 5px' }}>
-                                      {products?.TitleLine}
+                                      {products?.TitleLine}{products?.designno === 'NG101005' && 'cxxxxxxxxx cxzzzzzzzzzzz dssssssssssssss dffsfsfsfffsfs'}
                                     </p>
                                     <div>
                                       <p className="property-type" style={{ margin: '0px' , textAlign: 'center' }}>
-                                        {isMetalTCShow === 1 && <span>
+                                        {isMetalTCShow === 1 && <span style={{fontSize: '12px'}}>
                                           {products?.updMC} -
                                           {products?.updMT}
                                         </span>}
@@ -3115,7 +3091,7 @@ const ProductList = () => {
                                       {isGrossWShow === 1 &&
                                         <div className={show4ImagesView ? "feature4" : 'feature'}>
                                           <p style={{margin: '0px'}}>
-                                            <span className="feature-count">GWT : </span> {parseFloat(products?.updGWT).toFixed(2)}
+                                            <span className="feature-count">GWT : </span> {parseFloat(products?.updGWT).toFixed(3)}
                                           </p>
                                         </div>
                                       }
@@ -3124,7 +3100,7 @@ const ProductList = () => {
                                         <div className={show4ImagesView ? "feature4" : 'feature'}>
                                           <p style={{margin: '0px'}}>
                                             <span className="feature-count">CWT :</span>
-                                            {(isStoneWShow === 1 && products?.totalcolorstoneweight !== 0) && (Number(products?.updCWT ?? 0)).toFixed(2) + '/'}  {(isStonePShow === 1 && products?.totalcolorstonepcs !== 0) && products?.updCPCS}
+                                            {(isStoneWShow === 1 && products?.totalcolorstoneweight !== 0) && (Number(products?.updCWT ?? 0)).toFixed(3) + '/'}  {(isStonePShow === 1 && products?.totalcolorstonepcs !== 0) && products?.updCPCS}
                                           </p>
                                         </div>
                                       }

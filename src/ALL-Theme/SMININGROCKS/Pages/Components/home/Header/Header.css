@@ -25,10 +25,10 @@
 .SmilingUpdateQuantityBtn {
     height: 35px;
     width: 60px;
-    background-color: #e1e1e1;
+    background-color: rgb(244, 244, 244);
     border: none;
     outline: none;
-    font-weight: 500;
+    /* font-weight: 500; */
 }
 
 .SmilingAddSingleRemkarBtn {

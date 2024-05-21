@@ -3,12 +3,13 @@ import Header from '../home/Header/Header'
 import Footer from '../home/Footer/Footer'
 import './Delivery.css'
 import { CommonAPI } from '../../../Utils/API/CommonAPI';
-import { MdDelete } from "react-icons/md";
+import { MdDelete, MdOutlineDeleteOutline } from "react-icons/md";
 import { MdEdit } from "react-icons/md";
 import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router';
+import { storImagePath } from '../../../Utils/globalFunctions/GlobalFunction';
 
 export default function Delivery() {
 
@@ -562,16 +563,70 @@ export default function Delivery() {
             <div className='smilingDelivery'>
                 <div className='smilingOrderMain'>
                     <div className='smilingdeliverBox1'>
+                        <div class="bg-imageCart">
+                            <div class="overlay"></div>
+                            <div class="text-container">
+                                <div className='textContainerData'>
+                                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' , flexDirection: 'column'}}>
+                                        <p className="designCounttext" style={{ fontSize: '30px', fontWeight: '500', letterSpacing: '1px', textTransform: 'uppercase' }}>
+                                            Delivery
+                                        </p>
+                                        <span style={{ fontSize: '10px' , marginLeft: '0px' }}>My Cart &gt; Delivery</span>
+                                    </div>
+                                    <img src={`${storImagePath()}/images/HomePage/MainBanner/image/featuresImage.png`} className='featherImage' />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="filterDivcontainer" style={{ width: '100%', height: '60px' }}>
+                            <div className="partCart" style={{ flex: '20%' }}>
+                                <span style={{ color: '#7d7f85', fontWeight: '500', fontSize: '16px', }}>{addressData?.length} Address</span>
+                            </div>
+                            <div className="divider"></div>
+
+                            <div className="partCart" style={{ flex: '20%' }}>
+                                <p className='cartPageTopLink' onClick={handleOpen}>Add New Address</p>
+                            </div>
+
+                            <div className="divider"></div>
+
+                            <div className="partCart" style={{ flex: '20%' }}>
+                                <div style={{ display: 'flex', }}>
+                                    {/* <p
+                                        className="cartPageTopLink"
+                                    >
+                                        Clear All
+                                    </p> */}
+                                </div>
+                            </div>
+
+                            <div className="divider"></div>
+
+                            <div className="partCart" style={{ flex: '20%' }}>
+                                {/* <p style={{ margin: '0px 10px', fontSize: '16px', fontWeight: 600, cursor: 'pointer', color: '#7d7f85', textDecoration: 'underline' }} onClick={handleClickOpenOrderRemark}>{cartSelectData?.OrderRemarks ? 'View & Edit Remark' : 'Add Order Remark'}</p> */}
+                            </div>
+                            <div className="divider"></div>
+
+                            <div className="partCart" style={{ flex: '20%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                <Button
+                                    className="cartPageTopBtn"
+                                    onClick={handleContinue}
+                                // style={{ position: 'absolute', right: '0px', height: '50px' }}
+                                >
+                                    Continue
+                                </Button>
+                            </div>
+                        </div>
+
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <p style={{ fontSize: '30px', fontWeight: 500, color: 'gray', fontFamily: 'PT Sans, sans-serif' }}>Delivery</p>
-                            <button className='smilingAddToAddressBtn' onClick={handleOpen}>Add New Address</button>
+                            {/* <p style={{ fontSize: '30px', fontWeight: 500, color: 'gray', fontFamily: 'PT Sans, sans-serif' }}>Delivery</p> */}
+                            {/* <button className='smilingAddToAddressBtn' onClick={handleOpen}>Add New Address</button> */}
 
                         </div>
                         <p style={{ fontFamily: 'PT Sans, sans-serif' }}>Order Will be delivered to selected address</p>
                         <div className='smilingMobileDeliveryBtnMainMobilee'>
-                            <button className='smilingAddToAddressMBtn' onClick={handleOpen}>Add New Address</button>
                         </div>
-                        <div className='smilingDeliveyAddressMain' style={{ display: 'flex', flexWrap: 'wrap' }}>
+                        <div className='smilingDeliveyAddressMain' style={{ display: 'flex', flexWrap: 'wrap' , marginBottom:'200px' }}>
                             {
                                 addressData?.map((item, index) => (
                                     <div key={item.id} className='AddressMain' style={{ backgroundColor: item.isdefault === 1 && 'rgb(245 244 244)' }} onClick={() => handleDefaultSelection(item.id)}>
@@ -585,23 +640,21 @@ export default function Delivery() {
                                         <p className='addressData' style={{ marginBottom: '35px' }}>Phone : {item.shippingmobile}</p>
                                         <div style={{ position: 'absolute', bottom: '5px', width: '90%', display: 'flex', marginTop: '10px' }}>
                                             <div onClick={() => handleOpen(item, index)} className='deliveryAddressEdit' style={{ width: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                                <MdEdit />
+                                                <p style={{ color: '#7d7f85', fontSize: '12px', fontWeight: 500, margin: '0px' }}>UPDATE</p>
                                             </div>
                                             <div className='deliveryAddressDelete' onClick={() => handleOpenDelete(item.id)}>
-                                                <MdDelete />
+                                                <MdOutlineDeleteOutline />
                                             </div>
                                         </div>
                                     </div>
                                 ))
                             }
                         </div>
-                        {!isLoading &&
+                        {/* {!isLoading &&
                             <div className='smilingMobileDeliveryBtnMain'>
                                 <button style={{ marginInline: '20px' }} className='smilingAddToAddressBtn' onClick={handleContinue}>Continue</button>
                             </div>
-                        }
-
-
+                        } */}
                     </div>
                     {/* <div className='smilingdeliverBox2'> */}
                     {/* <p style={{ fontSize: '30px', fontWeight: 500, color: 'gray' }}>Order Summary</p>
@@ -609,7 +662,17 @@ export default function Delivery() {
                     {/* </div> */}
                 </div>
             </div>
-            <Footer />
+            <div
+                style={{
+                    position: addressData?.length < 4 || isLoading ? 'absolute' : 'static',
+                    bottom: addressData?.length < 4 || isLoading ? '0px' : 'auto',
+                    width: '100%'
+                }}
+                className="mobileFootreCs"
+            >
+                <Footer />
+            </div>
+
             {!isLoading &&
                 <div className='smilingMobileDeliveryBtnMainMobile'>
                     <button className='smilingAddToAddressMBtn' onClick={handleContinue}>Continue</button>

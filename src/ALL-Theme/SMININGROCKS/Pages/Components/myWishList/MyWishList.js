@@ -364,7 +364,7 @@ export default function MyWishList() {
       )}
 
       <Dialog open={open} onClose={handleClose}>
-        <p style={{padding: '15px 15px 0px 15px',fontWeight: 500}}>Are You Sure To Delete Alll This Item?</p>
+        <p style={{ padding: '15px 15px 0px 15px', fontWeight: 500 }}>Are You Sure To Delete Alll This Item?</p>
 
         <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' }}>
           <Button onClick={handleClose} color="primary">
@@ -472,7 +472,9 @@ export default function MyWishList() {
                       marginInline: "2%",
                     }}
                   >
-                    <p className="smiWishLsitBoxDesc1">{item.designno}</p>
+                    <p className="smiWishLsitBoxDesc2">
+                      DWT: {(item.totaldiamondweight)?.toFixed(2)}
+                    </p>
                     {isPriseShow == 1 && (
                       <p className="smiWishLsitBoxDescPrice">
                         {
@@ -502,9 +504,9 @@ export default function MyWishList() {
                     <p className="smiWishLsitBoxDesc2">
                       GWT: {(item.ActualGrossweight)?.toFixed(2)}
                     </p>
-                    <p className="smiWishLsitBoxDesc2">
-                      DWT: {(item.totaldiamondweight)?.toFixed(2)}
-                    </p>
+                    <p className="smiWishLsitBoxDesc1">{item.designno}</p>
+
+
                   </div>
                   {
                     item.match === 'true' ?

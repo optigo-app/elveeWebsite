@@ -1,6 +1,7 @@
 .smilingPaymentMain {
-    margin-inline: 6%;
+    margin-inline: 13%;
     background-color: white;
+    padding-top: 30px;
 }
 
 .smilingPayentImg {
@@ -8,19 +9,28 @@
     width: 450px;
 }
 
-.smilingPaySub1 {
-    padding: 50px;
+.smilingPaySub1Main{
     display: flex;
+    justify-content: center;
+}
+.smilingPaySub1 {
+    padding: 20px;
+    display: flex;
+    width: 1000px;
+    max-width: 600px;
+    /* background-color: red; */
+    margin-bottom: 100px;
+    background-color: #fcfcfc;
 }
 
 .smilingPaySub1Box1 {
-    width: 65%;
-    padding: 50px;
+    width: 55%;
+    /* padding: 50px; */
 }
 
 .smilingPaySub1Box2 {
-    width: 35%;
-    padding: 50px;
+    width: 45%;
+    /* padding: 50px; */
 }
 
 .paymentBtn {
