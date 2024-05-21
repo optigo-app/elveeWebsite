@@ -24,7 +24,7 @@ export default function Confirmation() {
                     <button className='contiShopiBtn' onClick={() => navigation('/productpage')}>Continue Shopping</button>
                 </div>
             </div>
-            <div style={{ position: 'absolute', bottom: '0px', width: '100%' }}>
+            <div className='mobileFooter' style={{ position: 'absolute', bottom: '0px', width: '100%' }}>
                 <Footer />
             </div>
         </div>

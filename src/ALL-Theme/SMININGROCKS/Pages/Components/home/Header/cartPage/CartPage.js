@@ -1269,8 +1269,8 @@ export default function CartPage() {
     }
   };
 
-  console.log('FinalPrice()',FinalPrice());
-  console.log('FinalPrice() * lastEnteredQuantityFinalPrice() * lastEnteredQuantity',FinalPrice() * lastEnteredQuantity);
+  console.log('FinalPrice()', FinalPrice());
+  console.log('FinalPrice() * lastEnteredQuantityFinalPrice() * lastEnteredQuantity', FinalPrice() * lastEnteredQuantity);
   return (
     <>
       <div
@@ -1305,7 +1305,7 @@ export default function CartPage() {
                 defaultValue={""}
                 value={remarks}
                 style={{
-                  height: '100px',
+                  height: '160px',
                   fontSize: '13px',
                   marginInline: '10px'
                 }}
@@ -1314,7 +1314,7 @@ export default function CartPage() {
                 }
               />
             </div>
-            <div className="mt-2 text-right">
+            <div className="mt-2 text-right" style={{display: 'flex' , justifyContent: 'flex-end'}}>
               <Button
                 className="btn btn-primary btn-sm shadow-none showremarkbtn me-2"
                 type="button"
@@ -1345,7 +1345,7 @@ export default function CartPage() {
                 defaultValue={""}
                 value={Mainremarks}
                 style={{
-                  height: '100px',
+                  height: '160px',
                   fontSize: '13px',
                   marginInline: '10px'
                 }}
@@ -1426,7 +1426,7 @@ export default function CartPage() {
               </div>
             }
 
-            <div className="backErrorMobile" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            {/* <div className="backErrorMobile" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               {cartListData?.length !== 0 && (
                 <div className="backErrorMobile">
                   <IoArrowBackOutline style={{ height: '30px', marginLeft: '5px', width: '30px', color: 'rgb(192 182 182)' }} onClick={() => navigation("/productpage")} />
@@ -1438,7 +1438,7 @@ export default function CartPage() {
                 <div className="ClreareAllMobilee">
                   <p style={{ fontWeight: 600, margin: '0px', textDecoration: 'underline', width: '80px', cursor: 'pointer', color: 'rgb(192 182 182)' }} onClick={handleClickOpen}>Clear All</p>
                 </div>)}
-            </div>
+            </div> */}
 
             {/* <div
               className="smilingListCartTopButtonNew"
@@ -1453,8 +1453,8 @@ export default function CartPage() {
                   className="smilingListCartTopButton"
                   style={{ marginTop: "0px" }}
                 >
-                  <div className="filterDivcontainer" style={{ width: '100%', height: '60px' }}>
-                    <div className="partCart" style={{ flex: '20%' }}>
+                  <div className="filterDivcontainerCartPage" style={{ width: '100%', height: '60px' }}>
+                    <div className="partCart totalPriceTopMain" style={{ flex: '20%' }}>
                       <div style={{ display: 'flex' }}>
                         <span style={{ color: '#7d7f85', fontSize: '16px', marginRight: '3px' }}>Total Price: </span>
                         <div style={{ display: 'flex' }}>
@@ -1462,16 +1462,16 @@ export default function CartPage() {
                           <span style={{ color: '#7d7f85', fontSize: '16px', fontWeight: '500', }}>{cartListData.reduce((total, item) => total + item.UnitCost, 0).toFixed(2)}</span>
                         </div>
                       </div>
-
                     </div>
-                    <div className="divider"></div>
 
-                    <div className="partCart" style={{ flex: '20%' }}>
+                    <div className="divider totalPriceTopMain"></div>
+
+                    <div className="partCart showTotalItemTop" style={{ flex: '20%' }}>
                       <span style={{ color: '#7d7f85', fontWeight: '500', fontSize: '16px', }}>{cartListData?.length} Items</span>
 
                     </div>
 
-                    <div className="divider"></div>
+                    <div className="divider showTotalItemTop"></div>
 
                     <div className="partCart" style={{ flex: '20%' }}>
                       <div style={{ display: 'flex', }}>
@@ -1491,7 +1491,7 @@ export default function CartPage() {
                     </div>
                     <div className="divider"></div>
 
-                    <div className="partCart" style={{ flex: '20%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <div className="partCart topPlcaeOrderBtn" style={{ flex: '20%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       <Button
                         className="cartPageTopBtn"
                         onClick={handlePlaceOrder}
@@ -1565,19 +1565,18 @@ export default function CartPage() {
                             <div
                               key={item.id}
                               className={`smiling-cartPageBoxMain ${cartSelectData && cartSelectData.id === item.id ? 'selected' : ''}`}
-                              onClick={async () => {
-                                setCartSelectData(item);
-                                setProdFullInfo(item.designno);
-                                getSizeData(item.autocode);
-                                window.innerWidth <= 1080 &&
-                                  setDialogOpen(true);
+                              // onClick={async () => {
+                              //   setCartSelectData(item);
+                              //   setProdFullInfo(item.designno);
+                              //   getSizeData(item.autocode);
+                              //   window.innerWidth <= 1080 &&
+                              //     setDialogOpen(true);
 
-                                await SingleProductAPI(item?.designno).then((res) => {
-                                  let data = res[0]
-                                  setSingleProdData(data)
-                                })
-
-                              }}
+                              //   await SingleProductAPI(item?.designno).then((res) => {
+                              //     let data = res[0]
+                              //     setSingleProdData(data)
+                              //   })
+                              // }}
                             >
                               <img
                                 src={item.DefaultImageName != '' ? `${imageURL}/${yKey}/${item.DefaultImageName}` : noFoundImage}
@@ -1585,6 +1584,18 @@ export default function CartPage() {
                                 className="cartImageShow"
                                 onError={(e) => {
                                   e.target.src = noFoundImage;
+                                }}
+                                onClick={async () => {
+                                  setCartSelectData(item);
+                                  setProdFullInfo(item.designno);
+                                  getSizeData(item.autocode);
+                                  window.innerWidth <= 1080 &&
+                                    setDialogOpen(true);
+  
+                                  await SingleProductAPI(item?.designno).then((res) => {
+                                    let data = res[0]
+                                    setSingleProdData(data)
+                                  })
                                 }}
                               />
                               <div className="listing-featuresN" style={{ marginTop: '30px' }}>
@@ -1640,7 +1651,7 @@ export default function CartPage() {
                                 </div>
 
                                 <p style={{ position: 'absolute', bottom: '5px' }}>{item?.Remarks ? 'Remark : ' + item?.Remarks : ''}</p>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', position: 'absolute', bottom: '10px', width: '35%' }}>
+                                <div className="bottomBtnCart" style={{ display: 'flex', justifyContent: 'space-between', position: 'absolute', bottom: '10px', width: '35%' }}>
                                   <p onClick={handleClickOpenItemRemark} style={{ margin: '0px', fontSize: '13px', cursor: 'pointer', color: '#7d7f85', textDecoration: 'underline' }}>Item Remark</p>
                                   <p style={{ margin: '0px', fontSize: '13px', cursor: 'pointer', color: '#7d7f85', textDecoration: 'underline' }}
                                     onClick={() => handleRemove(item)}
@@ -2690,7 +2701,7 @@ export default function CartPage() {
                       justifyContent: 'space-between'
                     }}
                   >
-                    <div
+                    {/* <div
                       className="smilingQualityMain"
                       style={{ display: "flex", alignItems: "center" }}
                     >
@@ -2719,6 +2730,18 @@ export default function CartPage() {
                       >
                         QTY
                       </button>
+                    </div> */}
+
+                    <div className="QTYUpateMain">
+                      <div>
+                        <Button className="QtyLess" disabled={qtyUpdateWaiting && true} onClick={handleDecrementQuantity}>-</Button>
+                      </div>
+                      <p className="QTYvalue">
+                        {lastEnteredQuantity}
+                      </p>
+                      <div>
+                        <Button className='QtyAdd' disabled={qtyUpdateWaiting && true} onClick={handleIncrementQuantity}>+</Button>
+                      </div>
                     </div>
 
                     <span>
@@ -2744,25 +2767,6 @@ export default function CartPage() {
                         ).toFixed(2)}
                       </span>
                     </span>
-                    {/* <button
-                      style={{
-                        border: "none",
-                        outline: "none",
-                        backgroundColor: "#e1e1e1",
-                        padding: "6px 17px",
-                        borderRadius: "4px",
-                      }}
-                    >
-                      <span
-                        style={{
-                          fontSize: "16px",
-                          fontWeight: "500",
-                        }}
-                        onClick={handleCartUpdate}
-                      >
-                        Save
-                      </span>
-                    </button> */}
                   </div>
                   <div className="similingCartPageBotttomMain">
                     <div style={{ width: '100%', textAlign: 'right' }}>
@@ -2796,71 +2800,6 @@ export default function CartPage() {
 
                         }
                       </button>
-                    </div>
-                    <div className="mt-3">
-                      <div className="container-fluid mainRenarkConatiner" style={{ border: '1px solid rgb(225, 225, 225)', borderRadius: '12px' }}>
-                        <div className="d-flex justify-content-center row">
-                          <div className="col-md-12">
-                            <div className="d-flex flex-column comment-section">
-                              <div className="bg-white p-2">
-                                <div className="d-flex flex-row user-info">
-                                  <h6 className="remarkText">Product Remark</h6>
-                                </div>
-                                <div className="mt-2">
-                                  <p className="comment-text remarkText w-100" style={{ wordWrap: 'break-word' }}>
-                                    {remarksApires != '' ? remarksApires : cartSelectData?.Remarks}
-                                  </p>
-                                </div>
-                              </div>
-                              {!showRemarkFields &&
-                                <div className="mt-2 mb-2 text-right">
-                                  <button
-                                    className="btn btn-primary btn-sm shadow-none showremarkbtn me-2"
-                                    type="button"
-                                    onClick={handleShowReamrkFields}
-                                  >
-                                    Add Remark
-                                  </button>
-                                </div>
-                              }
-                              {showRemarkFields &&
-                                <div className={`p-2 remark-fields ${showRemarkFields ? 'active' : ''}`}>
-                                  <div className="d-flex flex-row align-items-start">
-                                    <textarea
-                                      className="form-control ml-1 shadow-none textarea"
-                                      defaultValue={""}
-                                      style={{
-                                        height: '100px',
-                                        fontSize: '13px'
-                                      }}
-                                      onChange={(event) =>
-                                        handleInputChangeRemarks(event)
-                                      }
-                                    />
-                                  </div>
-                                  <div className="mt-2 text-right">
-                                    <button
-                                      className="btn btn-primary btn-sm shadow-none showremarkbtn me-2"
-                                      type="button"
-                                      onClick={() => handleSubmit(cartSelectData)}
-                                    >
-                                      Save
-                                    </button>
-                                    <button
-                                      className="btn btn-outline-primary btn-sm cancelremarkbtn ml-1 shadow-none"
-                                      type="button"
-                                      onClick={() => setShowRemarkFields(!showRemarkFields)}
-                                    >
-                                      Cancel
-                                    </button>
-                                  </div>
-                                </div>
-                              }
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
                     </div>
                   </div>
                 </div>

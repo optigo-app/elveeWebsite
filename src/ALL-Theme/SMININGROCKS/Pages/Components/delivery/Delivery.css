@@ -164,7 +164,28 @@
     margin-top: 20px;
 }
 
-@media screen and (min-width: 700px) {
+
+.filterDivcontainerDelivery {
+    display: flex;
+    border: 1px solid #d9d9d9;
+    overflow: hidden;
+    justify-content: center;
+    margin-block: 20px;
+    /* margin: 0px 100px 0px 100px; */
+}
+
+
+@media screen and (max-width: 1600px) {
+    .smilingOrderMain {
+        margin-inline: 1%!important;
+    }
+}
+@media screen and (max-width: 1450px) {
+    .smilingOrderMain{
+        padding-top: 10px!important;
+    }
+}
+    @media screen and (min-width: 700px) {
 
     .smilingMobileDeliveryBtnMainMobile{
         display: none;
@@ -212,9 +233,17 @@
     .smilingOrderMain{
         margin-inline: 2%!important;
     }
+
+    .showAddressTotal{
+        display: none!important;
+    }
 }
 
 @media screen and (max-width: 900px) {
+
+    .BlackBoxTopHeader{
+        display: none!important;
+    }
 
     .smilingdeliverBox1 {
         width: 100% !important;
