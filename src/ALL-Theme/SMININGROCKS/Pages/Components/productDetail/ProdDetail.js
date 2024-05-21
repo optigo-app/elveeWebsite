@@ -20,7 +20,7 @@ import playVidoe from '../../assets/paly.png'
 import { IoIosPlayCircle } from "react-icons/io";
 import { getDesignPriceList } from '../../../Utils/API/PriceDataApi'
 import { FullProInfoAPI } from '../../../Utils/API/FullProInfoAPI'
-import { findCsQcId, findDiaQcId, findMetalTypeId, findValueFromId } from '../../../Utils/globalFunctions/GlobalFunction'
+import { findCsQcId, findCsQcIdDiff, findDiaQcId, findMetalTypeId, findValueFromId } from '../../../Utils/globalFunctions/GlobalFunction'
 
 const ProdDetail = () => {
 
@@ -38,6 +38,8 @@ const ProdDetail = () => {
   const [getAllFilterSizeData, setGetAllFilterSizeData] = useState([]);
   const [metalFilterData, setMetalFilterData] = useState([]);
   const [daimondFilterData, setDaimondFiletrData] = useState([]);
+  const [colorStoneFilterData, setColorStoneFiletrData] = useState([]);
+  const [FindingFilterData, setFindingFiletrData] = useState([]);
   const [updatedColorImage, setUpdateColorImage] = useState('');
 
   const [metalColorData, setMetalColorData] = useState([]);
@@ -145,6 +147,7 @@ const ProdDetail = () => {
     },100)
   },[])
 
+  console.log("metalFilterData",metalFilterData,daimondFilterData);
   //   const handelCurrencyData = () =>{
   //     let currencyData = JSON.parse(localStorage.getItem('CURRENCYCOMBO'));
   //     let loginData = JSON.parse(localStorage.getItem('loginUserDetail'));
@@ -246,10 +249,10 @@ const ProdDetail = () => {
 
   console.log("metalType",mtTypeOption)
 
+  // console.log("findCsQcId",findCsQcId(srProdPriceData?.cSQopt)[0]?.ColorId)
+
   useEffect(() => {
 
-    console.log("findDiaQCId",findDiaQcId(diaQColOpt)[0]?.QualityId)
-    
     let loginInfo = JSON.parse(localStorage.getItem("loginUserDetail"))
     let ColorStoneQualityColor = JSON.parse(localStorage.getItem("ColorStoneQualityColor"))
     let DimondQualityColor = JSON.parse(localStorage.getItem("QualityColor"))
@@ -289,7 +292,8 @@ const ProdDetail = () => {
     // let dqcc = ColorStoneQualityColor?.find((dqc) => `${dqc.Quality}-${dqc.color}` === csQualColor)
 
     if (srProdPriceData?.cSQopt) {
-      let csQCVar = ColorStoneQualityColor?.find(item => item?.QualityId === findCsQcId(srProdPriceData?.cSQopt)[0]?.QualityId && item?.ColorId === findCsQcId(srProdPriceData?.cSQopt)[0]?.ColorId)
+      let csQCVar = ColorStoneQualityColor?.find(item => (item?.QualityId == findCsQcId(srProdPriceData?.cSQopt)[0]?.QualityId) && (item?.ColorId == findCsQcId(srProdPriceData?.cSQopt)[0]?.ColorId))
+      console.log("colorstone",csQCVar)
       let csQualColor = `${csQCVar?.Quality}-${csQCVar?.color}`
       setCSQOpt(csQualColor)
       setCSQOptId([csQCVar?.QualityId, csQCVar?.ColorId])
@@ -423,12 +427,12 @@ const ProdDetail = () => {
 
     let srProductsData = JSON.parse(localStorage.getItem('srProductsData'))
 
-    if (daimondFilterData && daimondFilterData?.length && csData?.T === 1) {
+    if (colorStoneFilterData && colorStoneFilterData?.length && csData?.T === 1) {
 
 
-      let calcDiaWt = (srProductsData?.totalcolorstoneweight ?? 0) + (daimondFilterData?.Weight ?? 0)
+      let calcDiaWt = (srProductsData?.totalcolorstoneweight ?? 0) + (colorStoneFilterData?.Weight ?? 0)
 
-      let CalcPics = (srProductsData?.totalcolorstonepcs ?? 0) + (daimondFilterData?.pieces ?? 0)
+      let CalcPics = (srProductsData?.totalcolorstonepcs ?? 0) + (colorStoneFilterData?.pieces ?? 0)
 
       let fpprice = ((csqcRate ?? 0) * (calcDiaWt ?? 0)) + ((csqcSettRate ?? 0) * (CalcPics ?? 0))
 
@@ -512,14 +516,16 @@ const ProdDetail = () => {
       storeInit?.IsCsCustomization === 1
         ?
         ele.A === srProductsData?.autocode &&
-        ele.H === cSQoptId[0] &&
-        ele.J === cSQoptId[1]
+        ele.G === cSQoptId[0] &&
+        ele.I === cSQoptId[1]
+        // ele.H === cSQoptId[0] &&
+        // ele.J === cSQoptId[1]
         :
         ele.A === srProductsData?.autocode
 
     );
 
-    console.log("csqcpirce", getPriceData)
+    console.log("csqcpirce", csqcpirce)
 
     let showPrice2 = 0;
     if (csqcpirce && csqcpirce.length > 0) {
@@ -527,6 +533,7 @@ const ProdDetail = () => {
       let totalPrice = csqcpirce?.reduce((acc, obj) => acc + obj.S, 0)
       let diaRate = csqcpirce?.reduce((acc, obj) => acc + obj.O, 0)
       let diaSettRate = csqcpirce?.reduce((acc, obj) => acc + obj.Q, 0)
+      
       setCsqcData(totalPrice ?? 0)
       setCsqcRate(diaRate ?? 0)
       setCsqcSettRate(diaSettRate ?? 0)
@@ -1301,8 +1308,13 @@ const ProdDetail = () => {
     const filteredData = getAllFilterSizeData?.filter(item => item.sizename === data)
     const filteredDataMetal = filteredData?.filter(item => item.DiamondStoneTypeName === "METAL")
     const filteredDataDaimond = filteredData?.filter(item => item.DiamondStoneTypeName === "DIAMOND")
+    const filteredDataColorStone = filteredData?.filter(item => item.DiamondStoneTypeName === "COLOR STONE")
+    const filteredDataFinding = filteredData?.filter(item => item.DiamondStoneTypeName === "FINDING")
+    console.log("getAllFilterSizeData",getAllFilterSizeData)
     setMetalFilterData(filteredDataMetal)
     setDaimondFiletrData(filteredDataDaimond)
+    setColorStoneFiletrData(filteredDataColorStone)
+    setFindingFiletrData(filteredDataFinding)
   }
 
 
@@ -1833,15 +1845,19 @@ const ProdDetail = () => {
                         ) : (
                           <select
                             className='menuitemSelectoreMain'
-                            onChange={(e) => setCSQOpt(e.target.value)}
+                            onChange={(e) => {
+                              let fincsqc = findCsQcId(e.target.value);
+                              setCSQOpt(e.target.value)
+                              setCSQOptId([fincsqc[0]?.QualityId, fincsqc[0]?.ColorId])
+                            }}
                             value={cSQopt}
                           >
                             {DaimondQualityColor.map((data, index) => (
                               <option
                                 key={index}
-                                value={`${data.Quality}_${data.color}`}
+                                value={`${data.Quality}-${data.color}`}
                               >
-                                {`${data.Quality}_${data.color}`}
+                                {`${data.Quality}-${data.color}`}
                               </option>
                             ))}
                           </select>

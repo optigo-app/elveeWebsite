@@ -236,18 +236,19 @@ export function findCsQcId(param) {
     let color = param.split("-")[1]
 
     let item = CsQCArr?.filter(ele => ele?.Quality == quality && ele?.color == color)
-    console.log("param", item);
+    console.log("param", param,item);
     return item
 }
 
 export function findCsQcIdDiff(param) {
 
+    console.log("paramcs", param);
     let CsQCArr = JSON.parse(localStorage.getItem("ColorStoneQualityColor"))
     let quality = param.split("_")[0]
     let color = param.split("_")[1]
 
     let item = CsQCArr?.filter(ele => ele?.Quality == quality && ele?.color == color)
-    console.log("param", item);
+    
     return item
 }
 
