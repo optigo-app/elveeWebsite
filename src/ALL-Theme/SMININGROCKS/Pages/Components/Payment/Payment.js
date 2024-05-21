@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react'
 import './Payment.css'
 import Footer from '../home/Footer/Footer'
 import { CommonAPI } from '../../../Utils/API/CommonAPI';
-import { CircularProgress } from '@mui/material';
+import { Button, CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { IoArrowBackOutline } from "react-icons/io5";
 import { useSetRecoilState } from 'recoil';
 import { CartListCounts, WishListCounts } from '../../../../../Recoil/atom';
 import { GetCount } from '../../../Utils/API/GetCount';
+import { storImagePath } from '../../../Utils/globalFunctions/GlobalFunction';
 
 export default function Payment() {
 
@@ -155,52 +156,108 @@ export default function Payment() {
             )}
             <div className='smilingPaymentMain'>
                 <div className='smilingPaymentMainWeb'>
-                    <div className='smilingPaySub1'>
-                        <IoArrowBackOutline style={{ height: '40px', width: '60px', cursor: 'pointer' }} onClick={() => navigation('/Delivery')} />
-
-                        <div className='smilingPaySub1Box1'>
-                            <p style={{ fontSize: '25px', fontWeight: 500, color: '#5e5e5e' }}>Payment Card Method</p>
-
-                            <div style={{ marginTop: '40px' }}>
-                                <p style={{ fontSize: '25px', fontWeight: 500, color: '#5e5e5e' }}>Billing Address</p>
-                                <p className='AddressTitle'>Name : <span className='AdressData'>{selectedAdd.shippingfirstname} {selectedAdd.shippinglastname}</span></p>
-                                <p className='AddressTitle'>Address : <span className='AdressData'>{selectedAdd.street}</span></p>
-                                <p className='AddressTitle'>City : <span className='AdressData'>{selectedAdd.city}-{selectedAdd.zip}</span></p>
-                                <p className='AddressTitle'>State : <span className='AdressData'>{selectedAdd.state},{selectedAdd.country}</span></p>
-                                <p className='AddressTitle'>Mobile : <span className='AdressData'>{selectedAdd.shippingmobile}</span></p>
-                            </div>
-                        </div>
-                        <div className='smilingPaySub1Box2'>
-                            <p style={{ fontSize: '25px', fontWeight: 500, color: '#5e5e5e' }}>Order Summary</p>
-                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <p>Subtotal</p>
-                                <p style={{ fontWeight: 500 , display: 'flex' }}>
-
-                                    <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />{TotlaPrice}</p>
-                            </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <p>Estimated Tax(3%)</p>
-                                <p style={{ fontWeight: 500 , display: 'flex' }}> <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />{TotlaPriceText}</p>
-                            </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <p>Estimated Total</p>
-                                <p style={{ fontWeight: 500 , display: 'flex' }}> <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />{finalTotal}</p>
-                            </div>
-
-                            <p style={{ fontSize: '25px', fontWeight: 500, color: '#5e5e5e' }}>Shipping Address</p>
-                            <div style={{ marginTop: '0px' }}>
-                                <p style={{ fontSize: '25px', margin: '0px', fontWeight: 500, color: '#5e5e5e' }}>{selectedAdd.shippingfirstname} {selectedAdd.shippinglastname}</p>
-                                <p className='AddressTitle'><span className='AdressData'>{selectedAdd.street}</span></p>
-                                <p className='AddressTitle'><span className='AdressData'>{selectedAdd.city}-{selectedAdd.zip}</span></p>
-                                <p className='AddressTitle'><span className='AdressData'>{selectedAdd.state},{selectedAdd.country}</span></p>
-                                <p className='AddressTitle'><span className='AdressData'>{selectedAdd.shippingmobile}</span></p>
+                    <div class="bg-imageCart">
+                        <div class="overlay"></div>
+                        <div class="text-container">
+                            <div className='textContainerData'>
+                                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+                                    <p className="designCounttext" style={{ fontSize: '30px', fontWeight: '500', letterSpacing: '1px', textTransform: 'uppercase' }}>
+                                        Payment
+                                    </p>
+                                    <span style={{ fontSize: '10px', marginLeft: '40px' }}>My Cart &gt; Delivery &gt; Payment</span>
+                                </div>
+                                <img src={`${storImagePath()}/images/HomePage/MainBanner/image/featuresImage.png`} className='featherImage' />
                             </div>
                         </div>
                     </div>
 
-                    <div className='smilingPaymentBtn'>
+                    <div className="filterDivcontainer" style={{ width: '100%', height: '60px' }}>
+                        <div className="partCart" style={{ flex: '20%' }} onClick={() => navigation('/Delivery')} >
+                            <span className='cartPageTopLink'>Back</span>
+                        </div>
+                        <div className="divider"></div>
+
+                        <div className="partCart" style={{ flex: '20%' }}>
+                            {/* <p className='cartPageTopLink' onClick={handleOpen}>Add New Address</p> */}
+                        </div>
+
+                        <div className="divider"></div>
+
+                        <div className="partCart" style={{ flex: '20%' }}>
+                            <div style={{ display: 'flex', }}>
+                                {/* <p
+                                        className="cartPageTopLink"
+                                    >
+                                        Clear All
+                                    </p> */}
+                            </div>
+                        </div>
+
+                        <div className="divider"></div>
+
+                        <div className="partCart" style={{ flex: '20%' }}>
+                            {/* <p style={{ margin: '0px 10px', fontSize: '16px', fontWeight: 600, cursor: 'pointer', color: '#7d7f85', textDecoration: 'underline' }} onClick={handleClickOpenOrderRemark}>{cartSelectData?.OrderRemarks ? 'View & Edit Remark' : 'Add Order Remark'}</p> */}
+                        </div>
+                        <div className="divider"></div>
+
+                        <div className="partCart" style={{ flex: '20%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <Button
+                                className="cartPageTopBtn"
+                                onClick={handlePayment}
+                            // style={{ position: 'absolute', right: '0px', height: '50px' }}
+                            >
+                                Continue
+                            </Button>
+                        </div>
+                    </div>
+
+                    <div className='smilingPaySub1Main'>
+                        <div className='smilingPaySub1'>
+                            {/* <IoArrowBackOutline style={{ height: '40px', width: '60px', cursor: 'pointer' }} /> */}
+                            <div className='smilingPaySub1Box1'>
+                                <p style={{ fontSize: '25px', fontWeight: 500, color: '#5e5e5e' }}>Payment Card Method</p>
+
+                                <div style={{ marginTop: '40px' }}>
+                                    <p style={{ fontSize: '25px', fontWeight: 500, color: '#5e5e5e' }}>Billing Address</p>
+                                    <p className='AddressTitle'>Name : <span className='AdressData'>{selectedAdd.shippingfirstname} {selectedAdd.shippinglastname}</span></p>
+                                    <p className='AddressTitle'>Address : <span className='AdressData'>{selectedAdd.street}</span></p>
+                                    <p className='AddressTitle'>City : <span className='AdressData'>{selectedAdd.city}-{selectedAdd.zip}</span></p>
+                                    <p className='AddressTitle'>State : <span className='AdressData'>{selectedAdd.state},{selectedAdd.country}</span></p>
+                                    <p className='AddressTitle'>Mobile : <span className='AdressData'>{selectedAdd.shippingmobile}</span></p>
+                                </div>
+                            </div>
+                            <div className='smilingPaySub1Box2'>
+                                <p style={{ fontSize: '25px', fontWeight: 500, color: '#5e5e5e' }}>Order Summary</p>
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <p>Subtotal</p>
+                                    <p style={{ fontWeight: 500, display: 'flex' }}>
+
+                                        <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />{TotlaPrice}</p>
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <p>Estimated Tax(3%)</p>
+                                    <p style={{ fontWeight: 500, display: 'flex' }}> <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />{TotlaPriceText}</p>
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <p>Estimated Total</p>
+                                    <p style={{ fontWeight: 500, display: 'flex' }}> <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />{finalTotal}</p>
+                                </div>
+
+                                <p style={{ fontSize: '25px', fontWeight: 500, color: '#5e5e5e' }}>Shipping Address</p>
+                                <div style={{ marginTop: '0px' }}>
+                                    <p style={{ fontSize: '25px', margin: '0px', fontWeight: 500, color: '#5e5e5e' }}>{selectedAdd.shippingfirstname} {selectedAdd.shippinglastname}</p>
+                                    <p className='AddressTitle'><span className='AdressData'>{selectedAdd.street}</span></p>
+                                    <p className='AddressTitle'><span className='AdressData'>{selectedAdd.city}-{selectedAdd.zip}</span></p>
+                                    <p className='AddressTitle'><span className='AdressData'>{selectedAdd.state},{selectedAdd.country}</span></p>
+                                    <p className='AddressTitle'><span className='AdressData'>{selectedAdd.shippingmobile}</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* <div className='smilingPaymentBtn'>
                         <button onClick={handlePayment} className='paymentBtn'>PAY ON ACCOUNT</button>
-                    </div>
+                    </div> */}
 
                     {/* <div style={{ display: 'flex', justifyContent: 'center',marginTop: '-100px' }}>
                         <img src='http://gstore.orail.co.in/assets/newfolder/images/account/blue-box.jpg' className='smilingPayentImg' />
@@ -237,15 +294,15 @@ export default function Payment() {
                             <p className='mainTitleMobileShiping' style={{ fontSize: '25px', fontWeight: 500, color: '#5e5e5e', marginTop: '30px' }}>Order Summary</p>
                             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                 <p>Subtotal</p>
-                                <p style={{ fontWeight: 500 , display: 'flex' }}> <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />{TotlaPrice}</p>
+                                <p style={{ fontWeight: 500, display: 'flex' }}> <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />{TotlaPrice}</p>
                             </div>
                             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                 <p>Estimated Tax</p>
-                                <p style={{ fontWeight: 500 , display: 'flex' }}> <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />{TotlaPriceText}</p>
+                                <p style={{ fontWeight: 500, display: 'flex' }}> <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />{TotlaPriceText}</p>
                             </div>
                             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                 <p>Estimated Total</p>
-                                <p style={{ fontWeight: 500 , display: 'flex' }}> <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />{finalTotal}</p>
+                                <p style={{ fontWeight: 500, display: 'flex' }}> <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />{finalTotal}</p>
                             </div>
                         </div>
                         <div className='smilingPaymentBtn'>
@@ -256,7 +313,16 @@ export default function Payment() {
                     </div>
                 </div>
             </div>
-            <Footer />
+            <div
+                style={{
+                    position: 'absolute',
+                    bottom: 'auto',
+                    width: '100%'
+                }}
+                className="mobileFootreCs"
+            >
+                <Footer />
+            </div>
         </div>
     )
 }
