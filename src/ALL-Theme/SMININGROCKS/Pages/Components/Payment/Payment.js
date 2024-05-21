@@ -171,19 +171,19 @@ export default function Payment() {
                         </div>
                     </div>
 
-                    <div className="filterDivcontainer" style={{ width: '100%', height: '60px' }}>
-                        <div className="partCart" style={{ flex: '20%' }} onClick={() => navigation('/Delivery')} >
+                    <div className="filterDivcontainerPaymetPage" style={{ width: '100%', height: '60px' }}>
+                        <div className="partCart" style={{ flex: '20%' , cursor:'pointer' }} onClick={() => navigation('/Delivery')} >
                             <span className='cartPageTopLink'>Back</span>
                         </div>
                         <div className="divider"></div>
 
-                        <div className="partCart" style={{ flex: '20%' }}>
+                        <div className="partCart HideBlackViewPaymentTop" style={{ flex: '20%' }}>
                             {/* <p className='cartPageTopLink' onClick={handleOpen}>Add New Address</p> */}
                         </div>
 
-                        <div className="divider"></div>
+                        <div className="divider HideBlackViewPaymentTop"></div>
 
-                        <div className="partCart" style={{ flex: '20%' }}>
+                        <div className="partCart HideBlackViewPaymentTop" style={{ flex: '20%' }}>
                             <div style={{ display: 'flex', }}>
                                 {/* <p
                                         className="cartPageTopLink"
@@ -193,12 +193,12 @@ export default function Payment() {
                             </div>
                         </div>
 
-                        <div className="divider"></div>
+                        <div className="divider HideBlackViewPaymentTop"></div>
 
-                        <div className="partCart" style={{ flex: '20%' }}>
+                        <div className="partCart HideBlackViewPaymentTop" style={{ flex: '20%' }}>
                             {/* <p style={{ margin: '0px 10px', fontSize: '16px', fontWeight: 600, cursor: 'pointer', color: '#7d7f85', textDecoration: 'underline' }} onClick={handleClickOpenOrderRemark}>{cartSelectData?.OrderRemarks ? 'View & Edit Remark' : 'Add Order Remark'}</p> */}
                         </div>
-                        <div className="divider"></div>
+                        <div className="divider HideBlackViewPaymentTop"></div>
 
                         <div className="partCart" style={{ flex: '20%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                             <Button
@@ -215,10 +215,10 @@ export default function Payment() {
                         <div className='smilingPaySub1'>
                             {/* <IoArrowBackOutline style={{ height: '40px', width: '60px', cursor: 'pointer' }} /> */}
                             <div className='smilingPaySub1Box1'>
-                                <p style={{ fontSize: '25px', fontWeight: 500, color: '#5e5e5e' }}>Payment Card Method</p>
+                                <p className='PaymentMainTitle' style={{ fontSize: '25px', fontWeight: 500, color: '#5e5e5e' }}>Payment Card Method</p>
 
-                                <div style={{ marginTop: '40px' }}>
-                                    <p style={{ fontSize: '25px', fontWeight: 500, color: '#5e5e5e' }}>Billing Address</p>
+                                <div className='BilingMainApyment' style={{ marginTop: '40px' }}>
+                                    <p className='PaymentMainTitle' style={{ fontSize: '25px', fontWeight: 500, color: '#5e5e5e' }}>Billing Address :</p>
                                     <p className='AddressTitle'>Name : <span className='AdressData'>{selectedAdd.shippingfirstname} {selectedAdd.shippinglastname}</span></p>
                                     <p className='AddressTitle'>Address : <span className='AdressData'>{selectedAdd.street}</span></p>
                                     <p className='AddressTitle'>City : <span className='AdressData'>{selectedAdd.city}-{selectedAdd.zip}</span></p>
@@ -227,7 +227,7 @@ export default function Payment() {
                                 </div>
                             </div>
                             <div className='smilingPaySub1Box2'>
-                                <p style={{ fontSize: '25px', fontWeight: 500, color: '#5e5e5e' }}>Order Summary</p>
+                                <p className='PaymentMainTitle' style={{ fontSize: '25px', fontWeight: 500, color: '#5e5e5e' }}>Order Summary</p>
                                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                     <p>Subtotal</p>
                                     <p style={{ fontWeight: 500, display: 'flex' }}>
@@ -243,9 +243,9 @@ export default function Payment() {
                                     <p style={{ fontWeight: 500, display: 'flex' }}> <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />{finalTotal}</p>
                                 </div>
 
-                                <p style={{ fontSize: '25px', fontWeight: 500, color: '#5e5e5e' }}>Shipping Address</p>
+                                <p className='PaymentMainTitle' style={{ fontSize: '25px', fontWeight: 500, color: '#5e5e5e' }}>Shipping Address :</p>
                                 <div style={{ marginTop: '0px' }}>
-                                    <p style={{ fontSize: '25px', margin: '0px', fontWeight: 500, color: '#5e5e5e' }}>{selectedAdd.shippingfirstname} {selectedAdd.shippinglastname}</p>
+                                    <p className='OrderNamMAinTitle' style={{ fontSize: '25px', margin: '0px', fontWeight: 500, color: '#5e5e5e' }}>{selectedAdd.shippingfirstname} {selectedAdd.shippinglastname}</p>
                                     <p className='AddressTitle'><span className='AdressData'>{selectedAdd.street}</span></p>
                                     <p className='AddressTitle'><span className='AdressData'>{selectedAdd.city}-{selectedAdd.zip}</span></p>
                                     <p className='AddressTitle'><span className='AdressData'>{selectedAdd.state},{selectedAdd.country}</span></p>
@@ -264,9 +264,7 @@ export default function Payment() {
                     </div> */}
                 </div>
 
-                <div className='smilingPaymentMainMobile'>
-                    {/* <IoArrowBackOutline style={{ height: '40px', width: '60px', cursor: 'pointer',margin: '' }} onClick={() => navigation('/Delivery')} /> */}
-
+                {/* <div className='smilingPaymentMainMobile'>
                     <div className='paymentSubDiv' style={{ padding: '50px' }}>
 
                         <div style={{ width: '100%' }}>
@@ -311,7 +309,7 @@ export default function Payment() {
 
                         <p style={{ color: 'blue', textDecoration: 'underline', marginTop: '10px', textAlign: 'center' }} onClick={() => navigation('/Delivery')}>Cancel</p>
                     </div>
-                </div>
+                </div> */}
             </div>
             <div
                 style={{
@@ -319,7 +317,6 @@ export default function Payment() {
                     bottom: 'auto',
                     width: '100%'
                 }}
-                className="mobileFootreCs"
             >
                 <Footer />
             </div>

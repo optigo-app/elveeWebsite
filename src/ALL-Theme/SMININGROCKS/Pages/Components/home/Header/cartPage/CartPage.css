@@ -403,7 +403,6 @@
     .popUpcontainer {
         display: flex;
         flex-direction: column;
-        margin-top: 50px;
     }
 
     .resCon {
@@ -519,7 +518,8 @@
 }
 
 .ItemRemarkMain {
-    width: 400px;
+    width: 600px;
+    height: 300px;
 }
 
 .bg-imageCart {
@@ -539,15 +539,15 @@
 .QtyLess {
     background-color: transparent !important;
     width: 30px;
-    min-width: 30px!important;
+    min-width: 30px !important;
     height: 100%;
     display: flex;
-    border-right: 1px solid lightgray!important;
+    border-right: 1px solid lightgray !important;
     border-top: none;
     font-size: 20px;
     border-left: none;
     border-bottom: none;
-    color: rgb(125, 127, 133)!important;
+    color: rgb(125, 127, 133) !important;
     justify-content: center;
     font-size: 20px;
     align-items: center;
@@ -556,28 +556,38 @@
 .QtyAdd {
     background-color: transparent !important;
     width: 30px;
-    min-width: 30px!important;
+    min-width: 30px !important;
     display: flex;
     font-size: 20px;
     height: 100%;
     border-right: none;
     border-top: none;
-    color: rgb(125, 127, 133)!important;
-    border-left: 1px solid lightgray!important;
+    color: rgb(125, 127, 133) !important;
+    border-left: 1px solid lightgray !important;
     border-bottom: none;
     align-items: center;
     justify-content: center;
 }
 
-.QTYvalue{
+.QTYvalue {
     width: 40px;
-    color: rgb(125, 127, 133)!important;
+    color: rgb(125, 127, 133) !important;
     display: flex;
     align-items: center;
     margin: 0px;
     justify-content: center;
     font-weight: 500;
 }
+
+.filterDivcontainerCartPage {
+    display: flex;
+    border: 1px solid #d9d9d9;
+    overflow: hidden;
+    justify-content: center;
+    margin-block: 20px;
+    /* margin: 0px 100px 0px 100px; */
+}
+
 @media screen and (max-width: 18200px) {
     .cartProdSection .cartProdpart {
         grid-template-columns: repeat(2, 1fr);
@@ -587,7 +597,15 @@
 @media screen and (max-width: 1600px) {
 
     .smilingCartPageMain {
-        margin-inline: 0% !important;
+        margin-inline: 1% !important;
+    }
+
+    .CartPageMainImageShowMobile {
+        width: 100% !important;
+    }
+
+    .cartCustomizationMainMobile {
+        width: 100% !important;
     }
 }
 
@@ -595,7 +613,11 @@
 
     .cartImageShow {
         height: 220px !important;
-        width: 100% !important;
+        width: 80% !important;
+    }
+
+    .smilingCartPageMain {
+        padding-top: 10px !important;
     }
 
     .listing-featuresN {
@@ -603,6 +625,9 @@
         font-size: 12px;
     }
 
+    .resproDet {
+        width: 40% !important;
+    }
 
 
     .feature p {
@@ -610,7 +635,7 @@
     }
 
     .cartCustomizationMainMobile {
-        width: 400px !important;
+        width: 100% !important;
     }
 
     .mainRenarkConatiner {
@@ -659,7 +684,7 @@
     }
 
     .smiling-cartPageBoxMain {
-        width: 90% !important;
+        width: 49% !important;
     }
 
     .similingCartPageBotttomMain {
@@ -689,18 +714,47 @@
     }
 }
 
-@media (min-width : 1070px) and (max-width: 1285px) {
+/* @media (min-width : 1070px) and (max-width: 1285px) {
     .CartPageMainImageShowMobile {
         height: 650px !important;
+    }
+} */
+
+@media screen and (max-width: 1325px) {
+    .smiling-cartPageBoxMain {
+        width: 49% !important;
+    }
+
+    .resCon {
+        width: 65% !important;
+    }
+
+    .resproDet {
+        width: 35% !important;
+    }
+
+    .cartImageShow {
+        width: 70% !important;
+    }
+}
+
+@media screen and (max-width: 1300px) {
+    .cartImageShow {
+        width: 40% !important;
+        height: 150px !important;
+    }
+
+    .bottomBtnCart {
+        width: 55% !important;
     }
 }
 
 @media screen and (max-width: 1070px) {
 
 
-    .smilingListCartTopButton {
+    /* .smilingListCartTopButton {
         display: none !important;
-    }
+    } */
 
     .smilingListCartTopButtonNew {
         display: none !important;
@@ -714,6 +768,7 @@
 
     .mainRenarkConatiner {
         width: 100% !important;
+        margin-bottom: 60px;
     }
 
     .mt-3 {
@@ -737,6 +792,14 @@
         margin: 0px;
         padding-top: 5px !important;
     }
+
+    .topPlcaeOrderBtn{
+        display: none!important;
+    }
+
+    .resCon{
+        width: 100%!important;
+    }
 }
 
 @media screen and (min-width: 1071px) {
@@ -755,7 +818,7 @@
     .placeOrderCartPageBtnMobile {
         display: none !important;
     }
-
+  
 
 }
 
@@ -765,9 +828,80 @@
     width: 100%;
 } */
 
+
+
+@media screen and (max-width: 800px) {
+
+    .similingCartPageBotttomMain {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        margin-bottom: 50px !important;
+    }
+
+    .smilingQualityMain {
+        margin-block: 10px !important;
+        width: 50% !important;
+        margin-right: 0px !important;
+    }
+
+    .smilingAddresingleMobileMain {
+        margin-left: 0px !important;
+    }
+
+    .smilingAddresingleMobileMain {
+        width: 100% !important;
+    }
+
+    .SmiCartTitle {
+        width: 100% !important;
+    }
+
+    .ItemRemarkMain{
+        width: 400px!important;
+    }
+
+    .YourCartMainRemkarBoxSingle {
+        width: 60% !important
+    }
+
+    .SmilingAddSingleRemkarBtn {
+        width: 40% !important;
+    }
+
+    .simlingQualityBox {
+        width: 60% !important
+    }
+
+    .SmilingUpdateQuantityBtn {
+        width: 40% !important;
+    }
+
+    .mainOrderRenarkConatiner {
+        width: 100% !important;
+        margin: 0px 0px 0px 0px !important;
+    }
+
+    .totalpriceConatiner {
+        width: 100% !important;
+        margin: 0px 0px 0px 0px !important;
+        padding-top: 10px;
+    }
+
+    .feature {
+        font-size: 12px !important;
+    }
+
+    .showTotalItemTop{
+        display: none!important;
+    }
+}
+
 @media screen and (max-width: 600px) {
 
-
+    .smiling-cartPageBoxMain{
+        width: 100%!important;
+    } 
 
     .resCon {
         width: 100% !important;
@@ -809,10 +943,6 @@
         gap: 5px !important;
     }
 
-    .smilingListCartTopButton {
-        margin: 5px;
-    }
-
     .mobileFootreCs {
         margin-bottom: 25px;
     }
@@ -820,73 +950,21 @@
     .smilingListCartTopButton {
         display: flex;
         flex-direction: column;
-        margin: 20px;
     }
 
+    .filterDivcontainerCartPage{
+        margin: 10px 0px 0px 0px!important;
+    }
 
-
-
+    .totalPriceTopMain{
+        display: none!important;
+    }
 }
 
+@media screen and (max-width: 550px) {
 
-
-@media screen and (max-width: 800px) {
-
-    .similingCartPageBotttomMain {
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        margin-bottom: 50px !important;
-    }
-
-    .smilingQualityMain {
-        margin-block: 10px !important;
-        width: 50% !important;
-        margin-right: 0px !important;
-    }
-
-    .smilingAddresingleMobileMain {
-        margin-left: 0px !important;
-    }
-
-    .smilingAddresingleMobileMain {
-        width: 100% !important;
-    }
-
-    .SmiCartTitle {
-        width: 100% !important;
-    }
-
-
-    .YourCartMainRemkarBoxSingle {
-        width: 60% !important
-    }
-
-    .SmilingAddSingleRemkarBtn {
-        width: 40% !important;
-    }
-
-    .simlingQualityBox {
-        width: 60% !important
-    }
-
-    .SmilingUpdateQuantityBtn {
-        width: 40% !important;
-    }
-
-    .mainOrderRenarkConatiner {
-        width: 100% !important;
-        margin: 0px 0px 0px 0px !important;
-    }
-
-    .totalpriceConatiner {
-        width: 100% !important;
-        margin: 0px 0px 0px 0px !important;
-        padding-top: 10px;
-    }
-
-    .feature {
-        font-size: 12px !important;
+    .ItemRemarkMain{
+        width: 300px!important;
     }
 }
 
