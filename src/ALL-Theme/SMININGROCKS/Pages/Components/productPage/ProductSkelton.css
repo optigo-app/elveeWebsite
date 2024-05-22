@@ -16,3 +16,9 @@
         display: none !important;
     }
 }
+
+@media (max-width: 600px) {
+    .skeltonMainDiv{
+        margin-inline: 1%;
+    }
+}

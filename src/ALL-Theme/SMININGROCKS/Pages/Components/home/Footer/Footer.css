@@ -153,6 +153,10 @@
     .eleBox1InputBox{
         border-radius: 0px!important;
     }
+
+    .ElveFooterMain{
+        padding: 50px 30px 30px 30px!important;
+    }
 }
 
 @media screen and (max-width: 960px) {
@@ -214,4 +218,9 @@
         width: 30%;
         font-size: 15px;
     }
+
+    .ElveFooterMain{
+        padding: 10px!important;
+    }
+
 }

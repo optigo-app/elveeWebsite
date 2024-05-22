@@ -3159,7 +3159,6 @@ const ProductList = () => {
                                             </p>
                                           </div>
                                         }
-
                                       </p>
                                     </div>
                                   </div>
