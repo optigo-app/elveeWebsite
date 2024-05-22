@@ -52,122 +52,13 @@ const QuotationJob = () => {
   const [order, setOrder] = useState('');
   const [statusList, setStatusList] = useState([]);
   const [categoryList, setCategoryList] = useState([
-    // { id: 0, label: "All", value: "All" },
-    // { id: 1, label: "Bangle", value: "Bangle" },
-    // { id: 2, label: "Earring", value: "Earring" },
-    // { id: 3, label: "Necklace", value: "Necklace" },
-    // { id: 4, label: "Ring", value: "Ring" },
-    // { id: 5, label: "Bracelet", value: "Bracelet" },
-    // { id: 6, label: "Pendant", value: "Pendant" },
-    // { id: 7, label: "Brooch", value: "Brooch" },
-    // { id: 8, label: "Anklet", value: "Anklet" },
-    // { id: 9, label: "Tiara", value: "Tiara" },
-    // { id: 10, label: "Cufflinks", value: "Cufflinks" },
-    // { id: 11, label: "Charm", value: "Charm" },
-    // { id: 12, label: "Nose Pin", value: "Nose Pin" },
-    // { id: 13, label: "Hair Clip", value: "Hair Clip" },
-    // { id: 14, label: "Tie Pin", value: "Tie Pin" },
-    // { id: 15, label: "Toe Ring", value: "Toe Ring" },
-    // { id: 16, label: "Belly Ring", value: "Belly Ring" },
-    // { id: 17, label: "Piercing", value: "Piercing" },
-    // { id: 18, label: "Nail Art", value: "Nail Art" },
-    // { id: 19, label: "Bridal Set", value: "Bridal Set" },
-    // { id: 20, label: "Tiaras", value: "Tiaras" },
-    // { id: 21, label: "Watch", value: "Watch" },
-    // { id: 22, label: "Crown", value: "Crown" },
-    // { id: 23, label: "Pocket Watch", value: "Pocket Watch" },
-    // { id: 24, label: "Keychain", value: "Keychain" },
-    // { id: 25, label: "Buckle", value: "Buckle" },
-    // { id: 26, label: "Money Clip", value: "Money Clip" },
-    // { id: 27, label: "Chain", value: "Chain" },
-    // { id: 28, label: "Locket", value: "Locket" },
-    // { id: 29, label: "Medal", value: "Medal" },
-    // { id: 30, label: "Pin", value: "Pin" },
-    // { id: 31, label: "Badge", value: "Badge" },
-    // { id: 32, label: "Charm Bracelet", value: "Charm Bracelet" },
-    // { id: 33, label: "Tie Clip", value: "Tie Clip" },
-    // { id: 34, label: "Pocket Square", value: "Pocket Square" },
-    // { id: 35, label: "Tie Set", value: "Tie Set" },
-    // { id: 36, label: "Collar Pin", value: "Collar Pin" },
-    // { id: 37, label: "Scarf Ring", value: "Scarf Ring" },
-    // { id: 38, label: "Hat Pin", value: "Hat Pin" },
-    // { id: 39, label: "Sash", value: "Sash" },
-    // { id: 40, label: "Handkerchief", value: "Handkerchief" },
-    // { id: 41, label: "Tassel", value: "Tassel" },
-    // { id: 42, label: "Bolo Tie", value: "Bolo Tie" },
-    // { id: 43, label: "Cummerbund", value: "Cummerbund" },
-    // { id: 44, label: "Ascot Tie", value: "Ascot Tie" },
-    // { id: 45, label: "Hankie", value: "Hankie" },
-    // { id: 46, label: "Purse", value: "Purse" },
-    // { id: 47, label: "Lanyard", value: "Lanyard" },
-    // { id: 48, label: "Garter", value: "Garter" },
-    // { id: 49, label: "Handbag", value: "Handbag" },
-    // { id: 50, label: "Wallet", value: "Wallet" },
+   
   ]);
   const [metalColorList, setmetalColorList] = useState([
-    // { id: 0, label: "All", value: "All" },
-    // { id: 1, label: "Gold", value: "Gold" },
-    // { id: 2, label: "Silver", value: "Silver" },
-    // { id: 3, label: "Platinum", value: "Platinum" },
-    // { id: 4, label: "Titanium", value: "Titanium" },
-    // { id: 5, label: "Rose Gold", value: "Rose Gold" },
-    // { id: 6, label: "White Gold", value: "White Gold" },
-    // { id: 7, label: "Yellow Gold", value: "Yellow Gold" },
-    // { id: 8, label: "Black Gold", value: "Black Gold" },
-    // { id: 9, label: "Green Gold", value: "Green Gold" },
-    // { id: 10, label: "Blue Gold", value: "Blue Gold" },
-    // { id: 11, label: "Red Gold", value: "Red Gold" },
-    // { id: 12, label: "Purple Gold", value: "Purple Gold" },
-    // { id: 13, label: "Pink Gold", value: "Pink Gold" },
-    // { id: 14, label: "Orange Gold", value: "Orange Gold" },
-    // { id: 15, label: "Silver", value: "Silver" },
+
   ]);
   const [metalPurityList, setMetalPurityList] = useState([
-    // { id: 0, label: "All", value: "All" },
-    // { id: 1, label: "Gold 18k", value: "Gold 18k" },
-    // { id: 2, label: "Gold 24k", value: "Gold 24k" },
-    // { id: 3, label: "Gold 22k", value: "Gold 22k" },
-    // { id: 4, label: "Gold 14k", value: "Gold 14k" },
-    // { id: 5, label: "Gold 10k", value: "Gold 10k" },
-    // { id: 6, label: "Gold 9k", value: "Gold 9k" },
-    // { id: 7, label: "Sterling Silver", value: "Sterling Silver" },
-    // { id: 8, label: "Fine Silver", value: "Fine Silver" },
-    // { id: 9, label: "Silver Plated", value: "Silver Plated" },
-    // { id: 10, label: "Platinum 950", value: "Platinum 950" },
-    // { id: 11, label: "Platinum 900", value: "Platinum 900" },
-    // { id: 12, label: "Platinum 850", value: "Platinum 850" },
-    // { id: 13, label: "Pure Titanium", value: "Pure Titanium" },
-    // { id: 14, label: "Titanium Coated", value: "Titanium Coated" },
-    // { id: 15, label: "Rose Gold 18k", value: "Rose Gold 18k" },
-    // { id: 16, label: "Rose Gold 14k", value: "Rose Gold 14k" },
-    // { id: 17, label: "Rose Gold 10k", value: "Rose Gold 10k" },
-    // { id: 18, label: "White Gold 18k", value: "White Gold 18k" },
-    // { id: 19, label: "White Gold 14k", value: "White Gold 14k" },
-    // { id: 20, label: "White Gold 10k", value: "White Gold 10k" },
-    // { id: 21, label: "Yellow Gold 18k", value: "Yellow Gold 18k" },
-    // { id: 22, label: "Yellow Gold 14k", value: "Yellow Gold 14k" },
-    // { id: 23, label: "Yellow Gold 10k", value: "Yellow Gold 10k" },
-    // { id: 24, label: "Black Gold 18k", value: "Black Gold 18k" },
-    // { id: 25, label: "Black Gold 14k", value: "Black Gold 14k" },
-    // { id: 26, label: "Black Gold 10k", value: "Black Gold 10k" },
-    // { id: 27, label: "Green Gold 18k", value: "Green Gold 18k" },
-    // { id: 28, label: "Green Gold 14k", value: "Green Gold 14k" },
-    // { id: 29, label: "Green Gold 10k", value: "Green Gold 10k" },
-    // { id: 30, label: "Blue Gold 18k", value: "Blue Gold 18k" },
-    // { id: 31, label: "Blue Gold 14k", value: "Blue Gold 14k" },
-    // { id: 32, label: "Blue Gold 10k", value: "Blue Gold 10k" },
-    // { id: 33, label: "Red Gold 18k", value: "Red Gold 18k" },
-    // { id: 34, label: "Red Gold 14k", value: "Red Gold 14k" },
-    // { id: 35, label: "Red Gold 10k", value: "Red Gold 10k" },
-    // { id: 36, label: "Purple Gold 18k", value: "Purple Gold 18k" },
-    // { id: 37, label: "Purple Gold 14k", value: "Purple Gold 14k" },
-    // { id: 38, label: "Purple Gold 10k", value: "Purple Gold 10k" },
-    // { id: 39, label: "Pink Gold 18k", value: "Pink Gold 18k" },
-    // { id: 40, label: "Pink Gold 14k", value: "Pink Gold 14k" },
-    // { id: 41, label: "Pink Gold 10k", value: "Pink Gold 10k" },
-    // { id: 42, label: "Orange Gold 18k", value: "Orange Gold 18k" },
-    // { id: 43, label: "Orange Gold 14k", value: "Orange Gold 14k" },
-    // { id: 44, label: "Orange Gold 10k", value: "Orange Gold 10k" },
+    
   ]);
   const [statuse, setStatus] = useState(statusList[0]?.value || "");
   const [category, setCategory] = useState(categoryList[0]?.value || "");
@@ -1061,8 +952,8 @@ const scrollToTop = () => {
         <Box sx={{ padding: "0 15px 35px 0", }} className="QuotationJobAllBtnSec">
           <Button variant='contained' className='muiSmilingRocksBtn' sx={{ padding: "7px 10px", minWidth: "max-content", background: "#7d7f85" }} onClick={(eve) => handleSearch(eve, searchVal, fromDate, toDate, metalPurity, MetalColor, category, statuse, orderProm)}><SearchIcon sx={{ color: "#fff !important" }} /></Button>
         </Box>
-        <Box sx={{ position: "relative", padding: "0 15px 35px 0", display: "flex", flexWrap: "wrap", alignitems: "center", justifyContent: "center" }} className="QuotationJobAllBtnSec" >
-        <label className='lh-1 selectLabel' style={{ marginTop: "-3px", position: "absolute", left: 0, top: "-16px", }}>Status</label>
+        <Box sx={{ position: "relative", padding: "0 15px 40px 0", display: "flex", flexWrap: "wrap", alignitems: "center", justifyContent: "center" }} className="QuotationJobAllBtnSec" >
+        <label className='lh-1 selectLabel' style={{ marginTop: "-3px", position: "absolute", left: 0, top: "-8px", }}>Status</label>
           {/* <FormControl sx={{ m: 1, width: 300 }}>
         <InputLabel id="demo-multiple-name-label">ALL</InputLabel>
         <Select
@@ -1103,7 +994,7 @@ const scrollToTop = () => {
                 onChange={handleStatus} // Assuming handleStatus function receives selected values
                 MenuProps={MenuProps}
                 input={<OutlinedInput  />}
-                style={{minHeight:'1.8375em'}}
+                style={{minHeight:'2.9375em'}}
                 className='statusSelect'
                 size='small'
                 label='ALL'

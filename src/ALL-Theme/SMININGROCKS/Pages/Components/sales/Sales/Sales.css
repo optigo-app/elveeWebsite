@@ -46,7 +46,7 @@
 
 }
 
-@media(max-width: 576px) {
+@media (min-width: 320px) and (max-width: 576px) {
 
     .salesPartTable {
         display: grid;
@@ -111,5 +111,21 @@
     .quotationJobSec {
         max-height: 450px !important;
     }
-
+    .sal_flexcol{
+        display: flex !important;
+        justify-content: center;
+        align-items: flex-start !important;
+        flex-direction: column;
+        width: 100%;
+    }
+    .date_from_sal{
+        width: 80%;
+        padding-right: 0px !important;
+    }
+    .w_20_sale{
+        width: 20%;
+    }
+    .w_60_sale{
+        width: 60%;
+    }
 }
