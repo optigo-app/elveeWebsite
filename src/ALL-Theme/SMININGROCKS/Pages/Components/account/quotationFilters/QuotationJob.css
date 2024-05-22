@@ -21,6 +21,9 @@
 #demo-simple-select {
     padding: 5px 32px 9px 10px;
 }
+#demo-multiple-checkbox {
+    padding: 12px 32px 9px 10px;
+}
 
 #demo-simple-select~svg {
     top: 5px;
