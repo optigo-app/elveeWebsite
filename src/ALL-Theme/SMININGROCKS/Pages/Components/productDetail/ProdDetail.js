@@ -140,7 +140,7 @@ const ProdDetail = () => {
     }, 100)
   }, [])
 
-  console.log("metalFilterData", metalFilterData, daimondFilterData);
+  console.log("metalFilterData", catSizeData?.sizename);
   //   const handelCurrencyData = () =>{
   //     let currencyData = JSON.parse(localStorage.getItem('CURRENCYCOMBO'));
   //     let loginData = JSON.parse(localStorage.getItem('loginUserDetail'));
@@ -1061,7 +1061,7 @@ const ProdDetail = () => {
           "remarks_design": `${product?.remarks_design ?? ""}`,
           "diamondcolorid": `${product?.diamondcolorid ?? ""}`,
           "diamondqualityid": `${product?.diamondqualityid ?? ""}`,
-          "detail_ringsize": `${product?.detail_ringsize ?? ""}`,
+          "detail_ringsize": `${catSizeData?.sizename ?? catSizeData?.sizename}`,
           "ProjMode": `${product?.ProjMode ?? ""}`,
           "AlbumMasterid": Number(`${product?.AlbumMasterid ?? 0}`),
           "AlbumMastername": `${product?.AlbumMastername ?? ""}`,
