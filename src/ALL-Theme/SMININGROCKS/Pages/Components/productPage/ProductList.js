@@ -150,6 +150,8 @@ const ProductList = () => {
 
   console.log("mttypeoption", mtTypeOption, diaQColOpt, cSQopt);
 
+  console.log("ProductApiData2",ProductApiData2);
+
 
   //   const handelCurrencyData = () =>{
   //     let currencyData = JSON.parse(localStorage.getItem('CURRENCYCOMBO'));
@@ -269,13 +271,14 @@ const ProductList = () => {
       }
     }
     else {
-      if (selectedCombodia) {
-        setDiaQColOpt(selectedCombodia)
-      } else {
-        if (DimondQualityColor && DimondQualityColor?.length) {
-          setDiaQColOpt(`${DimondQualityColor[0]?.Quality}#${DimondQualityColor[0]?.color}`)
-        }
-      }
+      setDiaQColOpt("")
+    //   if (selectedCombodia) {
+    //     setDiaQColOpt(selectedCombodia)
+    //   } else {
+    //     if (DimondQualityColor && DimondQualityColor?.length) {
+    //       setDiaQColOpt(`${DimondQualityColor[0]?.Quality}#${DimondQualityColor[0]?.color}`)
+    //     }
+    //   }
     }
 
     // if(selectedCombocs){
@@ -287,18 +290,20 @@ const ProductList = () => {
       if (selectedCombocs) {
         setCSQOpt(selectedCombocs)
       } else {
-        let csQualColor = `${csQCVar?.QualityId}-${csQCVar?.ColorId}`
+        let csQualColor = `${csQCVar?.Quality}-${csQCVar?.color}`
         setCSQOpt(csQualColor)
       }
     }
     else {
-      if (selectedCombocs) {
-        setCSQOpt(selectedCombocs)
-      } else {
-        if (ColorStoneQualityColor && ColorStoneQualityColor?.length) {
-          setCSQOpt(`${ColorStoneQualityColor[0].Quality}-${ColorStoneQualityColor[0].color}`)
-        }
-      }
+      setCSQOpt("")
+    //   if (selectedCombocs) {
+    //     setCSQOpt(selectedCombocs)
+    //   } else {
+    //     if (ColorStoneQualityColor && ColorStoneQualityColor?.length) {
+    //       setCSQOpt(`${ColorStoneQualityColor[0].Quality}-${ColorStoneQualityColor[0].color}`)
+    //     }
+    //   }
+
     }
 
     let obj = { "CurrencyRate": loginData?.CurrencyRate, "Currencysymbol": loginData?.Currencysymbol }
@@ -464,6 +469,8 @@ const ProductList = () => {
         let mrpbaseprice;
 
         console.log("newPriceData", newPriceData)
+        console.log("Listprice",product.autocode,newPriceData,newPriceData1,newPriceData2);
+
 
         if (newPriceData || newPriceData1 || newPriceData2) {
           price = (((newPriceData?.V ?? 0) / currData?.CurrencyRate ?? 0) + (newPriceData?.W ?? 0) + (newPriceData?.X ?? 0)) + (newPriceData1 ?? 0) + (newPriceData2 ?? 0);
@@ -503,6 +510,8 @@ const ProductList = () => {
       setProductApiData2(updatedData);
       return true;
     };
+
+    console.log("productPrice",ProductApiData2?.price);
 
     // console.log("calling");
     fetchData().then((res) => {
@@ -1335,9 +1344,9 @@ const ProductList = () => {
           "Themeid": Number(`${product?.Themeid}`),
           "TitleLine": `${product?.TitleLine}`,
           // "UnitCost": `${product?.price === "Not Available" ? 0 : product?.price}`,
-          "UnitCost": Number(`${product?.price === "Not Available" ? 0 : product?.price}`),
           // "UnitCostWithmarkup": (`${(product?.price === "Not Available" ? 0 : product?.price) + (product?.markup ?? 0)}`),
-          "UnitCostWithmarkup": Number(`${(product?.price === "Not Available" ? 0 : product?.price) + (product?.markup ?? 0)}`),
+          "UnitCost": Number(`${product?.ismrpbase === 1 ? product?.mrpbaseprice : PriceWithMarkupFunction(0, product?.price, currData?.CurrencyRate)?.toFixed(2)}`),
+          "UnitCostWithmarkup": Number(`${product?.ismrpbase === 1 ? product?.mrpbaseprice : PriceWithMarkupFunction(product?.markup, product?.price, currData?.CurrencyRate)?.toFixed(2)}`),
           "autocode": `${product?.autocode}`,
           "colorstonecolorname": `${cSQopt?.split('-')[1] ?? ""}`,
           "colorstonequality": `${cSQopt?.split('-')[0] ?? ""}`,
@@ -1345,8 +1354,8 @@ const ProductList = () => {
           "diamondcolorname": `${diaQColOpt.split("#")[1]}`,
           "diamondpcs": Number(`${product?.updDPCS}`),
           "diamondquality": `${diaQColOpt.split("#")[0]}`,
-          "diamondsetting": `${product?.diamondsetting}`,
-          "diamondshape": `${product?.diamondshape}`,
+          "diamondsetting": `${product?.diamondsetting ?? ""}`,
+          "diamondshape": `${product?.diamondshape ?? ""}`,
           "diamondweight": Number(`${product?.updDWT}`),
           "encrypted_designno": `${product?.encrypted_designno ?? ""}`,
           "hashtagid": Number(`${product?.Hashtagid ?? 0}`),
@@ -1354,7 +1363,7 @@ const ProductList = () => {
           "imagepath": `${globImagePath}`,
           "imgrandomno": `${product?.imgrandomno}`,
           "mediumimage": `${product?.MediumImagePath ?? ""}`,
-          "originalimage": `${product?.OriginalImagePath}`,
+          "originalimage": `${product?.OriginalImagePath ?? ""}`,
           "storyline_html": `${product?.storyline_html ?? ""}`,
           "storyline_video": `${product?.storyline_video ?? ""}`,
           "thumbimage": `${product?.ThumbImagePath ?? ''}`,
@@ -1493,8 +1502,8 @@ const ProductList = () => {
           "ThemeName": `${findValueFromId("theme", product?.Themeid)?.ThemeName}`,
           "Themeid": Number(`${product?.Themeid}`),
           "TitleLine": `${product?.TitleLine}`,
-          "UnitCost": Number(`${product?.price === "Not Available" ? 0 : product?.price}`),
-          "UnitCostWithmarkup": Number(`${(product?.price === "Not Available" ? 0 : product?.price) + (product?.markup ?? 0)}`),
+          "UnitCost": Number(`${product?.ismrpbase === 1 ? product?.mrpbaseprice : PriceWithMarkupFunction(0, product?.price, currData?.CurrencyRate)?.toFixed(2)}`),
+          "UnitCostWithmarkup": Number(`${product?.ismrpbase === 1 ? product?.mrpbaseprice : PriceWithMarkupFunction(product?.markup, product?.price, currData?.CurrencyRate)?.toFixed(2)}`),
           "colorstonecolorname": `${cSQopt?.split('-')[1] ?? ""}`,
           "colorstonequality": `${cSQopt?.split('-')[0] ?? ""}`,
           "diamondcolorname": `${JSON.parse(localStorage.getItem("loginUserDetail"))?.cmboDiaQualityColor.split("#@#")[1]}`,
@@ -2450,9 +2459,9 @@ const ProductList = () => {
                     {DaimondQualityColor.map((data, index) => (
                       <option
                         key={index}
-                        value={`${data.Quality}_${data.color}`}
+                        value={`${data.Quality}-${data.color}`}
                       >
-                        {`${data.Quality}_${data.color}`}
+                        {`${data.Quality}-${data.color}`}
                       </option>
                     ))}
                   </select>
@@ -2617,9 +2626,9 @@ const ProductList = () => {
                         {DaimondQualityColor.map((data, index) => (
                           <option
                             key={index}
-                            value={`${data.Quality}_${data.color}`}
+                            value={`${data.Quality}-${data.color}`}
                           >
-                            {`${data.Quality}_${data.color}`}
+                            {`${data.Quality}-${data.color}`}
                           </option>
                         ))}
                       </select>
