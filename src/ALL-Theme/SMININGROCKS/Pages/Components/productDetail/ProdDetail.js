@@ -266,7 +266,7 @@ const ProdDetail = () => {
 
     }
 
-    if (srProdPriceData?.diaQColOpt && loginInfo?.cmboDiaQCid !== "0,0") {
+    if (srProdPriceData?.diaQColOpt) {
       let diaQCVar = DimondQualityColor?.find(item => (item.QualityId == findDiaQcId(srProdPriceData?.diaQColOpt)[0]?.QualityId) && (item.ColorId == findDiaQcId(srProdPriceData?.diaQColOpt)[0]?.ColorId));
       // let qualityColor = `${loginInfo?.cmboDiaQualityColor.split("#@#")[0]?.toUpperCase()}#${loginInfo?.cmboDiaQualityColor.split("#@#")[1]?.toUpperCase()}`
       let qualityColor = `${diaQCVar?.Quality}#${diaQCVar?.color}`
@@ -275,8 +275,8 @@ const ProdDetail = () => {
     }
     else {
       if (DimondQualityColor && DimondQualityColor?.length) {
-        setDiaQColOpt("")
-        setDiaQColOptId([loginInfo?.cmboDiaQCid?.split(",")[0],loginInfo?.cmboDiaQCid?.split(",")[1]])
+        setDiaQColOpt(`${DimondQualityColor[0]?.Quality}#${DimondQualityColor[0]?.color}`)
+        setDiaQColOptId([DimondQualityColor[0]?.QualityId, DimondQualityColor[0]?.ColorId])
 
       }
     }
@@ -284,7 +284,21 @@ const ProdDetail = () => {
 
     // let dqcc = ColorStoneQualityColor?.find((dqc) => `${dqc.Quality}-${dqc.color}` === csQualColor)
 
-    if (srProdPriceData?.cSQopt && loginInfo?.cmboCSQCid !== "0,0") {
+    // if (srProdPriceData?.cSQopt && loginInfo?.cmboCSQCid !== "0,0") {
+    //   let csQCVar = ColorStoneQualityColor?.find(item => (item?.QualityId == findCsQcId(srProdPriceData?.cSQopt)[0]?.QualityId) && (item?.ColorId == findCsQcId(srProdPriceData?.cSQopt)[0]?.ColorId))
+    //   console.log("colorstone",csQCVar)
+    //   let csQualColor = `${csQCVar?.Quality}-${csQCVar?.color}`
+    //   setCSQOpt(csQualColor)
+    //   setCSQOptId([csQCVar?.QualityId, csQCVar?.ColorId])
+
+    // } else {
+    //   // let ref = `${ColorStoneQualityColor[0].Quality}-${ColorStoneQualityColor[0].color}`
+    //   // let ref1 = [ColorStoneQualityColor[0].QualityId, ColorStoneQualityColor[0].ColorId]
+    //   setCSQOpt("")
+    //   setCSQOptId([loginInfo?.cmboCSQCid?.split(",")[0],loginInfo?.cmboCSQCid?.split(",")[1]])
+
+    // }
+    if (srProdPriceData?.cSQopt) {
       let csQCVar = ColorStoneQualityColor?.find(item => (item?.QualityId == findCsQcId(srProdPriceData?.cSQopt)[0]?.QualityId) && (item?.ColorId == findCsQcId(srProdPriceData?.cSQopt)[0]?.ColorId))
       console.log("colorstone", csQCVar)
       let csQualColor = `${csQCVar?.Quality}-${csQCVar?.color}`
@@ -292,10 +306,10 @@ const ProdDetail = () => {
       setCSQOptId([csQCVar?.QualityId, csQCVar?.ColorId])
 
     } else {
-      // let ref = `${ColorStoneQualityColor[0].Quality}-${ColorStoneQualityColor[0].color}`
-      // let ref1 = [ColorStoneQualityColor[0].QualityId, ColorStoneQualityColor[0].ColorId]
-      setCSQOpt("")
-      setCSQOptId([loginInfo?.cmboCSQCid?.split(",")[0],loginInfo?.cmboCSQCid?.split(",")[1]])
+      let ref = `${ColorStoneQualityColor[0].Quality}-${ColorStoneQualityColor[0].color}`
+      let ref1 = [ColorStoneQualityColor[0].QualityId, ColorStoneQualityColor[0].ColorId]
+      setCSQOpt(ref)
+      setCSQOptId(ref1)
 
     }
 
@@ -489,7 +503,7 @@ const ProdDetail = () => {
 
     )
 
-    console.log("diaQColOpt", diaQColOpt);
+    console.log("diaQColOpt", diaqcprice);
 
     let showPrice1 = 0;
     if (diaqcprice && diaqcprice.length > 0) {
@@ -873,8 +887,8 @@ const ProdDetail = () => {
           handelLocalStorage()
         }
 
-
         let wishToCartEncData = { "autocodelist": `${productData?.autocode}`, "ischeckall": 0, "FrontEnd_RegNo": `${storeInit?.FrontEnd_RegNo}`, "Customerid": `${Customer_id?.id}` }
+
 
         // const finalJSON = {
         //   "stockweb_event": "",
@@ -1015,8 +1029,8 @@ const ProdDetail = () => {
           "ThemeName": `${findValueFromId("theme", product?.Themeid)?.ThemeName}`,
           "Themeid": Number(`${product?.Themeid}`),
           "TitleLine": `${product?.TitleLine}`,
-          "UnitCost": Number(`${PriceWithMarkupFunction(0, product?.price, currData?.CurrencyRate)?.toFixed(2)}`),
-          "UnitCostWithmarkup": Number(`${PriceWithMarkupFunction(product?.markup, product?.price, currData?.CurrencyRate)?.toFixed(2)}`),
+          "UnitCost": Number(`${PriceWithMarkupFunction(0, product?.price, currData?.CurrencyRate,sizeWisePrice)}`),
+          "UnitCostWithmarkup": Number(`${PriceWithMarkupFunction(product?.markup, product?.price, currData?.CurrencyRate,sizeWisePrice)}`),
           "colorstonecolorname": `${cSQopt?.split('-')[1] ?? ""}`,
           "colorstonequality": `${cSQopt?.split('-')[0] ?? ""}`,
           "diamondcolorname": `${diaQColOpt.split("#")[1]}`,
@@ -1054,6 +1068,9 @@ const ProdDetail = () => {
           "Albumcode": `${product?.Albumcode ?? ""}`,
           "Designid": Number(`${product?.Designid ?? 0}`)
         }
+
+        console.log("addtocartflag",finalJSON)
+
 
         const encodedCombinedValue = btoa(JSON.stringify(finalJSON));
         const wishToCartEncData1 = btoa(JSON.stringify(wishToCartEncData));
@@ -1120,6 +1137,7 @@ const ProdDetail = () => {
 
   }
 
+  let sizeWisePrice = ((sizeMarkup ?? 0) / (currData?.CurrencyRate) ?? 0)
 
   const handelWishList = async (event) => {
 
@@ -1138,6 +1156,7 @@ const ProdDetail = () => {
 
         const product = productData
 
+        
 
         const finalJSON = {
           "stockweb_event": "",
@@ -1191,8 +1210,8 @@ const ProdDetail = () => {
           "TitleLine": `${product?.TitleLine}`,
           // "UnitCost": `${product?.price === "Not Available" ? 0 : product?.price}`,
           // "UnitCostWithmarkup": (`${(product?.price === "Not Available" ? 0 : product?.price) + (product?.markup ?? 0)}`),
-          "UnitCost": Number(`${PriceWithMarkupFunction(0, product?.price, currData?.CurrencyRate)?.toFixed(2)}`),
-          "UnitCostWithmarkup": Number(`${PriceWithMarkupFunction(product?.markup, product?.price, currData?.CurrencyRate)?.toFixed(2)}`),
+          "UnitCost": Number(`${PriceWithMarkupFunction(0, product?.price, currData?.CurrencyRate,sizeWisePrice)}`),
+          "UnitCostWithmarkup": Number(`${PriceWithMarkupFunction(product?.markup, product?.price, currData?.CurrencyRate,sizeWisePrice)}`),
           "autocode": `${product?.autocode}`,
           "colorstonecolorname": `${cSQopt?.split('-')[1] ?? ""}`,
           "colorstonequality": `${cSQopt?.split('-')[0] ?? ""}`,
@@ -1798,10 +1817,10 @@ const ProdDetail = () => {
                         className='menuitemSelectoreMain'
                         value={diaQColOpt}
                         onChange={(e) => {
-                          // let findDCqc = findDiaQcId(e.target.value);
+                          let findDCqc = findDiaQcId(e.target.value);
                           // console.log("findDCqc", findDCqc);
                           setDiaQColOpt(e.target.value);
-                          // setDiaQColOptId([findDCqc[0]?.QualityId, findDCqc[0]?.ColorId])
+                          setDiaQColOptId([findDCqc[0]?.QualityId, findDCqc[0]?.ColorId])
                         }}
                       >
                         {colorData?.map((colorItem) => (
@@ -1840,9 +1859,9 @@ const ProdDetail = () => {
                           <select
                             className='menuitemSelectoreMain'
                             onChange={(e) => {
-                              // let fincsqc = findCsQcId(e.target.value);
+                              let fincsqc = findCsQcId(e.target.value);
                               setCSQOpt(e.target.value)
-                              // setCSQOptId([fincsqc[0]?.QualityId, fincsqc[0]?.ColorId])
+                              setCSQOptId([fincsqc[0]?.QualityId, fincsqc[0]?.ColorId])
                             }}
                             value={cSQopt}
                           >
