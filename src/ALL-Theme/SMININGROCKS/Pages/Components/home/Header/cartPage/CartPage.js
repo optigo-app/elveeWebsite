@@ -90,6 +90,8 @@ export default function CartPage() {
   const [diaQColOpt, setDiaQColOpt] = useRecoilState(diamondQualityColorG);
   const [cSQopt, setCSQOpt] = useRecoilState(colorstoneQualityColorG);
   const [mtTypeOption, setmtTypeOption] = useRecoilState(metalTypeG);
+  const [colorStoneFilterData, setColorStoneFiletrData] = useState([]);
+  const [FindingFilterData, setFindingFiletrData] = useState([]);
 
   const [productData, setProductData] = useState();
 
@@ -279,12 +281,12 @@ export default function CartPage() {
 
     let srProductsData = JSON.parse(localStorage.getItem('srProductsData'))
 
-    if (daimondFilterData && daimondFilterData.length && csData?.T === 1) {
+    if (colorStoneFilterData && colorStoneFilterData.length && csData?.T === 1) {
 
 
-      let calcDiaWt = (srProductsData?.totalcolorstoneweight ?? 0) + (daimondFilterData?.Weight ?? 0)
+      let calcDiaWt = (srProductsData?.totalcolorstoneweight ?? 0) + (colorStoneFilterData?.Weight ?? 0)
 
-      let CalcPics = (srProductsData?.totalcolorstonepcs ?? 0) + (daimondFilterData?.pieces ?? 0)
+      let CalcPics = (srProductsData?.totalcolorstonepcs ?? 0) + (colorStoneFilterData?.pieces ?? 0)
 
       let fpprice = ((csqcRate ?? 0) * (calcDiaWt ?? 0)) + ((csqcSettRate ?? 0) * (CalcPics ?? 0))
 
@@ -852,21 +854,21 @@ export default function CartPage() {
       setSizeMarkup(0)
     }
     setSizeOption(data);
-    const filteredData = getAllFilterSizeData?.filter(
-      (item) => item.sizename === (data ?? sizeOption)
-    )
-    const filteredDataMetal = filteredData?.filter(
-      (item) => item.DiamondStoneTypeName === "METAL"
-    )
-    const filteredDataDaimond = filteredData?.filter(
-      (item) => item.DiamondStoneTypeName === "DIAMOND"
-    )
+    const filteredData = getAllFilterSizeData?.filter((item) => item.sizename === (data ?? sizeOption))
+    const filteredDataMetal = filteredData?.filter((item) => item.DiamondStoneTypeName === "METAL")
+    const filteredDataDaimond = filteredData?.filter((item) => item.DiamondStoneTypeName === "DIAMOND")
+    const filteredDataColorStone = filteredData?.filter(item => item.DiamondStoneTypeName === "COLOR STONE")
+    const filteredDataFinding = filteredData?.filter(item => item.DiamondStoneTypeName === "FINDING")
     setMetalFilterData(filteredDataMetal)
     setDaimondFiletrData(filteredDataDaimond)
+    setColorStoneFiletrData(filteredDataColorStone)
+    setFindingFiletrData(filteredDataFinding)
   };
 
   useEffect(() => {
     const selectedSize = sizeData.find((size) => size.sizename === (sizeOption))
+
+    console.log("selectedSize",selectedSize);
 
     if (selectedSize) {
       setSizeMarkup(selectedSize?.MarkUp)
@@ -1165,6 +1167,17 @@ export default function CartPage() {
   useEffect(() => {
     FinalPrice()
   }, [catSizeData, mtrdData, dqcData, currData, csqcData, sizeMarkup, metalUpdatedPrice, diaUpdatedPrice, colUpdatedPrice])
+
+  console.log("breckupprice",
+     (((mtrdData?.V ?? 0) / currData?.CurrencyRate) + (mtrdData?.W ?? 0) + (mtrdData?.X ?? 0)),
+     (dqcData ?? 0),
+     (csqcData ?? 0),
+     ((sizeMarkup ?? 0) / (currData?.CurrencyRate) ?? 0),
+     (metalUpdatedPrice() ?? 0),
+     (diaUpdatedPrice() ?? 0),
+     (colUpdatedPrice() ?? 0)
+    );
+
 
   function FinalPrice() {
     if (catSizeData?.IsMarkUpInAmount == 1) {
