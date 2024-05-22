@@ -685,6 +685,11 @@ export default function CartPage() {
     setRemarks(value);
   };
 
+
+  
+  const [remakrAutuCode, setRemarkAutoCodr] = useState(false);
+  const [reamkrDesignNumber, setDesignNumebr] = useState(false);
+
   const handleSubmit = async (data) => {
     if (!remarks || remarks.trim() === "") {
       toast.error("Enter a value for remarks.");
@@ -695,8 +700,8 @@ export default function CartPage() {
         const storeInit = JSON.parse(localStorage.getItem("storeInit"));
         const { FrontEnd_RegNo } = storeInit;
         const combinedValue = JSON.stringify({
-          designno: `${data.designno}`,
-          autocode: `${data.autocode}`,
+          designno: `${reamkrDesignNumber}`,
+          autocode: `${remakrAutuCode}`,
           remarks: `${remarks}`,
           FrontEnd_RegNo: `${FrontEnd_RegNo}`,
           Customerid: `${customerID}`,
@@ -1203,8 +1208,10 @@ export default function CartPage() {
 
   const [openItemRemark, setOpenItemRemark] = useState(false);
 
-  const handleClickOpenItemRemark = () => {
+  const handleClickOpenItemRemark = (autoCode , designNumbder) => {
     setOpenItemRemark(true);
+    setRemarkAutoCodr(autoCode);
+    setDesignNumebr(designNumbder);
   };
 
   const handleCloseItemRemark = () => {
@@ -1491,7 +1498,7 @@ export default function CartPage() {
                     <div className="divider"></div>
 
                     <div className="partCart" style={{ flex: '20%' }}>
-                      <p style={{ margin: '0px 10px', fontSize: '16px', fontWeight: 600, cursor: 'pointer', color: '#7d7f85', textDecoration: 'underline' }} onClick={handleClickOpenOrderRemark}>{cartSelectData?.OrderRemarks ? 'View & Edit Remark' : 'Add Order Remark'}</p>
+                      <p style={{ margin: '0px 10px', fontSize: '16px', fontWeight: 600, cursor: 'prodTitleLine', color: '#7d7f85', textDecoration: 'underline' }} onClick={handleClickOpenOrderRemark}>{cartSelectData?.OrderRemarks ? 'View & Edit Remark' : 'Add Order Remark'}</p>
                     </div>
                     <div className="divider"></div>
 
@@ -1654,9 +1661,9 @@ export default function CartPage() {
                                   </div>
                                 </div>
 
-                                <p style={{ position: 'absolute', bottom: '5px' }}>{item?.Remarks ? 'Remark : ' + item?.Remarks : ''}</p>
+                                <p style={{ position: 'absolute', bottom: '12px' }}>{item?.Remarks ? 'Remark : ' + item?.Remarks : ''}</p>
                                 <div className="bottomBtnCart" style={{ display: 'flex', justifyContent: 'space-between', position: 'absolute', bottom: '10px', width: '35%' }}>
-                                  <p onClick={handleClickOpenItemRemark} style={{ margin: '0px', fontSize: '13px', cursor: 'pointer', color: '#7d7f85', textDecoration: 'underline' }}>Item Remark</p>
+                                  <p onClick={() => handleClickOpenItemRemark(item.autocode , item.designno)} style={{ margin: '0px', fontSize: '13px', cursor: 'pointer', color: '#7d7f85', textDecoration: 'underline' }}>Item Remark</p>
                                   <p style={{ margin: '0px', fontSize: '13px', cursor: 'pointer', color: '#7d7f85', textDecoration: 'underline' }}
                                     onClick={() => handleRemove(item)}
                                   >Remove</p>
@@ -2408,7 +2415,7 @@ export default function CartPage() {
         fullScreen
       >
         {!isLoading && (
-          <div style={{ marginTop: "50px" }}>
+          <div style={{ marginTop: "35px" }}>
             <div>
               <div
                 style={{
@@ -2436,7 +2443,7 @@ export default function CartPage() {
                   style={{
                     border: "1px solid #e1e1e1",
                     borderRadius: "12px",
-                    width: "60%",
+                    width: "100%",
                   }}
                 />
 
@@ -2563,7 +2570,8 @@ export default function CartPage() {
                           style={{
                             display: "flex",
                             justifyContent: "space-between",
-                            flexWrap: 'wrap'
+                            flexWrap: 'wrap',
+                            marginTop: '5px'
                           }}
                         >
                           {isDaimondCstoFlag == 1 && (

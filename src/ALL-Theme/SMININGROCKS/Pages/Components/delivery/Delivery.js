@@ -579,10 +579,10 @@ export default function Delivery() {
                         </div>
 
                         <div className="filterDivcontainerDelivery" style={{ width: '100%', height: '60px' }}>
-                            <div className="partCart showAddressTotal" style={{ flex: '20%' }}>
+                            <div className="partCart" style={{ flex: '20%' }} onClick={() => navigation('/CartPage')}>
                                 <span style={{ color: '#7d7f85', fontWeight: '500', fontSize: '16px',cursor:'pointer', textDecoration: 'underline' }}>Back</span>
                             </div>
-                            <div className="divider showAddressTotal"></div>
+                            <div className="divider"></div>
 
                             <div className="partCart" style={{ flex: '20%' }}>
                                 <p className='cartPageTopLink' onClick={handleOpen}>Add New Address</p>
@@ -603,7 +603,7 @@ export default function Delivery() {
                             </div>
                             <div className="divider BlackBoxTopHeader"></div>
 
-                            <div className="partCart" style={{ flex: '20%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <div className="partCart ContiuBtnAddress" style={{ flex: '20%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                 <Button
                                     className="cartPageTopBtn"
                                     onClick={handleContinue}
@@ -622,7 +622,7 @@ export default function Delivery() {
                         <p style={{ fontFamily: 'PT Sans, sans-serif' }}>Order Will be delivered to selected address</p>
                         <div className='smilingMobileDeliveryBtnMainMobilee'>
                         </div>
-                        <div className='smilingDeliveyAddressMain' style={{ display: 'flex', flexWrap: 'wrap', marginBottom: '200px' }}>
+                        <div className='smilingDeliveyAddressMain' style={{ display: 'flex', flexWrap: 'wrap', marginBottom: '50px' , minHeight: '350px' }}>
                             {
                                 addressData?.map((item, index) => (
                                     <div key={item.id} className='AddressMain' style={{ backgroundColor: item.isdefault === 1 && 'rgb(245 244 244)' }} onClick={() => handleDefaultSelection(item.id)}>
@@ -658,13 +658,25 @@ export default function Delivery() {
                     {/* </div> */}
                 </div>
             </div>
+
+            {addressData?.length !== 0 && (
+                <>
+                  <button
+                    className="placeOrderCartPageBtnMobile"
+                    onClick={handleContinue}
+                  >
+                    Continue
+                  </button>
+                </>
+              )}
+
             <div
-                style={{
-                    position: addressData?.length < 4 || isLoading ? 'absolute' : 'static',
-                    bottom: addressData?.length < 4 || isLoading ? '0px' : 'auto',
-                    width: '100%'
-                }}
-                className="mobileFootreCs"
+                // style={{
+                //     position: addressData?.length < 4 || isLoading ? 'absolute' : 'static',
+                //     bottom: addressData?.length < 4 || isLoading ? '0px' : 'auto',
+                //     width: '100%'
+                // }}
+                // className="mobileFootreCs"
             >
                 <Footer />
             </div>
