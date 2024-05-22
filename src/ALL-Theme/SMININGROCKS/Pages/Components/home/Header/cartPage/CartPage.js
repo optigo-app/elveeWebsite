@@ -37,7 +37,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { Card, CardHeader, Col, Container, Row } from "react-bootstrap";
 import noFoundImage from "../../../../assets/image-not-found.png"
 import { FullProInfoAPI } from "../../../../../Utils/API/FullProInfoAPI";
-import { findCsQcIdDiff, findDiaQcId, findMetalType, findMetalTypeId, findValueFromId } from "../../../../../Utils/globalFunctions/GlobalFunction";
+import { findCsQcIdDiff, findDiaQcId, findMetalType, findMetalTypeId, findValueFromId, storImagePath } from "../../../../../Utils/globalFunctions/GlobalFunction";
 import { SingleProductAPI } from "../../../../../Utils/API/SingleProductAPI";
 import { IoArrowBackOutline } from "react-icons/io5";
 import { getDesignPriceList } from "../../../../../Utils/API/PriceDataApi";
@@ -90,6 +90,8 @@ export default function CartPage() {
   const [diaQColOpt, setDiaQColOpt] = useRecoilState(diamondQualityColorG);
   const [cSQopt, setCSQOpt] = useRecoilState(colorstoneQualityColorG);
   const [mtTypeOption, setmtTypeOption] = useRecoilState(metalTypeG);
+  const [colorStoneFilterData, setColorStoneFiletrData] = useState([]);
+  const [FindingFilterData, setFindingFiletrData] = useState([]);
 
   const [productData, setProductData] = useState();
 
@@ -122,7 +124,7 @@ export default function CartPage() {
   const [fullprodData, setFullProdData] = useState();
   const [cartPageLoding, setCartPageloding] = useState(false);
   const [singleProdData, setSingleProdData] = useState();
-  const [cartUpdateSnackbar, setCartUpdateSnackbar] = useState("")
+  const [isLodingSave, setIsLoadingSave] = useState(false);
 
 
 
@@ -279,12 +281,12 @@ export default function CartPage() {
 
     let srProductsData = JSON.parse(localStorage.getItem('srProductsData'))
 
-    if (daimondFilterData && daimondFilterData.length && csData?.T === 1) {
+    if (colorStoneFilterData && colorStoneFilterData.length && csData?.T === 1) {
 
 
-      let calcDiaWt = (srProductsData?.totalcolorstoneweight ?? 0) + (daimondFilterData?.Weight ?? 0)
+      let calcDiaWt = (srProductsData?.totalcolorstoneweight ?? 0) + (colorStoneFilterData?.Weight ?? 0)
 
-      let CalcPics = (srProductsData?.totalcolorstonepcs ?? 0) + (daimondFilterData?.pieces ?? 0)
+      let CalcPics = (srProductsData?.totalcolorstonepcs ?? 0) + (colorStoneFilterData?.pieces ?? 0)
 
       let fpprice = ((csqcRate ?? 0) * (calcDiaWt ?? 0)) + ((csqcSettRate ?? 0) * (CalcPics ?? 0))
 
@@ -339,6 +341,7 @@ export default function CartPage() {
         ele?.A == cartSelectData?.autocode
     );
 
+    console.log("cartmtrd",mtrd)
 
     let showPrice = 0;
     if (mtrd && mtrd.length > 0) {
@@ -372,7 +375,7 @@ export default function CartPage() {
         ele.A == cartSelectData?.autocode
 
     )
-
+    // console.log("cartdiaqcprice",diaqcprice)
 
     let showPrice1 = 0;
     if (diaqcprice && diaqcprice.length > 0) {
@@ -380,10 +383,10 @@ export default function CartPage() {
       let totalPrice = diaqcprice?.reduce((acc, obj) => acc + obj.S, 0)
       let diaRate = diaqcprice?.reduce((acc, obj) => acc + obj.O, 0)
       let diaSettRate = diaqcprice?.reduce((acc, obj) => acc + obj.Q, 0)
-
-      setDqcRate(diaRate)
-      setDqcSettRate(diaSettRate)
-      setDqcData(totalPrice)
+      console.log("cartdiaqcprice",totalPrice)
+      setDqcRate(diaRate ?? 0)
+      setDqcSettRate(diaSettRate ?? 0)
+      setDqcData(totalPrice ?? 0)
       setDiaQcData(diaqcprice[0] ?? [])
       // setDQCPrice(diaqcprice[0]?.S ?? 0)
     } else {
@@ -416,16 +419,17 @@ export default function CartPage() {
 
     );
 
-
+    console.log("cartcsqcpirce",csqcpirce)
+    
     let showPrice2 = 0;
     if (csqcpirce && csqcpirce.length > 0) {
       // showPrice2 = srProductsData?.price - ((srProductsData?.price - srProductsData?.csrd2) + (csqcpirce[0]?.S ?? 0));
       let totalPrice = csqcpirce?.reduce((acc, obj) => acc + obj.S, 0)
       let diaRate = csqcpirce?.reduce((acc, obj) => acc + obj.O, 0)
       let diaSettRate = csqcpirce?.reduce((acc, obj) => acc + obj.Q, 0)
-      setCsqcData(totalPrice)
-      setCsqcRate(diaRate)
-      setCsqcSettRate(diaSettRate)
+      setCsqcData(totalPrice ?? 0)
+      setCsqcRate(diaRate ?? 0)
+      setCsqcSettRate(diaSettRate ?? 0)
       setCsData(csqcpirce[0] ?? [])
       // setCSQCPrice(csqcpirce[0]?.S ?? 0)
     } else {
@@ -643,6 +647,7 @@ export default function CartPage() {
       toast.error("Enter a value for remark.");
     } else {
       try {
+        setOpenOrderRemark(false);
         setIsLoading(true);
         const storeInit = JSON.parse(localStorage.getItem("storeInit"));
         const { FrontEnd_RegNo } = storeInit;
@@ -682,17 +687,23 @@ export default function CartPage() {
     setRemarks(value);
   };
 
+
+  
+  const [remakrAutuCode, setRemarkAutoCodr] = useState(false);
+  const [reamkrDesignNumber, setDesignNumebr] = useState(false);
+
   const handleSubmit = async (data) => {
     if (!remarks || remarks.trim() === "") {
       toast.error("Enter a value for remarks.");
     } else {
       try {
+        handleCloseItemRemark();
         // setIsLoading(true);
         const storeInit = JSON.parse(localStorage.getItem("storeInit"));
         const { FrontEnd_RegNo } = storeInit;
         const combinedValue = JSON.stringify({
-          designno: `${data.designno}`,
-          autocode: `${data.autocode}`,
+          designno: `${reamkrDesignNumber}`,
+          autocode: `${remakrAutuCode}`,
           remarks: `${remarks}`,
           FrontEnd_RegNo: `${FrontEnd_RegNo}`,
           Customerid: `${customerID}`,
@@ -736,6 +747,7 @@ export default function CartPage() {
 
 
   const handleUpdateQuantity = async (num) => {
+    setQtyUpdateWaiting(true);
     try {
       const storeInit = JSON.parse(localStorage.getItem("storeInit"));
       const { FrontEnd_RegNo } = storeInit;
@@ -756,6 +768,7 @@ export default function CartPage() {
         if (response.Data.rd[0].stat === 1) {
           await getCartData()
           toast.success("QTY change successfully");
+          setQtyUpdateWaiting(false);
         } else {
           alert("Error");
         }
@@ -841,21 +854,21 @@ export default function CartPage() {
       setSizeMarkup(0)
     }
     setSizeOption(data);
-    const filteredData = getAllFilterSizeData?.filter(
-      (item) => item.sizename === (data ?? sizeOption)
-    )
-    const filteredDataMetal = filteredData?.filter(
-      (item) => item.DiamondStoneTypeName === "METAL"
-    )
-    const filteredDataDaimond = filteredData?.filter(
-      (item) => item.DiamondStoneTypeName === "DIAMOND"
-    )
+    const filteredData = getAllFilterSizeData?.filter((item) => item.sizename === (data ?? sizeOption))
+    const filteredDataMetal = filteredData?.filter((item) => item.DiamondStoneTypeName === "METAL")
+    const filteredDataDaimond = filteredData?.filter((item) => item.DiamondStoneTypeName === "DIAMOND")
+    const filteredDataColorStone = filteredData?.filter(item => item.DiamondStoneTypeName === "COLOR STONE")
+    const filteredDataFinding = filteredData?.filter(item => item.DiamondStoneTypeName === "FINDING")
     setMetalFilterData(filteredDataMetal)
     setDaimondFiletrData(filteredDataDaimond)
+    setColorStoneFiletrData(filteredDataColorStone)
+    setFindingFiletrData(filteredDataFinding)
   };
 
   useEffect(() => {
     const selectedSize = sizeData.find((size) => size.sizename === (sizeOption))
+
+    console.log("selectedSize",selectedSize);
 
     if (selectedSize) {
       setSizeMarkup(selectedSize?.MarkUp)
@@ -949,25 +962,9 @@ export default function CartPage() {
   }
 
   const handleCartUpdate = async () => {
-
-    // const allproductlist = JSON.parse(localStorage.getItem("allproductlist"));
-
-    // const filterProdData = allproductlist?.filter(
-    //   (allpd) =>
-    //     allpd?.autocode == cartListData[0]?.autocode &&
-    //     allpd?.designno == cartListData[0]?.designno
-    // );
-    // const filterProdData = allproductlist?.filter(
-    //   (allpd) =>
-    //     cartListData.find((item)=>allpd?.autocode == item?.autocode && allpd?.designno == item?.designno )
-    // );
-
     const storeInit = JSON.parse(localStorage.getItem("storeInit"))
     const UserEmail = localStorage.getItem("registerEmail")
     const Customer_id = JSON.parse(localStorage.getItem("loginUserDetail"));
-
-
-
 
     const finalJSON = {
       "stockweb_event": "",
@@ -1073,7 +1070,7 @@ export default function CartPage() {
       f: "RemoveFromCartIconClick (removeFromCartList)",
       p: encodedCombinedValue1,
     }
-
+    setIsLoadingSave(true);
     await CommonAPI(body1).then((res) => {
       return res
     }).then(async (prevRes) => {
@@ -1096,14 +1093,16 @@ export default function CartPage() {
             await getCountFunc()
             await getCartData()
             toast.success("Product Updated successFully !!!")
+            setQtyUpdateWaiting(false);
+            setIsLoadingSave(false);
+
           }
           else {
             console.log("error", res);
-            toast.error("Something Went Wrong!!")
+            // toast.error("Something Went Wrong!!")
           }
         }).catch((error) => {
           console.log("error", error);
-          toast.error("Something Went Wrong!!")
 
         })
 
@@ -1169,6 +1168,17 @@ export default function CartPage() {
     FinalPrice()
   }, [catSizeData, mtrdData, dqcData, currData, csqcData, sizeMarkup, metalUpdatedPrice, diaUpdatedPrice, colUpdatedPrice])
 
+  console.log("breckupprice",
+     (((mtrdData?.V ?? 0) / currData?.CurrencyRate) + (mtrdData?.W ?? 0) + (mtrdData?.X ?? 0)),
+     (dqcData ?? 0),
+     (csqcData ?? 0),
+     ((sizeMarkup ?? 0) / (currData?.CurrencyRate) ?? 0),
+     (metalUpdatedPrice() ?? 0),
+     (diaUpdatedPrice() ?? 0),
+     (colUpdatedPrice() ?? 0)
+    );
+
+
   function FinalPrice() {
     if (catSizeData?.IsMarkUpInAmount == 1) {
       let designMarkUp = (mtrdData?.AB ?? 0)
@@ -1193,7 +1203,6 @@ export default function CartPage() {
         (diaUpdatedPrice() ?? 0) +
         (colUpdatedPrice() ?? 0)
       ).toFixed(2)
-      console.log("finalPrice", CalcPrice, percentMarkupPlus);
       return PriceWithMarkupFunction(percentMarkupPlus, CalcPrice, currData?.CurrencyRate).toFixed(2)
     }
   }
@@ -1210,11 +1219,36 @@ export default function CartPage() {
     setOpen(false);
   };
 
+  const [openItemRemark, setOpenItemRemark] = useState(false);
 
-  console.log('sizeData', sizeData.length);
+  const handleClickOpenItemRemark = (autoCode , designNumbder) => {
+    setOpenItemRemark(true);
+    setRemarkAutoCodr(autoCode);
+    setDesignNumebr(designNumbder);
+  };
+
+  const handleCloseItemRemark = () => {
+    setRemarks('');
+    setOpenItemRemark(false);
+  };
+
+
+  const [openOrderRemark, setOpenOrderRemark] = useState(false);
+
+  const handleClickOpenOrderRemark = () => {
+    setOpenOrderRemark(true);
+  };
+
+  const handleCloseOrderRemark = () => {
+    setRemarks('');
+    setOpenOrderRemark(false);
+  };
+
+
+  console.log('sizeData', FinalPrice())
 
   const handelBrowse = async () => {
-
+    navigation("/productpage")
     let finalData = JSON.parse(localStorage.getItem("menuparams"))
 
     if (finalData) {
@@ -1229,7 +1263,6 @@ export default function CartPage() {
         if (res) {
           let autoCodeList = JSON.parse(localStorage.getItem("autoCodeList"))
           await getDesignPriceList(finalData, 1, {}, {}, autoCodeList)
-          navigation("/productpage")
         }
       }).catch((err) => {
         if (err) toast.error("Something Went Wrong!!!")
@@ -1243,6 +1276,25 @@ export default function CartPage() {
     navigation("/Delivery");
     window.scrollTo(0, 0);
   }
+
+  const [qtyUpdateWaiting, setQtyUpdateWaiting] = useState(false);
+
+  const handleIncrementQuantity = () => {
+    const incrementedQuantity = parseInt(lastEnteredQuantity) + 1; // Increment quantity by 1
+    setLastEnteredQuantity(incrementedQuantity.toString()); // Update comment quantity state
+    handleUpdateQuantity(prodSelectData?.designno); // Call handleUpdateQuantity with the incremented quantity
+  };
+
+  const handleDecrementQuantity = () => {
+    if (parseInt(lastEnteredQuantity) > 1) { // Prevent quantity from going below 1
+      const decrementedQuantity = parseInt(lastEnteredQuantity) - 1; // Decrement quantity by 1
+      setLastEnteredQuantity(decrementedQuantity.toString());
+      handleUpdateQuantity(prodSelectData?.designno); // Call handleUpdateQuantity with the decremented quantity
+    }
+  };
+
+  console.log('FinalPrice()', FinalPrice());
+  console.log('FinalPrice() * lastEnteredQuantityFinalPrice() * lastEnteredQuantity', FinalPrice() * lastEnteredQuantity);
   return (
     <>
       <div
@@ -1266,6 +1318,114 @@ export default function CartPage() {
             </Button>
           </div>
         </Dialog>
+
+        <Dialog open={openItemRemark} onClose={handleCloseItemRemark} >
+          <div className="ItemRemarkMain">
+
+            <p style={{ padding: '15px 15px 0px 15px', fontWeight: 500 }} >Add The Item Remark..</p>
+            <div className="d-flex flex-row align-items-start">
+              <textarea
+                className="form-control ml-1 shadow-none textarea"
+                defaultValue={""}
+                value={remarks}
+                style={{
+                  height: '160px',
+                  fontSize: '13px',
+                  marginInline: '10px'
+                }}
+                onChange={(event) =>
+                  handleInputChangeRemarks(event)
+                }
+              />
+            </div>
+            <div className="mt-2 text-right" style={{display: 'flex' , justifyContent: 'flex-end'}}>
+              <Button
+                className="btn btn-primary btn-sm shadow-none showremarkbtn me-2"
+                type="button"
+                onClick={() => handleSubmit(cartSelectData)}
+              >
+                Save
+              </Button>
+              <Button
+                className="btn btn-outline-primary btn-sm cancelremarkbtn ml-1 shadow-none"
+                type="button"
+                onClick={handleCloseItemRemark}
+              >
+                Cancel
+              </Button>
+            </div>
+          </div>
+        </Dialog>
+
+
+        <Dialog open={openOrderRemark} onClose={handleCloseOrderRemark} >
+          <div className="ItemRemarkMain">
+
+            <p style={{ padding: '15px 15px 0px 15px', fontWeight: 500 }} >Add The Order Remark..</p>
+
+            <div className="d-flex flex-row align-items-start">
+              <textarea
+                className="form-control ml-1 shadow-none textarea"
+                defaultValue={""}
+                value={Mainremarks}
+                style={{
+                  height: '160px',
+                  fontSize: '13px',
+                  marginInline: '10px'
+                }}
+                onChange={(e) => handleInputChangeMainRemarks(e)}
+              />
+            </div>
+            <div className="mt-2 text-right Orderremarkbtn">
+              <Button
+                className="btn btn-primary btn-sm shadow-none showremarkbtn me-2"
+                type="button"
+                onClick={submitMainRemrks}
+              >
+                Save
+              </Button>
+              <Button
+                className="btn btn-outline-primary btn-sm cancelremarkbtn ml-1 shadow-none"
+                type="button"
+                onClick={handleCloseOrderRemark}
+              >
+                Cancel
+              </Button>
+            </div>
+
+            {/* <div className="d-flex flex-row align-items-start">
+              <textarea
+                className="form-control ml-1 shadow-none textarea"
+                defaultValue={""}
+                value={remarks}
+                style={{
+                  height: '100px',
+                  fontSize: '13px',
+                  marginInline: '10px'
+                }}
+                onChange={(event) =>
+                  handleInputChangeRemarks(event)
+                }
+              />
+            </div>
+            <div className="mt-2 text-right">
+              <Button
+                className="btn btn-primary btn-sm shadow-none showremarkbtn me-2"
+                type="button"
+                onClick={() => handleSubmit(cartSelectData)}
+              >
+                Save
+              </Button>
+              <Button
+                className="btn btn-outline-primary btn-sm cancelremarkbtn ml-1 shadow-none"
+                type="button"
+                onClick={handleCloseOrderRemark}
+              >
+                Cancel
+              </Button>
+            </div> */}
+          </div>
+        </Dialog>
         <div className="smilingCartPageMain">
           <div
             style={{
@@ -1274,8 +1434,23 @@ export default function CartPage() {
               zIndex: "111",
             }}
           >
+            {cartListData?.length !== 0 && !isLoading &&
+              <div class="bg-imageCart">
+                <div class="overlay"></div>
+                <div class="text-container">
+                  <div className='textContainerData'>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <p className="designCounttext" style={{ fontSize: '30px', fontWeight: '500', letterSpacing: '1px', textTransform: 'uppercase' }}>
+                        My Cart
+                      </p>
+                    </div>
+                    <img src={`${storImagePath()}/images/HomePage/MainBanner/image/featuresImage.png`} className='featherImage' />
+                  </div>
+                </div>
+              </div>
+            }
 
-            <div className="backErrorMobile" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            {/* <div className="backErrorMobile" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               {cartListData?.length !== 0 && (
                 <div className="backErrorMobile">
                   <IoArrowBackOutline style={{ height: '30px', marginLeft: '5px', width: '30px', color: 'rgb(192 182 182)' }} onClick={() => navigation("/productpage")} />
@@ -1287,55 +1462,90 @@ export default function CartPage() {
                 <div className="ClreareAllMobilee">
                   <p style={{ fontWeight: 600, margin: '0px', textDecoration: 'underline', width: '80px', cursor: 'pointer', color: 'rgb(192 182 182)' }} onClick={handleClickOpen}>Clear All</p>
                 </div>)}
-            </div>
+            </div> */}
 
+            {/* <div
+              className="smilingListCartTopButtonNew"
+              style={{ marginTop: "0px" }}
 
+            >
 
-            {cartListData?.length !== 0 && (
-              <div>
+            </div> */}
+            <div>
+              {cartListData?.length !== 0 && !isLoading &&
                 <div
                   className="smilingListCartTopButton"
                   style={{ marginTop: "0px" }}
                 >
-                  <p className="SmiCartTitleWeb">
-                    My Cart
-                  </p>
+                  <div className="filterDivcontainerCartPage" style={{ width: '100%', height: '60px' }}>
+                    <div className="partCart totalPriceTopMain" style={{ flex: '20%' }}>
+                      <div style={{ display: 'flex' }}>
+                        <span style={{ color: '#7d7f85', fontSize: '16px', marginRight: '3px' }}>Total Price: </span>
+                        <div style={{ display: 'flex' }}>
+                          <div className="currencyFont" style={{ color: '#7d7f85', fontSize: '18px' }} dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />
+                          <span style={{ color: '#7d7f85', fontSize: '16px', fontWeight: '500', }}>{cartListData.reduce((total, item) => total + item.UnitCost, 0).toFixed(2)}</span>
+                        </div>
+                      </div>
+                    </div>
 
+                    <div className="divider totalPriceTopMain"></div>
+
+                    <div className="partCart showTotalItemTop" style={{ flex: '20%' }}>
+                      <span style={{ color: '#7d7f85', fontWeight: '500', fontSize: '16px', }}>{cartListData?.length} Items</span>
+
+                    </div>
+
+                    <div className="divider showTotalItemTop"></div>
+
+                    <div className="partCart" style={{ flex: '20%' }}>
+                      <div style={{ display: 'flex', }}>
+                        <p
+                          className="cartPageTopLink"
+                          onClick={handleClickOpen}
+                        >
+                          Clear All
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="divider"></div>
+
+                    <div className="partCart" style={{ flex: '20%' }}>
+                      <p style={{ margin: '0px 10px', fontSize: '16px', fontWeight: 600, cursor: 'prodTitleLine', color: '#7d7f85', textDecoration: 'underline' }} onClick={handleClickOpenOrderRemark}>{cartSelectData?.OrderRemarks ? 'View & Edit Remark' : 'Add Order Remark'}</p>
+                    </div>
+                    <div className="divider"></div>
+
+                    <div className="partCart topPlcaeOrderBtn" style={{ flex: '20%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <Button
+                        className="cartPageTopBtn"
+                        onClick={handlePlaceOrder}
+                      // style={{ position: 'absolute', right: '0px', height: '50px' }}
+                      >
+                        Place Order
+                      </Button>
+                    </div>
+                  </div>
                 </div>
-                <div
-                  className="smilingListCartTopButtonNew"
-                  style={{ marginTop: "0px" }}
-
-                >
-                  <p
-                    className="cartPageTopLink"
-                    onClick={handleClickOpen}
-                  >
-                    Clear All
-                  </p>
-                  <Button
-                    className="cartPageTopBtn"
+              }
+              {cartListData?.length !== 0 && (
+                <>
+                  <button
+                    className="placeOrderCartPageBtnMobile"
                     onClick={handlePlaceOrder}
-                    style={{ position: 'absolute', right: '0px', height: '50px' }}
                   >
                     Place Order
-                  </Button>
-                </div>
-                <button
-                  className="placeOrderCartPageBtnMobile"
-                  onClick={handlePlaceOrder}
-                >
-                  Place Order
-                </button>
-              </div>
-            )}
+                  </button>
+                </>
+              )}
+
+            </div>
           </div>
 
           <CustomTabPanel value={value} index={0}>
             <div
               style={{
-                paddingInline: "10px",
                 display: "flex",
+                marginTop: '5px'
               }}
               className="cartPageMobileSet"
             >
@@ -1372,592 +1582,26 @@ export default function CartPage() {
                 ) : (
                   <div className="mainCartContainer">
                     {!isLoading && (
-                      <div className="resproDet">
-                        <div
-                          className="smilingCartDeatilSub1"
-                          style={{
-                            display:
-                              !prodSelectData && !cartSelectData && "none",
-                          }}
-                        >
-                          <div className="popUpcontainer">
+                      <div className="cartProdSection resCon" style={{ scrollbarWidth: cartListData?.length <= 2 && 'none' }}>
 
-                            <div
-                              style={{
-                                borderRadius: "12px",
-                                width: "370px",
-                                height: "410px",
-                                border: "1px solid #e1e1e1",
-                                overflow: 'hidden',
-                                position: 'relative'
-                              }}
-                              className="CartPageMainImageShowMobile"
-                            >
-                              <img
-                                src={
-                                  storeInitData?.DesignImageFol +
-                                  cartSelectData?.DefaultImageName?.slice(13)
-                                }
-                                style={{
-                                  borderRadius: "12px",
-                                  width: "370px",
-                                  height: "410px"
-                                }}
-                                onError={(e) => {
-                                  e.target.src = noFoundImage;
-                                }}
-                              />
-                              <p style={{ position: 'absolute', top: '5px', left: '5px', fontSize: '14px' }}>{cartSelectData?.designno}</p>
-                            </div>
-
-                            <div style={{ width: "550px" }} className="cartCustomizationMainMobile">
-                              <div
-                                style={{
-                                  width: "100%",
-                                  display: "flex",
-                                  flexDirection: "column",
-                                }}
-                                className="srcolorsizecarat"
-                              >
-                                {isProductCuFlag === 1 && (
-                                  <div
-                                    style={{
-                                      // borderTop: "1px solid #e1e1e1",
-                                      marginInline: "-10px",
-                                      padding: "10px",
-                                    }}
-                                  >
-                                    <div
-                                      style={{
-                                        display: "flex",
-                                        justifyContent: "space-between",
-                                        flexWrap: "wrap",
-                                        marginTop: "12px",
-                                      }}
-                                    >
-                                      {isMetalCutoMizeFlag == 1 && (
-                                        <div
-                                          style={{
-                                            display: "flex",
-                                            flexDirection: "column",
-                                            width: "45%",
-                                          }}
-                                        >
-                                          <label
-                                            style={{
-                                              fontSize: "12.5px",
-                                              color: "#7d7f85",
-                                            }}
-                                          >
-                                            METAL TYPE :
-                                          </label>
-                                          <select
-                                            style={{
-                                              border: "none",
-                                              outline: "none",
-                                              color: "#7d7f85",
-                                              fontSize: "12.5px",
-                                              height: '30px'
-                                            }}
-                                            // value={mtTypeOption ?? cartSelectData?.metal}
-                                            value={mtTypeOption}
-                                            onChange={(e) =>
-                                              setmtTypeOption(e.target.value)
-                                            }
-                                          >
-                                            {metalType.map((data, index) => (
-                                              <option
-                                                key={index}
-                                                value={data.metalType}
-                                              >
-                                                {data.metaltype}
-                                              </option>
-                                            ))}
-                                          </select>
-                                        </div>
-                                      )}
-
-                                      {isMetalCutoMizeFlag == 1 && (
-                                        <div
-                                          style={{
-                                            display: "flex",
-                                            flexDirection: "column",
-                                            width: "45%",
-                                          }}
-                                        >
-                                          <label
-                                            style={{
-                                              fontSize: "12.5px",
-                                              color: "#7d7f85",
-                                            }}
-                                          >
-                                            METAL COLOR :
-                                          </label>
-                                          <select
-                                            style={{
-                                              border: "none",
-                                              outline: "none",
-                                              color: "#7d7f85",
-                                              fontSize: "12.5px",
-                                              height: '30px'
-
-                                            }}
-                                            value={selectedColor}
-                                            onChange={(e) =>
-                                              setSelectedColor(e.target.value)
-                                            }
-                                          >
-                                            {metalColorData.map((colorItem) => (
-                                              <option
-                                                key={colorItem.ColorId}
-                                                value={colorItem.metalcolorname}
-                                              >
-                                                {colorItem.metalcolorname}
-                                              </option>
-                                            ))}
-                                          </select>
-                                        </div>
-                                      )}
-
-                                      {isDaimondCstoFlag == 1 && (cartSelectData?.totalDiaWt !== 0 || cartSelectData?.totaldiamondpcs !== 0) && (
-                                        <div
-                                          style={{
-                                            display: "flex",
-                                            flexDirection: "column",
-                                            width: "45%",
-                                            marginTop: "20px",
-                                          }}
-                                        >
-                                          <label
-                                            style={{
-                                              fontSize: "12.5px",
-                                              color: "#7d7f85",
-                                            }}
-                                          >
-                                            DIAMOND :
-                                          </label>
-                                          <select
-                                            style={{
-                                              border: "none",
-                                              outline: "none",
-                                              color: "#7d7f85",
-                                              fontSize: "12.5px",
-                                              height: '30px'
-                                            }}
-                                            value={diaQColOpt}
-                                            onChange={(e) =>
-                                              setDiaQColOpt(e.target.value)
-                                            }
-                                          >
-                                            {colorData?.map((colorItem) => (
-                                              <option
-                                                key={colorItem.ColorId}
-                                                value={`${colorItem.Quality}#${colorItem.color}`}
-                                              >
-                                                {`${colorItem.Quality}#${colorItem.color}`}
-                                              </option>
-                                            ))}
-                                          </select>
-                                        </div>
-                                      )}
-
-                                      {isCColrStoneCustFlag == 1 &&
-                                        (cartSelectData?.totalcolorstonepcs !== 0 ||
-                                          cartSelectData?.totalCSWt !== 0) && (
-                                          <div
-                                            style={{
-                                              display: "flex",
-                                              flexDirection: "column",
-                                              width: "45%",
-                                              marginTop: "20px",
-                                            }}
-                                          >
-                                            <label
-                                              style={{
-                                                fontSize: "12.5px",
-                                                color: "#7d7f85",
-                                                marginTop: "10px",
-                                              }}
-                                            >
-                                              COLOR STONE :
-                                            </label>
-                                            <select
-                                              style={{
-                                                border: "none",
-                                                outline: "none",
-                                                color: "#7d7f85",
-                                                fontSize: "12.5px",
-                                                height: '30px'
-                                              }}
-                                              value={cSQopt}
-                                              onChange={(e) =>
-                                                setCSQOpt(e.target.value)
-                                              }
-                                            >
-                                              {DaimondQualityColor.map(
-                                                (data, index) => (
-                                                  <option
-                                                    key={index}
-                                                    value={`${data.Quality}_${data.color}`}
-                                                  >
-                                                    {`${data.Quality}_${data.color}`}
-                                                  </option>
-                                                )
-                                              )}
-                                            </select>
-                                          </div>
-                                        )}
-
-                                      {(sizeData?.length !== 0 && (productData?.DefaultSize && productData.DefaultSize.length !== 0)) && (
-                                        <div
-                                          style={{
-                                            display: "flex",
-                                            flexDirection: "column",
-                                            width: "45%",
-                                            marginTop: "20px",
-                                          }}
-                                        >
-                                          <label
-                                            style={{
-                                              fontSize: "12.5px",
-                                              color: "#7d7f85",
-                                            }}
-                                          >
-                                            SIZE :
-                                          </label>
-                                          <select
-                                            style={{
-                                              border: "none",
-                                              outline: "none",
-                                              color: "#7d7f85",
-                                              fontSize: "12.5px",
-                                              height: '30px'
-                                            }}
-                                            onChange={(e) =>
-                                              handelSize(e.target.value)
-                                            }
-                                            value={sizeOption
-                                              // ??
-                                              // (productData && productData.DefaultSize
-                                              //   ? productData.DefaultSize
-                                              //   : sizeData.find(
-                                              //     (size) =>
-                                              //       size.IsDefaultSize === 1
-                                              //   )?.id)
-                                            }
-                                          >
-                                            {sizeData?.map((size) => (
-                                              <option
-                                                key={size.id}
-                                                // value={cartSelectData?.detail_ringsize ?? size.sizename} // Pass sizename as value
-                                                value={size.sizename} // Pass sizename as value
-                                              // selected={
-                                              //   productData &&
-                                              //   productData.DefaultSize ===
-                                              //   size.sizename
-                                              // }
-                                              >
-                                                {size.sizename}
-                                              </option>
-                                            ))}
-                                          </select>
-                                        </div>
-                                      )}
-                                    </div>
-                                  </div>
-                                )}
-                              </div>
-                              <div
-                                style={{
-                                  marginTop: "20px",
-                                  color: "#7d7f85",
-                                  fontSize: "14px",
-                                  display: "flex",
-                                  justifyContent: "space-between",
-                                }}
-                              >
-                                <div
-                                  className="smilingQualityMain"
-                                  style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                  }}
-                                >
-                                  <input
-                                    type="number"
-                                    style={{
-                                      border: "0px",
-                                      textAlign: "center",
-                                      outline: "none",
-                                      width: "80px",
-                                      height: "35px",
-                                      border: "1px solid #7d7f85",
-                                    }}
-                                    maxLength={2}
-                                    className="simlingQualityBox"
-                                    inputMode="numeric"
-                                    onClick={(event) => event.target.select()}
-                                    value={lastEnteredQuantity}
-                                    onChange={(event) =>
-                                      handleInputChange(event)
-                                    }
-                                  />
-                                  <button
-                                    className="SmilingUpdateQuantityBtn"
-                                    onClick={() =>
-                                      handleUpdateQuantity(
-                                        prodSelectData?.designno
-                                      )
-                                    }
-                                  >
-                                    QTY
-                                  </button>
-                                </div>
-                                <span>
-                                  <span
-                                    style={{
-                                      fontWeight: "500",
-                                      fontSize: "18px",
-                                      color: "black",
-                                      display: 'flex'
-                                    }}
-                                  >
-                                    <div
-                                      dangerouslySetInnerHTML={{
-                                        __html: decodeEntities(
-                                          currData?.Currencysymbol
-                                        ),
-                                      }}
-                                      style={{ fontFamily: "sans-serif" }}
-                                    />
-                                    {/* {(
-                                      ((((mtrdData?.V ?? 0) / currData?.CurrencyRate) + (mtrdData?.W ?? 0) + (mtrdData?.X ?? 0)) +
-                                        (dqcData ?? 0) +
-                                        (csqcData ?? 0) +
-                                        (sizeMarkup ?? 0) +
-                                        (metalUpdatedPrice() ?? 0) +
-                                        (diaUpdatedPrice() ?? 0) +
-                                        (colUpdatedPrice() ?? 0)) *
-                                      lastEnteredQuantity
-                                    ).toFixed(2)} */}
-                                    {(FinalPrice() * lastEnteredQuantity).toFixed(2)}
-                                  </span>
-                                </span>
-                                {/* <button
-                                  style={{
-                                    border: "none",
-                                    outline: "none",
-                                    backgroundColor: "#e1e1e1",
-                                    padding: "6px 17px",
-                                    borderRadius: "4px",
-                                  }}
-                                >
-                                  <span
-                                    style={{
-                                      fontSize: "16px",
-                                      fontWeight: "500",
-                                    }}
-                                    onClick={handleCartUpdate}
-                                  >
-                                    Save
-                                  </span>
-                                </button> */}
-                              </div>
-                              <div className="similingCartPageBotttomMain">
-                                {/* <div
-                                  className="smilingQualityMain"
-                                  style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                  }}
-                                >
-                                  <input
-                                    type="text"
-                                    style={{
-                                      border: "0px",
-                                      textAlign: "center",
-                                      outline: "none",
-                                      width: "80px",
-                                      height: "35px",
-                                      border: "1px solid #7d7f85",
-                                    }}
-                                    maxLength={2}
-                                    className="simlingQualityBox"
-                                    inputMode="numeric"
-                                    onClick={(event) => event.target.select()}
-                                    value={lastEnteredQuantity}
-                                    onChange={(event) =>
-                                      handleInputChange(event)
-                                    }
-                                  />
-                                  <button
-                                    className="SmilingUpdateQuantityBtn"
-                                    onClick={() =>
-                                      handleUpdateQuantity(
-                                        prodSelectData?.designno
-                                      )
-                                    }
-                                  >
-                                    QTY
-                                  </button>
-                                </div> */}
-                                {/* <div
-                                  className="smilingAddresingleMobileMain"
-                                  style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    marginLeft: "30px",
-                                  }}
-                                >
-                                  <textarea
-                                    type="text"
-                                    placeholder="Enter Remarks..."
-                                    value={remarks}
-                                    onChange={(event) =>
-                                      handleInputChangeRemarks(event)
-                                    }
-                                    className="YourCartMainRemkarBoxSingle"
-                                  />
-                                  <button
-                                    onClick={() => handleSubmit(cartSelectData)}
-                                    className="SmilingAddSingleRemkarBtn"
-                                  >
-                                    Add
-                                  </button>
-                                </div> */}
-                                <div style={{ textAlign: 'right' }}>
-                                  <button
-                                    style={{
-                                      border: 'none',
-                                      outline: 'none',
-                                      backgroundColor: '#e1e1e1',
-                                      padding: '6px 17px',
-                                      borderRadius: '4px',
-                                    }}
-
-                                    onClick={handleCartUpdate}
-                                  >
-                                    <span style={{ fontSize: '16px', fontWeight: '500' }} className="SaveBtnCart">Save</span>
-                                  </button>
-                                  <div className="mt-3">
-                                    <div className="container-fluid mainRenarkConatiner" style={{ border: '1px solid rgb(225, 225, 225)', borderRadius: '12px' }}>
-                                      <div className="d-flex justify-content-center row">
-                                        <div className="col-md-12">
-                                          <div className="d-flex flex-column comment-section">
-                                            <div className="bg-white p-2">
-                                              <div className="d-flex flex-row user-info">
-                                                <h6 className="remarkText">Product Remark</h6>
-                                              </div>
-                                              <div className="mt-2">
-                                                <p className="comment-text remarkText w-100" style={{ wordWrap: 'break-word' }}>
-                                                  {remarksApires != '' ? remarksApires : cartSelectData?.Remarks}
-                                                </p>
-                                              </div>
-                                            </div>
-                                            {!showRemarkFields &&
-                                              <div className="mt-2 mb-2 text-right">
-                                                <button
-                                                  className="btn btn-primary btn-sm shadow-none showremarkbtn me-2"
-                                                  type="button"
-                                                  onClick={handleShowReamrkFields}
-                                                >
-                                                  Add Remark
-                                                </button>
-                                              </div>
-                                            }
-                                            {showRemarkFields &&
-                                              <div className={`p-2 remark-fields ${showRemarkFields ? 'active' : ''}`}>
-                                                <div className="d-flex flex-row align-items-start">
-                                                  <textarea
-                                                    className="form-control ml-1 shadow-none textarea"
-                                                    defaultValue={""}
-                                                    value={remarks}
-                                                    style={{
-                                                      height: '100px',
-                                                      fontSize: '13px'
-                                                    }}
-                                                    onChange={(event) =>
-                                                      handleInputChangeRemarks(event)
-                                                    }
-                                                  />
-                                                </div>
-                                                <div className="mt-2 text-right">
-                                                  <button
-                                                    className="btn btn-primary btn-sm shadow-none showremarkbtn me-2"
-                                                    type="button"
-                                                    onClick={() => handleSubmit(cartSelectData)}
-                                                  >
-                                                    Save
-                                                  </button>
-                                                  <button
-                                                    className="btn btn-outline-primary btn-sm cancelremarkbtn ml-1 shadow-none"
-                                                    type="button"
-                                                    onClick={() => setShowRemarkFields(!showRemarkFields)}
-                                                  >
-                                                    Cancel
-                                                  </button>
-                                                </div>
-                                              </div>
-                                            }
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                    {!isLoading && (
-                      <div className="cartProdSection resCon">
-                        <div
-                          // style={{
-                          //   display: "flex",
-                          //   flexWrap: "wrap",
-                          //   height: "565px",
-                          //   overflowY: "auto",
-                          // }}
-                          className="cartProdpart"
-                        >
+                        <div className="cartProdpart" >
                           {cartListData?.map((item, index) => (
                             <div
                               key={item.id}
                               className={`smiling-cartPageBoxMain ${cartSelectData && cartSelectData.id === item.id ? 'selected' : ''}`}
-                              onClick={async () => {
-                                setCartSelectData(item);
-                                setProdFullInfo(item.designno);
-                                getSizeData(item.autocode);
-                                window.innerWidth <= 1080 &&
-                                  setDialogOpen(true);
+                              // onClick={async () => {
+                              //   setCartSelectData(item);
+                              //   setProdFullInfo(item.designno);
+                              //   getSizeData(item.autocode);
+                              //   window.innerWidth <= 1080 &&
+                              //     setDialogOpen(true);
 
-                                await SingleProductAPI(item?.designno).then((res) => {
-                                  let data = res[0]
-                                  setSingleProdData(data)
-                                })
-
-                              }}
+                              //   await SingleProductAPI(item?.designno).then((res) => {
+                              //     let data = res[0]
+                              //     setSingleProdData(data)
+                              //   })
+                              // }}
                             >
-                              <div
-                                style={{
-                                  cursor: "pointer",
-                                  position: "absolute",
-                                  right: "0px",
-                                  top: "0px",
-                                  backgroundColor: "black",
-                                  borderRadius: "2px",
-                                  opacity: "0.8",
-                                }}
-                                onClick={() => handleRemove(item)}
-                              >
-                                <CloseIcon
-                                  sx={{ color: "white", fontSize: "22px" }}
-                                />
-                              </div>
-                              <p className="designNo">{item.designno}</p>
                               <img
                                 src={item.DefaultImageName != '' ? `${imageURL}/${yKey}/${item.DefaultImageName}` : noFoundImage}
                                 alt="#"
@@ -1965,40 +1609,53 @@ export default function CartPage() {
                                 onError={(e) => {
                                   e.target.src = noFoundImage;
                                 }}
+                                onClick={async () => {
+                                  setCartSelectData(item);
+                                  setProdFullInfo(item.designno);
+                                  getSizeData(item.autocode);
+                                  window.innerWidth <= 1080 &&
+                                    setDialogOpen(true);
+  
+                                  await SingleProductAPI(item?.designno).then((res) => {
+                                    let data = res[0]
+                                    setSingleProdData(data)
+                                  })
+                                }}
                               />
-                              <div className="listing-featuresN" >
-                                <div>
-                                  <div className='feature'>
-                                    <p>
-                                      <span className="feature-count">NWT :{" "} </span> {item?.MetalWeight}
-                                    </p>
+                              <div className="listing-featuresN" style={{ marginTop: '30px' }}>
+                                <p className="designNo">{item.designno}</p>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', margin: '5px 10px 0px 0px' }}>
+                                  <div>
+                                    <div className='feature'>
+                                      <p>
+                                        <span className="feature-count">NWT :{" "} </span> {item?.MetalWeight}
+                                      </p>
+                                    </div>
+                                    <div className='feature'>
+                                      <p style={{ margin: '0px' }}>
+                                        <span className="feature-count">DWT :{" "} </span>  {(item?.Rec_DiamondWeight).toFixed(3)} /{" "}
+                                        {item?.totaldiamondpcs}
+                                      </p>
+                                    </div>
+                                    <div className='feature'>
+                                      <p>
+                                        {/* <span className="feature-count">{item?.designno}</span> */}
+                                      </p>
+                                    </div>
                                   </div>
-                                  <div className='feature'>
-                                    <p>
-                                      <span className="feature-count">DWT :{" "} </span>  {(item?.Rec_DiamondWeight).toFixed(2)} /{" "}
-                                      {item?.totaldiamondpcs}
-                                    </p>
-                                  </div>
-                                  <div className='feature'>
-                                    <p>
-                                      {/* <span className="feature-count">{item?.designno}</span> */}
-                                    </p>
-                                  </div>
-                                </div>
-                                <div>
-                                  <div className='feature'>
-                                    <p>
-                                      <span className="feature-count">CWT :{" "} </span>  {item?.Rec_CSWeight} /{" "}
-                                      {item?.totalcolorstonepcs}
-                                    </p>
-                                  </div>
-                                  <div className='feature'>
-                                    <p>
-                                      <span className="feature-count">GWT :{" "}  </span>   {(item?.grossweight).toFixed(2)} /
-                                      {item?.totaldiamondpcs}
-                                    </p>
-                                  </div>
-                                  {/* <div className='feature'>
+                                  <div>
+                                    <div className='feature'>
+                                      <p>
+                                        <span className="feature-count">CWT :{" "} </span>  {item?.Rec_CSWeight} /{" "}
+                                        {item?.totalcolorstonepcs}
+                                      </p>
+                                    </div>
+                                    <div className='feature'>
+                                      <p style={{ margin: '0px' }}>
+                                        <span className="feature-count">GWT :{" "}  </span>   {(item?.grossweight).toFixed(3)}
+                                      </p>
+                                    </div>
+                                    {/* <div className='feature'>
                                     <p>
                                       <span className="feature-count" style={{ display: 'flex' }}>
                                         <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />
@@ -2014,36 +1671,69 @@ export default function CartPage() {
                                     </span>
                                     </p>
                                   </div> */}
+                                  </div>
                                 </div>
+
+                                <p style={{ position: 'absolute', bottom: '12px' }}>{item?.Remarks ? 'Remark : ' + item?.Remarks : ''}</p>
+                                <div className="bottomBtnCart" style={{ display: 'flex', justifyContent: 'space-between', position: 'absolute', bottom: '10px', width: '35%' }}>
+                                  <p onClick={() => handleClickOpenItemRemark(item.autocode , item.designno)} style={{ margin: '0px', fontSize: '13px', cursor: 'pointer', color: '#7d7f85', textDecoration: 'underline' }}>Item Remark</p>
+                                  <p style={{ margin: '0px', fontSize: '13px', cursor: 'pointer', color: '#7d7f85', textDecoration: 'underline' }}
+                                    onClick={() => handleRemove(item)}
+                                  >Remove</p>
+                                </div>
+
+                                {/* <div
+                                style={{
+                                  cursor: "pointer",
+                                  position: "absolute",
+                                  right: "0px",
+                                  top: "0px",
+                                  backgroundColor: "black",
+                                  borderRadius: "2px",
+                                  opacity: "0.8",
+                                }}
+                                onClick={() => handleRemove(item)}
+                              >
+                                <CloseIcon
+                                  sx={{ color: "white", fontSize: "22px" }}
+                                />
+                              </div> */}
+
                               </div>
                             </div>
                           ))}
                         </div>
-                        <div className="">
-                          <div className="container-fluid mainOrderRenarkConatiner m-3" style={{ border: '1px solid rgb(225, 225, 225)', borderRadius: '12px' }}>
+                        {/* <div className="">
+                          <div className="container-fluid mainOrderRenarkConatiner m-3" style={{ border: MainremarksApires != '' && '1px solid rgb(225, 225, 225)', borderRadius: '12px' }}>
                             <div className="d-flex justify-content-center row">
                               <div className="col-md-12">
                                 <div className="d-flex flex-column comment-section">
-                                  <div className="bg-white p-2">
-                                    <div className="d-flex flex-row user-info">
-                                      <h6 className="remarkText">Order Remark</h6>
-                                    </div>
-                                    <div className="mt-2">
-                                      <p className="comment-text remarkText w-100" style={{ wordWrap: 'break-word' }}>
-                                        {MainremarksApires != '' ? MainremarksApires : cartSelectData?.OrderRemarks}
-                                      </p>
-                                    </div>
-                                  </div>
-                                  {!showOrderRemarkFields &&
-                                    <div className="mt-2 mb-2 text-right Orderremarkbtn">
-                                      <button
-                                        className="btn btn-primary btn-sm shadow-none showremarkbtn me-2"
-                                        type="button"
-                                        onClick={handleShowOrderReamrkFields}
-                                      >
-                                        Add Order Remark
-                                      </button>
-                                    </div>
+                                  {MainremarksApires != '' ?
+                                    <>
+                                      <div className="bg-white p-2">
+                                        <div className="d-flex flex-row user-info">
+                                          <h6 className="remarkText">Order Remark</h6>
+                                        </div>
+                                        <div className="mt-2">
+                                          <p className="comment-text remarkText w-100" style={{ wordWrap: 'break-word' }}>
+                                            {MainremarksApires != '' ? MainremarksApires : cartSelectData?.OrderRemarks}
+                                          </p>
+                                        </div>
+                                      </div>
+                                      {!showOrderRemarkFields &&
+                                        <div className="mt-2 mb-2 text-right Orderremarkbtn">
+                                          <button
+                                            className="btn btn-primary btn-sm shadow-none showremarkbtn me-2"
+                                            type="button"
+                                            onClick={handleShowOrderReamrkFields}
+                                          >
+                                            Add Order Remark
+                                          </button>
+                                        </div>
+                                      }
+                                    </>
+                                    :
+                                    <p onClick={handleShowOrderReamrkFields} style={{ margin: '10px 0px', textAlign: 'end', fontSize: '18px', cursor: 'pointer', color: '#7d7f85', textDecoration: 'underline' }}>Add Order Remark</p>
                                   }
                                   {showOrderRemarkFields &&
                                     <div className={`p-2 remark-fields ${showOrderRemarkFields ? 'active' : ''}`}>
@@ -2081,33 +1771,507 @@ export default function CartPage() {
                               </div>
                             </div>
                           </div>
+                        </div> */}
+                      </div>
+                    )}
+                    {!isLoading && (
+                      <div className="resproDet">
+                        <div
+                          className="smilingCartDeatilSub1"
+                          style={{
+                            display:
+                              !prodSelectData && !cartSelectData && "none",
+                          }}
+                        >
+                          <div className="popUpcontainer">
+                            <div style={{ display: 'flex', justifyContent: 'end' }}>
+                              <div
+                                style={{
+                                  borderRadius: "12px",
+                                  width: "90%",
+                                  height: "410px",
+                                  border: "1px solid #e1e1e1",
+                                  overflow: 'hidden',
+                                  position: 'relative'
+                                }}
+                                className="CartPageMainImageShowMobile"
+                              >
+                                <img
+                                  src={
+                                    storeInitData?.DesignImageFol +
+                                    cartSelectData?.DefaultImageName?.slice(13)
+                                  }
+                                  style={{
+                                    borderRadius: "12px",
+                                    width: "100%",
+                                    height: "100%"
+                                  }}
+                                  onError={(e) => {
+                                    e.target.src = noFoundImage;
+                                  }}
+                                />
+                                <p style={{ position: 'absolute', top: '5px', left: '5px', fontSize: '14px' }}>{cartSelectData?.designno}</p>
+                              </div>
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'end' }} className="cartCustomizationMainMobileMain">
+                              <div style={{ width: "90%" }} className="cartCustomizationMainMobile">
+                                <div
+                                  style={{
+                                    width: "100%",
+                                    display: "flex",
+                                    flexDirection: "column",
+                                  }}
+                                  className="srcolorsizecarat"
+                                >
+                                  {isProductCuFlag === 1 && (
+                                    <div
+                                      style={{
+                                        // borderTop: "1px solid #e1e1e1",
+                                        marginInline: "-10px",
+                                        padding: "10px",
+                                      }}
+                                    >
+                                      <div
+                                        style={{
+                                          display: "flex",
+                                          justifyContent: "space-between",
+                                          flexWrap: "wrap",
+                                          // marginTop: "50px",
+                                        }}
+                                      >
+                                        {isMetalCutoMizeFlag == 1 && (
+                                          <div
+                                            style={{
+                                              display: "flex",
+                                              flexDirection: "column",
+                                              width: "45%",
+                                            }}
+                                          >
+                                            <label
+                                              style={{
+                                                fontSize: "12.5px",
+                                                color: "#7d7f85",
+                                              }}
+                                            >
+                                              METAL TYPE :
+                                            </label>
+                                            <select
+                                              style={{
+                                                border: "none",
+                                                outline: "none",
+                                                color: "#7d7f85",
+                                                backgroundColor: 'rgb(244 244 244)',
+                                                fontSize: "12.5px",
+                                                height: '30px'
+                                              }}
+                                              // value={mtTypeOption ?? cartSelectData?.metal}
+                                              value={mtTypeOption}
+                                              onChange={(e) =>
+                                                setmtTypeOption(e.target.value)
+                                              }
+                                            >
+                                              {metalType.map((data, index) => (
+                                                <option
+                                                  key={index}
+                                                  value={data.metalType}
+                                                >
+                                                  {data.metaltype}
+                                                </option>
+                                              ))}
+                                            </select>
+                                          </div>
+                                        )}
 
-                        </div>
-                        <div className="container-fluid totalpriceConatiner">
-                          <div className="row">
-                            <div className="col-md-12" style={{ padding: '0' }}>
-                              <Card className="text-center" style={{ border: '1px solid rgb(225, 225, 225', borderRadius: '12px' }}>
-                                <Card.Body>
-                                  <div className="d-flex justify-content-between align-items-center">
-                                    <div >
-                                      <span style={{ color: '#7d7f85', fontSize: '16px' }}>Design in Cart: </span>
-                                      <span style={{ color: '#7d7f85', fontWeight: '500', fontSize: '16px' }}>{cartListData?.length}</span>
-                                    </div>
-                                    <div style={{ display: 'flex' }}>
-                                      <span style={{ color: '#7d7f85', fontSize: '16px', marginRight: '3px' }}>Total Price: </span>
-                                      <div style={{ display: 'flex' }}>
-                                        <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />
-                                        <span style={{ color: '#7d7f85', fontSize: '16px', fontWeight: '500', }}>{cartListData.reduce((total, item) => total + item.UnitCost, 0).toFixed(2)}</span>
+                                        {isMetalCutoMizeFlag == 1 && (
+                                          <div
+                                            style={{
+                                              display: "flex",
+                                              flexDirection: "column",
+                                              width: "45%",
+                                            }}
+                                          >
+                                            <label
+                                              style={{
+                                                fontSize: "12.5px",
+                                                color: "#7d7f85",
+                                              }}
+                                            >
+                                              METAL COLOR :
+                                            </label>
+                                            <select
+                                              style={{
+                                                border: "none",
+                                                outline: "none",
+                                                backgroundColor: 'rgb(244 244 244)',
+                                                color: "#7d7f85",
+                                                fontSize: "12.5px",
+                                                height: '30px'
+
+                                              }}
+                                              value={selectedColor}
+                                              onChange={(e) =>
+                                                setSelectedColor(e.target.value)
+                                              }
+                                            >
+                                              {metalColorData.map((colorItem) => (
+                                                <option
+                                                  key={colorItem.ColorId}
+                                                  value={colorItem.metalcolorname}
+                                                >
+                                                  {colorItem.metalcolorname}
+                                                </option>
+                                              ))}
+                                            </select>
+                                          </div>
+                                        )}
+
+                                        {isDaimondCstoFlag == 1 && (cartSelectData?.totalDiaWt !== 0 || cartSelectData?.totaldiamondpcs !== 0) && (
+                                          <div
+                                            style={{
+                                              display: "flex",
+                                              flexDirection: "column",
+                                              width: "45%",
+                                              marginTop: "20px",
+                                            }}
+                                          >
+                                            <label
+                                              style={{
+                                                fontSize: "12.5px",
+                                                color: "#7d7f85",
+                                              }}
+                                            >
+                                              DIAMOND :
+                                            </label>
+                                            <select
+                                              style={{
+                                                border: "none",
+                                                outline: "none",
+                                                color: "#7d7f85",
+                                                backgroundColor: 'rgb(244 244 244)',
+                                                fontSize: "12.5px",
+                                                height: '30px'
+                                              }}
+                                              value={diaQColOpt}
+                                              onChange={(e) =>
+                                                setDiaQColOpt(e.target.value)
+                                              }
+                                            >
+                                              {colorData?.map((colorItem) => (
+                                                <option
+                                                  key={colorItem.ColorId}
+                                                  value={`${colorItem.Quality}#${colorItem.color}`}
+                                                >
+                                                  {`${colorItem.Quality}#${colorItem.color}`}
+                                                </option>
+                                              ))}
+                                            </select>
+                                          </div>
+                                        )}
+
+                                        {isCColrStoneCustFlag == 1 &&
+                                          (cartSelectData?.totalcolorstonepcs !== 0 ||
+                                            cartSelectData?.totalCSWt !== 0) && (
+                                            <div
+                                              style={{
+                                                display: "flex",
+                                                flexDirection: "column",
+                                                width: "45%",
+                                                marginTop: "20px",
+                                              }}
+                                            >
+                                              <label
+                                                style={{
+                                                  fontSize: "12.5px",
+                                                  color: "#7d7f85",
+                                                }}
+                                              >
+                                                COLOR STONE :
+                                              </label>
+                                              <select
+                                                style={{
+                                                  border: "none",
+                                                  outline: "none",
+                                                  backgroundColor: 'rgb(244 244 244)',
+                                                  color: "#7d7f85",
+                                                  fontSize: "12.5px",
+                                                  height: '30px'
+                                                }}
+                                                value={cSQopt}
+                                                onChange={(e) =>
+                                                  setCSQOpt(e.target.value)
+                                                }
+                                              >
+                                                {DaimondQualityColor.map(
+                                                  (data, index) => (
+                                                    <option
+                                                      key={index}
+                                                      value={`${data.Quality}_${data.color}`}
+                                                    >
+                                                      {`${data.Quality}_${data.color}`}
+                                                    </option>
+                                                  )
+                                                )}
+                                              </select>
+                                            </div>
+                                          )}
+
+                                        {(sizeData?.length !== 0 && (productData?.DefaultSize && productData.DefaultSize.length !== 0)) && (
+                                          <div
+                                            style={{
+                                              display: "flex",
+                                              flexDirection: "column",
+                                              width: "45%",
+                                              marginTop: "20px",
+                                            }}
+                                          >
+                                            <label
+                                              style={{
+                                                fontSize: "12.5px",
+                                                color: "#7d7f85",
+                                              }}
+                                            >
+                                              SIZE :
+                                            </label>
+                                            <select
+                                              style={{
+                                                border: "none",
+                                                outline: "none",
+                                                backgroundColor: 'rgb(244 244 244)',
+                                                color: "#7d7f85",
+                                                fontSize: "12.5px",
+                                                height: '30px'
+                                              }}
+                                              onChange={(e) =>
+                                                handelSize(e.target.value)
+                                              }
+                                              value={sizeOption
+                                                // ??
+                                                // (productData && productData.DefaultSize
+                                                //   ? productData.DefaultSize
+                                                //   : sizeData.find(
+                                                //     (size) =>
+                                                //       size.IsDefaultSize === 1
+                                                //   )?.id)
+                                              }
+                                            >
+                                              {sizeData?.map((size) => (
+                                                <option
+                                                  key={size.id}
+                                                  // value={cartSelectData?.detail_ringsize ?? size.sizename} // Pass sizename as value
+                                                  value={size.sizename} // Pass sizename as value
+                                                // selected={
+                                                //   productData &&
+                                                //   productData.DefaultSize ===
+                                                //   size.sizename
+                                                // }
+                                                >
+                                                  {size.sizename}
+                                                </option>
+                                              ))}
+                                            </select>
+                                          </div>
+                                        )}
                                       </div>
                                     </div>
+                                  )}
+                                </div>
+                                <div
+                                  style={{
+                                    marginTop: "20px",
+                                    color: "#7d7f85",
+                                    fontSize: "14px",
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                  }}
+                                >
+                                  {/* <div
+                                    className="smilingQualityMain"
+                                    style={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                    }}
+                                  >
+                                    <input
+                                      type="number"
+                                      style={{
+                                        border: "0px",
+                                        textAlign: "center",
+                                        outline: "none",
+                                        width: "80px",
+                                        height: "35px",
+                                        border: "1px solid #7d7f85",
+                                      }}
+                                      maxLength={2}
+                                      className="simlingQualityBox"
+                                      inputMode="numeric"
+                                      onClick={(event) => event.target.select()}
+                                      value={lastEnteredQuantity}
+                                      onChange={(event) =>
+                                        handleInputChange(event)
+                                      }
+                                    />
+                                    <button
+                                      className="SmilingUpdateQuantityBtn"
+                                      onClick={() =>
+                                        handleUpdateQuantity(
+                                          prodSelectData?.designno
+                                        )
+                                      }
+                                    >
+                                      QTY
+                                    </button>
+                                  </div> */}
+
+                                  <div className="QTYUpateMain">
+                                    <div>
+                                      <Button className="QtyLess" disabled={qtyUpdateWaiting && true} onClick={handleDecrementQuantity}>-</Button>
+                                    </div>
+                                    <p className="QTYvalue">
+                                      {lastEnteredQuantity}
+                                    </p>
+                                    <div>
+                                      <Button className='QtyAdd' disabled={qtyUpdateWaiting && true} onClick={handleIncrementQuantity}>+</Button>
+                                    </div>
                                   </div>
-                                </Card.Body>
-                              </Card>
+                                  <span>
+                                    <span
+                                      style={{
+                                        fontWeight: "500",
+                                        fontSize: "18px",
+                                        color: "black",
+                                        display: 'flex'
+                                      }}
+                                    >
+                                      <div
+                                        dangerouslySetInnerHTML={{
+                                          __html: decodeEntities(
+                                            currData?.Currencysymbol
+                                          ),
+                                        }}
+                                        style={{ fontFamily: "sans-serif" }}
+                                      />
+                                      {(FinalPrice() * lastEnteredQuantity).toFixed(2)}
+                                    </span>
+                                  </span>
+                                </div>
+                                <div className="similingCartPageBotttomMain">
+                                  <div style={{ textAlign: 'right' }}>
+                                    <button
+                                      style={{
+                                        border: 'none',
+                                        outline: 'none',
+                                        backgroundColor: '#e1e1e1',
+                                        padding: '6px 17px',
+                                        borderRadius: '4px',
+                                      }}
+
+                                      onClick={handleCartUpdate}
+                                    >
+                                      {!isLodingSave ?
+                                        <span
+                                          style={{
+                                            fontSize: "16px",
+                                            fontWeight: "500",
+                                          }}
+                                          className="SaveBtnCart"
+                                          onClick={handleCartUpdate}
+                                        >
+                                          Apply
+                                        </span>
+                                        :
+                                        <span
+                                          className="SaveBtnCart"
+                                          style={{ display: 'flex' }}
+                                        >
+                                          <CircularProgress style={{ height: '20px', width: '20px' }} />
+                                        </span>
+
+                                      }
+                                    </button>
+                                    {/*   <div className="mt-3">
+                                      <div className="container-fluid mainRenarkConatiner" style={{ border: remarksApires != '' && '1px solid rgb(225, 225, 225)', borderRadius: '12px' }}>
+                                        <div className="d-flex justify-content-center row">
+                                          <div className="col-md-12">
+                                            <div className="d-flex flex-column comment-section">
+                                            {remarksApires != '' ?
+                                              <>
+                                                <div className="bg-white p-2">
+                                                  <div className="d-flex flex-row user-info">
+                                                    <h6 className="remarkText">Product Remark</h6>
+                                                  </div>
+                                                  <div className="mt-2">
+                                                    <p className="comment-text remarkText w-100" style={{ wordWrap: 'break-word' }}>
+                                                      {remarksApires != '' ? remarksApires : cartSelectData?.Remarks}
+                                                    </p>
+                                                  </div>
+                                                </div>
+                                                {!showRemarkFields &&
+                                                  <div className="mt-2 mb-2 text-right">
+                                                    <button
+                                                      className="btn btn-primary btn-sm shadow-none showremarkbtn me-2"
+                                                      type="button"
+                                                      onClick={handleShowReamrkFields}
+                                                    >
+                                                      Add Remark
+                                                    </button>
+                                                  </div>
+                                                }
+                                              </>
+                                              :
+                                              <p onClick={handleShowReamrkFields} style={{ margin: '0px', fontSize: '18px', cursor: 'pointer', color: '#7d7f85', textDecoration: 'underline' }}>Add Product Remark</p>
+                                            } 
+
+
+                                              {showRemarkFields &&
+                                                <div className={`p-2 remark-fields ${showRemarkFields ? 'active' : ''}`}>
+                                                  <div className="d-flex flex-row align-items-start">
+                                                    <textarea
+                                                      className="form-control ml-1 shadow-none textarea"
+                                                      defaultValue={""}
+                                                      value={remarks}
+                                                      style={{
+                                                        height: '100px',
+                                                        fontSize: '13px'
+                                                      }}
+                                                      onChange={(event) =>
+                                                        handleInputChangeRemarks(event)
+                                                      }
+                                                    />
+                                                  </div>
+                                                  <div className="mt-2 text-right">
+                                                    <button
+                                                      className="btn btn-primary btn-sm shadow-none showremarkbtn me-2"
+                                                      type="button"
+                                                      onClick={() => handleSubmit(cartSelectData)}
+                                                    >
+                                                      Save
+                                                    </button>
+                                                    <button
+                                                      className="btn btn-outline-primary btn-sm cancelremarkbtn ml-1 shadow-none"
+                                                      type="button"
+                                                      onClick={() => setShowRemarkFields(!showRemarkFields)}
+                                                    >
+                                                      Cancel
+                                                    </button>
+                                                  </div>
+                                                </div>
+                                              }
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+
+                                    </div> */}
+                                  </div>
+                                </div>
+                              </div>
                             </div>
+
                           </div>
                         </div>
                       </div>
                     )}
+
                   </div>
                 )}
               </div>
@@ -2174,7 +2338,7 @@ export default function CartPage() {
                   </Grid>
                 </div>
               )}
-              {cartListData.length > 0 &&
+              {/* {cartListData.length > 0 &&
                 <div className="mt-2" style={{ display: 'flex', justifyContent: 'end', margin: '0px 10px 0px 0px' }}>
                   <div className="container-fluid mainOrderRenarkConatiner" style={{ border: '1px solid rgb(225, 225, 225)', borderRadius: '12px' }}>
                     <div className="d-flex justify-content-center row">
@@ -2240,15 +2404,22 @@ export default function CartPage() {
                   </div>
 
                 </div>
-              }
+              } */}
             </div>
           </CustomTabPanel>
-        </div>
+        </div >
 
-        <div style={{ position: cartListData?.length === 0 && 'absolute', bottom: '0px', width: '100%' }} className="mobileFootreCs">
+        <div
+          style={{
+            position: cartListData?.length === 0 || isLoading ? 'absolute' : 'static',
+            bottom: cartListData?.length === 0 || isLoading ? '0px' : 'auto',
+            width: '100%'
+          }}
+          className="mobileFootreCs"
+        >
           <Footer />
         </div>
-      </div>
+      </div >
       <Dialog
         onClose={() => setDialogOpen(false)}
         open={dialogOpen}
@@ -2257,7 +2428,7 @@ export default function CartPage() {
         fullScreen
       >
         {!isLoading && (
-          <div style={{ marginTop: "50px" }}>
+          <div style={{ marginTop: "35px" }}>
             <div>
               <div
                 style={{
@@ -2285,7 +2456,7 @@ export default function CartPage() {
                   style={{
                     border: "1px solid #e1e1e1",
                     borderRadius: "12px",
-                    width: "60%",
+                    width: "100%",
                   }}
                 />
 
@@ -2330,7 +2501,6 @@ export default function CartPage() {
                           style={{
                             display: "flex",
                             justifyContent: "space-between",
-                            marginTop: "12px",
                           }}
                         >
                           {isMetalCutoMizeFlag == 1 && (
@@ -2352,6 +2522,7 @@ export default function CartPage() {
                                   outline: "none",
                                   color: "#7d7f85",
                                   fontSize: "12.5px",
+                                  height: '25px'
                                 }}
                                 value={selectedColor}
                                 onChange={(e) =>
@@ -2389,6 +2560,8 @@ export default function CartPage() {
                                   outline: "none",
                                   color: "#7d7f85",
                                   fontSize: "12.5px",
+                                  height: '25px'
+
                                 }}
                                 // value={mtTypeOption ?? cartSelectData?.metal}
                                 value={mtTypeOption}
@@ -2410,7 +2583,8 @@ export default function CartPage() {
                           style={{
                             display: "flex",
                             justifyContent: "space-between",
-                            flexWrap: 'wrap'
+                            flexWrap: 'wrap',
+                            marginTop: '5px'
                           }}
                         >
                           {isDaimondCstoFlag == 1 && (
@@ -2419,7 +2593,7 @@ export default function CartPage() {
                                 display: "flex",
                                 flexDirection: "column",
                                 width: "49%",
-                                marginTop: "30px",
+                                marginTop: "10px",
                               }}
                             >
                               <label
@@ -2433,6 +2607,7 @@ export default function CartPage() {
                                   outline: "none",
                                   color: "#7d7f85",
                                   fontSize: "12.5px",
+                                  height: '25px'
                                 }}
                                 value={diaQColOpt}
                                 onChange={(e) => setDiaQColOpt(e.target.value)}
@@ -2455,7 +2630,6 @@ export default function CartPage() {
                                 display: "flex",
                                 flexDirection: "column",
                                 width: "49%",
-                                marginTop: "20px",
                               }}
                             >
                               <label
@@ -2473,6 +2647,7 @@ export default function CartPage() {
                                   outline: "none",
                                   color: "#7d7f85",
                                   fontSize: "12.5px",
+                                  height: '25px'
                                 }}
                                 value={cSQopt}
                                 onChange={(e) => setCSQOpt(e.target.value)}
@@ -2497,7 +2672,7 @@ export default function CartPage() {
                                   display: "flex",
                                   flexDirection: "column",
                                   width: "49%",
-                                  marginTop: "30px",
+                                  marginTop: "10px",
                                 }}
                               >
                                 <label
@@ -2511,6 +2686,7 @@ export default function CartPage() {
                                     outline: "none",
                                     color: "#7d7f85",
                                     fontSize: "12.5px",
+                                    height: '25px'
                                   }}
                                   onChange={(e) => handelSize(e.target.value)}
                                   defaultValue={
@@ -2543,7 +2719,6 @@ export default function CartPage() {
                   </div>
                   <div
                     style={{
-                      marginTop: "20px",
                       color: "#7d7f85",
                       fontSize: "14px",
                       display: 'flex',
@@ -2551,7 +2726,7 @@ export default function CartPage() {
                       justifyContent: 'space-between'
                     }}
                   >
-                    <div
+                    {/* <div
                       className="smilingQualityMain"
                       style={{ display: "flex", alignItems: "center" }}
                     >
@@ -2580,6 +2755,18 @@ export default function CartPage() {
                       >
                         QTY
                       </button>
+                    </div> */}
+
+                    <div className="QTYUpateMain">
+                      <div>
+                        <Button className="QtyLess" disabled={qtyUpdateWaiting && true} onClick={handleDecrementQuantity}>-</Button>
+                      </div>
+                      <p className="QTYvalue">
+                        {lastEnteredQuantity}
+                      </p>
+                      <div>
+                        <Button className='QtyAdd' disabled={qtyUpdateWaiting && true} onClick={handleIncrementQuantity}>+</Button>
+                      </div>
                     </div>
 
                     <span>
@@ -2605,25 +2792,6 @@ export default function CartPage() {
                         ).toFixed(2)}
                       </span>
                     </span>
-                    {/* <button
-                      style={{
-                        border: "none",
-                        outline: "none",
-                        backgroundColor: "#e1e1e1",
-                        padding: "6px 17px",
-                        borderRadius: "4px",
-                      }}
-                    >
-                      <span
-                        style={{
-                          fontSize: "16px",
-                          fontWeight: "500",
-                        }}
-                        onClick={handleCartUpdate}
-                      >
-                        Save
-                      </span>
-                    </button> */}
                   </div>
                   <div className="similingCartPageBotttomMain">
                     <div style={{ width: '100%', textAlign: 'right' }}>
@@ -2636,82 +2804,27 @@ export default function CartPage() {
                           borderRadius: "4px",
                         }}
                       >
-                        <span
-                          style={{
-                            fontSize: "16px",
-                            fontWeight: "500",
-                          }}
-                          className="SaveBtnCart"
-                          onClick={handleCartUpdate}
-                        >
-                          Save
-                        </span>
-                      </button>
-                    </div>
-                    <div className="mt-3">
-                      <div className="container-fluid mainRenarkConatiner" style={{ border: '1px solid rgb(225, 225, 225)', borderRadius: '12px' }}>
-                        <div className="d-flex justify-content-center row">
-                          <div className="col-md-12">
-                            <div className="d-flex flex-column comment-section">
-                              <div className="bg-white p-2">
-                                <div className="d-flex flex-row user-info">
-                                  <h6 className="remarkText">Product Remark</h6>
-                                </div>
-                                <div className="mt-2">
-                                  <p className="comment-text remarkText w-100" style={{ wordWrap: 'break-word' }}>
-                                    {remarksApires != '' ? remarksApires : cartSelectData?.Remarks}
-                                  </p>
-                                </div>
-                              </div>
-                              {!showRemarkFields &&
-                                <div className="mt-2 mb-2 text-right">
-                                  <button
-                                    className="btn btn-primary btn-sm shadow-none showremarkbtn me-2"
-                                    type="button"
-                                    onClick={handleShowReamrkFields}
-                                  >
-                                    Add Remark
-                                  </button>
-                                </div>
-                              }
-                              {showRemarkFields &&
-                                <div className={`p-2 remark-fields ${showRemarkFields ? 'active' : ''}`}>
-                                  <div className="d-flex flex-row align-items-start">
-                                    <textarea
-                                      className="form-control ml-1 shadow-none textarea"
-                                      defaultValue={""}
-                                      style={{
-                                        height: '100px',
-                                        fontSize: '13px'
-                                      }}
-                                      onChange={(event) =>
-                                        handleInputChangeRemarks(event)
-                                      }
-                                    />
-                                  </div>
-                                  <div className="mt-2 text-right">
-                                    <button
-                                      className="btn btn-primary btn-sm shadow-none showremarkbtn me-2"
-                                      type="button"
-                                      onClick={() => handleSubmit(cartSelectData)}
-                                    >
-                                      Save
-                                    </button>
-                                    <button
-                                      className="btn btn-outline-primary btn-sm cancelremarkbtn ml-1 shadow-none"
-                                      type="button"
-                                      onClick={() => setShowRemarkFields(!showRemarkFields)}
-                                    >
-                                      Cancel
-                                    </button>
-                                  </div>
-                                </div>
-                              }
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                        {!isLodingSave ?
+                          <span
+                            style={{
+                              fontSize: "16px",
+                              fontWeight: "500",
+                            }}
+                            className="SaveBtnCart"
+                            onClick={handleCartUpdate}
+                          >
+                            Save
+                          </span>
+                          :
+                          <span
+                            className="SaveBtnCart"
+                            style={{ display: 'flex' }}
+                          >
+                            <CircularProgress style={{ height: '20px', width: '20px' }} />
+                          </span>
 
+                        }
+                      </button>
                     </div>
                   </div>
                 </div>

@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import './Header.css'
 import Tooltip from '@mui/material/Tooltip';
-import { Badge, ButtonBase, Dialog, Divider, Drawer, SwipeableDrawer, Tabs, TextField, useMediaQuery } from "@mui/material";
+import { Badge, ButtonBase, Dialog, Divider, Drawer, Skeleton, SwipeableDrawer, Tabs, TextField, useMediaQuery } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import { PiStarThin } from "react-icons/pi";
 import { IoSearchOutline } from "react-icons/io5";
@@ -32,12 +32,15 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import { List, ListItem, ListItemText, Button, IconButton } from '@mui/material';
 import { FilterAPI, FilterListAPI } from "../../../../Utils/API/FilterListAPI";
 import { toast } from "react-toastify";
+import { SearchProductDataAPI } from "../../../../Utils/API/SearchProductDataAPI";
+import { SearchPriceDataAPI } from "../../../../Utils/API/SearchPriceDataAPI";
 
 export default function Header() {
   // const [titleImg, setTitleImg ] = useState() 
   const navigation = useNavigate();
   const location = useLocation();
   const dropdownRef = useRef(null);
+  const [lodingLogo, setLodingLogo] = useState(true);
   const [inputValue, setInputValue] = useState(1);
   const [serachsShowOverlay, setSerachShowOverlay] = useState(false);
   const [drawerShowOverlay, setDrawerShowOverlay] = useState(false);
@@ -350,10 +353,13 @@ export default function Header() {
   }, []);
 
   useEffect(() => {
-    if (titleImg.length == 0) {
+    if (titleImg) {
       const storeInit = JSON.parse(localStorage.getItem('storeInit'));
       setCompanyTitleLogo(storeInit?.companylogo);
     }
+    setTimeout(() => {
+      setLodingLogo(false);
+    }, 100);
   }, []);
   // useEffect(() => {
   //   setTimeout(() => {
@@ -383,7 +389,7 @@ export default function Header() {
     }
 
     await CommonAPI(body).then((res) => {
-      console.log("getmenuData", res?.Data?.rd)
+      // console.log("getmenuData", res?.Data?.rd)
       setMenuData(res?.Data?.rd)
       // transformData(res?.Data?.rd)
       separateData(res?.Data?.rd)
@@ -455,34 +461,65 @@ export default function Header() {
 
 
   const setGSearch = useSetRecoilState(searchData);
-  function searchDataFucn(e) {
+  
+  async function searchDataFucn(e) {
     if (e.key === 'Enter') {
-      let ProductApiData2 = JSON.parse(localStorage.getItem("allproductlist"));
-      console.log('ProductApiData2', ProductApiData2);
-      if (ProductApiData2) {
-        let searchText = e.target.value.toLowerCase();
-        console.log('searchhhhhhh', searchText);
-        let data = ProductApiData2.filter((pd) => {
-          for (const key in pd) {
-            if (pd.hasOwnProperty(key) && pd[key]?.toString().toLowerCase().includes(searchText)) {
-              return true;
-            }
-          }
-          return false;
-        });
-        console.log('searchhhhhhhdddddddddd', data);
-        if (data.length > 0) {
-          setGSearch(data);
-          navigation('/productpage');
-          toggleOverlay();
-        } else {
-          setGSearch([]);
+      let finalData = JSON.parse(localStorage.getItem("menuparams"))
+      let searchVar = e.target.value.toLowerCase()
+
+    if (finalData) {
+      await SearchProductDataAPI(searchVar).then((res) => {
+        if (res) {
+          localStorage.setItem("allproductlist", JSON.stringify(res))
+          // localStorage.setItem("finalAllData", JSON.stringify(res))
         }
-      } else {
-        setGSearch([]);
-      }
+        return res
+      }).then(async (res) => {
+        if (res) {
+          let autoCodeList = JSON.parse(localStorage.getItem("autoCodeList"))
+          await SearchPriceDataAPI(autoCodeList,searchVar)
+          // .then((res)=>{
+          //     if(res){
+          //     localStorage.setItem("getSearchPriceData", JSON.stringify(res))
+          //     }
+          // })
+          navigation("/productpage",{state:{"search":true}})
+          toggleOverlay();
+        }
+      }).catch((err) => {
+        if (err) toast.error("Something Went Wrong!!!")
+      })
+    }
     }
   }
+  // function searchDataFucn(e) {
+  //   if (e.key === 'Enter') {
+  //     let ProductApiData2 = JSON.parse(localStorage.getItem("allproductlist"));
+  //     console.log('ProductApiData2', ProductApiData2);
+  //     if (ProductApiData2) {
+  //       let searchText = e.target.value.toLowerCase();
+  //       console.log('searchhhhhhh', searchText);
+  //       let data = ProductApiData2.filter((pd) => {
+  //         for (const key in pd) {
+  //           if (pd.hasOwnProperty(key) && pd[key]?.toString().toLowerCase().includes(searchText)) {
+  //             return true;
+  //           }
+  //         }
+  //         return false;
+  //       });
+  //       console.log('searchhhhhhhdddddddddd', data);
+  //       if (data.length > 0) {
+  //         setGSearch(data);
+  //         navigation('/productpage');
+  //         toggleOverlay();
+  //       } else {
+  //         setGSearch([]);
+  //       }
+  //     } else {
+  //       setGSearch([]);
+  //     }
+  //   }
+  // }
 
   function capitalizeText(text) {
     return text?.toLowerCase()?.split(' ').map((word) => {
@@ -542,41 +579,48 @@ export default function Header() {
     setExpandedMenu(index);
     setSelectedData(menuItems[index] || []);
     document.body.style.overflow = 'hidden';
+
   };
   const handleMouseLeave = (index) => {
     setExpandedMenu(null);
+    setHoveredIndex(null);
     document.body.style.overflow = 'auto';
   };
 
-  const handleMenuClick = async (param1Item, param2Item) => {
-    // localStorage.removeItem("selectedCombomt")
-    // localStorage.removeItem("selectedCombodia")
-    // localStorage.removeItem("selectedCombocs")
+  const handleMenuClick = async (menuItem, param1Item = null, param2Item = null) => {
+    const { param1, param2, ...cleanedMenuItem } = menuItem;
 
-    let menuDataWithoutParam1;
+    let menuDataObj = { ...cleanedMenuItem };
 
-    if (param1Item?.param0dataid) {
-      const { param1, ...menuData } = { ...param1Item, param2Item };
-      menuDataWithoutParam1 = menuData;
-    } else if (param1Item?.param1dataname) {
-      const { param2, ...menuData } = { ...param1Item, ...param2Item };
-      menuData.param0dataid = param1Item.param0dataid;
-      menuDataWithoutParam1 = menuData;
+    if (param1Item) {
+      const { param1, param2, ...cleanedParam1Item } = param1Item;
+      menuDataObj = { ...menuDataObj, ...cleanedParam1Item };
+
+      console.log('Menu Item:', cleanedMenuItem);
+      console.log('Submenu Item:', cleanedParam1Item);
+
+      if (param2Item) {
+        menuDataObj = { ...menuDataObj, ...param2Item };
+        console.log('Second Submenu Item:', param2Item);
+      }
+    } else {
+      console.log('Menu Item:', cleanedMenuItem);
     }
-    console.log('menuDataWithoutParam1', menuDataWithoutParam1);
+
+    console.log('Menu Data Object:', menuDataObj);
 
     let finalData = {
-      menuname: (leval0Data && leval0Data?.menuname) || (menuDataWithoutParam1 && menuDataWithoutParam1?.menuname) || "",
-      FilterKey: (leval0Data && leval0Data.param0name) || (menuDataWithoutParam1 && menuDataWithoutParam1.param0name) || "",
-      FilterVal: (leval0Data && leval0Data.param0dataname) || (menuDataWithoutParam1 && menuDataWithoutParam1.param0dataname) || "",
-      FilterKey1: menuDataWithoutParam1?.param1name ?? "",
-      FilterVal1: menuDataWithoutParam1?.param1dataname ?? "",
-      FilterKey2: menuDataWithoutParam1?.param2name ?? "",
-      FilterVal2: menuDataWithoutParam1?.param2dataname ?? ""
+      menuname: menuDataObj?.menuname ?? "",
+      FilterKey: menuDataObj.param0name ?? "",
+      FilterVal: menuDataObj.param0dataname ?? "",
+      FilterKey1: menuDataObj?.param1name ?? "",
+      FilterVal1: menuDataObj?.param1dataname ?? "",
+      FilterKey2: menuDataObj?.param2name ?? "",
+      FilterVal2: menuDataObj?.param2dataname ?? ""
     }
 
     console.log('finalData', finalData);
-    navigation("/productpage", { state: { menuFlag: true, filtervalue: finalData } })
+    // navigation("/productpage", { state: { menuFlag: true, filtervalue: finalData } })
 
 
     if (finalData) {
@@ -594,12 +638,12 @@ export default function Header() {
       }).then(async (res) => {
         if (res) {
           let autoCodeList = JSON.parse(localStorage.getItem("autoCodeList"))
-          await getDesignPriceList(finalData,1,{},{},autoCodeList).then((res)=>{
-            if(res){
+          await getDesignPriceList(finalData, 1, {}, {}, autoCodeList).then((res) => {
+            if (res) {
               // console.log("test",res);
               localStorage.setItem("getPriceData", JSON.stringify(res))
               // navigation(`/productpage/?${finalData?.FilterKey}=${finalData?.FilterVal}/${finalData?.FilterKey1}=${finalData?.FilterVal1}/${finalData?.FilterKey2}=${finalData?.FilterVal2}`, { state: { menuFlag: finalData?.menuname, filtervalue: finalData } })
-              navigation(`/productpage`, { state: { menuFlag: finalData?.menuname, filtervalue: finalData } })
+                navigation(`/productpage`, { state: { menuFlag: finalData?.menuname, filtervalue: finalData }})
             }
             setTimeout(() => {
               setDrawerOpen(false);
@@ -607,8 +651,8 @@ export default function Header() {
             }, 50)
           })
         }
-      }).catch((err)=>{
-        if(err){
+      }).catch((err) => {
+        if (err) {
           toast.error("Something Went Wrong!!");
         }
       })
@@ -636,7 +680,7 @@ export default function Header() {
   //   setIsDropdownOpen(!isDropdownOpen)
   //   setSelectedData(menuItems[index]?.param1 || []);
   // }
-  console.log('exapndmenu--', expandedMenu);
+  // console.log('exapndmenu--', expandedMenu);
   const [menuItems, setMenuItems] = useState([]);
   useEffect(() => {
     const uniqueMenuIds = [...new Set(menuData?.map(item => item?.menuid))];
@@ -699,8 +743,8 @@ export default function Header() {
     handleMenuClick(menuItemWithoutParam1)
     console.log('MenuItemDtata--', menuItemWithoutParam1);
   };
-  console.log('FinalMenuData--', finalMenuData);
-  console.log('mrnuclicked--', selectedMenu);
+  // console.log('FinalMenuData--', finalMenuData);
+  // console.log('mrnuclicked--', selectedMenu);
   const handleSubMenuClick = (menuItem, subMenuName, subMenuItem, iconclicked) => {
     if (iconclicked == 'iconclicked') {
       setSelectedSubMenu(prevSubMenu => (prevSubMenu === subMenuName ? null : subMenuName));
@@ -819,45 +863,68 @@ export default function Header() {
               onClose={() => setDrawerOpen(false)}
               PaperProps={{ style: { width: drawerWidth, padding: '0px 10px 0px 10px' } }}
             >
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '18px 8px 8px 8px' }}>
+              <div className="smilingMobileSubDivDrawr" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' , marginTop: '3px' }}>
+                <div  className="mobileViewFirstDiv1" style={{display:'flex', alignItems:'center',width: '33.33%'}}>
                 <IconButton onClick={() => setDrawerOpen(false)}>
                   <CloseIcon />
                 </IconButton>
-                <div>
-                  <a href="/" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                    <img src={titleImg} className="MainlogogMobileImages drawermenuImage" style={{ marginTop: '-15px', width: '40%' }} />
+                </div>
+                <div className="mobileViewFirstDiv2Drawer" style={{display:'flex', alignItems:'center',width: '33.33%'}}>
+                  <a className="mobileViewFirstDiv2Drawer" href="/">
+                  {titleImg && <img src={titleImg} className="MainlogogMobileImageDrawer" style={islogin == 'true' ? containerStyle : alternateStyle} /> }
                   </a>
                 </div>
+                <div className="mobileViewFirstDiv3Drawer" style={{display:'flex', alignItems:'center',width: '33.33%' , justifyContent: 'flex-end'}}>
+                <Badge
+                  badgeContent={getWishListCount}
+                  max={1000}
+                  overlap={"rectangular"}
+                  color="secondary"
+                  style={{ marginInline: '15px' }}
+                >
+                  <li
+                    onClick={() => { setDrawerOpen(false); navigation('/myWishList') }}
+                    style={{
+                      marginLeft: "-10px",
+                      cursor: "pointer",
+                      listStyle: 'none',
+                      marginTop: "0px",
+                    }}
+                    sx={{ "& .MuiBadge-badge": { fontSize: 10, height: 20, minWidth: 20, width: 20 } }}
+                  >
+                    <GoHeart color="#7D7F85" fontSize='20px' />
+                  </li>
+                </Badge>
                 <Badge
                   badgeContent={getCartListCount}
                   max={1000}
                   overlap={"rectangular"}
                   color="secondary"
-                  style={{ marginInline: '18px' }}
+                  style={{ marginInline: '15px' }}
+                  sx={{ "& .MuiBadge-badge": { fontSize: 10, height: 20, minWidth: 20, width: 20 } }}
                 >
-                  <Tooltip title="Cart">
-                    <li
-                      onClick={() => { setDrawerOpen(false); navigation('/CartPage') }}
-                      style={{
-                        marginLeft: "-10px",
-                        cursor: "pointer",
-                        listStyle: 'none',
-                        marginTop: "0px",
-                      }}
-                    >
-                      <HiOutlineShoppingBag fontSize='25px' />
-                    </li>
-                  </Tooltip>
+                  <li
+                    onClick={() => { setDrawerOpen(false); navigation('/CartPage') }}
+                    style={{
+                      marginLeft: "-10px",
+                      cursor: "pointer",
+                      listStyle: 'none',
+                      marginTop: "0px",
+                    }}
+                  >
+                    <HiOutlineShoppingBag fontSize='20px' />
+                  </li>
                 </Badge>
                 <li
                   className="nav-li-smining"
                   style={{ cursor: "pointer", marginTop: "0" }}
                   onClick={handleLogout}
                 >
-                  <FaPowerOff style={{ fontSize: '25px' }} />
+                  <FaPowerOff style={{ fontSize: '20px' }} />
                 </li>
+                </div>
               </div>
-              <List sx={{paddingTop:'0', marginBottom: '20px' }}>
+              <List sx={{ paddingTop: '0', marginBottom: '20px' }}>
                 {menuItems.map(menuItem => (
                   <div key={menuItem.menuid}>
                     <ButtonBase
@@ -866,7 +933,7 @@ export default function Header() {
                       className="muilistMenutext"
                       style={{ width: '100%' }}
                     >
-                      <ListItem style={{paddingBottom:'0px'}}>
+                      <ListItem style={{ paddingBottom: '0px' }}>
                         <ListItemText primary={menuItem.menuname} className="muilistMenutext" />
                       </ListItem>
                     </ButtonBase>
@@ -889,7 +956,7 @@ export default function Header() {
                                 onClick={() => handleSubMenuClick(menuItem, subMenuItem.param1dataname, subMenuItem)}
                                 style={{ width: '100%' }}
                               >
-                                <ListItem className="muilistSubMenutext" style={{ paddingLeft: '20px', paddingTop:'0px', paddingBottom:'0px' }}>
+                                <ListItem className="muilistSubMenutext" style={{ paddingLeft: '20px', paddingTop: '0px', paddingBottom: '0px' }}>
                                   <ListItemText primary={subMenuItem.param1dataname} />
                                 </ListItem>
                               </ButtonBase>
@@ -899,16 +966,16 @@ export default function Header() {
                                   {/* <div style={{ paddingLeft: '10px' }}>
                                     <button class="underline-button" onClick={() => handleSubMenuClick(menuItem, subMenuItem.param1dataname, subMenuItem)}>View All</button>
                                   </div> */}
-                                  <List style={{paddingTop:'0px', paddingBottom:'0px'}}>
+                                  <List style={{ paddingTop: '0px', paddingBottom: '0px' }}>
                                     {subMenuItem.param2.map(subSubMenuItem => (
-                                       <ButtonBase
-                                       component="div"
-                                       onClick={() => handleSubSubMenuClick(menuItem, subMenuItem, subSubMenuItem.param2dataname, subSubMenuItem)}
-                                       style={{ width: '100%' }}
-                                     >
-                                      <ListItem key={subSubMenuItem.param2dataid} style={{ paddingLeft: '30px', paddingTop:'0px', paddingBottom:'0px' }}>
-                                        <ListItemText primary={subSubMenuItem.param2dataname} className="muilist2ndSubMenutext" />
-                                      </ListItem>
+                                      <ButtonBase
+                                        component="div"
+                                        onClick={() => handleSubSubMenuClick(menuItem, subMenuItem, subSubMenuItem.param2dataname, subSubMenuItem)}
+                                        style={{ width: '100%' }}
+                                      >
+                                        <ListItem key={subSubMenuItem.param2dataid} style={{ paddingLeft: '30px', paddingTop: '0px', paddingBottom: '0px' }}>
+                                          <ListItemText primary={subSubMenuItem.param2dataname} className="muilist2ndSubMenutext" />
+                                        </ListItem>
                                       </ButtonBase>
                                     ))}
                                   </List>
@@ -935,7 +1002,7 @@ export default function Header() {
                   <CloseIcon />
                 </IconButton>
                 <Link to="/" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                  <img src={titleImg} alt="Title" className="logoImage1" style={{ marginTop: '-32px' }} />
+                {titleImg && <img src={titleImg} alt="Title" className="logoImage1" style={{ marginTop: '-32px' }} />}
                 </Link>
                 <List>
                   <ListItem onClick={() => { setDrawerOpen(false); navigation('/LoginOption') }}>
@@ -1005,8 +1072,8 @@ export default function Header() {
                   >
                     Our Craftsmanship
                   </li>
-                  <a href="/" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '-25px' }}>
-                    <img src={titleImg} alt="Title" className="logoImage1" />
+                  <a href="/" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: lodingLogo ? '-5px' : '-25px'  }}>
+                      {titleImg && <img src={titleImg} alt="Title" className="logoImage1" />}
                   </a>
                   <li
                     className="nav-li-smining"
@@ -1056,13 +1123,13 @@ export default function Header() {
                 className="HeaderMenuItemMainDiv"
               >
                 <a href="/" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '-25px' }}>
-                  <img src={titleImg} alt="Title" className="logoImage1" />
+                {titleImg && <img src={titleImg} alt="Title" className="logoImage1" />}
                 </a>
                 <ul className="nav-ul-shop" style={{ height: '100%', display: 'flex', alignItems: 'center', listStyle: "none", padding: 0 }}>
                   {menuItems.map((item, index) => (
                     <li
                       className="nav-li-smining"
-                      style={{ height: '100%', display: 'flex', alignItems: 'center', cursor: "pointer", marginTop: '10px', textTransform: 'uppercase' }}
+                      style={{ height: '100%', display: 'flex', alignItems: 'center', cursor: "pointer", marginTop: '10px', textTransform: 'uppercase', textDecoration: hoveredIndex === index ? 'underline' : 'none' }}
                       key={index}
                       label={item.menuname}
                       onMouseEnter={() => { setLeval0Data(item); handleMouseEnter(index, item) }}
@@ -1087,11 +1154,11 @@ export default function Header() {
               >
                 <ul className="nav-ul-shop" style={{ marginTop: '24px' }}>
                   <>
-                    {location?.pathname == '/productpage' &&
+                    {/* {location?.pathname == '/productpage' &&
                       <li style={{ cursor: "pointer", textDecoration: 'none', marginTop: '0' }} onClick={toggleOverlay}>
-                        {/* <IoSearch color="#7D7F85" fontSize='25px' /> */}
+                        <IoSearch color="#7D7F85" fontSize='25px' />
                       </li>
-                    }
+                    } */}
                     <Badge
                       badgeContent={getWishListCount}
                       max={1000}
@@ -1157,14 +1224,15 @@ export default function Header() {
                 className="menuDropdownData"
               >
                 <div style={{}}>
+                  {/* {console.log('menuItems--', menuItems[hoveredIndex])} */}
                   {/* Render selectedData outside the menuItems loop */}
                   <div style={{ width: '100%', display: 'flex', gap: '60px', textTransform: 'uppercase' }}>
                     {selectedData?.param1?.map((param1Item, param1Index) => (
                       <div key={param1Index}>
-                        <span onClick={() => handleMenuClick(param1Item)} className="level1MenuData" key={param1Index} style={{ fontSize: '15px', marginBottom: '10px', fontFamily: '"PT Sans", sans-serif', textAlign: 'start', letterSpacing: 1, fontWeight: 600, cursor: 'pointer' }} > {param1Item?.param1dataname}</span>
+                        <span onClick={() => handleMenuClick(menuItems[hoveredIndex], param1Item)} className="level1MenuData" key={param1Index} style={{ fontSize: '15px', marginBottom: '10px', fontFamily: '"PT Sans", sans-serif', textAlign: 'start', letterSpacing: 1, fontWeight: 600, cursor: 'pointer' }} > {param1Item?.param1dataname}</span>
                         <div style={{ height: '300px', display: 'flex', flexWrap: 'wrap', flexDirection: 'column' }}>
                           {param1Item?.param2?.map((param2Item, param2Index) => (
-                            <p className="level2menuData" key={param2Index} onClick={() => handleMenuClick(param1Item, param2Item)} style={{ fontSize: '13.5px', margin: '6px 15px 6px 0px', fontFamily: '"PT Sans", sans-serif', letterSpacing: 0.4, textAlign: 'start', cursor: 'pointer', textTransform: 'capitalize', paddingRight: '15px' }}>
+                            <p className="level2menuData" key={param2Index} onClick={() => handleMenuClick(menuItems[hoveredIndex], param1Item, param2Item)} style={{ fontSize: '13.5px', margin: '6px 15px 6px 0px', fontFamily: '"PT Sans", sans-serif', letterSpacing: 0.4, textAlign: 'start', cursor: 'pointer', textTransform: 'capitalize', paddingRight: '15px' }}>
                               {param2Item?.param2dataname}
                             </p>
                           ))}
@@ -1196,8 +1264,6 @@ export default function Header() {
           style={{
             display: "flex",
             justifyContent: "space-between",
-            // padding: "20px",
-            height: '65px',
             marginInline: '7px'
           }}
           className="smilingMobileSubDiv"
@@ -1215,14 +1281,14 @@ export default function Header() {
               onClick={() => setDrawerOpen(true)}
               aria-label="open menu"
             >
-              <MenuIcon style={{ fontSize: "35px" }} className="mobileViewSmilingTop4Icone"/>
+              <MenuIcon style={{ fontSize: "35px" }} className="mobileViewSmilingTop4Icone" />
             </IconButton>
           </div>
           <div
             className="mobileViewFirstDiv2"
           >
             <a href="/" className="mobileViewFirstDiv2">
-              <img src={titleImg} className="MainlogogMobileImage" style={islogin == 'true' ? containerStyle : alternateStyle} />
+            {titleImg && <img src={titleImg} className="MainlogogMobileImage" style={islogin == 'true' ? containerStyle : alternateStyle} /> }
             </a>
           </div>
           <div
@@ -1314,7 +1380,7 @@ export default function Header() {
                   >
                     <FaPowerOff fontSize='30px' style={{ marginTop: '-5px' }} className="mobileViewSmilingTop4Icone" />
                   </li>
-                    {/* <li
+                  {/* <li
                       className="nav-li-smining"
                       style={{ cursor: "pointer", marginTop: "0" }}
                       onClick={handleLogout}

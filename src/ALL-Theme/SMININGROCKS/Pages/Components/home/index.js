@@ -51,7 +51,7 @@ export default function Home() {
         Authorization: 'Bearer optigo_json_api',
         domain: (window.location.hostname === 'localhost' || window.location.hostname === 'zen') ? 'estore.orail.co.in' : window.location.hostname,
         // domain: 'estore.orail.co.in',
-        version: 'Live',
+        version: 'V7',
         sp: "1"
         // domain: 'zen',
       };
@@ -79,7 +79,12 @@ export default function Home() {
           let companyLogo = response?.data?.Data?.rd[0]?.companylogo
           setTitle(title);
           setFavIcon(favIcon)
-          setCompanyTitleLogo(companyLogo)
+          setCompanyTitleLogo(companyLogo);
+          window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: 'smooth'
+          });
         }
       } catch (error) {
         console.error('Error:', error);
@@ -90,14 +95,14 @@ export default function Home() {
     const getMetalTypeData = async () => {
       try {
         const storedEmail = localStorage.getItem('registerEmail') || '';
-        const storedCustomerId = localStorage.getItem('LogdinCustomerId') || '0';
+        const storedCustomerId = JSON.parse(localStorage.getItem('loginUserDetail'));
 
         const storeInit = JSON.parse(localStorage.getItem('storeInit'));
         const { FrontEnd_RegNo } = storeInit;
         // {"FrontEnd_RegNo":"95oztttesi0o50vr","Customerid":"856"}
 
         const combinedValue = JSON.stringify({
-          FrontEnd_RegNo: `${FrontEnd_RegNo}`, Customerid: `${storedCustomerId}`
+          FrontEnd_RegNo: `${FrontEnd_RegNo}`, Customerid: `${storedCustomerId?.id ?? 0}`
         });
         const encodedCombinedValue = btoa(combinedValue);
         const body = {
@@ -294,6 +299,7 @@ export default function Home() {
   useEffect(() => {
     if (islogin) {
       setIsloginStatus(islogin)
+      window.scrollTo(0, 0);
     }
   }, [])
 

@@ -32,7 +32,7 @@ import { TfiLayoutGrid4Alt } from "react-icons/tfi";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { getDesignPriceList } from "../../../Utils/API/PriceDataApi";
-import { findCsQcId, findDiaQcId, findMetalColor, findMetalType, findMetalTypeId, findValueFromId } from "../../../Utils/globalFunctions/GlobalFunction";
+import { findCsQcId, findDiaQcId, findMetalColor, findMetalType, findMetalTypeId, findValueFromId, storImagePath } from "../../../Utils/globalFunctions/GlobalFunction";
 import ProductListSkeleton from "./ProductListSkelton";
 
 import { Card } from "react-bootstrap";
@@ -140,6 +140,7 @@ const ProductList = () => {
   const [storeInitData, setStoreInitData] = useState({})
   const [currentPage, setCurrentPage] = useState(1)
   const [ListReloadData, setListReloadData] = useState()
+  const [menuParamsState,setMenuParamsState] = useState();
 
   const getMenuTransData = useRecoilValue(menuTransfData)
 
@@ -148,6 +149,8 @@ const ProductList = () => {
   console.log('diaQColOpt', diaQColOpt);
 
   console.log("mttypeoption", mtTypeOption, diaQColOpt, cSQopt);
+
+  console.log("ProductApiData2",ProductApiData2);
 
 
   //   const handelCurrencyData = () =>{
@@ -179,6 +182,14 @@ const ProductList = () => {
   //       }
   //     }
   // }  
+
+  useEffect(()=>{
+
+    let param = JSON.parse(localStorage.getItem("menuparams"))
+
+    setMenuParamsState(param ?? {})
+
+  },[])
 
 
   useEffect(() => {
@@ -233,16 +244,16 @@ const ProductList = () => {
 
     if (loginData?.MetalId !== 0) {
       let metalType = MetalTypeData?.find(item => item?.Metalid == loginData?.MetalId)
-      if(selectedCombomt){
+      if (selectedCombomt) {
         setmtTypeOption(selectedCombomt)
-      }else{
+      } else {
         setmtTypeOption(metalType?.metaltype)
       }
     } else {
-      if(selectedCombomt){
+      if (selectedCombomt) {
         setmtTypeOption(selectedCombomt)
-      }else{
-      setmtTypeOption(MetalTypeData[0]?.metaltype)
+      } else {
+        setmtTypeOption(MetalTypeData[0]?.metaltype)
       }
     }
 
@@ -252,21 +263,22 @@ const ProductList = () => {
 
     let diaQCVar = DimondQualityColor?.find(item => item.QualityId == loginData?.cmboDiaQCid?.split(',')[0] && item.ColorId == loginData?.cmboDiaQCid?.split(',')[1]);
     if (loginData?.cmboDiaQCid !== "0,0") {
-      if(selectedCombodia){
+      if (selectedCombodia) {
         setDiaQColOpt(selectedCombodia)
-      }else{
-      let qualityColor = `${diaQCVar?.Quality}#${diaQCVar?.color}`
-      setDiaQColOpt(qualityColor)
+      } else {
+        let qualityColor = `${diaQCVar?.Quality}#${diaQCVar?.color}`
+        setDiaQColOpt(qualityColor)
       }
     }
     else {
-      if(selectedCombodia){
-        setDiaQColOpt(selectedCombodia)
-      }else{
-      if (DimondQualityColor && DimondQualityColor?.length) {
-        setDiaQColOpt(`${DimondQualityColor[0]?.Quality}#${DimondQualityColor[0]?.color}`)
-      }
-      }
+      setDiaQColOpt("")
+    //   if (selectedCombodia) {
+    //     setDiaQColOpt(selectedCombodia)
+    //   } else {
+    //     if (DimondQualityColor && DimondQualityColor?.length) {
+    //       setDiaQColOpt(`${DimondQualityColor[0]?.Quality}#${DimondQualityColor[0]?.color}`)
+    //     }
+    //   }
     }
 
     // if(selectedCombocs){
@@ -275,21 +287,23 @@ const ProductList = () => {
 
     let csQCVar = ColorStoneQualityColor?.find(item => item?.QualityId === loginData?.cmboCSQCid?.split(',')[0] && item?.ColorId === loginData?.cmboCSQCid?.split(',')[1])
     if (loginData?.cmboCSQCid !== "0,0") {
-      if(selectedCombocs){
+      if (selectedCombocs) {
         setCSQOpt(selectedCombocs)
-      }else{
-      let csQualColor = `${csQCVar?.QualityId}-${csQCVar?.ColorId}`
-      setCSQOpt(csQualColor)
+      } else {
+        let csQualColor = `${csQCVar?.Quality}-${csQCVar?.color}`
+        setCSQOpt(csQualColor)
       }
     }
     else {
-      if(selectedCombocs){
-        setCSQOpt(selectedCombocs)
-      }else{
-      if (ColorStoneQualityColor && ColorStoneQualityColor?.length) {
-        setCSQOpt(`${ColorStoneQualityColor[0].Quality}-${ColorStoneQualityColor[0].color}`)
-      }
-      }
+      setCSQOpt("")
+    //   if (selectedCombocs) {
+    //     setCSQOpt(selectedCombocs)
+    //   } else {
+    //     if (ColorStoneQualityColor && ColorStoneQualityColor?.length) {
+    //       setCSQOpt(`${ColorStoneQualityColor[0].Quality}-${ColorStoneQualityColor[0].color}`)
+    //     }
+    //   }
+
     }
 
     let obj = { "CurrencyRate": loginData?.CurrencyRate, "Currencysymbol": loginData?.Currencysymbol }
@@ -397,6 +411,7 @@ const ProductList = () => {
       setProductApiData2(data)
     }
     if (!prodCount?.length) setProdCount(prodCount)
+    setFilterChecked({})
   }, [getMenuTransData])
 
   useEffect(() => {
@@ -453,7 +468,9 @@ const ProductList = () => {
         let ismrpbase;
         let mrpbaseprice;
 
-        console.log("newPriceData",newPriceData)
+        console.log("newPriceData", newPriceData)
+        console.log("Listprice",product.autocode,newPriceData,newPriceData1,newPriceData2);
+
 
         if (newPriceData || newPriceData1 || newPriceData2) {
           price = (((newPriceData?.V ?? 0) / currData?.CurrencyRate ?? 0) + (newPriceData?.W ?? 0) + (newPriceData?.X ?? 0)) + (newPriceData1 ?? 0) + (newPriceData2 ?? 0);
@@ -485,7 +502,7 @@ const ProductList = () => {
           ...product, price, markup, metalrd, diard1, csrd2, updNWT, updGWT,
           updDWT, updDPCS, updCWT, updCPCS, updMT, updMC,
           diaQ, diaQid,
-          diaC, diaCid, csQ, csQid, csC, csCid,ismrpbase,mrpbaseprice
+          diaC, diaCid, csQ, csQid, csC, csCid, ismrpbase, mrpbaseprice
         }
       }));
 
@@ -493,6 +510,8 @@ const ProductList = () => {
       setProductApiData2(updatedData);
       return true;
     };
+
+    console.log("productPrice",ProductApiData2?.price);
 
     // console.log("calling");
     fetchData().then((res) => {
@@ -917,10 +936,11 @@ const ProductList = () => {
 
 
   const handelProductSubmit = (product) => {
+    console.log("clickedsss",mtTypeOption, diaQColOpt, cSQopt)
     localStorage.setItem("srProductsData", JSON.stringify(product));
-    if (mtTypeOption && diaQColOpt && cSQopt) {
+    // if (mtTypeOption && diaQColOpt && cSQopt) {
       localStorage.setItem("srProdPriceInfo", JSON.stringify({ mtTypeOption, diaQColOpt, cSQopt }))
-    }
+    // }
     navigate("/productdetail");
   };
 
@@ -1097,7 +1117,7 @@ const ProductList = () => {
       output[key] = output[key].slice(0, -2);
     }
 
-    // console.log("activeFilters",output)
+    console.log("activeFilters", output)
 
     console.log("priceDataApi", priceDataApi);
 
@@ -1325,9 +1345,9 @@ const ProductList = () => {
           "Themeid": Number(`${product?.Themeid}`),
           "TitleLine": `${product?.TitleLine}`,
           // "UnitCost": `${product?.price === "Not Available" ? 0 : product?.price}`,
-          "UnitCost": Number(`${product?.price === "Not Available" ? 0 : product?.price}`),
           // "UnitCostWithmarkup": (`${(product?.price === "Not Available" ? 0 : product?.price) + (product?.markup ?? 0)}`),
-          "UnitCostWithmarkup": Number(`${(product?.price === "Not Available" ? 0 : product?.price) + (product?.markup ?? 0)}`),
+          "UnitCost": Number(`${product?.ismrpbase === 1 ? product?.mrpbaseprice : PriceWithMarkupFunction(0, product?.price, currData?.CurrencyRate)?.toFixed(2)}`),
+          "UnitCostWithmarkup": Number(`${product?.ismrpbase === 1 ? product?.mrpbaseprice : PriceWithMarkupFunction(product?.markup, product?.price, currData?.CurrencyRate)?.toFixed(2)}`),
           "autocode": `${product?.autocode}`,
           "colorstonecolorname": `${cSQopt?.split('-')[1] ?? ""}`,
           "colorstonequality": `${cSQopt?.split('-')[0] ?? ""}`,
@@ -1335,8 +1355,8 @@ const ProductList = () => {
           "diamondcolorname": `${diaQColOpt.split("#")[1]}`,
           "diamondpcs": Number(`${product?.updDPCS}`),
           "diamondquality": `${diaQColOpt.split("#")[0]}`,
-          "diamondsetting": `${product?.diamondsetting}`,
-          "diamondshape": `${product?.diamondshape}`,
+          "diamondsetting": `${product?.diamondsetting ?? ""}`,
+          "diamondshape": `${product?.diamondshape ?? ""}`,
           "diamondweight": Number(`${product?.updDWT}`),
           "encrypted_designno": `${product?.encrypted_designno ?? ""}`,
           "hashtagid": Number(`${product?.Hashtagid ?? 0}`),
@@ -1344,7 +1364,7 @@ const ProductList = () => {
           "imagepath": `${globImagePath}`,
           "imgrandomno": `${product?.imgrandomno}`,
           "mediumimage": `${product?.MediumImagePath ?? ""}`,
-          "originalimage": `${product?.OriginalImagePath}`,
+          "originalimage": `${product?.OriginalImagePath ?? ""}`,
           "storyline_html": `${product?.storyline_html ?? ""}`,
           "storyline_video": `${product?.storyline_video ?? ""}`,
           "thumbimage": `${product?.ThumbImagePath ?? ''}`,
@@ -1483,8 +1503,8 @@ const ProductList = () => {
           "ThemeName": `${findValueFromId("theme", product?.Themeid)?.ThemeName}`,
           "Themeid": Number(`${product?.Themeid}`),
           "TitleLine": `${product?.TitleLine}`,
-          "UnitCost": Number(`${product?.price === "Not Available" ? 0 : product?.price}`),
-          "UnitCostWithmarkup": Number(`${(product?.price === "Not Available" ? 0 : product?.price) + (product?.markup ?? 0)}`),
+          "UnitCost": Number(`${product?.ismrpbase === 1 ? product?.mrpbaseprice : PriceWithMarkupFunction(0, product?.price, currData?.CurrencyRate)?.toFixed(2)}`),
+          "UnitCostWithmarkup": Number(`${product?.ismrpbase === 1 ? product?.mrpbaseprice : PriceWithMarkupFunction(product?.markup, product?.price, currData?.CurrencyRate)?.toFixed(2)}`),
           "colorstonecolorname": `${cSQopt?.split('-')[1] ?? ""}`,
           "colorstonequality": `${cSQopt?.split('-')[0] ?? ""}`,
           "diamondcolorname": `${JSON.parse(localStorage.getItem("loginUserDetail"))?.cmboDiaQualityColor.split("#@#")[1]}`,
@@ -1850,10 +1870,14 @@ const ProductList = () => {
     let path = `${designimgfol}${dfoldername}/${imgSize}/${roleoverImage}`
 
     if (roleoverImage.length !== 0) {
+
+
       setHoveredImageUrls(prevHoveredImageUrls => {
         return { ...prevHoveredImageUrls, [index]: path };
       });
+      console.log('hoverimage', hoveredImageUrls[10]);
     }
+
   };
 
   // console.log("prod_img", hoveredImageUrls);
@@ -2151,7 +2175,6 @@ const ProductList = () => {
   useEffect(() => {
     if ((newProData?.length != 0 || ProductApiData2?.length != 0)) {
       setIsProdLoading(true)
-      console.log('first++++');
     } else {
       if (newProData?.length == 0 || ProductApiData2?.length == 0) {
         setTimeout(() => {
@@ -2161,7 +2184,7 @@ const ProductList = () => {
         setIsProdLoading(false);
       }
     }
-  }, [newProData, ProductApiData2, priceDataApi])
+  }, [newProData, ProductApiData2])
 
   console.log('proDcount--', prodCount);
 
@@ -2233,15 +2256,15 @@ const ProductList = () => {
   const ShortcutComboFunc = async (event, type) => {
     if (type === "metal") {
       setmtTypeOption(event)
-      localStorage.setItem("selectedCombomt",JSON.stringify(event))
+      localStorage.setItem("selectedCombomt", JSON.stringify(event))
     }
     if (type === "dia") {
       setDiaQColOpt(event)
-      localStorage.setItem("selectedCombodia",JSON.stringify(event))
+      localStorage.setItem("selectedCombodia", JSON.stringify(event))
     }
     if (type === "cs") {
       setCSQOpt(event)
-      localStorage.setItem("selectedCombocs",JSON.stringify(event))
+      localStorage.setItem("selectedCombocs", JSON.stringify(event))
     }
 
 
@@ -2276,6 +2299,23 @@ const ProductList = () => {
 
 
   const handlePageChange = async (event, value) => {
+    const activeFilters = Object.values(filterChecked).filter(ele => ele.checked);
+
+    const output = {};
+
+    activeFilters.forEach(item => {
+      if (!output[item.type]) {
+        output[item.type] = '';
+      }
+      output[item.type] += `${item.value}, `;
+    });
+
+    for (const key in output) {
+      output[key] = output[key].slice(0, -2);
+    }
+
+    console.log("filterData", output);
+
     setFilterProdLoding(true);
     let param = JSON.parse(localStorage.getItem("menuparams"))
     setCurrentPage(value)
@@ -2290,14 +2330,14 @@ const ProductList = () => {
       window.scroll(0, 0)
     }, 100);
 
-    await productListApiCall(param, value).then((res) => {
+    await productListApiCall(param, value, output).then((res) => {
       if (res) return res
       return res
     }).then(async (res) => {
       if (res) {
         let autoCodeList = JSON.parse(localStorage.getItem("autoCodeList"))
         console.log("priceCall1");
-        await getDesignPriceList(param, value, obj, {}, autoCodeList)
+        await getDesignPriceList(param, value, obj, output, autoCodeList)
         return res
       }
     }).then((res) => {
@@ -2420,9 +2460,9 @@ const ProductList = () => {
                     {DaimondQualityColor.map((data, index) => (
                       <option
                         key={index}
-                        value={`${data.Quality}_${data.color}`}
+                        value={`${data.Quality}-${data.color}`}
                       >
-                        {`${data.Quality}_${data.color}`}
+                        {`${data.Quality}-${data.color}`}
                       </option>
                     ))}
                   </select>
@@ -2459,16 +2499,15 @@ const ProductList = () => {
                   <div className='textContainerData'>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                       <p className="designCounttext" style={{ fontSize: '20px', fontWeight: '500', letterSpacing: '1px', textTransform: 'uppercase' }}>
-                        {location?.state?.filtervalue?.FilterVal2 ? location?.state?.filtervalue?.FilterVal2 : location?.state?.filtervalue?.FilterVal1 ? location?.state?.filtervalue?.FilterVal1 : location?.state?.filtervalue?.menuname}
-                        {' '}
-                        {newProData?.length != 0 || ProductApiData2?.length != 0 ? prodCount : 0} <span style={{ textTransform: 'capitalize' }}>Designs</span>
+                        {/* {location?.state?.filtervalue?.FilterVal2 ? location?.state?.filtervalue?.FilterVal2 : location?.state?.filtervalue?.FilterVal1 ? location?.state?.filtervalue?.FilterVal1 : location?.state?.filtervalue?.menuname} */}
+                        {menuParamsState?.FilterVal2 ? menuParamsState?.FilterVal2 : menuParamsState?.FilterVal1 ? menuParamsState?.FilterVal1 : menuParamsState?.menuname}
+                        &nbsp;{newProData?.length != 0 || ProductApiData2?.length != 0 ? prodCount : 0} <span style={{ textTransform: 'capitalize' }}>Designs</span>
                         <br />
-                        <span style={{ fontSize: '10px' }}>{`${location?.state?.filtervalue?.menuname || ''}${location?.state?.filtervalue?.FilterVal1 ? ` > ${location?.state?.filtervalue?.FilterVal1}` : ''}${location?.state?.filtervalue?.FilterVal2 ? ` > ${location?.state?.filtervalue?.FilterVal2}` : ''}`}</span>
+                        <span style={{ fontSize: '10px' }}>{`${menuParamsState?.menuname || ''}${menuParamsState?.FilterVal1 ? ` > ${menuParamsState?.FilterVal1}` : ''}${menuParamsState?.FilterVal2 ? ` > ${menuParamsState?.FilterVal2}` : ''}`}</span>
                       </p>
                     </div>
-                    <img src={featherImg} className='featherImage' />
+                    <img src={`${storImagePath()}/images/HomePage/MainBanner/image/featuresImage.png`} className='featherImage' />
                   </div>
-
                 </div>
               </div>
               <div className="filterDivcontainer">
@@ -2480,28 +2519,6 @@ const ProductList = () => {
                 </div>
                 <div className="divider"></div>
                 <div className="part" style={{ flex: '20%' }}>
-                  {/* <div className={`custom-select ${isActive ? 'active' : ''}`}>
-                      <button
-                        ref={dropdownRef}
-                        className="select-button"
-                        onClick={toggleDropdown}
-                        aria-haspopup="listbox"
-                        aria-expanded={isActive}
-                      >
-                        <span className="selected-value">{selectedOptionData ? selectedOptionData : 'Featured'}
-                          <SortIcon />
-                        </span>
-                      </button>
-                      {isActive && (
-                        <ul className="select-dropdown">
-                          {options.map((option, index) => (
-                            <li key={index} role="option" onClick={() => handleSortChange(option)}>
-                              <label htmlFor={`option-${index}`}>{option.label}</label>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </div> */}
                   <div
                     style={{
                       display: "flex",
@@ -2525,7 +2542,6 @@ const ProductList = () => {
                   </div>
                 </div>
                 <div className="divider"></div>
-
                 <div className="part" style={{ flex: '20%' }}>
                   {isMetalCutoMizeFlag == 1 && <div
                     style={{
@@ -2589,7 +2605,7 @@ const ProductList = () => {
                 {((isDaimondCstoFlag == 1) && (productData?.diamondweight !== 0 || productData?.diamondpcs !== 0)) &&
                   <div className="divider"></div>}
 
-                {isCColrStoneCustFlag === 1 &&
+                {isCColrStoneCustFlag === 1 && DaimondQualityColor?.length !== 0 &&
                   <div className="part" style={{ flex: '20%' }}>
                     <div
                       style={{
@@ -2611,9 +2627,9 @@ const ProductList = () => {
                         {DaimondQualityColor.map((data, index) => (
                           <option
                             key={index}
-                            value={`${data.Quality}_${data.color}`}
+                            value={`${data.Quality}-${data.color}`}
                           >
-                            {`${data.Quality}_${data.color}`}
+                            {`${data.Quality}-${data.color}`}
                           </option>
                         ))}
                       </select>
@@ -2973,182 +2989,184 @@ const ProductList = () => {
                                     ${show4ImagesView ? "smilingAllProductDataMainMobileShow4Image" : ""}`}>
                             {/* RollOverImageName */}
                             {/* {(newProData.length ? newProData : finalDataOfDisplaying())?.map((products, i) => ( */}
-                            {(rangeProData.length ? rangeProData : (newProData?.length ? newProData : ProductApiData2))?.map((products, i) => 
-                               (
-                                <div className={`main-ProdcutListConatiner
+                            {(rangeProData.length ? rangeProData : (newProData?.length ? newProData : ProductApiData2))?.map((products, i) =>
+                            (
+                              <div className={`main-ProdcutListConatiner
                       ${show2ImagesView ? "main-ProdcutListConatiner2ImageShow" : ""}
                       ${show4ImagesView ? "main-ProdcutListConatiner4ImageShow" : ""}`}
-                                >
-                                  <div className={`listing-card
+                              >
+                                <div className={`listing-card
                           ${show2ImagesView ? "listing-cardShow2Image" : ""}
                           ${show4ImagesView ? "listing-cardShow4Image" : ""}`} >
-                                    <div className="listing-image">
-                                      {products?.designno === "S24705E" && <p id="labelTag_0002388" className="instockP">IN STOCK</p>}
-                                      {products?.designno === "S24705" && <p id="labelTag_0002388" className="instockP">IN STOCK</p>}
-                                      {products?.designno === "MCJ2" && <p id="labelTag_0002388" className="instockP">IN STOCK</p>}
-                                   
-                                      <div>
-                                        <img
-                                          className={`${isShowfilter ? "prod_img" : "prod_imgFiletrHide"}
-                                ${show2ImagesView ?
-                                              isShowfilter ?
-                                                "prod_img2" : "prod_img2FiletrHider" : ""}
-                                ${show4ImagesView ? "prod_img4" : ""}`}
-                                          src={
-                                            hoveredImageUrls[i] ? hoveredImageUrls[i] : updatedColorImage[i] ? updatedColorImage[i] :
-                                              (storeInitData ?
-                                                `${storeInitData?.DesignImageFol}${products?.DesignFolderName}/${storeInitData?.ImgMe}/${products?.DefaultImageName}`
-                                                :
-                                                notFound)
-                                          }
-                                          // src={
-                                          //   hoveredImageUrls[i] ? hoveredImageUrls[i] : updatedColorImage[i] ? updatedColorImage[i] :
-                                          //     (products?.MediumImagePath ?
-                                          //       (globImagePath + products?.MediumImagePath?.split(",")[0])
-                                          //       :
-                                          //       notFound)
-                                          // }
-                                          onMouseEnter={() => handleHoverImageShow(i, storeInitData?.DesignImageFol, products?.DesignFolderName, storeInitData?.ImgMe, products?.RollOverImageName)}
-                                          // onMouseEnter={() => handleHoverImageShow(products?.MediumImagePath?.split(",")[0], i, products?.RollOverImageName, globImagePath)}
-                                          // onMouseEnter={() => handleHoverImageShow(products?.MediumImagePath?.split(",")[0], i, isColorWiseImageShow === 1 ? products?.ColorWiseRollOverImageName : products?.RollOverImageName, products?.imagepath)}
-                                          onMouseLeave={() => handleMouseLeave(i)}
-                                          style={{ objectFit: 'cover' }}
-                                          alt="#"
-                                          onError={(e) => {
-                                            e.target.src = notFound;
-                                          }}
-                                          onClick={() => handelProductSubmit(products)}
-                                        />
-                                        <Button className="cart-icon">
-                                          <Checkbox
-                                            icon={
-                                              <LocalMallOutlinedIcon
-                                                sx={{ fontSize: "22px", color: "#7d7f85", opacity: '.7' }}
-                                              />
-                                            }
-                                            checkedIcon={
-                                              <LocalMallIcon
-                                                sx={{ fontSize: "22px", color: "#009500" }}
-                                              />
-                                            }
-                                            disableRipple={true}
-                                            sx={{ padding: "5px" }}
+                                  <div className="listing-image">
+                                    {products?.designno === "S24705E" && <p id="labelTag_0002388" className="instockP">IN STOCK</p>}
+                                    {products?.designno === "S24705" && <p id="labelTag_0002388" className="instockP">IN STOCK</p>}
+                                    {products?.designno === "MCJ2" && <p id="labelTag_0002388" className="instockP">IN STOCK</p>}
 
-                                            checked={products?.checkFlag}
-                                            onChange={(e) => handelCartList(e, products)}
-                                          />
-                                        </Button>
-                                        <Button className="wishlist-icon">
-                                          <Checkbox
-                                            icon={
-                                              <FavoriteBorderIcon
-                                                sx={{ fontSize: "22px", color: "#7d7f85", opacity: '.7' }}
-                                              />
-                                            }
-                                            checkedIcon={
-                                              <FavoriteIcon
-                                                sx={{ fontSize: "22px", color: "#e31b23" }}
-                                              />
-                                            }
-                                            disableRipple={true}
-                                            sx={{ padding: "5px" }}
-
-                                            checked={products?.wishCheck}
-                                            onChange={(e) => handelWishList(e, products)}
-                                          />
-                                        </Button>
-                                      </div>
-                                    </div>
-                                    <div className={show4ImagesView ? 'listing4-details' : "listing-details"} onClick={() => handelProductSubmit(products)}>
-                                      <p className={show4ImagesView ? "productDetails property4-type" : "productDetails property-type"} style={{ textAlign: 'center', margin: '5px' }}>
-                                        {products?.TitleLine}
-                                      </p>
-                                    </div>
-                                    <div className={show4ImagesView ? "listing-features4" : "listing-features"}>
-                                      <div>
-                                        {ismetalWShow === 1 &&
-                                          <div className={show4ImagesView ? "feature4" : 'feature'}>
-                                            <p>
-                                              <span className="feature-count">NWT :
-                                              </span> {parseFloat(products?.updNWT).toFixed(2)}
-                                            </p>
-                                          </div>
-                                        }
-
-                                        {(isDaaimongWShow === 1 && (products?.diamondweight !== 0 || products?.diamondpcs !== 0)) &&
-                                          <div className={show4ImagesView ? "feature4" : 'feature'}>
-                                            <p>
-                                              <span className="feature-count">DWT : </span>
-                                              {(isDaaimongWShow === 1 && products?.diamondweight !== 0) && products?.updDWT + '/'}  {(isDaaimonPShow === 1 && products?.diamondpcs !== 0) && products?.updDPCS}</p>
-                                          </div>
-                                        }
-
-                                        {isGrossWShow === 1 &&
-                                          <div className={show4ImagesView ? "feature4" : 'feature'}>
-                                            <p>
-                                              <span className="feature-count">GWT : </span> {parseFloat(products?.updGWT).toFixed(2)}
-                                            </p>
-                                          </div>
-                                        }
-                                      </div>
-                                      {/* <div className="mobileDeatilDiv2" style={{ display: 'flex', justifyContent: 'center', height: '20px' }}> */}
-
-
-                                      {/* <div className="mobileDeatilDiv2" style={{ display: 'flex', justifyContent: 'center', height: '20px' }}>
-                                        {((isDaaimongWShow || isDaaimongWShow) === 1 && (products?.diamondweight !== 0 || products?.diamondpcs !== 0)) && <div>
-                                          <p style={{ margin: '0px', fontSize: '13px' }}>DWT : <span style={{ fontWeight: 600, marginRight: '10px' }}>{(isDaaimongWShow === 1 && products?.diamondweight !== 0) && products?.updDWT + '/'}  {(isDaaimonPShow === 1 && products?.diamondpcs !== 0) && products?.updDPCS}</span></p>
-                                        </div>
-
-                                        } */}
-
-                                   
-                                      {/* </div> */}
-
-                                      <div>
-                                        <div className={show4ImagesView ? "feature4" : 'feature'}>
-                                          <p>
-                                            <span className="feature-count">{products?.designno}</span>
-                                          </p>
-                                        </div>
-                                        {((isStoneWShow || isStonePShow) === 1 && (products?.totalcolorstoneweight !== 0 || products?.totalcolorstonepcs !== 0)) &&
-                                        <div className={show4ImagesView ? "feature4" : 'feature'}>
-                                          <p>
-                                            <span className="feature-count">CWT :</span>
-                                            {(isStoneWShow === 1 && products?.totalcolorstoneweight !== 0) && (products?.updCWT).toFixed(2) +  '/'}  {(isStonePShow === 1 && products?.totalcolorstonepcs !== 0) && products?.updCPCS}
-                                          </p>
-                                        </div>
-                                      }
-                                        <p style={{ display: 'flex', margin: '0px' }}>
-                                          {/* {products?.MetalTypeName} - */}
-                                          {/* {isMetalTCShow === 1 && <span>
-                                  {products?.updMC} -
-                                  {products?.updMT} /
-                                </span>} */}
-                                        {isPriceShow === 1 &&
-                                          <div className={show4ImagesView ? "feature4" : 'feature'}>
-                                            <p>
-                                              <span className="property-type" style={{ display: 'flex' }}>
-                                                <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />
-                                                {products?.ismrpbase === 1 ? products?.mrpbaseprice  : PriceWithMarkupFunction(products?.markup, products?.price, currData?.CurrencyRate)?.toFixed(2)}
-                                                </span>
-                                            </p>
-                                          </div>
-                                        }
-
-                                        </p>
-                                      </div>
-                                    </div>
                                     <div>
-                                      <p className="property-type" style={{ margin: '0px 0px 10px 0px' }}>
-                                        {isMetalTCShow === 1 && <span>
+                                      <img
+                                        className={`${isShowfilter ? "prod_img" : "prod_imgFiletrHide"}
+                                ${show2ImagesView ?
+                                            isShowfilter ?
+                                              "prod_img2" : "prod_img2FiletrHider" : ""}
+                                ${show4ImagesView ? "prod_img4" : ""}`}
+                                        src={
+                                          hoveredImageUrls[i] ? hoveredImageUrls[i] : updatedColorImage[i] ? updatedColorImage[i] :
+                                            (storeInitData ?
+                                              `${storeInitData?.DesignImageFol}${products?.DesignFolderName}/${storeInitData?.ImgMe}/${products?.DefaultImageName}`
+                                              :
+                                              notFound)
+                                        }
+                                        // src={
+                                        //   hoveredImageUrls[i] ? hoveredImageUrls[i] : updatedColorImage[i] ? updatedColorImage[i] :
+                                        //     (products?.MediumImagePath ?
+                                        //       (globImagePath + products?.MediumImagePath?.split(",")[0])
+                                        //       :
+                                        //       notFound)
+                                        // }
+                                        onMouseEnter={() => handleHoverImageShow(i, storeInitData?.DesignImageFol, products?.DesignFolderName, storeInitData?.ImgMe, products?.RollOverImageName)}
+                                        // onMouseEnter={() => handleHoverImageShow(products?.MediumImagePath?.split(",")[0], i, products?.RollOverImageName, globImagePath)}
+                                        // onMouseEnter={() => handleHoverImageShow(products?.MediumImagePath?.split(",")[0], i, isColorWiseImageShow === 1 ? products?.ColorWiseRollOverImageName : products?.RollOverImageName, products?.imagepath)}
+                                        onMouseLeave={() => handleMouseLeave(i)}
+                                        style={{ objectFit: 'cover' }}
+                                        alt="#"
+                                        onError={(e) => {
+                                          e.target.src = notFound;
+                                        }}
+                                        onClick={() => handelProductSubmit(products)}
+                                      />
+                                      <Button className="cart-icon">
+                                        <Checkbox
+                                          icon={
+                                            <LocalMallOutlinedIcon
+                                              sx={{ fontSize: "22px", color: "#7d7f85", opacity: '.7' }}
+                                            />
+                                          }
+                                          checkedIcon={
+                                            <LocalMallIcon
+                                              sx={{ fontSize: "22px", color: "#009500" }}
+                                            />
+                                          }
+                                          disableRipple={true}
+                                          sx={{ padding: "5px" }}
+
+                                          checked={products?.checkFlag}
+                                          onChange={(e) => handelCartList(e, products)}
+                                        />
+                                      </Button>
+                                      <Button className="wishlist-icon">
+                                        <Checkbox
+                                          icon={
+                                            <FavoriteBorderIcon
+                                              sx={{ fontSize: "22px", color: "#7d7f85", opacity: '.7' }}
+                                            />
+                                          }
+                                          checkedIcon={
+                                            <FavoriteIcon
+                                              sx={{ fontSize: "22px", color: "#e31b23" }}
+                                            />
+                                          }
+                                          disableRipple={true}
+                                          sx={{ padding: "5px" }}
+
+                                          checked={products?.wishCheck}
+                                          onChange={(e) => handelWishList(e, products)}
+                                        />
+                                      </Button>
+                                    </div>
+                                  </div>
+                                  <div className={show4ImagesView ? 'listing4-details' : "listing-details"} onClick={() => handelProductSubmit(products)}>
+                                    <p className={show4ImagesView ? "productDetails property4-type" : "productDetails property-type"} style={{ textAlign: 'center', margin: '0px 5px 0px 5px' }}>
+                                      {products?.TitleLine}{products?.designno === 'NG101005' && 'cxxxxxxxxx cxzzzzzzzzzzz dssssssssssssss dffsfsfsfffsfs'}
+                                    </p>
+                                    <div>
+                                      <p className="property-type" style={{ margin: '0px' , textAlign: 'center' }}>
+                                        {isMetalTCShow === 1 && <span style={{fontSize: '12px'}}>
                                           {products?.updMC} -
                                           {products?.updMT}
                                         </span>}
                                       </p>
                                     </div>
                                   </div>
+                                  <div className={show4ImagesView ? "listing-features4" : "listing-features"} style={{ marginLeft: '2px' }}>
+                                    <div>
+                                      {ismetalWShow === 1 &&
+                                        <div className={show4ImagesView ? "feature4" : 'feature'}>
+                                          <p style={{margin: '0px'}}>
+                                            <span className="feature-count">NWT :
+                                            </span> {parseFloat(products?.updNWT).toFixed(2)}
+                                          </p>
+                                        </div>
+                                      }
+
+                                      {(isDaaimongWShow === 1 && (products?.diamondweight !== 0 || products?.diamondpcs !== 0)) &&
+                                        <div className={show4ImagesView ? "feature4" : 'feature'}>
+                                          <p style={{margin: '0px'}}>
+                                            <span className="feature-count">DWT : </span>
+                                            {(isDaaimongWShow === 1 && products?.diamondweight !== 0) && products?.updDWT + '/'}  {(isDaaimonPShow === 1 && products?.diamondpcs !== 0) && products?.updDPCS}</p>
+                                        </div>
+                                      }
+
+                                      {isGrossWShow === 1 &&
+                                        <div className={show4ImagesView ? "feature4" : 'feature'}>
+                                          <p style={{margin: '0px'}}>
+                                            <span className="feature-count">GWT : </span> {parseFloat(products?.updGWT).toFixed(3)}
+                                          </p>
+                                        </div>
+                                      }
+
+                                      {((isStoneWShow || isStonePShow) === 1 && (products?.totalcolorstoneweight !== 0 || products?.totalcolorstonepcs !== 0)) &&
+                                        <div className={show4ImagesView ? "feature4" : 'feature'}>
+                                          <p style={{margin: '0px'}}>
+                                            <span className="feature-count">CWT :</span>
+                                            {(isStoneWShow === 1 && products?.totalcolorstoneweight !== 0) && (Number(products?.updCWT ?? 0)).toFixed(3) + '/'}  {(isStonePShow === 1 && products?.totalcolorstonepcs !== 0) && products?.updCPCS}
+                                          </p>
+                                        </div>
+                                      }
+                                    </div>
+                                    {/* <div className="mobileDeatilDiv2" style={{ display: 'flex', justifyContent: 'center', height: '20px' }}> */}
+
+
+                                    {/* <div className="mobileDeatilDiv2" style={{ display: 'flex', justifyContent: 'center', height: '20px' }}>
+                                        {((isDaaimongWShow || isDaaimongWShow) === 1 && (products?.diamondweight !== 0 || products?.diamondpcs !== 0)) && <div>
+                                          <p style={{ margin: '0px', fontSize: '13px' }}>DWT : <span style={{ fontWeight: 600, marginRight: '10px' }}>{(isDaaimongWShow === 1 && products?.diamondweight !== 0) && products?.updDWT + '/'}  {(isDaaimonPShow === 1 && products?.diamondpcs !== 0) && products?.updDPCS}</span></p>
+                                        </div>
+
+                                        } */}
+
+
+                                    {/* </div> */}
+
+                                    <div>
+                                      <div className={show4ImagesView ? "feature4" : 'feature'}>
+                                        <p style={{margin: '0px' , fontSize: '15px'}}>
+                                          <span className="feature-count">{products?.designno}</span>
+                                        </p>
+                                      </div>
+
+                                      <p style={{ display: 'flex', margin: '0px' }}>
+                                        {/* {products?.MetalTypeName} - */}
+                                        {/* {isMetalTCShow === 1 && <span>
+                                  {products?.updMC} -
+                                  {products?.updMT} /
+                                </span>} */}
+                                        {isPriceShow === 1 &&
+                                          <div className={show4ImagesView ? "feature4" : 'feature'}>
+                                            <p style={{margin: '0px', fontSize: '15px'}}>
+                                              <span className="property-type" style={{ display: 'flex' ,fontSize: '15px', fontWeight: 600 }}>
+                                                <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />
+                                                {products?.ismrpbase === 1 ? products?.mrpbaseprice : PriceWithMarkupFunction(products?.markup, products?.price, currData?.CurrencyRate)?.toFixed(2)}
+                                              </span>
+                                            </p>
+                                          </div>
+                                        }
+                                      </p>
+                                    </div>
+                                  </div>
+
                                 </div>
-                              )
+                              </div>
+                            )
                             )}
                           </div>
                         ) :
@@ -3164,8 +3182,9 @@ const ProductList = () => {
                     }
                   </div>
                 </div>
-                {newProData?.length != 0 || ProductApiData2?.length != 0 && <div style={{ display: 'flex', width: '100%', justifyContent: 'center', marginTop: '100px', marginBottom: '50px' }}>
-                  <Pagination count={Math.ceil(prodCount / prodPageSize)} onChange={handlePageChange} />
+                {(newProData?.length != 0 || ProductApiData2?.length != 0) && <div style={{ display: 'flex', width: '100%', justifyContent: 'center', marginTop: '100px', marginBottom: '50px' }}>
+                  {!((prodCount / prodPageSize) < 1) && <Pagination count={Math.ceil(prodCount / prodPageSize)} onChange={handlePageChange} />}
+                  {console.log("pagination", (prodCount / prodPageSize) < 1)}
                 </div>}
                 {/* <SmilingRock /> */}
                 {/* <Footer /> */}

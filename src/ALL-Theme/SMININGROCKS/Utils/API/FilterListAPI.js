@@ -9,8 +9,8 @@ export const FilterListAPI = async(param) =>{
     let userEmail = localStorage.getItem("userEmailForPdList")
 
     let encodedFilter = {
-        "FilterKey":'',
-        "FilterVal":'',
+        "FilterKey":`${param?.FilterKey}`,
+        "FilterVal":`${param?.FilterVal}`,
         "FilterKey1":`${param?.FilterKey1}`,
         "FilterVal1":`${param?.FilterVal1}`,
         "FilterKey2":`${param?.FilterKey2}`,

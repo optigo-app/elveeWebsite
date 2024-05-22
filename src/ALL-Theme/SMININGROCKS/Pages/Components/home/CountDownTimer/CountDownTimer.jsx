@@ -4,10 +4,12 @@ import featherImg from '../../../assets/LV Feather.png';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { loginState } from '../../../../../../Recoil/atom';
+import { storImagePath } from '../../../../Utils/globalFunctions/GlobalFunction';
 
 const TwoPartDiv = () => {
     const navigation = useNavigate();
     const [showTimer, setShowTimer] = useState(true);
+    const [checkTimeStatus, setShowTimeStatus] = useState();
     const setIsLoginState = useSetRecoilState(loginState)
     const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0 });
     const [startDateData, setStartDateData] = useState();
@@ -17,6 +19,7 @@ const TwoPartDiv = () => {
         const storedData = JSON.parse(localStorage.getItem('loginUserDetail')) || {};
         const entryDate = storedData.adhoc_startdate1;
         const expiryDate = storedData.adhoc_enddate1;
+        setShowTimeStatus(storedData?.IsTimeShow)
 
         if (entryDate && expiryDate) {
             setStartDateData(entryDate);
@@ -56,9 +59,9 @@ const TwoPartDiv = () => {
     }
 
     useEffect(() => {
-        if (countdown.days == 0 && countdown.hours == 0 && countdown.minutes == 0) {
-            setShowTimer(false);
-            // handleLogout();
+        if (countdown.days == 0 && countdown.hours == 0 && countdown.minutes == 0 && checkTimeStatus == 0) {
+                handleLogout();
+                setShowTimer(false);
         }
     }, [countdown]);
 
@@ -107,7 +110,7 @@ const TwoPartDiv = () => {
                         </span>
                         <span className='Logo'>
                             <p className='ptitle'>
-                                <img className='featherImg' src={featherImg} style={{ width: '100%', height: '20vh', objectFit: 'cover' }} alt="feather" />
+                                <img className='featherImg' src={`${storImagePath()}/images/HomePage/MainBanner/image/featuresImage.png`} style={{ width: '100%', height: '20vh', objectFit: 'cover' }} alt="feather" />
                             </p>
                         </span>
                     </div>

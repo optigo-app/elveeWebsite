@@ -1,51 +1,23 @@
 import { CommonAPI } from "./CommonAPI";
 
-export const getDesignPriceList = async (param,page=1,obj={},filterObj={},autocodeList) => {
+export const SearchPriceDataAPI = async (autocodeList,searchVar) => {
 
   const storeInit = JSON.parse(localStorage.getItem("storeInit"))
   const loginUserDetail = JSON.parse(localStorage.getItem("loginUserDetail"));
+  const colorStone = JSON.parse(localStorage.getItem("ColorStoneQualityColor"));
+  const diaColQuality = JSON.parse(localStorage.getItem("QualityColor"));
   const UserEmail = localStorage.getItem("registerEmail")
 
-  let mtid =  obj?.mt ?? loginUserDetail?.MetalId
-  let diaqcId = obj?.dqc?.length > 0  && obj?.dqc[0] !== undefined && obj?.dqc[1] !== undefined ? `${obj?.dqc[0]},${obj?.dqc[1]}` :loginUserDetail?.cmboDiaQCid
-  let csqcId = obj?.csqc?.length > 0 && obj?.csqc[0] !== undefined && obj?.csqc[1] !== undefined ? `${obj?.csqc[0]},${obj?.csqc[1]}` :loginUserDetail?.cmboCSQCid
-  
-  console.log("mtid",obj?.mt,diaqcId,csqcId)
-  
-  
+  let metalTypeArr = JSON.parse(localStorage.getItem("MetalTypeData"))
+  let item = metalTypeArr.filter(item => item?.metaltype === loginUserDetail?.cmboMetalType)
+
   let encodedFilter = {
-    "DesignNo":"",
-    "FilterKey":`${param?.FilterKey}`,
-    "FilterVal":`${param?.FilterVal}`,
-    // "FilterKey":'',
-    // "FilterVal":'',
-    "FilterKey1":`${param?.FilterKey1}`,
-    "FilterVal1":`${param?.FilterVal1}`,
-    "FilterKey2":`${param?.FilterKey2}`,
-    "FilterVal2":`${param?.FilterVal2}`,
-    "PageNo":`${page}`,
-    "PageSize":`${storeInit?.PageSize}`,
-    "Metalid":`${mtid}`,
-    "DiaQCid":`${diaqcId}`,
-    "CsQCid":`${csqcId}`,
-    "IsFromDesDet":"0",
-    "Collectionid": `${filterObj?.Collectionid ?? ""}`,
-    "Categoryid": `${filterObj?.Categoryid ?? ""}`,
-    "SubCategoryid": `${filterObj?.SubCategoryid ?? ""}`,
-    "Brandid": `${filterObj?.Brandid ?? ""}`,
-    "Genderid": `${filterObj?.Genderid ?? ""}`,
-    "Ocassionid": `${filterObj?.Ocassionid ?? ""}`,
-    "Themeid": `${filterObj?.Themeid ?? ""}`,
-    "Min_DiaWeight": '',
-    "Max_DiaWeight": '',
-    "Min_GrossWeight": '',
-    "Max_GrossWeight": '',
-    "Max_NetWt": '',
-    "Min_NetWt": '',
-    "Max_Price": '',
-    "Min_Price": '',
-    "Producttypeid": `${filterObj?.Producttypeid ?? ""}`,
-    "AutoCodeList":`${autocodeList}`,
+    "PageNo":1,
+    "Metalid":`${item[0]?.Metalid}`,
+    "DiaQCid":`${loginUserDetail?.cmboDiaQCid === "0,0" ? `${diaColQuality[0]?.QualityId},${diaColQuality[0]?.ColorId}`:loginUserDetail?.cmboDiaQCid}`,
+    "CsQCid":`${loginUserDetail?.cmboCSQCid === "0,0" ? `${colorStone[0]?.QualityId},${colorStone[0]?.ColorId}`: loginUserDetail?.cmboCSQCid}`,
+    "SearchKey":`${searchVar}`,
+    "AutoCodeList":`${autocodeList}`
   }
 
   console.log("log11",encodedFilter)
@@ -82,6 +54,8 @@ export const getDesignPriceList = async (param,page=1,obj={},filterObj={},autoco
     }
     //   setpriceDataApi(res?.Data)
   })
+
+  console.log("searchPriceData",finalData);
 
   return finalData
 

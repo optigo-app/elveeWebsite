@@ -54,23 +54,27 @@ export default function App() {
         breakpoints={{
           640: {
             slidesPerView: 2,
-            spaceBetween: 20,
+            spaceBetween: 0,
           },
           768: {
             slidesPerView: 4,
-            spaceBetween: 40,
+            spaceBetween: 0,
           },
           1024: {
             slidesPerView: 5,
-            spaceBetween: 50,
+            spaceBetween: 0,
+          },
+          1240: {
+            slidesPerView: 4,
+            spaceBetween: 0,
           },
         }}
         modules={[Pagination]}
         className="mySwiper"
       >
         {sliderData.map((slide, index) => (
-          <SwiperSlide key={index} style={{ marginRight: '10px' }}>
-            <img src={storImagePath() + slide.imageUrl} alt={`Slide ${index}`} />
+          <SwiperSlide key={index} style={{ marginRight: '0px' }}>
+            <img src={storImagePath() + slide.imageUrl} alt={`Slide ${index}`} style={{objectFit:'contain', width:'100%'}} />
           </SwiperSlide>
         ))}
       </Swiper>
