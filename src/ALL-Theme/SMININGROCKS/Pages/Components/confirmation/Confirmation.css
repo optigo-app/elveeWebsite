@@ -27,3 +27,10 @@
     font-weight: 500;
     border-radius: 5px;
 }
+
+@media screen and (max-width: 1000px) {
+
+    .mobileFooter{
+        bottom: auto!important;
+    }
+}

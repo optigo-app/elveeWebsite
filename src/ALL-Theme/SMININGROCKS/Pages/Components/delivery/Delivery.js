@@ -567,22 +567,22 @@ export default function Delivery() {
                             <div class="overlay"></div>
                             <div class="text-container">
                                 <div className='textContainerData'>
-                                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' , flexDirection: 'column'}}>
+                                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
                                         <p className="designCounttext" style={{ fontSize: '30px', fontWeight: '500', letterSpacing: '1px', textTransform: 'uppercase' }}>
                                             Delivery
                                         </p>
-                                        <span style={{ fontSize: '10px' , marginLeft: '0px' }}>My Cart &gt; Delivery</span>
+                                        <span style={{ fontSize: '10px', marginLeft: '0px' }}>My Cart &gt; Delivery</span>
                                     </div>
                                     <img src={`${storImagePath()}/images/HomePage/MainBanner/image/featuresImage.png`} className='featherImage' />
                                 </div>
                             </div>
                         </div>
 
-                        <div className="filterDivcontainer" style={{ width: '100%', height: '60px' }}>
-                            <div className="partCart" style={{ flex: '20%' }}>
-                                <span style={{ color: '#7d7f85', fontWeight: '500', fontSize: '16px', }}>{addressData?.length} Address</span>
+                        <div className="filterDivcontainerDelivery" style={{ width: '100%', height: '60px' }}>
+                            <div className="partCart showAddressTotal" style={{ flex: '20%' }}>
+                                <span style={{ color: '#7d7f85', fontWeight: '500', fontSize: '16px',cursor:'pointer', textDecoration: 'underline' }}>Back</span>
                             </div>
-                            <div className="divider"></div>
+                            <div className="divider showAddressTotal"></div>
 
                             <div className="partCart" style={{ flex: '20%' }}>
                                 <p className='cartPageTopLink' onClick={handleOpen}>Add New Address</p>
@@ -590,22 +590,18 @@ export default function Delivery() {
 
                             <div className="divider"></div>
 
-                            <div className="partCart" style={{ flex: '20%' }}>
+                            <div className="partCart BlackBoxTopHeader" style={{ flex: '20%' }}>
                                 <div style={{ display: 'flex', }}>
-                                    {/* <p
-                                        className="cartPageTopLink"
-                                    >
-                                        Clear All
-                                    </p> */}
+                                    <span style={{ color: '#7d7f85', fontWeight: '500', fontSize: '16px', }}>{addressData?.length} Address</span>
                                 </div>
                             </div>
 
-                            <div className="divider"></div>
+                            <div className="divider BlackBoxTopHeader"></div>
 
-                            <div className="partCart" style={{ flex: '20%' }}>
+                            <div className="partCart BlackBoxTopHeader" style={{ flex: '20%' }}>
                                 {/* <p style={{ margin: '0px 10px', fontSize: '16px', fontWeight: 600, cursor: 'pointer', color: '#7d7f85', textDecoration: 'underline' }} onClick={handleClickOpenOrderRemark}>{cartSelectData?.OrderRemarks ? 'View & Edit Remark' : 'Add Order Remark'}</p> */}
                             </div>
-                            <div className="divider"></div>
+                            <div className="divider BlackBoxTopHeader"></div>
 
                             <div className="partCart" style={{ flex: '20%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                 <Button
@@ -626,7 +622,7 @@ export default function Delivery() {
                         <p style={{ fontFamily: 'PT Sans, sans-serif' }}>Order Will be delivered to selected address</p>
                         <div className='smilingMobileDeliveryBtnMainMobilee'>
                         </div>
-                        <div className='smilingDeliveyAddressMain' style={{ display: 'flex', flexWrap: 'wrap' , marginBottom:'200px' }}>
+                        <div className='smilingDeliveyAddressMain' style={{ display: 'flex', flexWrap: 'wrap', marginBottom: '200px' }}>
                             {
                                 addressData?.map((item, index) => (
                                     <div key={item.id} className='AddressMain' style={{ backgroundColor: item.isdefault === 1 && 'rgb(245 244 244)' }} onClick={() => handleDefaultSelection(item.id)}>
@@ -673,11 +669,11 @@ export default function Delivery() {
                 <Footer />
             </div>
 
-            {!isLoading &&
+            {/* {!isLoading &&
                 <div className='smilingMobileDeliveryBtnMainMobile'>
                     <button className='smilingAddToAddressMBtn' onClick={handleContinue}>Continue</button>
                 </div>
-            }
+            } */}
         </div>
     )
 }
