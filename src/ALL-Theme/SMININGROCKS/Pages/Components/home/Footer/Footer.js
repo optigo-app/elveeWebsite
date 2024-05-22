@@ -109,7 +109,7 @@ export default function Footer() {
                                 </p>
                                 <p className="footerOfficeDesc" style={{ fontFamily: 'PT Sans, sans-serif' }}>
                                     <IoMdCall />
-                                    +91 2616105100
+                                    +91 2616105100  
                                 </p>
                                 <p className='footerOfficeDesc' style={{ fontFamily: 'PT Sans, sans-serif' }}>
                                     <IoMdMail />
