@@ -47,17 +47,19 @@
   }
 
   
-@media screen and (max-width: 1440px) {
+  @media screen and (max-width: 1440px) {
 
-    .homeMain {
-        /* margin-inline: 2%; */
+    /* .homeMain {
+        margin-inline: 2%;
 
-    }
+    } */
 
    
     .paddingTopMobileSet{
-        padding-top: 14%!important;
+        padding-top: 60px!important;
     }
 
 
 }
+
+
