@@ -400,6 +400,12 @@
     align-items: end;
 }
 
+.saveRemakrBtn {
+    border: 1px solid #7d7f85 !important;
+    background-color: white !important;
+    color: #7d7f85 !important;
+}
+
 @media (max-width: 1284px) {
     .popUpcontainer {
         display: flex;
@@ -794,12 +800,12 @@
         padding-top: 5px !important;
     }
 
-    .topPlcaeOrderBtn{
-        display: none!important;
+    .topPlcaeOrderBtn {
+        display: none !important;
     }
 
-    .resCon{
-        width: 100%!important;
+    .resCon {
+        width: 100% !important;
     }
 }
 
@@ -819,7 +825,7 @@
     .placeOrderCartPageBtnMobile {
         display: none !important;
     }
-  
+
 
 }
 
@@ -858,8 +864,8 @@
         width: 100% !important;
     }
 
-    .ItemRemarkMain{
-        width: 400px!important;
+    .ItemRemarkMain {
+        width: 400px !important;
     }
 
     .YourCartMainRemkarBoxSingle {
@@ -893,16 +899,16 @@
         font-size: 12px !important;
     }
 
-    .showTotalItemTop{
-        display: none!important;
+    .showTotalItemTop {
+        display: none !important;
     }
 }
 
 @media screen and (max-width: 600px) {
 
-    .smiling-cartPageBoxMain{
-        width: 100%!important;
-    } 
+    .smiling-cartPageBoxMain {
+        width: 100% !important;
+    }
 
     .resCon {
         width: 100% !important;
@@ -929,7 +935,7 @@
     }
 
     .feature {
-        font-size: 12px !important;
+        font-size: 10px !important;
     }
 
     .smilingCartPageMain {
@@ -953,24 +959,24 @@
         flex-direction: column;
     }
 
-    .filterDivcontainerCartPage{
-        margin: 10px 0px 0px 0px!important;
+    .filterDivcontainerCartPage {
+        margin: 10px 0px 0px 0px !important;
     }
 
-    .totalPriceTopMain{
-        display: none!important;
+    .totalPriceTopMain {
+        display: none !important;
     }
 }
 
 @media screen and (max-width: 550px) {
 
-    .ItemRemarkMain{
-        width: 300px!important;
+    .ItemRemarkMain {
+        width: 100% !important;
     }
 
-    .prodTitleLine{
-        font-size: 25px!important;
-        margin: 0px!important;
+    .prodTitleLine {
+        font-size: 25px !important;
+        margin: 0px !important;
     }
 }
 

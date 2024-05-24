@@ -1,7 +1,7 @@
 .homeMain{
     /* margin-inline: 6%; */
     background-color: white;
-    font-family: "PT Sans", sans-serif !important;
+    /* font-family: "PT Sans", sans-serif !important; */
 }
 .smining-header{
     height: 110px;
@@ -56,7 +56,7 @@
 
    
     .paddingTopMobileSet{
-        padding-top: 0px!important;
+        padding-top: 14%!important;
     }
 
 

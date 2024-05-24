@@ -461,35 +461,35 @@ export default function Header() {
 
 
   const setGSearch = useSetRecoilState(searchData);
-  
+
   async function searchDataFucn(e) {
     if (e.key === 'Enter') {
       let finalData = JSON.parse(localStorage.getItem("menuparams"))
       let searchVar = e.target.value.toLowerCase()
 
-    if (finalData) {
-      await SearchProductDataAPI(searchVar).then((res) => {
-        if (res) {
-          localStorage.setItem("allproductlist", JSON.stringify(res))
-          // localStorage.setItem("finalAllData", JSON.stringify(res))
-        }
-        return res
-      }).then(async (res) => {
-        if (res) {
-          let autoCodeList = JSON.parse(localStorage.getItem("autoCodeList"))
-          await SearchPriceDataAPI(autoCodeList,searchVar)
-          // .then((res)=>{
-          //     if(res){
-          //     localStorage.setItem("getSearchPriceData", JSON.stringify(res))
-          //     }
-          // })
-          navigation("/productpage",{state:{"search":true}})
-          toggleOverlay();
-        }
-      }).catch((err) => {
-        if (err) toast.error("Something Went Wrong!!!")
-      })
-    }
+      if (finalData) {
+        await SearchProductDataAPI(searchVar).then((res) => {
+          if (res) {
+            localStorage.setItem("allproductlist", JSON.stringify(res))
+            // localStorage.setItem("finalAllData", JSON.stringify(res))
+          }
+          return res
+        }).then(async (res) => {
+          if (res) {
+            let autoCodeList = JSON.parse(localStorage.getItem("autoCodeList"))
+            await SearchPriceDataAPI(autoCodeList, searchVar)
+            // .then((res)=>{
+            //     if(res){
+            //     localStorage.setItem("getSearchPriceData", JSON.stringify(res))
+            //     }
+            // })
+            navigation("/productpage", { state: { "search": true } })
+            toggleOverlay();
+          }
+        }).catch((err) => {
+          if (err) toast.error("Something Went Wrong!!!")
+        })
+      }
     }
   }
   // function searchDataFucn(e) {
@@ -643,7 +643,7 @@ export default function Header() {
               // console.log("test",res);
               localStorage.setItem("getPriceData", JSON.stringify(res))
               // navigation(`/productpage/?${finalData?.FilterKey}=${finalData?.FilterVal}/${finalData?.FilterKey1}=${finalData?.FilterVal1}/${finalData?.FilterKey2}=${finalData?.FilterVal2}`, { state: { menuFlag: finalData?.menuname, filtervalue: finalData } })
-                navigation(`/productpage`, { state: { menuFlag: finalData?.menuname, filtervalue: finalData }})
+              navigation(`/productpage`, { state: { menuFlag: finalData?.menuname, filtervalue: finalData } })
             }
             setTimeout(() => {
               setDrawerOpen(false);
@@ -863,68 +863,68 @@ export default function Header() {
               onClose={() => setDrawerOpen(false)}
               PaperProps={{ style: { width: drawerWidth, padding: '0px 10px 0px 10px' } }}
             >
-              <div className="smilingMobileSubDivDrawr" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' , marginTop: '3px' }}>
-                <div  className="mobileViewFirstDiv1" style={{display:'flex', alignItems:'center',width: '33.33%'}}>
-                <IconButton onClick={() => setDrawerOpen(false)}>
-                  <CloseIcon />
-                </IconButton>
+              <div className="smilingMobileSubDivDrawr" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '3px' }}>
+                <div className="mobileViewFirstDiv1" style={{ display: 'flex', alignItems: 'center', width: '33.33%' }}>
+                  <IconButton onClick={() => setDrawerOpen(false)}>
+                    <CloseIcon />
+                  </IconButton>
                 </div>
-                <div className="mobileViewFirstDiv2Drawer" style={{display:'flex', alignItems:'center',width: '33.33%'}}>
+                <div className="mobileViewFirstDiv2Drawer" style={{ display: 'flex', alignItems: 'center', width: '33.33%' }}>
                   <a className="mobileViewFirstDiv2Drawer" href="/">
-                  {titleImg && <img src={titleImg} className="MainlogogMobileImageDrawer" style={islogin == 'true' ? containerStyle : alternateStyle} /> }
+                    {titleImg && <img src={titleImg} className="MainlogogMobileImageDrawer" style={islogin == 'true' ? containerStyle : alternateStyle} />}
                   </a>
                 </div>
-                <div className="mobileViewFirstDiv3Drawer" style={{display:'flex', alignItems:'center',width: '33.33%' , justifyContent: 'flex-end'}}>
-                <Badge
-                  badgeContent={getWishListCount}
-                  max={1000}
-                  overlap={"rectangular"}
-                  color="secondary"
-                  style={{ marginInline: '15px' }}
-                >
-                  <li
-                    onClick={() => { setDrawerOpen(false); navigation('/myWishList') }}
-                    style={{
-                      marginLeft: "-10px",
-                      cursor: "pointer",
-                      listStyle: 'none',
-                      marginTop: "0px",
-                    }}
+                <div className="mobileViewFirstDiv3Drawer" style={{ display: 'flex', alignItems: 'center', width: '33.33%', justifyContent: 'flex-end' }}>
+                  <Badge
+                    badgeContent={getWishListCount}
+                    max={1000}
+                    overlap={"rectangular"}
+                    color="secondary"
+                    style={{ marginInline: '15px' }}
+                  >
+                    <li
+                      onClick={() => { setDrawerOpen(false); navigation('/myWishList') }}
+                      style={{
+                        marginLeft: "-10px",
+                        cursor: "pointer",
+                        listStyle: 'none',
+                        marginTop: "0px",
+                      }}
+                      sx={{ "& .MuiBadge-badge": { fontSize: 10, height: 20, minWidth: 20, width: 20 } }}
+                    >
+                      <GoHeart color="#7D7F85" fontSize='20px' />
+                    </li>
+                  </Badge>
+                  <Badge
+                    badgeContent={getCartListCount}
+                    max={1000}
+                    overlap={"rectangular"}
+                    color="secondary"
+                    style={{ marginInline: '15px' }}
                     sx={{ "& .MuiBadge-badge": { fontSize: 10, height: 20, minWidth: 20, width: 20 } }}
                   >
-                    <GoHeart color="#7D7F85" fontSize='20px' />
-                  </li>
-                </Badge>
-                <Badge
-                  badgeContent={getCartListCount}
-                  max={1000}
-                  overlap={"rectangular"}
-                  color="secondary"
-                  style={{ marginInline: '15px' }}
-                  sx={{ "& .MuiBadge-badge": { fontSize: 10, height: 20, minWidth: 20, width: 20 } }}
-                >
+                    <li
+                      onClick={() => { setDrawerOpen(false); navigation('/CartPage') }}
+                      style={{
+                        marginLeft: "-10px",
+                        cursor: "pointer",
+                        listStyle: 'none',
+                        marginTop: "0px",
+                      }}
+                    >
+                      <HiOutlineShoppingBag fontSize='20px' />
+                    </li>
+                  </Badge>
                   <li
-                    onClick={() => { setDrawerOpen(false); navigation('/CartPage') }}
-                    style={{
-                      marginLeft: "-10px",
-                      cursor: "pointer",
-                      listStyle: 'none',
-                      marginTop: "0px",
-                    }}
+                    className="nav-li-smining"
+                    style={{ cursor: "pointer", marginTop: "0" }}
+                    onClick={handleLogout}
                   >
-                    <HiOutlineShoppingBag fontSize='20px' />
+                    <FaPowerOff style={{ fontSize: '20px' }} />
                   </li>
-                </Badge>
-                <li
-                  className="nav-li-smining"
-                  style={{ cursor: "pointer", marginTop: "0" }}
-                  onClick={handleLogout}
-                >
-                  <FaPowerOff style={{ fontSize: '20px' }} />
-                </li>
                 </div>
               </div>
-              <List sx={{ paddingTop: '0', marginBottom: '20px' }}>
+              <List sx={{ paddingTop: '0', marginBottom: '20px', marginTop: '15px' }}>
                 {menuItems.map(menuItem => (
                   <div key={menuItem.menuid}>
                     <ButtonBase
@@ -933,7 +933,7 @@ export default function Header() {
                       className="muilistMenutext"
                       style={{ width: '100%' }}
                     >
-                      <ListItem style={{ paddingBottom: '0px' }}>
+                      <ListItem style={{ padding: '0px 5px 0px 5px', borderBottom: '1px solid lightgray' }}>
                         <ListItemText primary={menuItem.menuname} className="muilistMenutext" />
                       </ListItem>
                     </ButtonBase>
@@ -944,7 +944,7 @@ export default function Header() {
                           onClick={() => handleLoginMenuClick(menuItem.menuname, menuItem)}
                           style={{ width: '100%', display: 'flex', justifyContent: 'start' }}
                         >
-                          <div style={{ paddingLeft: '10px' }}>
+                          <div style={{ paddingLeft: '10px', fontSize: '15px', marginTop: '5px' }}>
                             <button class="underline-button">view all</button>
                           </div>
                         </ButtonBase>
@@ -956,9 +956,7 @@ export default function Header() {
                                 onClick={() => handleSubMenuClick(menuItem, subMenuItem.param1dataname, subMenuItem)}
                                 style={{ width: '100%' }}
                               >
-                                <ListItem className="muilistSubMenutext" style={{ paddingLeft: '20px', paddingTop: '0px', paddingBottom: '0px' }}>
-                                  <ListItemText primary={subMenuItem.param1dataname} />
-                                </ListItem>
+                                <p style={{margin: '0px 0px 0px 15px' , width: '100%'}}>{subMenuItem.param1dataname}</p>
                               </ButtonBase>
                               {/* {selectedSubMenu === subMenuItem.param1dataname && ( */}
                               {selectedMenu === menuItem.menuname && (
@@ -1002,7 +1000,7 @@ export default function Header() {
                   <CloseIcon />
                 </IconButton>
                 <Link to="/" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                {titleImg && <img src={titleImg} alt="Title" className="logoImage1" style={{ marginTop: '-32px' }} />}
+                  {titleImg && <img src={titleImg} alt="Title" className="logoImage1" style={{ marginTop: '-32px' }} />}
                 </Link>
                 <List>
                   <ListItem onClick={() => { setDrawerOpen(false); navigation('/LoginOption') }}>
@@ -1072,8 +1070,8 @@ export default function Header() {
                   >
                     Our Craftsmanship
                   </li>
-                  <a href="/" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: lodingLogo ? '-5px' : '-25px'  }}>
-                      {titleImg && <img src={titleImg} alt="Title" className="logoImage1" />}
+                  <a href="/" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: lodingLogo ? '-5px' : '-25px' }}>
+                    {titleImg && <img src={titleImg} alt="Title" className="logoImage1" />}
                   </a>
                   <li
                     className="nav-li-smining"
@@ -1123,7 +1121,7 @@ export default function Header() {
                 className="HeaderMenuItemMainDiv"
               >
                 <a href="/" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '-25px' }}>
-                {titleImg && <img src={titleImg} alt="Title" className="logoImage1" />}
+                  {titleImg && <img src={titleImg} alt="Title" className="logoImage1" />}
                 </a>
                 <ul className="nav-ul-shop" style={{ height: '100%', display: 'flex', alignItems: 'center', listStyle: "none", padding: 0 }}>
                   {menuItems.map((item, index) => (
@@ -1288,7 +1286,7 @@ export default function Header() {
             className="mobileViewFirstDiv2"
           >
             <a href="/" className="mobileViewFirstDiv2">
-            {titleImg && <img src={titleImg} className="MainlogogMobileImage" style={islogin == 'true' ? containerStyle : alternateStyle} /> }
+              {titleImg && <img src={titleImg} className="MainlogogMobileImage" style={islogin == 'true' ? containerStyle : alternateStyle} />}
             </a>
           </div>
           <div

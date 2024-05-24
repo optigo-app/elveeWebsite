@@ -35,6 +35,18 @@
     margin-bottom: 5px;
 }
 
+.AddressMainMobile {
+    border: 1px solid #ccc;
+    width: 350px;
+    word-wrap: break-word;
+    margin-right: 5px;
+    padding: 10px 22px 0px 22px;
+    cursor: pointer;
+    border-radius: 5px;
+    position: relative;
+    margin-bottom: 5px;
+}
+
 .addressData {
     margin: 0px;
     font-family: "PT Sans", sans-serif;
@@ -189,7 +201,7 @@
 
 @media screen and (max-width: 1070px) {
     .ContiuBtnAddress {
-        display: none!important;
+        display: none !important;
     }
 }
 
@@ -246,9 +258,38 @@
     .showAddressTotal {
         display: none !important;
     }
+
+    .deliverySubTitleLine {
+        text-align: center;
+    }
+
+    .AdreessSubDelivery {
+        display: flex;
+    }
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (min-width: 900px) {
+
+    .smilingDeliveyAddressMainMobile {
+        display: none!important;
+    }
+}
+
+.adressBottomBtn {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.3s ease-in-out;
+}
+
+.adressBottomBtn.open {
+    max-height: 200px; /* Adjust based on the content height */
+}
+
+@media screen and (max-width: 901px) {
+
+    .smilingDeliveyAddressMain {
+        display: none!important;
+    }
 
     .BlackBoxTopHeader {
         display: none !important;

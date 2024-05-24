@@ -21,4 +21,8 @@
     .skeltonMainDiv{
         margin-inline: 1%;
     }
+
+    .cardMainSkeleton{
+        height: 20vh!important;
+    }
 }
