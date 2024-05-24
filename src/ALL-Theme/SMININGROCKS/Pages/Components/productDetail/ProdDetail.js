@@ -13,7 +13,7 @@ import { CommonAPI } from '../../../Utils/API/CommonAPI'
 import { GetCount } from '../../../Utils/API/GetCount'
 import { CartListCounts, WishListCounts, designSet, colorstoneQualityColorG, diamondQualityColorG, metalTypeG, priceData } from '../../../../../Recoil/atom'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
-import notFound from '../../assets/image-not-found.png'
+import notFound from '../../assets/image-not-found.jpg'
 import NavigateNextRoundedIcon from '@mui/icons-material/NavigateNextRounded';
 import { useNavigate } from 'react-router-dom'
 import playVidoe from '../../assets/paly.png'
@@ -33,6 +33,7 @@ const ProdDetail = () => {
   const [WishData, setWishData] = useState([]);
   const [productData, setProductData] = useState();
   const [thumbImg, setThumbImg] = useState();
+  const [thumbImgMain, setThumbImgMain] = useState('');
   const [colorData, setColorData] = useState([]);
   const [sizeData, setSizeData] = useState([]);
   const [getAllFilterSizeData, setGetAllFilterSizeData] = useState([]);
@@ -128,7 +129,7 @@ const ProdDetail = () => {
       setThumFlag(false);
     };
     fetchProductThumbnails();
-  }, [mtColorName , thumFlag]);
+  }, [mtColorName, thumFlag]);
   // console.log('productDataproductDataproductData111', productThumImg);
 
   // console.log('mtPurity', mtPurity);
@@ -663,10 +664,12 @@ const ProdDetail = () => {
       return;
     }
     const filteredDataN = storedData.filter(item => item.autocode === localProductData.autocode);
-    let colorName = selectedColor ? selectedColor : storedData3[0]?.metalcolorname;
+
+    let colorName = selectedColor ? selectedColor : storedData3[0]?.colorname;
 
     if (data.IsColorWiseImages === 1) {
       const filteredData = filteredDataN?.filter(item => item?.colorname?.toLowerCase() === colorName?.toLowerCase());
+      console.log('filteredDatafilteredData', filteredData);
 
 
       if (filteredData.length > 0) {
@@ -686,19 +689,20 @@ const ProdDetail = () => {
     }
   }, [selectedColor])
 
-  console.log('undteddddddddddddd', updatedColorImage);
-
   const handleColorSelection = (color) => {
-    setmtColorName(color)
+    setThumbImgMain('');
+    const selectedColorObject = metalColorData.find(item => item.metalcolorname === color);
+    setmtColorName(selectedColorObject?.colorname)
     let uploadPath = localStorage.getItem('UploadLogicalPath');
     const storedDataAll = localStorage.getItem('storeInit');
     const data = JSON.parse(storedDataAll);
     if (data?.IsColorWiseImages === 1) {
-      const selectedColor = color;
+      const selectedColor = selectedColorObject?.colorname;
       setSelectedColor(selectedColor);
       const filteredData = colorImageData?.filter(item => item?.colorname.toLowerCase() === selectedColor?.toLowerCase());
+      
+      console.log('selectedColorDataselectedColorDataselectedColorData', filteredData);
 
-      console.log('item11', filteredData);
       if (filteredData?.length > 0) {
         const correctedData = filteredData?.map(item => {
           console.log('item11', item);
@@ -712,6 +716,8 @@ const ProdDetail = () => {
         setUpdateColorImage(correctedData);
 
         const selectedColorData = colorImageData?.find(item => item.colorname === selectedColor);
+
+
         if (selectedColorData) {
           const correctedImagePath = convertPath(selectedColorData.imagepath);
           let path = uploadPath + '/' + data.ukey + correctedImagePath
@@ -1029,8 +1035,8 @@ const ProdDetail = () => {
           "ThemeName": `${findValueFromId("theme", product?.Themeid)?.ThemeName}`,
           "Themeid": Number(`${product?.Themeid}`),
           "TitleLine": `${product?.TitleLine}`,
-          "UnitCost": Number(`${PriceWithMarkupFunction(0, product?.price, currData?.CurrencyRate,sizeWisePrice)}`),
-          "UnitCostWithmarkup": Number(`${PriceWithMarkupFunction(product?.markup, product?.price, currData?.CurrencyRate,sizeWisePrice)}`),
+          "UnitCost": Number(`${PriceWithMarkupFunction(0, product?.price, currData?.CurrencyRate, sizeWisePrice)}`),
+          "UnitCostWithmarkup": Number(`${PriceWithMarkupFunction(product?.markup, product?.price, currData?.CurrencyRate, sizeWisePrice)}`),
           "colorstonecolorname": `${cSQopt?.split('-')[1] ?? ""}`,
           "colorstonequality": `${cSQopt?.split('-')[0] ?? ""}`,
           "diamondcolorname": `${diaQColOpt.split("#")[1]}`,
@@ -1069,7 +1075,7 @@ const ProdDetail = () => {
           "Designid": Number(`${product?.Designid ?? 0}`)
         }
 
-        console.log("addtocartflag",finalJSON)
+        console.log("addtocartflag", finalJSON)
 
 
         const encodedCombinedValue = btoa(JSON.stringify(finalJSON));
@@ -1156,7 +1162,7 @@ const ProdDetail = () => {
 
         const product = productData
 
-        
+
 
         const finalJSON = {
           "stockweb_event": "",
@@ -1210,8 +1216,8 @@ const ProdDetail = () => {
           "TitleLine": `${product?.TitleLine}`,
           // "UnitCost": `${product?.price === "Not Available" ? 0 : product?.price}`,
           // "UnitCostWithmarkup": (`${(product?.price === "Not Available" ? 0 : product?.price) + (product?.markup ?? 0)}`),
-          "UnitCost": Number(`${PriceWithMarkupFunction(0, product?.price, currData?.CurrencyRate,sizeWisePrice)}`),
-          "UnitCostWithmarkup": Number(`${PriceWithMarkupFunction(product?.markup, product?.price, currData?.CurrencyRate,sizeWisePrice)}`),
+          "UnitCost": Number(`${PriceWithMarkupFunction(0, product?.price, currData?.CurrencyRate, sizeWisePrice)}`),
+          "UnitCostWithmarkup": Number(`${PriceWithMarkupFunction(product?.markup, product?.price, currData?.CurrencyRate, sizeWisePrice)}`),
           "autocode": `${product?.autocode}`,
           "colorstonecolorname": `${cSQopt?.split('-')[1] ?? ""}`,
           "colorstonequality": `${cSQopt?.split('-')[0] ?? ""}`,
@@ -1449,7 +1455,7 @@ const ProdDetail = () => {
   //   console.log('isAvailableisAvailable', isAvailable);
   // },[])
 
-  console.log("designSetListdesignSetListdesignSetList", designSetList)
+  console.log("productThumImgproductThumImg", productThumImg)
 
   return (
     <div
@@ -1513,12 +1519,13 @@ const ProdDetail = () => {
                 :
                 <img
                   src={
-                    updatedColorImage?.length !== 0 ?
-                      updatedColorImage[0]?.imagepath :
-                      globImagePath + productData?.DesignFolderName + '/' + imageSize?.ImgOr + '/' + (thumbImg?.length ? thumbImg : productData?.DefaultImageName)
+                    thumbImgMain?.length === 0 ?
+                      updatedColorImage?.length !== 0 ?
+                        updatedColorImage[0]?.imagepath :
+                        globImagePath + productData?.DesignFolderName + '/' + imageSize?.ImgOr + '/' + (thumbImg?.length ? thumbImg : productData?.DefaultImageName)
+                      :
+                      thumbImgMain
                   }
-
-
                   alt={""}
                   style={{
                     width: "100%",
@@ -1543,6 +1550,7 @@ const ProdDetail = () => {
                           className="srthumb_images_el"
                           // onClick={() => console.log('data....',(data?.imagepath)?.split('/')[(data?.imagepath)?.split('/').length-1])}
                           onClick={() => setThumbImg((data?.imagepath)?.split('/')[(data?.imagepath)?.split('/').length - 1])}
+
                         />
 
                       ))}
@@ -1554,12 +1562,12 @@ const ProdDetail = () => {
                   {
                     <div className="srthumb_images">
                       {updatedColorImage?.map((data, i) => (
-
                         <img
                           src={data.imagepath}
                           alt={""}
                           className="srthumb_images_el"
-                          onClick={() => { setSelectedImagePath(data.imagepath); setIsVideoPlaying(false); }}
+                          onClick={() => setThumbImgMain(data.imagepath)}
+                        // onClick={() => { setSelectedImagePath(data.imagepath); setIsVideoPlaying(false); }}
                         // onClick={() => setThumbImg(data.imagepath)}
                         />
                       ))}
@@ -1855,7 +1863,7 @@ const ProdDetail = () => {
                           >
                             {cSQopt ? cSQopt : `${productData.colorstonequality}-${productData?.colorstonecolorname}`}
                           </span>
-                         ) : (
+                        ) : (
                           <select
                             className='menuitemSelectoreMain'
                             onChange={(e) => {
@@ -2260,7 +2268,7 @@ const ProdDetail = () => {
             </div>
           </div>
           {(designSetList.length !== 0 && showIcateDesign === 1) &&
-            <div className='smilingCompleteLookMainWeb' style={{ position: 'relative', marginInline: '10%', minHeight: '350px', display: 'flex', alignItems: 'center', marginBottom: '7%'}}>
+            <div className='smilingCompleteLookMainWeb' style={{ position: 'relative', marginInline: '10%', minHeight: '350px', display: 'flex', alignItems: 'center', marginBottom: '7%' }}>
               <div className='similiarBrand' style={{ right: '0px', position: 'absolute', display: 'flex', alignItems: 'center', flexDirection: 'column', marginBottom: '100px', marginTop: !(productData?.OriginalImagePath) && '120px' }}>
                 <div style={{ marginBottom: '12px' }}>
                   <span style={{ fontFamily: 'FreightDisp Pro Medium', color: '#7d7f85', fontSize: '26px' }}>Complete The Look</span>
@@ -2270,7 +2278,7 @@ const ProdDetail = () => {
                     designSetList?.slice(0, 3)?.map((dsl, i) => (
                       <>
                         {/* {i !== 0 && <hr style={{opacity:0.06}}/>} */}
-                        <div style={{ display: 'flex', alignItems: 'center', width: '670px', gap: '30px' , cursor: 'pointer' }} onClick={() => handelDesignSet(dsl)}>
+                        <div style={{ display: 'flex', alignItems: 'center', width: '670px', gap: '30px', cursor: 'pointer' }} onClick={() => handelDesignSet(dsl)}>
                           <div>
                             <img src={dsl?.DefaultImageName ? globImagePath + dsl?.DesignFolderName + '/' + imageSize?.ImgOr + '/' + dsl?.DefaultImageName : notFound} alt={""} style={{ width: '100px', height: '100px', objectFit: 'cover' }} />
 

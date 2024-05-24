@@ -46,7 +46,7 @@ const ProductListSkeleton = () => {
                     {cardsArray.map((item) => (
                         <Grid item xs={isMobile ? 6 : 4} key={item}>
                             <Card className='skeltoncards'>
-                                <CardMedia style={{width:'100%', height:'40vh'}}>
+                                <CardMedia style={{width:'100%', height:'40vh'}} className='cardMainSkeleton'>
                                     <Skeleton animation="wave" variant="rect" width={'100%'} height='40vh' />
                                 </CardMedia>
                                 <CardContent>

@@ -9,7 +9,7 @@ import { Button, CircularProgress, Dialog, DialogTitle } from "@mui/material";
 import { useSetRecoilState } from "recoil";
 import { CartListCounts, WishListCounts } from "../../../../../Recoil/atom";
 import { GetCount } from "../../../Utils/API/GetCount";
-import notFound from "../../assets/image-not-found.png";
+import notFound from "../../assets/image-not-found.jpg";
 import { FilterListAPI } from "../../../Utils/API/FilterListAPI";
 import { productListApiCall } from "../../../Utils/API/ProductListAPI";
 import { getDesignPriceList } from "../../../Utils/API/PriceDataApi";
