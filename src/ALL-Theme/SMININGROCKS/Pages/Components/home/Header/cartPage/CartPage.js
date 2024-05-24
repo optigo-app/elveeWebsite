@@ -1581,6 +1581,7 @@ export default function CartPage() {
                   <button
                     className="placeOrderCartPageBtnMobile"
                     onClick={handlePlaceOrder}
+                    style={{display: dialogOpen && 'none'}}
                   >
                     Place Order
                   </button>

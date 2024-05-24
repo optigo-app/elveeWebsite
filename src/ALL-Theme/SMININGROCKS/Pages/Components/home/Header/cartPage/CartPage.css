@@ -767,7 +767,9 @@
         display: none !important;
     }
 
-
+    .bg-imageCart{
+        height: 120px!important;
+    }
     .mainCartContainer {
         display: flex;
         justify-content: center;
@@ -965,6 +967,29 @@
 
     .totalPriceTopMain {
         display: none !important;
+    }
+
+    .bg-imageCart{
+        height: 100px!important;
+    }
+
+    .bg-image{
+        height: 100px!important;
+    }
+    .designCounttext{
+        font-size: 20px!important;
+    }
+    .featherImage{
+        height: 70px!important;
+        width: 50px!important;
+    }
+
+    .breadComesDeliver{
+        margin-left: 30px!important;
+    }
+
+    .paymentText{
+        margin-left: 0px!important;
     }
 }
 

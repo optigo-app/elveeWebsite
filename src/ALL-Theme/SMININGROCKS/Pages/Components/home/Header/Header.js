@@ -895,7 +895,7 @@ export default function Header() {
                       <GoHeart color="#7D7F85" fontSize='20px' />
                     </li>
                   </Badge>
-                  <Badge
+                  {/* <Badge
                     badgeContent={getCartListCount}
                     max={1000}
                     overlap={"rectangular"}
@@ -914,14 +914,22 @@ export default function Header() {
                     >
                       <HiOutlineShoppingBag fontSize='20px' />
                     </li>
-                  </Badge>
+                  </Badge> */}
+
                   <li
+                    className="nav-li-smining"
+                    style={{ cursor: "pointer", marginRight: "10px", textDecoration: 'none' }}
+                    onClick={() => { setDrawerOpen(false); navigation("/account"); }}
+                  >
+                    <IoPersonOutline color="#7D7F85" fontSize='30px' style={{ marginTop: '-5px' }} className="mobileViewSmilingTop3Icone" />
+                  </li>
+                  {/* <li
                     className="nav-li-smining"
                     style={{ cursor: "pointer", marginTop: "0" }}
                     onClick={handleLogout}
                   >
                     <FaPowerOff style={{ fontSize: '20px' }} />
-                  </li>
+                  </li> */}
                 </div>
               </div>
               <List sx={{ paddingTop: '0', marginBottom: '20px', marginTop: '15px' }}>
@@ -956,7 +964,7 @@ export default function Header() {
                                 onClick={() => handleSubMenuClick(menuItem, subMenuItem.param1dataname, subMenuItem)}
                                 style={{ width: '100%' }}
                               >
-                                <p style={{margin: '0px 0px 0px 15px' , width: '100%'}}>{subMenuItem.param1dataname}</p>
+                                <p style={{ margin: '0px 0px 0px 15px', width: '100%' }}>{subMenuItem.param1dataname}</p>
                               </ButtonBase>
                               {/* {selectedSubMenu === subMenuItem.param1dataname && ( */}
                               {selectedMenu === menuItem.menuname && (
@@ -1262,7 +1270,8 @@ export default function Header() {
           style={{
             display: "flex",
             justifyContent: "space-between",
-            marginInline: '7px'
+            marginInline: '7px',
+            height: '100%'
           }}
           className="smilingMobileSubDiv"
         >
@@ -1364,13 +1373,7 @@ export default function Header() {
                       <HiOutlineShoppingBag color="#7D7F85" fontSize='30px' className="mobileViewSmilingTop2Icone" />
                     </li>
                   </Badge>
-                  <li
-                    className="nav-li-smining"
-                    style={{ cursor: "pointer", textDecoration: 'none' }}
-                    onClick={() => navigation("/account")}
-                  >
-                    <IoPersonOutline color="#7D7F85" fontSize='30px' style={{ marginTop: '-5px' }} className="mobileViewSmilingTop3Icone" />
-                  </li>
+
                   <li
                     className="nav-li-smining"
                     style={{ cursor: "pointer", marginTop: "0" }}

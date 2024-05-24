@@ -161,10 +161,10 @@ export default function Payment() {
                         <div class="text-container">
                             <div className='textContainerData'>
                                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-                                    <p className="designCounttext" style={{ fontSize: '30px', fontWeight: '500', letterSpacing: '1px', textTransform: 'uppercase' }}>
+                                    <p className="designCounttext paymentText" style={{ fontSize: '30px', fontWeight: '500', letterSpacing: '1px', textTransform: 'uppercase' }}>
                                         Payment
                                     </p>
-                                    <span style={{ fontSize: '10px', marginLeft: '40px' }}>My Cart &gt; Delivery &gt; Payment</span>
+                                    <span className='breadComesDeliver' style={{ fontSize: '10px', marginLeft: '40px' }}>My Cart &gt; Delivery &gt; Payment</span>
                                 </div>
                                 <img src={`${storImagePath()}/images/HomePage/MainBanner/image/featuresImage.png`} className='featherImage' />
                             </div>

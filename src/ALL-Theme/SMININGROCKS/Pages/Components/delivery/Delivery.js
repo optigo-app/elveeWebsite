@@ -577,7 +577,7 @@ export default function Delivery() {
                                         <p className="designCounttext" style={{ fontSize: '30px', fontWeight: '500', letterSpacing: '1px', textTransform: 'uppercase' }}>
                                             Delivery
                                         </p>
-                                        <span style={{ fontSize: '10px', marginLeft: '0px' }}>My Cart &gt; Delivery</span>
+                                        <span className='breadComesDeliver' style={{ fontSize: '10px', marginLeft: '0px' }}>My Cart &gt; Delivery</span>
                                     </div>
                                     <img src={`${storImagePath()}/images/HomePage/MainBanner/image/featuresImage.png`} className='featherImage' />
                                 </div>
