@@ -700,7 +700,7 @@ const ProdDetail = () => {
       const selectedColor = selectedColorObject?.colorname;
       setSelectedColor(selectedColor);
       const filteredData = colorImageData?.filter(item => item?.colorname.toLowerCase() === selectedColor?.toLowerCase());
-      
+
       console.log('selectedColorDataselectedColorDataselectedColorData', filteredData);
 
       if (filteredData?.length > 0) {
@@ -1496,15 +1496,17 @@ const ProdDetail = () => {
                   //     notFound
                   // } */}
 
-              {imgLoading == 'false' && (
+              {imgLoading && (
+                <>
                 <Skeleton
                   sx={{
                     width: "100%",
-                    marginLeft: "120px",
-                    height: "90%",
+                    height: "400px",
                   }}
                   variant="rounded"
                 />
+                </>
+
               )}
               {isVideoPlaying ?
                 <video src={videoUrl} autoPlay={true} style={{
@@ -1622,16 +1624,19 @@ const ProdDetail = () => {
                         fontSize: "16px",
                         fontWeight: 600,
                         letterSpacing: '2px',
-                        color: "rgb(66, 66, 66)",
+                        color: "rgb(125, 127, 133)",
                       }}
+                      className="productDeailFont"
                     >
                       {productData?.designno}
                     </span>
                     <span
                       style={{
                         fontSize: "16px",
-                        color: "rgb(66, 66, 66)",
+                        color: "rgb(125, 127, 133)",
                       }}
+                      className="productDeailFont"
+
                     >
                       Metal Purity :
                       <span style={{ fontWeight: 'bold', letterSpacing: '2px' }}>
@@ -1644,16 +1649,20 @@ const ProdDetail = () => {
                     <sapn
                       style={{
                         fontSize: "16px",
-                        color: "rgb(66, 66, 66)",
+                        color: "rgb(125, 127, 133)",
                       }}
+                      className="productDeailFont"
+
                     >
                       Metal Color : <span style={{ fontWeight: 'bold', letterSpacing: '2px' }}>{mtColorName ? mtColorName : selectedColor ? selectedColor : productData?.updMC}</span>
                     </sapn>
                     <sapn
                       style={{
                         fontSize: "16px",
-                        color: "rgb(66, 66, 66)",
+                        color: "rgb(125, 127, 133)",
                       }}
+                      className="productDeailFont"
+
                     >
                       Diamond Quality Color:{" "}
                       <span style={{ fontWeight: 'bold', letterSpacing: '2px' }}>{diaQColOpt ? diaQColOpt : `${productData?.diamondquality}-${productData?.diamondcolorname}`}</span>
@@ -1661,8 +1670,9 @@ const ProdDetail = () => {
                     <sapn
                       style={{
                         fontSize: "16px",
-                        color: "rgb(66, 66, 66)",
+                        color: "rgb(125, 127, 133)",
                       }}
+                      className="productDeailFont"
                     >
                       Net Wt:{" "}
                       <span style={{ fontWeight: 'bold', letterSpacing: '2px' }}>{mtrdData?.I}</span>
@@ -1950,6 +1960,8 @@ const ProdDetail = () => {
                         outline: "none",
                         color: "#7d7f85",
                         fontSize: "12.5px",
+                        height: '30px',
+                        backgroundColor: 'rgb(244, 244, 244)'
                       }}
                       value={mtTypeOption}
                       onChange={(e) => setmtTypeOption(e.target.value)}
@@ -1960,11 +1972,11 @@ const ProdDetail = () => {
                         </option>
                       ))}
                     </select>
+                    <Divider sx={{
+                      marginTop: '20px', background: '#a9a7a7',
+                      marginTop: '20px'
+                    }} />
                   </div>}
-                  <Divider sx={{
-                    marginTop: '20px', background: '#a9a7a7',
-                    marginTop: '20px'
-                  }} />
 
                   {isMetalCutoMizeFlag == 1 &&
                     <div
@@ -1983,7 +1995,9 @@ const ProdDetail = () => {
                           border: "none",
                           outline: "none",
                           color: "#7d7f85",
-                          fontSize: "12.5px",
+                          fontSize: "12.5px",  
+                          height: '30px',
+                          backgroundColor: 'rgb(244, 244, 244)'
                         }}
                         onChange={(e) => handleColorSelection(e.target.value)}
                         defaultValue={mtrdData?.F}
@@ -1994,13 +2008,12 @@ const ProdDetail = () => {
                           </option>
                         ))}
                       </select>
+
+                      <Divider sx={{
+                        marginTop: '20px', background: '#a9a7a7',
+                        marginTop: '20px'
+                      }} />
                     </div>}
-
-
-                  <Divider sx={{
-                    marginTop: '20px', background: '#a9a7a7',
-                    marginTop: '20px'
-                  }} />
 
                   {((isDaimondCstoFlag == 1) && (productData?.diamondweight !== 0 || productData?.diamondpcs !== 0)) && <div
                     style={{
@@ -2018,6 +2031,8 @@ const ProdDetail = () => {
                         outline: "none",
                         color: "#7d7f85",
                         fontSize: "12.5px",
+                        height: '30px',
+                        backgroundColor: 'rgb(244, 244, 244)'
                       }}
                       value={diaQColOpt}
                       onChange={(e) => setDiaQColOpt(e.target.value)}
@@ -2028,12 +2043,12 @@ const ProdDetail = () => {
                         </option>
                       ))}
                     </select>
-                  </div>}
 
-                  <Divider sx={{
-                    marginTop: '20px', background: '#a9a7a7',
-                    marginTop: '20px'
-                  }} />
+                    <Divider sx={{
+                      marginTop: '20px', background: '#a9a7a7',
+                      marginTop: '20px'
+                    }} />
+                  </div>}
 
                   {((isCColrStoneCustFlag === 1) && (productData?.totalcolorstonepcs !== 0 || productData?.totalcolorstoneweight !== 0)) &&
                     <div
@@ -2051,6 +2066,8 @@ const ProdDetail = () => {
                           border: "none",
                           outline: "none",
                           color: "#7d7f85",
+                          height: '30px',
+                          backgroundColor: 'rgb(244, 244, 244)',
                           fontSize: "12.5px",
                         }}
                         onChange={(e) => setCSQOpt(e.target.value)}
@@ -2062,12 +2079,15 @@ const ProdDetail = () => {
                           </option>
                         ))}
                       </select>
+
+                      <Divider sx={{
+                        marginTop: '20px', background: '#a9a7a7',
+                        marginTop: '20px'
+                      }} />
+
                     </div>}
 
-                  <Divider sx={{
-                    marginTop: '20px', background: '#a9a7a7',
-                    marginTop: '20px'
-                  }} />
+
 
                   {(sizeData?.length !== 0 || (productData?.DefaultSize && productData.DefaultSize.length !== 0)) && (
                     <div
@@ -2086,6 +2106,8 @@ const ProdDetail = () => {
                           outline: "none",
                           color: "#7d7f85",
                           fontSize: "12.5px",
+                          height: '30px',
+                          backgroundColor: 'rgb(244, 244, 244)'
                         }}
                         onChange={(e) => handelSize(e.target.value)}
                         defaultValue={
@@ -2377,7 +2399,7 @@ const ProdDetail = () => {
                     <ul style={{
                       margin: '0px 0px 3px 0px'
                     }}>
-                      <li style={{ fontWeight: 600 }}>{`Diamond Detail(${fullProdData?.rd1?.reduce((accumulator, data) => accumulator + data.M, 0)}/${fullProdData?.rd1?.reduce((accumulator, data) => accumulator + data?.N, 0).toFixed(2)}ct)`}</li>
+                      <li style={{ fontWeight: 700, color: 'rgb(125, 127, 133)' }}>{`Diamond Detail(${fullProdData?.rd1?.reduce((accumulator, data) => accumulator + data.M, 0)}/${fullProdData?.rd1?.reduce((accumulator, data) => accumulator + data?.N, 0).toFixed(2)}ct)`}</li>
                     </ul>
                     <ul style={{
                       display: 'flex',
@@ -2412,7 +2434,7 @@ const ProdDetail = () => {
                   {fullProdData?.rd2?.some(data => data?.D === "COLOR STONE") && (
                     <>
                       <ul style={{ margin: '0px 0px 3px 0px' }}>
-                        <li style={{ fontWeight: 600 }}>{`Color Stone Detail(${fullProdData?.rd2?.reduce((accumulator, data) => accumulator + data.M, 0)}/${fullProdData?.rd2?.reduce((accumulator, data) => accumulator + data?.N, 0).toFixed(2)}ct)`}</li>
+                        <li style={{ fontWeight: 700, color: 'rgb(125, 127, 133)' }}>{`Color Stone Detail(${fullProdData?.rd2?.reduce((accumulator, data) => accumulator + data.M, 0)}/${fullProdData?.rd2?.reduce((accumulator, data) => accumulator + data?.N, 0).toFixed(2)}ct)`}</li>
                       </ul>
                       <ul style={{ display: 'flex', textDecoration: 'none', listStyle: 'none', margin: '0px 0px 3px 0px' }}>
                         <li className='proDeatilList'>Shape</li>
@@ -2439,7 +2461,7 @@ const ProdDetail = () => {
                   {fullProdData?.rd2?.some(data => data?.D === "MISC") && (
                     <>
                       <ul style={{ margin: '0px 0px 3px 0px' }}>
-                        <li style={{ fontWeight: 600 }}>{`Misc. Detail(${fullProdData?.rd2?.reduce((accumulator, data) => accumulator + data.M, 0)}/${fullProdData?.rd2?.reduce((accumulator, data) => accumulator + data?.N, 0).toFixed(2)}ct)`}(21/1.022ct)</li>
+                        <li style={{ fontWeight: 700, color: 'rgb(125, 127, 133)' }}>{`Misc. Detail(${fullProdData?.rd2?.reduce((accumulator, data) => accumulator + data.M, 0)}/${fullProdData?.rd2?.reduce((accumulator, data) => accumulator + data?.N, 0).toFixed(2)}ct)`}(21/1.022ct)</li>
                       </ul>
                       <ul style={{ display: 'flex', textDecoration: 'none', listStyle: 'none', margin: '0px 0px 3px 0px' }}>
                         <li className='proDeatilList'>Shape</li>

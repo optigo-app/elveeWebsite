@@ -13,7 +13,7 @@ const ProductListSkeleton = () => {
                 <Grid item xs={12}>
                     <Card className='skeltoncards' style={{ width: '100%' }}>
                         <CardContent style={{ display: 'flex', alignItems: 'center' }}>
-                            <div style={{ flex: 1 }}>
+                            <div style={{ flex: 1 }} className='topSkeletonMain'>
                                 <Skeleton animation="wave" variant="text" width={'80%'} height={20} style={{ marginBottom: '10px' }} />
                                 <Skeleton animation="wave" variant="text" width={'60%'} height={20} />
                             </div>

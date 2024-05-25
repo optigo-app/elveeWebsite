@@ -588,20 +588,20 @@ export default function CartPage() {
 
       if (response?.Data) {
         setCartListData(response?.Data?.rd);
+        setIsLoading(false);
         setMainRemarks(response?.Data?.rd[0].OrderRemarks);
         setRemarks(response?.Data?.rd[0].Remarks);
       }
     } catch (error) {
       console.error("Error:", error);
     } finally {
-      setIsLoading(false);
     }
   };
 
 
   const handleRemove = async (data) => {
 
-    console.log('cccccccc deeee',cartSelectData);
+    console.log('cccccccc deeee', cartSelectData);
     console.log('cccccccc deeee', removeItemDesignNumber);
     try {
       setIsLoading(true);
@@ -704,7 +704,7 @@ export default function CartPage() {
 
   const handleSubmit = async (data) => {
     if (!remarks || remarks.trim() === "") {
-      toast.error("Enter a value for remarks.");
+      // toast.error("Enter a value for remarks.");
     } else {
       try {
         // setIsLoading(true);
@@ -713,7 +713,7 @@ export default function CartPage() {
         const combinedValue = JSON.stringify({
           // designno: `${reamkrDesignNumber}`,
           // autocode: `${remakrAutuCode}`,
-          
+
           designno: `${data.designno}`,
           autocode: `${data.autocode}`,
           remarks: `${remarks}`,
@@ -727,7 +727,7 @@ export default function CartPage() {
           p: encodedCombinedValue,
         };
         const response = await CommonAPI(body);
-        console.log('reeeeeeeeeeeeeeeeeeeeeeeeeee',response);
+        console.log('reeeeeeeeeeeeeeeeeeeeeeeeeee', response);
         if (response.Data.rd[0].stat === 1) {
           await getCartData()
           // toast.success("Add remark successfully");
@@ -880,7 +880,7 @@ export default function CartPage() {
   useEffect(() => {
     const selectedSize = sizeData.find((size) => size.sizename === (sizeOption))
 
-    console.log("selectedSize",selectedSize);
+    console.log("selectedSize", selectedSize);
 
     if (selectedSize) {
       setSizeMarkup(selectedSize?.MarkUp)
@@ -1184,14 +1184,14 @@ export default function CartPage() {
   }, [catSizeData, mtrdData, dqcData, currData, csqcData, sizeMarkup, metalUpdatedPrice, diaUpdatedPrice, colUpdatedPrice])
 
   console.log("breckupprice",
-     (((mtrdData?.V ?? 0) / currData?.CurrencyRate) + (mtrdData?.W ?? 0) + (mtrdData?.X ?? 0)),
-     (dqcData ?? 0),
-     (csqcData ?? 0),
-     ((sizeMarkup ?? 0) / (currData?.CurrencyRate) ?? 0),
-     (metalUpdatedPrice() ?? 0),
-     (diaUpdatedPrice() ?? 0),
-     (colUpdatedPrice() ?? 0)
-    );
+    (((mtrdData?.V ?? 0) / currData?.CurrencyRate) + (mtrdData?.W ?? 0) + (mtrdData?.X ?? 0)),
+    (dqcData ?? 0),
+    (csqcData ?? 0),
+    ((sizeMarkup ?? 0) / (currData?.CurrencyRate) ?? 0),
+    (metalUpdatedPrice() ?? 0),
+    (diaUpdatedPrice() ?? 0),
+    (colUpdatedPrice() ?? 0)
+  );
 
 
   function FinalPrice() {
@@ -1581,7 +1581,7 @@ export default function CartPage() {
                   <button
                     className="placeOrderCartPageBtnMobile"
                     onClick={handlePlaceOrder}
-                    style={{display: dialogOpen && 'none'}}
+                    style={{ display: dialogOpen && 'none' }}
                   >
                     Place Order
                   </button>
@@ -2824,6 +2824,8 @@ export default function CartPage() {
                       </div>
                     </div>
 
+                    <MdDeleteOutline style={{ height: '30px', width: '30px' , color:'#ff0000a8' }} onClick={handleRemove}/>
+
                     <span>
                       Price :
                       <span
@@ -2848,79 +2850,74 @@ export default function CartPage() {
                       </span>
                     </span>
                   </div>
-                  <div className="similingCartPageBotttomMain">
-                    <div style={{ width: '100%', textAlign: 'right', display: 'flex' , marginTop: '10px'}}>
-
-                      <div style={{width: '50%', backgroundColor: 'rgb(233 233 233 / 64%)', display: 'flex', justifyContent: 'center', alignItems: 'center'}} onClick={handleRemove}>
-                        <MdDeleteOutline style={{height: '20px', width: '20px'}}/> 
-                      </div>
-                      <button
+                  <div className="ItemRemarkMain">
+                    <div className="d-flex flex-row align-items-start">
+                      <textarea
+                        className="form-control ml-1 shadow-none textarea"
+                        defaultValue={""}
+                        placeholder="Enter Item Remark...."
+                        value={remarks}
                         style={{
-                          border: "none",
-                          outline: "none",
-                          backgroundColor: "#e1e1e1",
-                          padding: "6px 17px",
-                          width:'50%',
-                          borderRadius: "4px",
+                          height: '100px',
+                          fontSize: '13px',
+                          marginTop: '30px'
                         }}
-                      >
-                        {!isLodingSave ?
-                          <span
-                            style={{
-                              fontSize: "16px",
-                              fontWeight: "500",
-                            }}
-                            className="SaveBtnCart"
-                            onClick={handleCartUpdate}
-                          >
-                            Apply
-                          </span>
-                          :
-                          <span
-                            className="SaveBtnCart"
-                            style={{ display: 'flex' }}
-                          >
-                            <CircularProgress style={{ height: '20px', width: '20px' }} />
-                          </span>
-
+                        onChange={(event) =>
+                          handleInputChangeRemarks(event)
                         }
-                      </button>
+                      />
                     </div>
-
-                    <div className="ItemRemarkMain">
-                      <div className="d-flex flex-row align-items-start">
-                        <textarea
-                          className="form-control ml-1 shadow-none textarea"
-                          defaultValue={""}
-                          placeholder="Enter Item Remark...."
-                          value={remarks}
-                          style={{
-                            height: '100px',
-                            fontSize: '13px',
-                            marginTop: '30px'
-                          }}
-                          onChange={(event) =>
-                            handleInputChangeRemarks(event)
-                          }
-                        />
-                      </div>
-                      <div className="mt-2 text-right" style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                        {/* <Button
+                    <div className="mt-2 text-right" style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                      {/* <Button
                           className="btn btn-primary btn-sm shadow-none showremarkbtn me-2"
                           type="button"
                           onClick={}
                         >
                           Save
                         </Button> */}
-                        {/* <Button
+                      {/* <Button
                           className="saveRemakrBtn"
                           type="button"
                           onClick={() => handleSubmit(cartSelectData)}
                         >
                           Save Remark
                         </Button> */}
-                      </div>
                     </div>
+                  </div>
+                  <div className="similingCartPageBotttomMain">
+                    <button
+                      style={{
+                        border: "none",
+                        outline: "none",
+                        backgroundColor: "#e1e1e1",
+                        padding: "10px 17px",
+                        width: '100%',
+                        position: 'absolute',
+                        bottom: '0px',
+                        borderRadius: "4px",
+                      }}
+                    >
+                      {!isLodingSave ?
+                        <span
+                          style={{
+                            fontSize: "16px",
+                            fontWeight: "500",
+                          }}
+                          className="SaveBtnCart"
+                          onClick={handleCartUpdate}
+                        >
+                          Apply
+                        </span>
+                        :
+                        <span
+                          className="SaveBtnCart"
+                          style={{ display: 'flex' , justifyContent: 'center', alignItems:'center', height:'23px' }}
+                        >
+                          <CircularProgress style={{ height: '20px', width: '20px' }} />
+                        </span>
+
+                      }
+                    </button>
                   </div>
                 </div>
               </div>

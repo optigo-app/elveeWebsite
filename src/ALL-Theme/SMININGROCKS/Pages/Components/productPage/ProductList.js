@@ -9,7 +9,7 @@ import prodListData from "../../jsonFile/Productlist_4_95oztttesi0o50vr.json";
 import filterData from "../../jsonFile/M_4_95oztttesi0o50vr.json";
 import PriceData from "../../jsonFile/Productlist_4_95oztttesi0o50vr_8.json";
 // import PriceData from "../../jsonFile/testingFile/Productlist_4_95oztttesi0o50vr_8_Original.json";
-import { Accordion, AccordionDetails, AccordionSummary, Box, Button, CardContent, Checkbox, CircularProgress, Divider, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Modal, Pagination, Slider, Typography } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Box, Button, CardContent, Checkbox, CircularProgress, Divider, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Menu, MenuItem, Modal, Pagination, Slider, Typography } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
@@ -38,6 +38,7 @@ import ProductListSkeleton from "./ProductListSkelton";
 import { Card } from "react-bootstrap";
 import ProductFilterSkelton from "./ProductFilterSkelton";
 import { FaChevronDown } from "react-icons/fa";
+import { CiMenuKebab } from "react-icons/ci";
 
 function valuetext(value) {
   return `${value}°C`;
@@ -2231,14 +2232,23 @@ const ProductList = () => {
     setIsMobileActive(!isMobileActive);
   };
 
+  const [show1ImagesView, setShow1ImageView] = useState(false);
   const [show2ImagesView, setShow2ImageView] = useState(false);
   const [show3ImagesView, setShow3ImageView] = useState(false);
   const [show4ImagesView, setShow4ImageView] = useState(false);
-  const handle2ImageShow = () => {
+
+  const hanlde1ImageShow = () =>{
     setShow4ImageView(false)
     setShow3ImageView(false)
+    setShow2ImageView(false)
+    setShow1ImageView(true)
+  }
+  
+  const handle2ImageShow = () => {
+    setShow4ImageView(false)
+    setShow1ImageView(false)
+    setShow3ImageView(false)
     setShow2ImageView(true)
-
   }
 
   const handle3ImageShow = () => {
@@ -2366,12 +2376,23 @@ const ProductList = () => {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
     bgcolor: 'background.paper',
     border: '2px solid white',
     boxShadow: 24,
     p: 4,
   };
+
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClickN = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleCloseN = () => {
+    setAnchorEl(null);
+  };
+
+
 
   return (
     <div id="top">
@@ -2381,7 +2402,7 @@ const ProductList = () => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <Box sx={style} className="customizationMain">
           <div>
             <div className="part" style={{ flex: '20%' }}>
               {isMetalCutoMizeFlag == 1 && <div
@@ -2393,11 +2414,14 @@ const ProductList = () => {
                 }}
               >
                 <select
-                  className='menuitemSelectoreMain'
+                  className='menuitemSelectoreMainPopup'
                   value={mtTypeOption}
                   onChange={(e) => {
-                    setmtTypeOption(e.target.value)
+                    // setmtTypeOption(e.target.value)
+                    ShortcutComboFunc(e.target.value, "metal")
+                    // console.log("event222",e.target.value)
                   }}
+                  style={{ color: '#7b7b7b', fontSize: '12px', fontWeight: 400, cursor: 'pointer' }}
                 >
                   {metalType.map((data, index) => (
                     <option key={index} value={data.metalType}>
@@ -2416,16 +2440,16 @@ const ProductList = () => {
                     flexDirection: "column",
                     width: '95%',
                     paddingTop: '10px',
-                    marginBottom: '15px',
                     gap: '5px',
                   }}
                 >
                   <select
-                    className='menuitemSelectoreMain'
+                    className='menuitemSelectoreMainPopup'
                     value={diaQColOpt}
                     onChange={(e) => {
                       setDiaQColOpt(e.target.value)
                     }}
+                    style={{ color: '#7b7b7b', fontSize: '12px', fontWeight: 400, cursor: 'pointer' }}
                   >
                     {colorData?.map((colorItem) => (
                       <option key={colorItem.ColorId} value={`${colorItem.Quality}#${colorItem.color}`}>
@@ -2439,23 +2463,24 @@ const ProductList = () => {
             {((isDaimondCstoFlag == 1) && (productData?.diamondweight !== 0 || productData?.diamondpcs !== 0)) &&
               <div className="divider"></div>}
 
-            {isCColrStoneCustFlag === 1 &&
+            {isCColrStoneCustFlag === 1 && DaimondQualityColor?.length !== 0 &&
               <div className="part" style={{ flex: '20%' }}>
                 <div
                   style={{
                     display: "flex",
                     flexDirection: "column",
                     width: '95%',
-                    paddingTop: '10px',
                     gap: '5px',
-                    borderTop: '1px solid rgba(66, 66, 66, 0.2)'
-
                   }}
                 >
                   <select
                     className='menuitemSelectoreMain'
-                    onChange={(e) => setCSQOpt(e.target.value)}
+                    onChange={(e) =>
+                      // setCSQOpt(e.target.value)
+                      ShortcutComboFunc(e.target.value, "cs")
+                    }
                     value={cSQopt}
+                    style={{ color: '#7b7b7b', fontSize: '12px', fontWeight: 400, cursor: 'pointer' }}
                   >
                     {DaimondQualityColor.map((data, index) => (
                       <option
@@ -2933,6 +2958,29 @@ const ProductList = () => {
                               {/* <TfiLayoutGrid4Alt style={{ height: '17px', width: '17px', opacity: 0.6 }} onClick={() => handle4ImageShow()} /> */}
                             </div>
                           </div>
+
+                          {/* <CiMenuKebab style={{ height: '25px', width: '22px', opacity: 0.7, color: '#283045' }} onClick={() => handle2ImageShow()} /> */}
+
+
+                          <div className="part thirdfilteDivMobile" style={{ flex: '5%', justifyContent: 'end' }}>
+                            <div className="part-content">
+                              <Button
+                                style={{ minWidth: '0px', padding: '0px' }}
+                                onClick={handleClickN}
+                              >
+                                <CiMenuKebab style={{ height: '25px', width: '22px', opacity: 0.7, color: '#283045' }} />
+                              </Button>
+                              <Menu
+                                anchorEl={anchorEl}
+                                keepMounted
+                                open={Boolean(anchorEl)}
+                                onClose={handleCloseN}
+                              >
+                                <MenuItem style={{color: 'rgb(123, 123, 123)' , fontSize: '14px'}} onClick={() => {handleCloseN(); hanlde1ImageShow();}}>Single View</MenuItem>
+                                <MenuItem style={{color: 'rgb(123, 123, 123)', fontSize: '14px'}} onClick={() => {handleCloseN(); handle2ImageShow();}}>Double View</MenuItem>
+                              </Menu>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -2985,6 +3033,7 @@ const ProductList = () => {
                       <>
                         {newProData?.length != 0 || ProductApiData2?.length != 0 ? (
                           <div className={`smilingAllProductDataMainMobile
+                                    ${show1ImagesView ? "smilingAllProductDataMainMobileShow1Image" : ""}
                                     ${show2ImagesView ? "smilingAllProductDataMainMobileShow2Image" : ""}
                                     ${show4ImagesView ? "smilingAllProductDataMainMobileShow4Image" : ""}`}>
                             {/* RollOverImageName */}
@@ -2992,6 +3041,7 @@ const ProductList = () => {
                             {(rangeProData.length ? rangeProData : (newProData?.length ? newProData : ProductApiData2))?.map((products, i) =>
                             (
                               <div className={`main-ProdcutListConatiner
+                      ${show1ImagesView ? "main-ProdcutListConatiner1ImageShow" : ""}
                       ${show2ImagesView ? "main-ProdcutListConatiner2ImageShow" : ""}
                       ${show4ImagesView ? "main-ProdcutListConatiner4ImageShow" : ""}`}
                               >
@@ -3006,9 +3056,12 @@ const ProductList = () => {
                                     <div>
                                       <img
                                         className={`${isShowfilter ? "prod_img" : "prod_imgFiletrHide"}
-                                        ${show2ImagesView ?
-                                            isShowfilter ?
-                                              "prod_img2" : "prod_img2FiletrHider" : ""}
+                                        ${show1ImagesView ? "prod_img1" : ""}
+
+                                            ${show2ImagesView ?
+                                              isShowfilter ?
+                                                "prod_img2" : "prod_img2FiletrHider" : ""}
+
                                             ${show4ImagesView ?
                                             isShowfilter ?
                                               "prod_img4" : "prod_img4FiletrHider" : ""} `}
@@ -3030,7 +3083,7 @@ const ProductList = () => {
                                         // onMouseEnter={() => handleHoverImageShow(products?.MediumImagePath?.split(",")[0], i, products?.RollOverImageName, globImagePath)}
                                         // onMouseEnter={() => handleHoverImageShow(products?.MediumImagePath?.split(",")[0], i, isColorWiseImageShow === 1 ? products?.ColorWiseRollOverImageName : products?.RollOverImageName, products?.imagepath)}
                                         onMouseLeave={() => handleMouseLeave(i)}
-                                        style={{ objectFit: 'cover' }}
+                                        // style={{ objectFit: 'contain' }}
                                         alt="#"
                                         onError={(e) => {
                                           e.target.src = notFound;

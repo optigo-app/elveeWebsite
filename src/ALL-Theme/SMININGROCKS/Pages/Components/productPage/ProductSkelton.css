@@ -15,6 +15,9 @@
     .filtercard{
         display: none !important;
     }
+    .topSkeletonMain{
+        margin-top: 50px;
+    }
 }
 
 @media (max-width: 600px) {
@@ -25,4 +28,6 @@
     .cardMainSkeleton{
         height: 20vh!important;
     }
+
+  
 }
