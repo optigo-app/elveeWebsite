@@ -52,14 +52,17 @@ export default function Footer() {
         if(parsedSocilaMediaUrlData) setSocialMediaData(parsedSocilaMediaUrlData)
     }, [])
 
+
     return (
         <div>
             <div className='ElveFooterMain'>
                 <div className='ElveFooter1'>
-                    <p className='elveBox1Title'>Sign Up For Newslatter</p>
+                    <p className='elveBox1Title'>Sign up for our updates</p>
+                    <p style={{margin: '0px', maxWidth: '350px', fontSize: '13px'}}>Sign up for our updates
+                        Subscribe to our emails to get exclusive first access to new products, surveys, and events.</p>
                     <div className='ElveFooter1Input' style={{ marginTop: '20px', display: 'flex' }}>
                         <input type='text' placeholder='Enter Your Email' className='eleBox1InputBox' value={email} onChange={handleEmailChange} />
-                        <button className='elevBox1Btn' onClick={handleSubmitNewlater}>Subscribe</button>
+                        <button className='elevBox1Btn' onClick={handleSubmitNewlater}>SIGN UP</button>
                     </div>
                     <div className='footerIconMain'>
                         {socialMediaData?.map((social, index) => (

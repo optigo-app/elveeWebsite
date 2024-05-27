@@ -35,7 +35,7 @@ import { CommonAPI } from "../../../../../Utils/API/CommonAPI";
 import "./CartPage.css";
 import { ToastContainer, toast } from "react-toastify";
 import { Card, CardHeader, Col, Container, Row } from "react-bootstrap";
-import noFoundImage from "../../../../assets/image-not-found.png"
+import noFoundImage from "../../../../assets/image-not-found.jpg"
 import { FullProInfoAPI } from "../../../../../Utils/API/FullProInfoAPI";
 import { findCsQcIdDiff, findDiaQcId, findMetalType, findMetalTypeId, findValueFromId, storImagePath } from "../../../../../Utils/globalFunctions/GlobalFunction";
 import { SingleProductAPI } from "../../../../../Utils/API/SingleProductAPI";
@@ -43,6 +43,8 @@ import { IoArrowBackOutline } from "react-icons/io5";
 import { getDesignPriceList } from "../../../../../Utils/API/PriceDataApi";
 import { productListApiCall } from "../../../../../Utils/API/ProductListAPI";
 import { FilterListAPI } from "../../../../../Utils/API/FilterListAPI";
+import { MdDeleteOutline } from "react-icons/md";
+
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -125,7 +127,8 @@ export default function CartPage() {
   const [cartPageLoding, setCartPageloding] = useState(false);
   const [singleProdData, setSingleProdData] = useState();
   const [isLodingSave, setIsLoadingSave] = useState(false);
-
+  const [removeItemAutoCode, setRemoveItemAutoCode] = useState('');
+  const [removeItemDesignNumber, setRemoveItemDesignNumber] = useState('');
 
 
   const setProdFullInfo = async (paramDesignno) => {
@@ -341,7 +344,7 @@ export default function CartPage() {
         ele?.A == cartSelectData?.autocode
     );
 
-    console.log("cartmtrd",mtrd)
+    console.log("cartmtrd", mtrd)
 
     let showPrice = 0;
     if (mtrd && mtrd.length > 0) {
@@ -383,7 +386,7 @@ export default function CartPage() {
       let totalPrice = diaqcprice?.reduce((acc, obj) => acc + obj.S, 0)
       let diaRate = diaqcprice?.reduce((acc, obj) => acc + obj.O, 0)
       let diaSettRate = diaqcprice?.reduce((acc, obj) => acc + obj.Q, 0)
-      console.log("cartdiaqcprice",totalPrice)
+      console.log("cartdiaqcprice", totalPrice)
       setDqcRate(diaRate ?? 0)
       setDqcSettRate(diaSettRate ?? 0)
       setDqcData(totalPrice ?? 0)
@@ -419,8 +422,8 @@ export default function CartPage() {
 
     );
 
-    console.log("cartcsqcpirce",csqcpirce)
-    
+    console.log("cartcsqcpirce", csqcpirce)
+
     let showPrice2 = 0;
     if (csqcpirce) {
       // showPrice2 = srProductsData?.price - ((srProductsData?.price - srProductsData?.csrd2) + (csqcpirce[0]?.S ?? 0));
@@ -584,24 +587,30 @@ export default function CartPage() {
 
       if (response?.Data) {
         setCartListData(response?.Data?.rd);
+        setIsLoading(false);
         setMainRemarks(response?.Data?.rd[0].OrderRemarks);
         setRemarks(response?.Data?.rd[0].Remarks);
       }
     } catch (error) {
       console.error("Error:", error);
     } finally {
-      setIsLoading(false);
     }
   };
 
+
   const handleRemove = async (data) => {
+
+    console.log('cccccccc deeee', cartSelectData);
+    console.log('cccccccc deeee', removeItemDesignNumber);
     try {
       setIsLoading(true);
+      setDialogOpen(false);
+      handleCloseSingleRemove();
       const storeInit = JSON.parse(localStorage.getItem("storeInit"));
       const { FrontEnd_RegNo } = storeInit;
       const combinedValue = JSON.stringify({
-        designno: `${data.designno}`,
-        autocode: `${data.autocode}`,
+        designno: `${cartSelectData?.designno}`,
+        autocode: `${cartSelectData?.autocode}`,
         metalcolorid: "0",
         isSolStockNo: "0",
         is_show_stock_website: "0",
@@ -617,10 +626,11 @@ export default function CartPage() {
         p: encodedCombinedValue,
       };
       const response = await CommonAPI(body);
+      console.log('ccccccccccccccc', response);
       if (response.Data.rd[0].stat === 1) {
         await getCartData();
         await getCountFunc();
-        let prevIndexofCartList = cartListData?.findIndex((cld) => cld?.autocode === data?.autocode)
+        let prevIndexofCartList = cartListData?.findIndex((cld) => cld?.autocode === removeItemAutoCode)
         if (prevIndexofCartList === 0) {
           setCartSelectData()
         } else {
@@ -687,22 +697,24 @@ export default function CartPage() {
   };
 
 
-  
+
   const [remakrAutuCode, setRemarkAutoCodr] = useState(false);
   const [reamkrDesignNumber, setDesignNumebr] = useState(false);
 
   const handleSubmit = async (data) => {
     if (!remarks || remarks.trim() === "") {
-      toast.error("Enter a value for remarks.");
+      // toast.error("Enter a value for remarks.");
     } else {
       try {
-        handleCloseItemRemark();
         // setIsLoading(true);
         const storeInit = JSON.parse(localStorage.getItem("storeInit"));
         const { FrontEnd_RegNo } = storeInit;
         const combinedValue = JSON.stringify({
-          designno: `${reamkrDesignNumber}`,
-          autocode: `${remakrAutuCode}`,
+          // designno: `${reamkrDesignNumber}`,
+          // autocode: `${remakrAutuCode}`,
+
+          designno: `${data.designno}`,
+          autocode: `${data.autocode}`,
           remarks: `${remarks}`,
           FrontEnd_RegNo: `${FrontEnd_RegNo}`,
           Customerid: `${customerID}`,
@@ -714,12 +726,12 @@ export default function CartPage() {
           p: encodedCombinedValue,
         };
         const response = await CommonAPI(body);
+        console.log('reeeeeeeeeeeeeeeeeeeeeeeeeee', response);
         if (response.Data.rd[0].stat === 1) {
           await getCartData()
-          toast.success("Add remark successfully");
+          // toast.success("Add remark successfully");
           setShowRemarkFields(!showRemarkFields)
           setRemarksApiRes(response.Data.rd[0]?.design_remark)
-          // setRemarks('')
         } else {
           alert("Error");
         }
@@ -766,7 +778,7 @@ export default function CartPage() {
         const response = await CommonAPI(body);
         if (response.Data.rd[0].stat === 1) {
           await getCartData()
-          toast.success("QTY change successfully");
+          // toast.success("QTY change successfully");
           setQtyUpdateWaiting(false);
         } else {
           alert("Error");
@@ -867,7 +879,7 @@ export default function CartPage() {
   useEffect(() => {
     const selectedSize = sizeData.find((size) => size.sizename === (sizeOption))
 
-    console.log("selectedSize",selectedSize);
+    console.log("selectedSize", selectedSize);
 
     if (selectedSize) {
       setSizeMarkup(selectedSize?.MarkUp)
@@ -961,6 +973,7 @@ export default function CartPage() {
   }
 
   const handleCartUpdate = async () => {
+
     const storeInit = JSON.parse(localStorage.getItem("storeInit"))
     const UserEmail = localStorage.getItem("registerEmail")
     const Customer_id = JSON.parse(localStorage.getItem("loginUserDetail"));
@@ -1091,6 +1104,8 @@ export default function CartPage() {
             await getCartAndWishListData()
             await getCountFunc()
             await getCartData()
+            await handleSubmit(cartSelectData);
+
             toast.success("Product Updated successFully !!!")
             setQtyUpdateWaiting(false);
             setIsLoadingSave(false);
@@ -1168,14 +1183,14 @@ export default function CartPage() {
   }, [catSizeData, mtrdData, dqcData, currData, csqcData, sizeMarkup, metalUpdatedPrice, diaUpdatedPrice, colUpdatedPrice])
 
   console.log("breckupprice",
-     (((mtrdData?.V ?? 0) / currData?.CurrencyRate) + (mtrdData?.W ?? 0) + (mtrdData?.X ?? 0)),
-     (dqcData ?? 0),
-     (csqcData ?? 0),
-     ((sizeMarkup ?? 0) / (currData?.CurrencyRate) ?? 0),
-     (metalUpdatedPrice() ?? 0),
-     (diaUpdatedPrice() ?? 0),
-     (colUpdatedPrice() ?? 0)
-    );
+    (((mtrdData?.V ?? 0) / currData?.CurrencyRate) + (mtrdData?.W ?? 0) + (mtrdData?.X ?? 0)),
+    (dqcData ?? 0),
+    (csqcData ?? 0),
+    ((sizeMarkup ?? 0) / (currData?.CurrencyRate) ?? 0),
+    (metalUpdatedPrice() ?? 0),
+    (diaUpdatedPrice() ?? 0),
+    (colUpdatedPrice() ?? 0)
+  );
 
 
   function FinalPrice() {
@@ -1218,16 +1233,32 @@ export default function CartPage() {
     setOpen(false);
   };
 
+
+  const [openSingleRemove, setOpenSingleRemove] = useState(false);
+
+  const handleClickOpenSingleRemove = (data) => {
+    console.log('ccccccccc', data);
+    console.log('ccccccccc', data.autocode);
+    console.log('ccccccccc', data.designno);
+    setRemoveItemAutoCode(data.autocode);
+    setRemoveItemDesignNumber(data.designno)
+    setOpenSingleRemove(true);
+
+  };
+
+  const handleCloseSingleRemove = () => {
+    setOpenSingleRemove(false);
+  };
+
   const [openItemRemark, setOpenItemRemark] = useState(false);
 
-  const handleClickOpenItemRemark = (autoCode , designNumbder) => {
+  const handleClickOpenItemRemark = (autoCode, designNumbder) => {
     setOpenItemRemark(true);
     setRemarkAutoCodr(autoCode);
     setDesignNumebr(designNumbder);
   };
 
   const handleCloseItemRemark = () => {
-    setRemarks('');
     setOpenItemRemark(false);
   };
 
@@ -1239,7 +1270,6 @@ export default function CartPage() {
   };
 
   const handleCloseOrderRemark = () => {
-    setRemarks('');
     setOpenOrderRemark(false);
   };
 
@@ -1292,7 +1322,13 @@ export default function CartPage() {
     }
   };
 
-  console.log('FinalPrice()', FinalPrice());
+  useEffect(() => {
+    if (cartSelectData?.Remarks) {
+      setRemarks(cartSelectData.Remarks);
+    }
+  }, [cartSelectData]);
+
+  console.log('reeeeeeeeeeeeeeeeeeeeeeeeeee ()', cartListData);
   console.log('FinalPrice() * lastEnteredQuantityFinalPrice() * lastEnteredQuantity', FinalPrice() * lastEnteredQuantity);
   return (
     <>
@@ -1306,13 +1342,26 @@ export default function CartPage() {
         )}
         <ToastContainer />
         <Dialog open={open} onClose={handleClose}>
-          <p style={{ padding: '15px 15px 0px 15px', fontWeight: 500 }}>Are You Sure To Delete Alll This Item?</p>
+          <p style={{ padding: '15px 15px 0px 15px', fontWeight: 500 }}>Are You Sure To Delete All This Item?</p>
 
           <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' }}>
             <Button onClick={handleClose} color="primary">
               NO
             </Button>
             <Button onClick={handleRemoveAllWishList} color="primary">
+              YES
+            </Button>
+          </div>
+        </Dialog>
+
+        <Dialog open={openSingleRemove} onClose={handleCloseSingleRemove}>
+          <p style={{ padding: '15px 15px 0px 15px', fontWeight: 500 }}>Are You Sure To Delete This Item?</p>
+
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' }}>
+            <Button onClick={handleCloseSingleRemove} color="primary">
+              NO
+            </Button>
+            <Button onClick={handleRemove} color="primary">
               YES
             </Button>
           </div>
@@ -1337,7 +1386,7 @@ export default function CartPage() {
                 }
               />
             </div>
-            <div className="mt-2 text-right" style={{display: 'flex' , justifyContent: 'flex-end'}}>
+            <div className="mt-2 text-right" style={{ display: 'flex', justifyContent: 'flex-end' }}>
               <Button
                 className="btn btn-primary btn-sm shadow-none showremarkbtn me-2"
                 type="button"
@@ -1531,6 +1580,7 @@ export default function CartPage() {
                   <button
                     className="placeOrderCartPageBtnMobile"
                     onClick={handlePlaceOrder}
+                    style={{ display: dialogOpen && 'none' }}
                   >
                     Place Order
                   </button>
@@ -1588,18 +1638,18 @@ export default function CartPage() {
                             <div
                               key={item.id}
                               className={`smiling-cartPageBoxMain ${cartSelectData && cartSelectData.id === item.id ? 'selected' : ''}`}
-                              // onClick={async () => {
-                              //   setCartSelectData(item);
-                              //   setProdFullInfo(item.designno);
-                              //   getSizeData(item.autocode);
-                              //   window.innerWidth <= 1080 &&
-                              //     setDialogOpen(true);
+                              onClick={async () => {
+                                setCartSelectData(item);
+                                setProdFullInfo(item.designno);
+                                getSizeData(item.autocode);
+                                window.innerWidth <= 1080 &&
+                                  setDialogOpen(true);
 
-                              //   await SingleProductAPI(item?.designno).then((res) => {
-                              //     let data = res[0]
-                              //     setSingleProdData(data)
-                              //   })
-                              // }}
+                                await SingleProductAPI(item?.designno).then((res) => {
+                                  let data = res[0]
+                                  setSingleProdData(data)
+                                })
+                              }}
                             >
                               <img
                                 src={item.DefaultImageName != '' ? `${imageURL}/${yKey}/${item.DefaultImageName}` : noFoundImage}
@@ -1614,7 +1664,7 @@ export default function CartPage() {
                                   getSizeData(item.autocode);
                                   window.innerWidth <= 1080 &&
                                     setDialogOpen(true);
-  
+
                                   await SingleProductAPI(item?.designno).then((res) => {
                                     let data = res[0]
                                     setSingleProdData(data)
@@ -1673,12 +1723,17 @@ export default function CartPage() {
                                   </div>
                                 </div>
 
-                                <p style={{ position: 'absolute', bottom: '12px' }}>{item?.Remarks ? 'Remark : ' + item?.Remarks : ''}</p>
+                                <p style={{ position: 'absolute', bottom: '13px' }}>{item?.Remarks ? 'Remark : ' + item?.Remarks : ''}</p>
                                 <div className="bottomBtnCart" style={{ display: 'flex', justifyContent: 'space-between', position: 'absolute', bottom: '10px', width: '35%' }}>
-                                  <p onClick={() => handleClickOpenItemRemark(item.autocode , item.designno)} style={{ margin: '0px', fontSize: '13px', cursor: 'pointer', color: '#7d7f85', textDecoration: 'underline' }}>Item Remark</p>
+                                  {/* <p onClick={() => handleClickOpenItemRemark(item.autocode, item.designno)} style={{ margin: '0px', fontSize: '13px', cursor: 'pointer', color: '#7d7f85', textDecoration: 'underline' }}>Item Remark</p> */}
+                                  <p style={{ margin: '0px', fontSize: '13px', cursor: 'pointer', color: '#7d7f85', textDecoration: 'underline' }}>Item Remark</p>
                                   <p style={{ margin: '0px', fontSize: '13px', cursor: 'pointer', color: '#7d7f85', textDecoration: 'underline' }}
-                                    onClick={() => handleRemove(item)}
+
                                   >Remove</p>
+
+                                  {/* <p style={{ margin: '0px', fontSize: '13px', cursor: 'pointer', color: '#7d7f85', textDecoration: 'underline' }}
+                                    onClick={() => handleClickOpenSingleRemove(item)}
+                                  >Remove</p> */}
                                 </div>
 
                                 {/* <div
@@ -2756,7 +2811,7 @@ export default function CartPage() {
                       </button>
                     </div> */}
 
-                    <div className="QTYUpateMain">
+                    <div className="QTYUpateMain" style={{ backgroundColor: qtyUpdateWaiting && '#d3d3d375' }}>
                       <div>
                         <Button className="QtyLess" disabled={qtyUpdateWaiting && true} onClick={handleDecrementQuantity}>-</Button>
                       </div>
@@ -2767,6 +2822,8 @@ export default function CartPage() {
                         <Button className='QtyAdd' disabled={qtyUpdateWaiting && true} onClick={handleIncrementQuantity}>+</Button>
                       </div>
                     </div>
+
+                    <MdDeleteOutline style={{ height: '30px', width: '30px' , color:'#ff0000a8' }} onClick={handleRemove}/>
 
                     <span>
                       Price :
@@ -2792,39 +2849,74 @@ export default function CartPage() {
                       </span>
                     </span>
                   </div>
-                  <div className="similingCartPageBotttomMain">
-                    <div style={{ width: '100%', textAlign: 'right' }}>
-                      <button
+                  <div className="ItemRemarkMain">
+                    <div className="d-flex flex-row align-items-start">
+                      <textarea
+                        className="form-control ml-1 shadow-none textarea"
+                        defaultValue={""}
+                        placeholder="Enter Item Remark...."
+                        value={remarks}
                         style={{
-                          border: "none",
-                          outline: "none",
-                          backgroundColor: "#e1e1e1",
-                          padding: "6px 17px",
-                          borderRadius: "4px",
+                          height: '100px',
+                          fontSize: '13px',
+                          marginTop: '30px'
                         }}
-                      >
-                        {!isLodingSave ?
-                          <span
-                            style={{
-                              fontSize: "16px",
-                              fontWeight: "500",
-                            }}
-                            className="SaveBtnCart"
-                            onClick={handleCartUpdate}
-                          >
-                            Save
-                          </span>
-                          :
-                          <span
-                            className="SaveBtnCart"
-                            style={{ display: 'flex' }}
-                          >
-                            <CircularProgress style={{ height: '20px', width: '20px' }} />
-                          </span>
-
+                        onChange={(event) =>
+                          handleInputChangeRemarks(event)
                         }
-                      </button>
+                      />
                     </div>
+                    <div className="mt-2 text-right" style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                      {/* <Button
+                          className="btn btn-primary btn-sm shadow-none showremarkbtn me-2"
+                          type="button"
+                          onClick={}
+                        >
+                          Save
+                        </Button> */}
+                      {/* <Button
+                          className="saveRemakrBtn"
+                          type="button"
+                          onClick={() => handleSubmit(cartSelectData)}
+                        >
+                          Save Remark
+                        </Button> */}
+                    </div>
+                  </div>
+                  <div className="similingCartPageBotttomMain">
+                    <button
+                      style={{
+                        border: "none",
+                        outline: "none",
+                        backgroundColor: "#e1e1e1",
+                        padding: "10px 17px",
+                        width: '100%',
+                        position: 'absolute',
+                        bottom: '0px',
+                        borderRadius: "4px",
+                      }}
+                    >
+                      {!isLodingSave ?
+                        <span
+                          style={{
+                            fontSize: "16px",
+                            fontWeight: "500",
+                          }}
+                          className="SaveBtnCart"
+                          onClick={handleCartUpdate}
+                        >
+                          Apply
+                        </span>
+                        :
+                        <span
+                          className="SaveBtnCart"
+                          style={{ display: 'flex' , justifyContent: 'center', alignItems:'center', height:'23px' }}
+                        >
+                          <CircularProgress style={{ height: '20px', width: '20px' }} />
+                        </span>
+
+                      }
+                    </button>
                   </div>
                 </div>
               </div>

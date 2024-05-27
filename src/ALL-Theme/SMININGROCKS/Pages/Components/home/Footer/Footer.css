@@ -18,21 +18,21 @@
 }
 
 .eleBox1InputBox {
-    height: 40px;
-    width: 40%;
+    height: 45px;
+    width: 55%;
     border: none;
     background-color: transparent;
-    border: 1px solid #00000078;
+    border: 1px solid #ebdcc3;
     outline: none;
 }
 
 .elevBox1Btn {
-    height: 40px;
-    width: 160px;
-    border: 1px solid #00000078;
+    height: 45px;
+    width: 90px;
+    border: none;
     background-color: #ebdcc3;
     font-weight: 500;
-    font-size: 18px;
+    font-size: 15px;
 
 }
 

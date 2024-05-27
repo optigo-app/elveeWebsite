@@ -223,6 +223,8 @@
     font-family: "PT Sans", sans-serif;
     font-weight: bold;
     letter-spacing: 2.2px;
+    height: 30px;
+    background-color: rgb(244, 244, 244)!important;
 }
 
 .mainpriceDeatilPage {
@@ -275,6 +277,8 @@
 .proDeatilList {
     width: 25%;
     font-weight: 600;
+    color: rgb(125, 127, 133);
+    text-decoration: underline;
 }
 
 .proDeatilList1 {
@@ -429,7 +433,15 @@
     }
 
     .srprodetail1 {
-        width: auto
+        width: auto;
+        min-height: 430px;
+    }
+
+    .productDeailFont{
+        font-size: 14px!important;
+    }
+    .smilingProdutDetltTitle{
+        color: rgb(125, 127, 133);
     }
 
     .smilingDeatilPageMainImage {

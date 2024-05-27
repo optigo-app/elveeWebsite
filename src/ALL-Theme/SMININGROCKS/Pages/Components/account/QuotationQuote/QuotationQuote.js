@@ -490,23 +490,24 @@ const QuotationQuote = () => {
 
     return (
         <Box className='smilingSavedAddressMain salesApiSection' sx={{ padding: "20px", }}>
-            <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+            <Box className="d_flex_quote" sx={{ display: "flex", flexWrap: "wrap" }}>
                 <Box sx={{ paddingRight: "15px" }} className="AllQuoteBtn QuotePadSec">
                     <Button variant="contained" className="muiSmilingRocksBtn" sx={{ background: "#7d7f85", display: "flex", alignItems: "center", marginBottom: 0, padding: "6px 0", }} onClick={eve => resetAllFilters(eve)}>
                         All
-                    </Button></Box>
-                <Box sx={{ display: "flex", alignItems: "center", position: "relative", padding: "0 15px 35px 0", maxWidth: "max-content" }} className="searchbox QuotePadSec">
-                    <TextField id="standard-basic" label="Search" variant="outlined" value={searchVal} onChange={eve => {
+                    </Button>
+                </Box>
+                <Box sx={{ display: "flex", alignItems: "center", position: "relative", padding: "0 15px 35px 0", maxWidth: "max-content" }} className="searchbox QuotePadSec w_q">
+                    <TextField id="standard-basic" label="Search" variant="outlined" className="w_q" value={searchVal} onChange={eve => {
                         setSearchVal(eve?.target?.value);
                         handleSearch(eve, eve?.target?.value, fromDate, toDate);
                     }} />
                     <Button sx={{ padding: 0, maxWidth: "max-content", minWidth: "max-content", position: "absolute", right: "8px", color: "#757575" }}
                         onClick={eve => handleSearch(eve, searchVal, fromDate, toDate)}><SearchIcon /></Button>
                 </Box>
-                <Box sx={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}>
-                    <Box sx={{ display: "flex", alignItems: "center", paddingRight: "15px", paddingBottom: "35px" }} className="QuotePadSec">
-                        <p className='fs-6 mb-0' style={{ paddingRight: "8px" }}>Date: </p>
-                        <Box>
+                <Box sx={{ display: "flex", alignItems: "center", flexWrap: "wrap" }} className="d_flex_quote w_q">
+                    <Box sx={{ display: "flex", alignItems: "center", paddingRight: "15px", paddingBottom: "35px" }} className="QuotePadSec w_q">
+                        <p className='fs-6 w_20_q mb-0' style={{ paddingRight: "8px" }}>Date: </p>
+                        <Box className="w_80_q">
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                                 <DatePicker
                                     label="Date From"
@@ -545,15 +546,15 @@ const QuotationQuote = () => {
 
                                     // placeholder={fromDate ? undefined : "DD MMM YYYY"}
                                     // placeholder="DD MMM YYYY"
-                                    className='quotationFilterDates'
+                                    className='quotationFilterDates w_q'
                                     ref={fromDateRef}
                                 />
                             </LocalizationProvider>
                         </Box>
                     </Box>
-                    <Box sx={{ display: "flex", alignItems: "center", paddingBottom: "35px", paddingRight: "15px" }} className="QuotePadSec">
-                        <p className='fs-6 mb-0' style={{ paddingRight: "8px" }}>To: </p>
-                        <Box>
+                    <Box sx={{ display: "flex", alignItems: "center", paddingBottom: "35px", paddingRight: "15px" }} className="QuotePadSec w_q">
+                        <p className='fs-6 w_20_q mb-0' style={{ paddingRight: "8px" }}>To: </p>
+                        <Box className="w_80_q">
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                                 <DatePicker
                                     label="Date To"
@@ -562,7 +563,7 @@ const QuotationQuote = () => {
                                     format="DD MM YYYY"
                                     placeholder="DD MM YYYY"
                                     // placeholder="Date To"
-                                    className='quotationFilterDates'
+                                    className='quotationFilterDates w_q'
                                     ref={toDateRef}
                                     inputProps={{ readOnly: true }}
                                     onChange={(newValue) => {
@@ -587,7 +588,7 @@ const QuotationQuote = () => {
                         </Box>
                     </Box>
                 </Box>
-                <Box sx={{ padding: "0 15px 35px 0", display: "flex", alignItems: "center", }} className="QuotePadSec">
+                <Box sx={{ padding: "0 15px 35px 0", display: "flex", alignItems: "center", }} className="QuotePadSec pad_left_q">
                     <Button variant='contained' className="muiSmilingRocksBtn" sx={{ padding: "7px 10px", minWidth: "max-content", background: "#7d7f85" }} onClick={(eve) => handleSearch(eve, searchVal, fromDate, toDate)}><SearchIcon sx={{ color: "#fff !important" }} /></Button>
                 </Box>
             </Box>

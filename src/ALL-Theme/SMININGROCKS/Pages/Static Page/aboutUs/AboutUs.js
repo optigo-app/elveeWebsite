@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import "./AboutUs.css"
 import Footer from '../../Components/home/Footer/Footer';
 import { storImagePath } from '../../../Utils/globalFunctions/GlobalFunction';
+import CompanyBanner from '../../Components/home/ComapnayData/CompanyData';
 
 function AboutUs() {
   const [activeTab, setActiveTab] = useState(1);
@@ -108,7 +109,8 @@ function AboutUs() {
           />
         </div>
       </div>
-      <div className="aboutuscompany">
+      <CompanyBanner />
+      {/* <div className="aboutuscompany">
         <div className="aboutuscompany_w_1">
           <div className="aboutuscompany_w_1_info">Established Excellence</div>
           <div className='aboutdesc'>A Legacy of success, dream by passion and innovation</div>
@@ -129,7 +131,7 @@ function AboutUs() {
           <div className="aboutuscompany_w_1_info">450+</div>
           <div>Worker & Team</div>
         </div>
-      </div>
+      </div> */}
       <Footer />
     </div>
   );

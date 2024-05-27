@@ -15,10 +15,19 @@
     .filtercard{
         display: none !important;
     }
+    .topSkeletonMain{
+        margin-top: 50px;
+    }
 }
 
 @media (max-width: 600px) {
     .skeltonMainDiv{
         margin-inline: 1%;
     }
+
+    .cardMainSkeleton{
+        height: 20vh!important;
+    }
+
+  
 }

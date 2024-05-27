@@ -13,7 +13,7 @@ const ProductListSkeleton = () => {
                 <Grid item xs={12}>
                     <Card className='skeltoncards' style={{ width: '100%' }}>
                         <CardContent style={{ display: 'flex', alignItems: 'center' }}>
-                            <div style={{ flex: 1 }}>
+                            <div style={{ flex: 1 }} className='topSkeletonMain'>
                                 <Skeleton animation="wave" variant="text" width={'80%'} height={20} style={{ marginBottom: '10px' }} />
                                 <Skeleton animation="wave" variant="text" width={'60%'} height={20} />
                             </div>
@@ -46,7 +46,7 @@ const ProductListSkeleton = () => {
                     {cardsArray.map((item) => (
                         <Grid item xs={isMobile ? 6 : 4} key={item}>
                             <Card className='skeltoncards'>
-                                <CardMedia style={{width:'100%', height:'40vh'}}>
+                                <CardMedia style={{width:'100%', height:'40vh'}} className='cardMainSkeleton'>
                                     <Skeleton animation="wave" variant="rect" width={'100%'} height='40vh' />
                                 </CardMedia>
                                 <CardContent>

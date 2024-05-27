@@ -632,10 +632,17 @@
 
 .muilistMenutext span {
     color: rgba(88, 88, 88, 1) !important;
+    font-size: 15px;
+    height: 30px;
+    display: flex;
+    align-items: flex-end;
 }
 
 .muilistSubMenutext span {
     color: rgba(88, 88, 88, .8) !important;
+}
+.muilistSubMenutext{
+    padding-top: 5px!important;
 }
 
 .muilist2ndSubMenutext span {
@@ -704,6 +711,7 @@
         display: block !important;
         background-color: #e1e1e1 !important;
         height: 60px !important;
+        position: fixed;
     }
 
     .placeOrderBtn {
@@ -803,7 +811,7 @@
 @media (min-width: 768px) and (max-width: 1440px) {
 
     .MainlogogMobileImage {
-        width: 45% !important;
+        width: 55% !important;
         margin-left: 0px !important;
     }
 
@@ -855,7 +863,7 @@
 
 @media (min-width: 600px) and (max-width: 769px) {
     .MainlogogMobileImage {
-        width: 50% !important;
+        width: 65% !important;
         margin-top: -11px;
         margin-left: 0px !important;
     }
@@ -961,7 +969,7 @@
     }
 
     .MainlogogMobileImage {
-        width: 45% !important;
+        width: 65% !important;
         margin-top: -12px;
     }
 
@@ -999,12 +1007,13 @@
 
     .mobileViewFirstDiv2 {
         width: 60% !important;
+        margin-left: 15px!important;
     }
 }
 
 @media screen and (max-width: 400px) {
     .MainlogogMobileImage {
-        width: 50% !important;
+        width: 75% !important;
         /* margin-top: -11px */
         margin-left: 0px !important;
     }
@@ -1013,6 +1022,12 @@
         height: 60px !important;
     }
 
+    .mobileViewSmilingTop2Icone{
+        height: 20px!important;
+        width: 20px!important;
+    }
+
+   
     .searchiconInMobile {
         display: none;
     }
@@ -1032,7 +1047,9 @@
         font-size: 30px !important;
     }
 
-
+    .mobileViewFirstDiv2Drawer{
+        width: 80%!important;
+    }
 
     .mobileViewSmilingTop1Icone {
         height: 18px !important;
@@ -1043,8 +1060,13 @@
 
 
     .mobileViewSmilingTop3Icone {
-        height: 25px !important;
-        width: 25px !important;
+        height: 20px !important;
+        width: 20px !important;
+    }
+
+    .mobileViewSmilingTop4Icone{
+        height: 20px !important;
+        width: 20px !important;
     }
 
 

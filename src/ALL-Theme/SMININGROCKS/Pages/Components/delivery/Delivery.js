@@ -412,6 +412,12 @@ export default function Delivery() {
         }
     };
 
+    const [openIndex, setOpenIndex] = useState(null);
+
+    const handleToggleOpen = (index) => {
+        setOpenIndex(prevIndex => prevIndex === index ? null : index);
+    };
+
     console.log('addddddddd', addressData);
     return (
         <div className='paddingTopMobileSet'>
@@ -571,7 +577,7 @@ export default function Delivery() {
                                         <p className="designCounttext" style={{ fontSize: '30px', fontWeight: '500', letterSpacing: '1px', textTransform: 'uppercase' }}>
                                             Delivery
                                         </p>
-                                        <span style={{ fontSize: '10px', marginLeft: '0px' }}>My Cart &gt; Delivery</span>
+                                        <span className='breadComesDeliver' style={{ fontSize: '10px', marginLeft: '0px' }}>My Cart &gt; Delivery</span>
                                     </div>
                                     <img src={`${storImagePath()}/images/HomePage/MainBanner/image/featuresImage.png`} className='featherImage' />
                                 </div>
@@ -580,7 +586,7 @@ export default function Delivery() {
 
                         <div className="filterDivcontainerDelivery" style={{ width: '100%', height: '60px' }}>
                             <div className="partCart" style={{ flex: '20%' }} onClick={() => navigation('/CartPage')}>
-                                <span style={{ color: '#7d7f85', fontWeight: '500', fontSize: '16px',cursor:'pointer', textDecoration: 'underline' }}>Back</span>
+                                <span style={{ color: '#7d7f85', fontWeight: '500', fontSize: '16px', cursor: 'pointer', textDecoration: 'underline' }}>Back</span>
                             </div>
                             <div className="divider"></div>
 
@@ -619,10 +625,8 @@ export default function Delivery() {
                             {/* <button className='smilingAddToAddressBtn' onClick={handleOpen}>Add New Address</button> */}
 
                         </div>
-                        <p style={{ fontFamily: 'PT Sans, sans-serif' }}>Order Will be delivered to selected address</p>
-                        <div className='smilingMobileDeliveryBtnMainMobilee'>
-                        </div>
-                        <div className='smilingDeliveyAddressMain' style={{ display: 'flex', flexWrap: 'wrap', marginBottom: '50px' , minHeight: '350px' }}>
+                        <p className='deliverySubTitleLine' style={{ fontFamily: 'PT Sans, sans-serif' }}>Order Will be delivered to selected address</p>
+                        <div className='smilingDeliveyAddressMain' style={{ display: 'flex', flexWrap: 'wrap', marginBottom: '50px', minHeight: '350px' }}>
                             {
                                 addressData?.map((item, index) => (
                                     <div key={item.id} className='AddressMain' style={{ backgroundColor: item.isdefault === 1 && 'rgb(245 244 244)' }} onClick={() => handleDefaultSelection(item.id)}>
@@ -635,6 +639,37 @@ export default function Delivery() {
                                         <p className='addressData'>{item.state}</p>
                                         <p className='addressData' style={{ marginBottom: '35px' }}>Phone : {item.shippingmobile}</p>
                                         <div style={{ position: 'absolute', bottom: '5px', width: '90%', display: 'flex', marginTop: '10px' }}>
+                                            <div onClick={() => handleOpen(item, index)} className='deliveryAddressEdit' style={{ width: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                                <p style={{ color: '#7d7f85', fontSize: '12px', fontWeight: 500, margin: '0px' }}>UPDATE</p>
+                                            </div>
+                                            <div className='deliveryAddressDelete' onClick={() => handleOpenDelete(item.id)}>
+                                                <MdOutlineDeleteOutline />
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))
+                            }
+                        </div>
+
+
+                        <div className='smilingDeliveyAddressMainMobile' style={{ display: 'flex', flexWrap: 'wrap',justifyContent:'center', marginBottom: '50px', minHeight: '350px' }}>
+                            {
+                                addressData?.map((item, index) => (
+                                    <div key={item.id} className='AddressMainMobile' style={{ backgroundColor: item.isdefault === 1 && 'rgb(245 244 244)' }} onClick={() =>  { handleToggleOpen(index); handleDefaultSelection(item.id);}}>
+                                        <div style={{ display: 'flex', height: '25px', justifyContent: 'flex-end' }}>
+                                            {item.isdefault === 1 && <p style={{ margin: '0px 0px 0px 5px', backgroundColor: '#e1e1e1', fontWeight: 500, borderRadius: '5px', padding: '0px 10px 0px 10px' }}>Selected</p>}
+                                        </div>
+                                        <p className='addressData' style={{ margin: '0px 0px 5px 0px' }}>{item.shippingfirstname} {item.shippinglastname}</p>
+                                        <div className='AdreessSubDelivery'>
+                                            <p className='addressData'>{item.street} ,</p>
+                                            <p className='addressData'>{item.city}-{item.zip} ,</p>
+                                            <p className='addressData'>{item.state}</p>
+                                        </div>
+                                        <p className='addressData' style={{ marginBottom: '35px' }}>Phone : {item.shippingmobile}</p>
+                                        <div
+                                            className={`adressBottomBtn ${openIndex === index ? 'open' : ''}`}
+                                            style={{ position: 'absolute', bottom: '5px', width: '90%', display: 'flex', marginTop: '10px' }}
+                                        >
                                             <div onClick={() => handleOpen(item, index)} className='deliveryAddressEdit' style={{ width: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                                                 <p style={{ color: '#7d7f85', fontSize: '12px', fontWeight: 500, margin: '0px' }}>UPDATE</p>
                                             </div>
@@ -661,22 +696,22 @@ export default function Delivery() {
 
             {addressData?.length !== 0 && (
                 <>
-                  <button
-                    className="placeOrderCartPageBtnMobile"
-                    onClick={handleContinue}
-                  >
-                    Continue
-                  </button>
+                    <button
+                        className="placeOrderCartPageBtnMobile"
+                        onClick={handleContinue}
+                    >
+                        Continue
+                    </button>
                 </>
-              )}
+            )}
 
             <div
-                // style={{
-                //     position: addressData?.length < 4 || isLoading ? 'absolute' : 'static',
-                //     bottom: addressData?.length < 4 || isLoading ? '0px' : 'auto',
-                //     width: '100%'
-                // }}
-                // className="mobileFootreCs"
+            // style={{
+            //     position: addressData?.length < 4 || isLoading ? 'absolute' : 'static',
+            //     bottom: addressData?.length < 4 || isLoading ? '0px' : 'auto',
+            //     width: '100%'
+            // }}
+            // className="mobileFootreCs"
             >
                 <Footer />
             </div>

@@ -49,7 +49,7 @@ input::-webkit-inner-spin-button {
 }
 @media(max-width: 767px){
   .accountPagTabSection{
-    padding-top: 20px !important;
+    padding-top: 50px !important;
   }
 
   .SmilingAccountTitle{

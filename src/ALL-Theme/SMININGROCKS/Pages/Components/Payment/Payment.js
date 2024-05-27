@@ -161,10 +161,10 @@ export default function Payment() {
                         <div class="text-container">
                             <div className='textContainerData'>
                                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-                                    <p className="designCounttext" style={{ fontSize: '30px', fontWeight: '500', letterSpacing: '1px', textTransform: 'uppercase' }}>
+                                    <p className="designCounttext paymentText" style={{ fontSize: '30px', fontWeight: '500', letterSpacing: '1px', textTransform: 'uppercase' }}>
                                         Payment
                                     </p>
-                                    <span style={{ fontSize: '10px', marginLeft: '40px' }}>My Cart &gt; Delivery &gt; Payment</span>
+                                    <span className='breadComesDeliver' style={{ fontSize: '10px', marginLeft: '40px' }}>My Cart &gt; Delivery &gt; Payment</span>
                                 </div>
                                 <img src={`${storImagePath()}/images/HomePage/MainBanner/image/featuresImage.png`} className='featherImage' />
                             </div>
@@ -172,7 +172,7 @@ export default function Payment() {
                     </div>
 
                     <div className="filterDivcontainerPaymetPage" style={{ width: '100%', height: '60px' }}>
-                        <div className="partCart" style={{ flex: '20%' , cursor:'pointer' }} onClick={() => navigation('/Delivery')} >
+                        <div className="partCart" style={{ flex: '20%', cursor: 'pointer' }} onClick={() => navigation('/Delivery')} >
                             <span className='cartPageTopLink'>Back</span>
                         </div>
                         <div className="divider"></div>
@@ -227,21 +227,24 @@ export default function Payment() {
                                 </div>
                             </div>
                             <div className='smilingPaySub1Box2'>
-                                <p className='PaymentMainTitle' style={{ fontSize: '25px', fontWeight: 500, color: '#5e5e5e' }}>Order Summary</p>
-                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                    <p>Subtotal</p>
-                                    <p style={{ fontWeight: 500, display: 'flex' }}>
+                                <div className='orderSubmmuryMain'>
+                                    <p className='PaymentMainTitle' style={{ fontSize: '25px', fontWeight: 500, color: '#5e5e5e' }}>Order Summary</p>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '5px' }}>
+                                        <p className='orderSubTitle'>Subtotal</p>
+                                        <p style={{ fontWeight: 500, display: 'flex', margin: '0px' }}>
 
-                                        <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />{TotlaPrice}</p>
+                                            <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />{TotlaPrice}</p>
+                                    </div>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgb(233, 233, 233)', paddingBottom: "5px" }}>
+                                        <p className='orderSubTitle'>Estimated Tax(3%)</p>
+                                        <p style={{ fontWeight: 500, display: 'flex', margin: '0px' }}> <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />{TotlaPriceText}</p>
+                                    </div>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px' }}>
+                                        <p className='orderSubTitle'>Estimated Total</p>
+                                        <p style={{ fontWeight: 500, display: 'flex', margin: '0px' }}> <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />{finalTotal}</p>
+                                    </div>
                                 </div>
-                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                    <p>Estimated Tax(3%)</p>
-                                    <p style={{ fontWeight: 500, display: 'flex' }}> <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />{TotlaPriceText}</p>
-                                </div>
-                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                    <p>Estimated Total</p>
-                                    <p style={{ fontWeight: 500, display: 'flex' }}> <div className="currencyFont" dangerouslySetInnerHTML={{ __html: decodeEntities(currData?.Currencysymbol) }} />{finalTotal}</p>
-                                </div>
+                                <div className='deliveryShiipingMain'>
 
                                 <p className='PaymentMainTitle' style={{ fontSize: '25px', fontWeight: 500, color: '#5e5e5e' }}>Shipping Address :</p>
                                 <div style={{ marginTop: '0px' }}>
@@ -250,6 +253,7 @@ export default function Payment() {
                                     <p className='AddressTitle'><span className='AdressData'>{selectedAdd.city}-{selectedAdd.zip}</span></p>
                                     <p className='AddressTitle'><span className='AdressData'>{selectedAdd.state},{selectedAdd.country}</span></p>
                                     <p className='AddressTitle'><span className='AdressData'>{selectedAdd.shippingmobile}</span></p>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -71,6 +71,11 @@
     /* margin: 0px 100px 0px 100px; */
 }
 
+.orderSubTitle{
+    margin: 0px;
+    font-size: 14px;
+}
+
 @media screen and (max-width: 1600px) {
     .smilingPaymentMain {
         margin-inline: 1% !important;
@@ -100,7 +105,7 @@
     }
 
     .PaymentMainTitle{
-        font-size: 20px!important;
+        font-size: 17px!important;
         margin: 0px!important;
     }
 
@@ -110,7 +115,8 @@
 
     
     .OrderNamMAinTitle{
-        font-size: 20px!important;
+        font-size: 17px!important;
+        font-weight: 400;
     }
 }
 
@@ -138,10 +144,21 @@
     .AddressTitle{
         font-size: 13px!important;
     }
+
+    .smilingPaySub1{
+        padding: 0px!important;
+    }
     .AdressData{
         font-size: 13px!important;
     }
+    .orderSubmmuryMain{
+        background-color: rgb(245, 244, 244);
+        padding: 15px;
+    }
 
+    .deliveryShiipingMain{
+        padding: 10px;
+    }
 }
 
  @media screen and (max-width: 550px) {
@@ -150,6 +167,7 @@
     .smilingPaySub1 {
         display: flex!important;
         flex-direction: column!important;
+        padding: 10px;
     }
 
     .smilingPaySub1Box1{
@@ -158,6 +176,6 @@
 
     .smilingPaySub1Box2{
         width: 100%!important;
-        margin-top: 20px!important;
+        margin-top: 10px!important;
     }
 } 

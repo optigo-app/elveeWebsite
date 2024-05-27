@@ -1,7 +1,7 @@
 .homeMain{
     /* margin-inline: 6%; */
     background-color: white;
-    font-family: "PT Sans", sans-serif !important;
+    /* font-family: "PT Sans", sans-serif !important; */
 }
 .smining-header{
     height: 110px;
@@ -47,17 +47,19 @@
   }
 
   
-@media screen and (max-width: 1440px) {
+  @media screen and (max-width: 1440px) {
 
-    .homeMain {
-        /* margin-inline: 2%; */
+    /* .homeMain {
+        margin-inline: 2%;
 
-    }
+    } */
 
    
     .paddingTopMobileSet{
-        padding-top: 0px!important;
+        padding-top: 60px!important;
     }
 
 
 }
+
+

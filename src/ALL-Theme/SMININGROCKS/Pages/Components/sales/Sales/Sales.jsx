@@ -489,8 +489,8 @@ const Sales = () => {
                     <Button sx={{ padding: 0, maxWidth: "max-content", minWidth: "max-content", position: "absolute", right: "8px", color: "#757575" }}
                         onClick={eve => handleSearch(eve, searchVal, fromDate, toDate)}><SearchIcon /></Button>
                 </Box>
-                <Box sx={{ display: "flex", alignItems: "center", flexWrap: "wrap" }} className="">
-                    <Box sx={{ display: "flex", alignItems: "center", paddingRight: "15px", paddingBottom: "35px" }} className="salesPagePagBtn">
+                <Box sx={{ display: "flex", alignItems: "center", flexWrap: "wrap" }} className="sal_flexcol">
+                    <Box sx={{ display: "flex", alignItems: "center", paddingRight: "15px", paddingBottom: "35px" }} className="salesPagePagBtn date_from_sal">
                         <p className='fs-6 mb-0' style={{ paddingRight: "8px" }}>Date: </p>
                         <Box>
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
