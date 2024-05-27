@@ -184,13 +184,10 @@ const ProductList = () => {
   //     }
   // }  
 
-  useEffect(() => {
-
+  useEffect(()=>{
     let param = JSON.parse(localStorage.getItem("menuparams"))
-
-    setMenuParamsState(param ?? {})
-
-  }, [])
+    setMenuParamsState(param)
+  },[ProductApiData2])
 
 
   useEffect(() => {
@@ -408,9 +405,7 @@ const ProductList = () => {
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("allproductlist"));
     const prodCount = JSON.parse(localStorage.getItem("allproductcount"));
-    if (!data?.length) {
-      setProductApiData2(data)
-    }
+    if (!data?.length) setProductApiData2(data)
     if (!prodCount?.length) setProdCount(prodCount)
     setFilterChecked({})
   }, [getMenuTransData])
@@ -434,78 +429,80 @@ const ProductList = () => {
       // const storeInit = JSON.parse(localStorage.getItem('storeInit'));
 
       // console.log("priceDataApi",priceDataApi);
-
-      const updatedData = await Promise?.all(data?.map(async (product) => {
-        // debugger
-
-        const newPriceData = priceDataApi?.rd?.find((pda) => pda.A == product.autocode)
-
-        const newPriceData1 = priceDataApi?.rd1?.filter((pda) => pda.A == product.autocode).reduce((acc, obj) => acc + obj.S, 0)
-
-        const newPriceData2 = priceDataApi?.rd2?.filter((pda) => pda.A == product.autocode).reduce((acc, obj) => acc + obj.S, 0)
-
-
-        let price = 0;
-        let markup = 0;
-        let metalrd = 0;
-        let diard1 = 0;
-        let csrd2 = 0;
-        let updNWT = 0;
-        let updGWT = 0;
-        let updDWT = 0;
-        let updDPCS = 0;
-        let updCWT = 0;
-        let updCPCS = 0;
-        let updMT = "";
-        let updMC = "";
-        let diaQ = "";
-        let diaQid = "";
-        let diaC = "";
-        let diaCid = "";
-        let csQ = "";
-        let csQid = "";
-        let csC = "";
-        let csCid = "";
-        let ismrpbase;
-        let mrpbaseprice;
-
-        console.log("newPriceData", newPriceData)
-        console.log("Listprice", product.autocode, newPriceData, newPriceData1, newPriceData2);
-
-
-        if (newPriceData || newPriceData1 || newPriceData2) {
-          price = (((newPriceData?.V ?? 0) / currData?.CurrencyRate ?? 0) + (newPriceData?.W ?? 0) + (newPriceData?.X ?? 0)) + (newPriceData1 ?? 0) + (newPriceData2 ?? 0);
-          metalrd = (((newPriceData?.V ?? 0) / currData?.CurrencyRate ?? 0) + (newPriceData?.W ?? 0) + (newPriceData?.X ?? 0))
-          diard1 = newPriceData1 ?? 0
-          csrd2 = newPriceData2 ?? 0
-          markup = newPriceData?.AB
-          updNWT = newPriceData?.I ?? 0
-          updGWT = newPriceData?.N ?? 0
-          updDWT = newPriceData?.K ?? 0
-          updDPCS = newPriceData?.J ?? 0
-          updCWT = newPriceData?.M ?? 0
-          updCPCS = newPriceData?.L ?? 0
-          updMT = findMetalType(newPriceData?.C ?? product?.MetalTypeid)[0]?.metaltype ?? ""
-          updMC = findMetalColor(product?.MetalColorid)[0]?.metalcolorname ?? ""
-          diaQ = ""
-          diaQid = ""
-          diaC = ""
-          diaCid = ""
-          csQ = ""
-          csQid = ""
-          csC = ""
-          csCid = ""
-          ismrpbase = newPriceData?.U
-          mrpbaseprice = newPriceData?.Z
-        }
-        // console.log("priceprod", product?.designno, metalrd, diard1, csrd2);
-        return {
-          ...product, price, markup, metalrd, diard1, csrd2, updNWT, updGWT,
-          updDWT, updDPCS, updCWT, updCPCS, updMT, updMC,
-          diaQ, diaQid,
-          diaC, diaCid, csQ, csQid, csC, csCid, ismrpbase, mrpbaseprice
-        }
-      }));
+       let updatedData
+      if(data){
+        updatedData = await Promise?.all(data?.map(async (product) => {
+          // debugger
+  
+          const newPriceData = priceDataApi?.rd?.find((pda) => pda.A == product.autocode)
+  
+          const newPriceData1 = priceDataApi?.rd1?.filter((pda) => pda.A == product.autocode).reduce((acc, obj) => acc + obj.S, 0)
+  
+          const newPriceData2 = priceDataApi?.rd2?.filter((pda) => pda.A == product.autocode).reduce((acc, obj) => acc + obj.S, 0)
+  
+  
+          let price = 0;
+          let markup = 0;
+          let metalrd = 0;
+          let diard1 = 0;
+          let csrd2 = 0;
+          let updNWT = 0;
+          let updGWT = 0;
+          let updDWT = 0;
+          let updDPCS = 0;
+          let updCWT = 0;
+          let updCPCS = 0;
+          let updMT = "";
+          let updMC = "";
+          let diaQ = "";
+          let diaQid = "";
+          let diaC = "";
+          let diaCid = "";
+          let csQ = "";
+          let csQid = "";
+          let csC = "";
+          let csCid = "";
+          let ismrpbase;
+          let mrpbaseprice;
+  
+          console.log("newPriceData", newPriceData)
+          console.log("Listprice",product.autocode,newPriceData,newPriceData1,newPriceData2);
+  
+  
+          if (newPriceData || newPriceData1 || newPriceData2) {
+            price = (((newPriceData?.V ?? 0) / currData?.CurrencyRate ?? 0) + (newPriceData?.W ?? 0) + (newPriceData?.X ?? 0)) + (newPriceData1 ?? 0) + (newPriceData2 ?? 0);
+            metalrd = (((newPriceData?.V ?? 0) / currData?.CurrencyRate ?? 0) + (newPriceData?.W ?? 0) + (newPriceData?.X ?? 0))
+            diard1 = newPriceData1 ?? 0
+            csrd2 = newPriceData2 ?? 0
+            markup = newPriceData?.AB
+            updNWT = newPriceData?.I ?? 0
+            updGWT = newPriceData?.N ?? 0
+            updDWT = newPriceData?.K ?? 0
+            updDPCS = newPriceData?.J ?? 0
+            updCWT = newPriceData?.M ?? 0
+            updCPCS = newPriceData?.L ?? 0
+            updMT = findMetalType(newPriceData?.C ?? product?.MetalTypeid)[0]?.metaltype ?? ""
+            updMC = findMetalColor(product?.MetalColorid)[0]?.metalcolorname ?? ""
+            diaQ = ""
+            diaQid = ""
+            diaC = ""
+            diaCid = ""
+            csQ = ""
+            csQid = ""
+            csC = ""
+            csCid = ""
+            ismrpbase = newPriceData?.U
+            mrpbaseprice = newPriceData?.Z
+          }
+          // console.log("priceprod", product?.designno, metalrd, diard1, csrd2);
+          return {
+            ...product, price, markup, metalrd, diard1, csrd2, updNWT, updGWT,
+            updDWT, updDPCS, updCWT, updCPCS, updMT, updMC,
+            diaQ, diaQid,
+            diaC, diaCid, csQ, csQid, csC, csCid, ismrpbase, mrpbaseprice
+          }
+        }));
+      }
 
       localStorage.setItem("allproductlist", JSON.stringify(updatedData));
       setProductApiData2(updatedData);

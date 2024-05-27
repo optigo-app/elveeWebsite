@@ -42,16 +42,16 @@ export default function Home() {
 
   useEffect(() => {
     const fetchData = async () => {
-      // const APIURL = 'http://zen/api/';
-      const APIURL = 'https://api.optigoapps.com/storev26/store.aspx';
-      // const APIURL = 'https://api.optigoapps.com/test/store.aspx';
+      // const APIURL = 'http://zen/api/'; // local
+      const APIURL = 'https://api.optigoapps.com/storev26/store.aspx';  // server 2
+      // const APIURL = 'https://api.optigoapps.com/test/store.aspx'; // server 1
 
 
       const header = {
         Authorization: 'Bearer optigo_json_api',
         domain: (window.location.hostname === 'localhost' || window.location.hostname === 'zen') ? 'estore.orail.co.in' : window.location.hostname,
         // domain: 'estore.orail.co.in',
-        version: 'LIVE',
+        version: 'Live',
         sp: "1"
         // domain: 'zen',
       };
@@ -74,6 +74,7 @@ export default function Home() {
           localStorage.setItem('UploadLogicalPath', response.data.Data.rd[0].UploadLogicalPath);
           localStorage.setItem('storeInit', JSON.stringify(response.data.Data.rd[0]));
           localStorage.setItem('myAccountFlags', JSON.stringify(response.data.Data.rd1));
+          localStorage.setItem('CompanyInfoData', JSON.stringify(response.data.Data.rd2[0]));
           let title = response?.data?.Data?.rd[0]?.companyname
           let favIcon = response?.data?.Data?.rd[0]?.favicon
           let companyLogo = response?.data?.Data?.rd[0]?.companylogo
@@ -327,9 +328,12 @@ export default function Home() {
   return (
     <div className='paddingTopMobileSet' style={{ backgroundColor: 'white', paddingTop: '0px' }}>
       <div className='homeMain'>
-        <Helmet>
+      <Helmet>
           <title>{title}</title>
           <link rel="icon" type="image/png" href={favicon} sizes="16x16" />
+          <meta name="description" content={title} />
+          <link rel="apple-touch-icon" href={favicon} />
+          <link rel="manifest" href={favicon} />
         </Helmet>
         {islogin == 'true' ? (
           <>
