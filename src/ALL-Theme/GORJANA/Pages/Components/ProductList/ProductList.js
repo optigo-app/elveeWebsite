@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import ProductCard from '../ProductCard/ProductCard'
 import './ProductList.css'
-import filterIcon from '../../assets/filter.svg';
+// import filterIcon from '../../assets/filter.svg';
 import { Accordion, AccordionDetails, AccordionSummary, Checkbox, Drawer, FormControlLabel, Typography } from '@mui/material';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -180,7 +180,7 @@ const ProductList = ({PageType}) => {
               style={{ display: "flex", gap: "5px" }}
               onClick={() => setFilterFlag(true)}
             >
-              <img src={filterIcon} style={{ width: "24px" }} />
+              {/* <img src={filterIcon} style={{ width: "24px" }} /> */}
               <span>Filter</span>
             </span>
             <span>251 products</span>

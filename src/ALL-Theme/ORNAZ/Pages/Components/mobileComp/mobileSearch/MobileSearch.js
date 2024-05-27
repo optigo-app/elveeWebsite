@@ -2,7 +2,7 @@ import React from 'react'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
-import earings from '../../../assets/finegifts/earrings.webp'
+// import earings from '../../../assets/finegifts/earrings.webp'
 import CallIcon from '@mui/icons-material/Call';
 import HeadsetMicIcon from '@mui/icons-material/HeadsetMic';
 import './MobileSearch.css'
@@ -37,28 +37,32 @@ export default function MobileSearch() {
 
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginInline: '15px' }}>
                     <div className='imagesBorder'>
-                        <img src={earings} className='popularImage' />
+                        <img src={""} className='popularImage' />
+                        {/* <img src={earings} className='popularImage' /> */}
                     </div>
                     <p style={{ margin: '4px' }}>Rings</p>
                 </div>
 
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginInline: '15px' }}>
                     <div className='imagesBorder'>
-                        <img src={earings} className='popularImage' />
+                        <img src={""} className='popularImage' />
+                        {/* <img src={earings} className='popularImage' /> */}
                     </div>
                     <p style={{ margin: '4px' }}>Earrings</p>
                 </div>
 
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginInline: '15px' }}>
                     <div className='imagesBorder'>
-                        <img src={earings} className='popularImage' />
+                        <img src={""} className='popularImage' />
+                        {/* <img src={earings} className='popularImage' /> */}
                     </div>
                     <p style={{ margin: '4px' }}>Necklaces</p>
                 </div>
 
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginInline: '15px' }}>
                     <div className='imagesBorder'>
-                        <img src={earings} className='popularImage' />
+                        <img src={""} className='popularImage' />
+                        {/* <img src={earings} className='popularImage' /> */}
                     </div>
                     <p style={{ margin: '4px' }}>Stackble Bands</p>
                 </div>

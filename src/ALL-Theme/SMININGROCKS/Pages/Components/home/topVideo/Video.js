@@ -52,7 +52,7 @@ console.log('loding--', loading);
         </>
       ) :
         <>
-          <img src={`${storImagePath()}/images/HomePage/MainBanner/image/HomepageMainBannerVideo.png`} style={{ width: '100%' }} />
+          <img src={`${storImagePath()}/images/HomePage/MainBanner/image/HomepageMainBannerVideo.png`} style={{ width: '100%' }} loading="lazy" />
           <CountdownTimer />
         </>
       }

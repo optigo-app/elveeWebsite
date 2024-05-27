@@ -1,5 +1,5 @@
 import React from 'react'
-import demo1img from '../../../../assets/demoImg1.jpg'
+// import demo1img from '../../../../assets/demoImg1.jpg'
 import './Styles.css'
 import { storImagePath } from '../../../../../Utils/globalFunctions/GlobalFunction'
 import { Swiper, SwiperSlide } from 'swiper/react';

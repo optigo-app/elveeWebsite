@@ -5,8 +5,8 @@ import { useLocation } from 'react-router-dom';
 import SmilingRock from '../home/smiling_Rock/SmilingRock';
 import Footer from '../home/Footer/Footer';
 
-import ring1 from './../../assets/linkingLove/ring1.webp'
-import ring1hover from './../../assets/linkingLove/ring1hover.jpg'
+// import ring1 from './../../assets/linkingLove/ring1.webp'
+// import ring1hover from './../../assets/linkingLove/ring1hover.jpg'
 
 export default function SearchResult() {
 
@@ -50,7 +50,7 @@ export default function SearchResult() {
             <div className='smilingSearchResultMain'>
                 {searchedProducts.map(product => (
                     <div key={product.id} className='smilingSearchResultBox'>
-                        <img src={ring3ImageChange ? ring1hover : ring1} className='smilingSearchResultBoxImages' onMouseEnter={handleMouseEnterRing3} onMouseLeave={handleMouseLeaveRing3} />
+                        {/* <img src={ring3ImageChange ? ring1hover : ring1} className='smilingSearchResultBoxImages' onMouseEnter={handleMouseEnterRing3} onMouseLeave={handleMouseLeaveRing3} /> */}
                         <p className='smilingSearchResultBoxring1Desc'>{product.TitleLine}</p>
                         <p style={{ fontSize: '12px' }}>{product.MetalColorName} / ${product.UnitCost}</p>
                     </div>

@@ -8,7 +8,7 @@ import { FaSearch } from "react-icons/fa";
 import { Divider } from "@mui/material";
 import { GrMenu } from "react-icons/gr";
 import { IoMdClose } from "react-icons/io";
-import bloglogo from '../../../../../assets/other/blog-logo.png'
+// import bloglogo from '../../../../../assets/other/blog-logo.png'
 import { IoClose } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 
@@ -97,10 +97,15 @@ export default function BlogHeader() {
         </div>
         <div>
           <img
-            src={bloglogo}
+            src={""}
             alt="ORNAZ Blog"
             style={{ maxHeight: "60px",marginRight:'70px'}}
           />
+          {/* <img
+            src={bloglogo}
+            alt="ORNAZ Blog"
+            style={{ maxHeight: "60px",marginRight:'70px'}}
+          /> */}
         </div>
         <div>
           <div className="top-misc" id="top-misc">

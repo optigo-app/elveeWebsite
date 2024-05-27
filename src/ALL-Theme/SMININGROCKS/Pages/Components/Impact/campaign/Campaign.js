@@ -1,8 +1,8 @@
 import React from "react";
 import ImpCards from "../impact-cards/ImpCards";
 import SustainAbility from "../../sustainAbility/SustainAbility";
-import jointlogo from '../../../assets/Impact/campaign/jointlogo.avif'
-import united from '../../../assets/Impact/campaign/united.jpg'
+// import jointlogo from '../../../assets/Impact/campaign/jointlogo.avif'
+// import united from '../../../assets/Impact/campaign/united.jpg'
 import './campaign.css'
 
 const Campaign = () => {
@@ -54,7 +54,8 @@ const Campaign = () => {
       </div>
       <div style={{ padding: "0px 85px 0px", marginTop: '45px' }}>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <img src={jointlogo} alt={''} />
+          <img src={""} alt={''} />
+          {/* <img src={jointlogo} alt={''} /> */}
         </div>
         <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'row', justifyContent: 'center', paddingBottom: '30px' }}>
           <div style={{ width: '568px', marginTop: '25px', color: '#7d7f85' }}>

@@ -1,8 +1,8 @@
 import React from 'react'
 
-import HauteCoutureImage from '../../../assets/KryaImagesVideo/Haute Couture/Haute Couture.png'
-import Co2Image from '../../../assets/KryaImagesVideo/Co2/Co2.png'
-import CelebritieImage from '../../../assets/KryaImagesVideo/Celebrities/Celebrities.png'
+// import HauteCoutureImage from '../../../assets/KryaImagesVideo/Haute Couture/Haute Couture.png'
+// import Co2Image from '../../../assets/KryaImagesVideo/Co2/Co2.png'
+// import CelebritieImage from '../../../assets/KryaImagesVideo/Celebrities/Celebrities.png'
 import './shopifySection.css'
 import { storImagePath } from '../../../../Utils/globalFunctions/GlobalFunction'
 

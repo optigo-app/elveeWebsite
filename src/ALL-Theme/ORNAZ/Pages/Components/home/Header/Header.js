@@ -1,10 +1,10 @@
 import React, { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import './Header.css'
-import cartImg from '../../../assets/other/cart.png'
-import logo from '../../../assets/other/logo.png'
-import searchlogo from '../../../assets/other/search.svg'
-import ring from '../../../assets/other/ring.png'
+// import cartImg from '../../../assets/other/cart.png'
+// import logo from '../../../assets/other/logo.png'
+// import searchlogo from '../../../assets/other/search.svg'
+// import ring from '../../../assets/other/ring.png'
 // import ring1 from '../../../assets/svg.svg'
 import Tooltip from '@mui/material/Tooltip';
 import { SwipeableDrawer } from "@mui/material";
@@ -239,10 +239,15 @@ export default function Header({ name }) {
               onClick={() => navigation("/CartDetail")}
             >
               <img
-                src={cartImg}
+                src={""}
                 alt="..."
                 style={{ height: "20px", width: "20px" }}
               />
+              {/* <img
+                src={cartImg}
+                alt="..."
+                style={{ height: "20px", width: "20px" }}
+              /> */}
               <span style={{ fontSize: "18px" }}>{"(1)"}</span>
             </span>
           </div>
@@ -255,11 +260,17 @@ export default function Header({ name }) {
           <ul className="nav-ul">
             <li className="nav-li">
               <img
-                src={logo}
+                src={""}
                 alt={"..."}
                 style={{ width: "12vw", cursor: "pointer" }}
                 onClick={() => navigation("/")}
               />
+              {/* <img
+                src={logo}
+                alt={"..."}
+                style={{ width: "12vw", cursor: "pointer" }}
+                onClick={() => navigation("/")}
+              /> */}
             </li>
             <li className="nav-li-for-her">
               <span className="for-her">FOR HER</span>
@@ -292,7 +303,8 @@ export default function Header({ name }) {
                   </div>
                   <div className="vertical-forher-line" style={{}}></div>
                   <div className="forher-inner-container" >
-                    <img src={ring} style={{ width: '198px', height: '200px' }} />
+                    {/* <img src={ring} style={{ width: '198px', height: '200px' }} /> */}
+                    <img src={""} style={{ width: '198px', height: '200px' }} />
                   </div>
                 </div>
               </span>
@@ -314,7 +326,8 @@ export default function Header({ name }) {
                 placeholder="Search.."
               />
               <button className="search-button">
-                <img src={searchlogo} alt={"..."} style={{ height: "25px" }} />
+                <img src={""} alt={"..."} style={{ height: "25px" }} />
+                {/* <img src={searchlogo} alt={"..."} style={{ height: "25px" }} /> */}
               </button>
             </li>
           </ul>

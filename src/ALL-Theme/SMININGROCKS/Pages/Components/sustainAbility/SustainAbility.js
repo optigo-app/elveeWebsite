@@ -1,6 +1,6 @@
 import React from 'react'
-import sustain1 from '../../assets/KryaImagesVideo/Committed on Sustainability/C s.png'
-import sustain2 from '../../assets/KryaImagesVideo/Committed on Sustainability/C s 1.png'
+// import sustain1 from '../../assets/KryaImagesVideo/Committed on Sustainability/C s.png'
+// import sustain2 from '../../assets/KryaImagesVideo/Committed on Sustainability/C s 1.png'
 import './sustain.css'
 import { storImagePath } from '../../../Utils/globalFunctions/GlobalFunction'
 
