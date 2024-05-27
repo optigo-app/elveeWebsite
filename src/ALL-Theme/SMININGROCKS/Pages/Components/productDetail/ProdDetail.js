@@ -2433,7 +2433,7 @@ const ProdDetail = () => {
                   </div>
                 }
 
-                <div className='tellmeMoreMainMobileDiv' style={{ marginTop: '25px' }}>
+                { imageSize?.IsCsCustomization == 1 && <div className='tellmeMoreMainMobileDiv' style={{ marginTop: '25px' }}>
                   {fullProdData?.rd2?.some(data => data?.D === "COLOR STONE") && (
                     <>
                       <ul style={{ margin: '0px 0px 3px 0px' }}>
@@ -2457,7 +2457,7 @@ const ProdDetail = () => {
                       ))}
                     </>
                   )}
-                </div>
+                </div>}
 
 
                 <div className='tellmeMoreMainMobileDiv' style={{ marginTop: '25px' }}>
