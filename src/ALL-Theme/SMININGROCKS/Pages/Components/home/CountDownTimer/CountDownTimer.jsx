@@ -16,7 +16,7 @@ const TwoPartDiv = () => {
     const [endDateData, setEndDateData] = useState();
 
     useEffect(() => {
-        const storedData = JSON.parse(localStorage.getItem('loginUserDetail')) || {};
+        const storedData = JSON?.parse(localStorage.getItem('loginUserDetail')) || {};
         const entryDate = storedData.adhoc_startdate1;
         const expiryDate = storedData.adhoc_enddate1;
         setShowTimeStatus(storedData?.IsTimeShow)
@@ -59,9 +59,11 @@ const TwoPartDiv = () => {
     }
 
     useEffect(() => {
-        if (countdown.days == 0 && countdown.hours == 0 && countdown.minutes == 0 && checkTimeStatus == 0) {
+        if (checkTimeStatus == 1) {
+            if (countdown.days == 0 && countdown.hours == 0 && countdown.minutes == 0) {
                 handleLogout();
                 setShowTimer(false);
+            }
         }
     }, [countdown]);
 
@@ -85,7 +87,7 @@ const TwoPartDiv = () => {
 
     return (
         <>
-            {showTimer &&
+           {showTimer && checkTimeStatus === 1 &&
                 <div className="Timercontainer">
                     <div className="part1">
                         <p className='part1p1'>COUNTDOWN IS ON</p>

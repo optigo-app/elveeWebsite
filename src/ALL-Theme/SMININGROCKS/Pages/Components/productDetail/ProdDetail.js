@@ -512,6 +512,8 @@ const ProdDetail = () => {
       let diaRate = diaqcprice?.reduce((acc, obj) => acc + obj.O, 0)
       let diaSettRate = diaqcprice?.reduce((acc, obj) => acc + obj.Q, 0)
 
+      console.log("diaQColOpt", totalPrice);
+
       setDqcRate(diaRate ?? 0)
       setDqcSettRate(diaSettRate ?? 0)
       setDqcData(totalPrice ?? 0)
@@ -532,7 +534,6 @@ const ProdDetail = () => {
 
     );
 
-    console.log("csqcpirce", csqcpirce)
 
     let showPrice2 = 0;
     if (csqcpirce && csqcpirce.length > 0) {
@@ -540,6 +541,8 @@ const ProdDetail = () => {
       let totalPrice = csqcpirce?.reduce((acc, obj) => acc + obj.S, 0)
       let diaRate = csqcpirce?.reduce((acc, obj) => acc + obj.O, 0)
       let diaSettRate = csqcpirce?.reduce((acc, obj) => acc + obj.Q, 0)
+
+    console.log("csqcpirce", totalPrice)
 
       setCsqcData(totalPrice ?? 0)
       setCsqcRate(diaRate ?? 0)
@@ -2369,7 +2372,7 @@ const ProdDetail = () => {
                     <ul style={{
                       margin: '0px 0px 3px 0px'
                     }}>
-                      <li style={{ fontWeight: 600 }}>{`Diamond Detail(${fullProdData?.rd1?.reduce((accumulator, data) => accumulator + data.M, 0)}/${fullProdData?.rd1?.reduce((accumulator, data) => accumulator + data?.N, 0).toFixed(2)}ct)`}</li>
+                      <li style={{ fontWeight: 600 }}>{`Diamond Detail(${fullProdData?.rd1.filter((item)=>item?.H == diaQColOpt.split("#")[0] && item?.J == diaQColOpt.split("#")[1])?.reduce((accumulator, data) => accumulator + data.M, 0)}/${fullProdData?.rd1?.reduce((accumulator, data) => accumulator + data?.N, 0).toFixed(2)}ct)`}</li>
                     </ul>
                     <ul style={{
                       display: 'flex',
@@ -2383,7 +2386,7 @@ const ProdDetail = () => {
                       <li className='proDeatilList'>Pcs/Wt</li>
                     </ul>
                     {
-                      fullProdData?.rd1?.map((data) => (
+                      fullProdData?.rd1.filter((item)=>item?.H == diaQColOpt.split("#")[0] && item?.J == diaQColOpt.split("#")[1]).map((data) => (
                         <ul style={{
                           display: 'flex',
                           textDecoration: 'none',
@@ -2412,7 +2415,7 @@ const ProdDetail = () => {
                         <li className='proDeatilList'>Color</li>
                         <li className='proDeatilList'>Pcs/Wt</li>
                       </ul>
-                      {fullProdData?.rd2?.map((data) => (
+                      {fullProdData?.rd2.filter((item)=>item?.H == cSQopt.split("#")[0] && item?.J == cSQopt.split("#")[1]).map((data) => (
                         data?.D === "COLOR STONE" && (
                           <ul style={{ display: 'flex', textDecoration: 'none', listStyle: 'none', margin: '0px 0px 3px 0px' }}>
                             <li className='proDeatilList1'>{data?.F}</li>

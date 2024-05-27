@@ -12,6 +12,8 @@ import { FaYoutube } from "react-icons/fa";
 
 export default function Footer() {
     const [storeInitData, setStoreInitData] = useState();
+    const [companyInfoData, setCompanuInfoData] = useState();
+    const [socialMediaData, setSocialMediaData] = useState([]);
     const [email, setEmail] = useState();
     const [selectedFooteVal, setSelectedVal] = useState(0);
     const navigation = useNavigate();
@@ -21,7 +23,7 @@ export default function Footer() {
     };
 
     const handleSubmitNewlater = async () => {
-        const storeInit = JSON.parse(localStorage.getItem('storeInit'));
+        const storeInit = JSON?.parse(localStorage.getItem('storeInit'));
         const newslater = storeInit?.newslatter;
         console.log('newsletter', newslater);
         if (newslater) {
@@ -42,41 +44,55 @@ export default function Footer() {
     }
 
     useEffect(() => {
-        const storeInit = JSON.parse(localStorage.getItem("storeInit")) ?? ""
+        const storeInit = JSON?.parse(localStorage.getItem("storeInit")) ?? ""
         setStoreInitData(storeInit);
+        const companyInfoData = JSON?.parse(localStorage.getItem("CompanyInfoData")) ?? ""
+        setCompanuInfoData(companyInfoData)
+        const parsedSocilaMediaUrlData = JSON?.parse(companyInfoData?.SocialLinkObj) ?? "";
+        if(parsedSocilaMediaUrlData) setSocialMediaData(parsedSocilaMediaUrlData)
     }, [])
-    
+
     return (
         <div>
             <div className='ElveFooterMain'>
                 <div className='ElveFooter1'>
                     <p className='elveBox1Title'>Sign Up For Newslatter</p>
-                    <div className='ElveFooter1Input' style={{ marginTop: '10px', display: 'flex' }}>
+                    <div className='ElveFooter1Input' style={{ marginTop: '20px', display: 'flex' }}>
                         <input type='text' placeholder='Enter Your Email' className='eleBox1InputBox' value={email} onChange={handleEmailChange} />
                         <button className='elevBox1Btn' onClick={handleSubmitNewlater}>Subscribe</button>
                     </div>
                     <div className='footerIconMain'>
-                        {/* <a href="#"> */}
+                        {socialMediaData?.map((social, index) => (
+                            <div className='footerSocialIcon'>
+                                <a key={index} href={`https://${social.SLink}`} target="_blank" rel="noopener noreferrer">
+                                    <img src={social.SImgPath} alt={social.SName} style={{ width: '24px', height: '24px', objectFit: 'cover' }}
+                                        onError={(e) => { e.target.style.display = 'none'; }} />
+                                </a>
+                            </div>
+                        ))}
+                    </div>
+                    {/* <div className='footerIconMain'>
+                        <a href="#">
                             <div className='footerSocialIcon'>
                                 <FaTwitter style={{ fontSize: '20px', color: '#7d7f85' }} />
                             </div>
-                        {/* </a> */}
-                        {/* <a href="#"> */}
+                        </a>
+                        <a href="#">
                             <div className='footerSocialIcon'>
                                 <FaFacebookF style={{ fontSize: '20px', color: '#7d7f85' }} />
                             </div>
-                        {/* </a> */}
-                        {/* <a href="#"> */}
+                        </a>
+                        <a href="#">
                             <div className='footerSocialIcon'>
                                 <FaYoutube style={{ fontSize: '20px', color: '#7d7f85' }} />
                             </div>
-                        {/* </a> */}
-                        {/* <a href="#"> */}
+                        </a>
+                        <a href="#">
                             <div className='footerSocialIcon'>
                                 <AiFillInstagram style={{ fontSize: '20px', color: '#7d7f85' }} />
                             </div>
-                        {/* </a> */}
-                    </div>
+                        </a>
+                    </div> */}
 
                 </div>
                 <div className='ElveFooter2'>
@@ -102,22 +118,34 @@ export default function Footer() {
                     </div>
                     {
                         selectedFooteVal === 0 ?
-                            <div style={{maxWidth: '300px'}}>
+                            <div>
                                 <p className='footerOfficeDesc' style={{ display: 'flex', fontFamily: 'PT Sans, sans-serif', height: '70px' }}>
                                     <IoLocationOutline style={{ width: '50px', height: 'fit-content' }} />
-                                    <span>Plot No. – M1 To M6, Gujarat Hira Bourse Gem & Jewellery Park, Pal-Hazira Road, Ichchhapore, Surat - 394510</span>
+                                    <span>
+                                        {companyInfoData?.FrontEndAddress}, {companyInfoData?.FrontEndCity} - {companyInfoData?.FrontEndZipCode}
+                                    </span>
+
+                                    {/* <span>Plot No. – M1 To M6, Gujarat Hira Bourse Gem & Jewellery Park, Pal-Hazira Road, Ichchhapore, Surat - 394510</span> */}
                                 </p>
                                 <p className="footerOfficeDesc" style={{ fontFamily: 'PT Sans, sans-serif' }}>
                                     <IoMdCall />
-                                    +91 2616105100  
+                                    <span style={{ marginLeft: '5px' }}>
+                                        <a href={`tel:${companyInfoData?.FrontEndContactno1}`}>
+                                            {companyInfoData?.FrontEndContactno1}
+                                        </a>
+                                    </span>
                                 </p>
                                 <p className='footerOfficeDesc' style={{ fontFamily: 'PT Sans, sans-serif' }}>
                                     <IoMdMail />
-                                    <span style={{ marginLeft: '5px' }}>info@elvee.in</span>
+                                    <span style={{ marginLeft: '5px' }}>
+                                        <a href={`mailto:${companyInfoData?.FrontEndEmail1}`}>
+                                            {companyInfoData?.FrontEndEmail1}
+                                        </a>
+                                    </span>
                                 </p>
                             </div>
                             :
-                            <div style={{maxWidth: '300px'}}>
+                            <div>
                                 <p className='footerOfficeDesc' style={{ display: 'flex', fontFamily: 'PT Sans, sans-serif', height: '70px' }}>
                                     <IoLocationOutline style={{ width: '22px', height: '22px' }} />
                                     <span>1177 6th Avenue, Suite 5099, New York,NY 10036.</span>

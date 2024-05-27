@@ -378,7 +378,7 @@ export default function CartPage() {
     // console.log("cartdiaqcprice",diaqcprice)
 
     let showPrice1 = 0;
-    if (diaqcprice && diaqcprice.length > 0) {
+    if (diaqcprice) {
       // showPrice1 = cartSelectData?.price - ((srProductsData?.price - srProductsData?.diard1) + (diaqcprice[0]?.S ?? 0));
       let totalPrice = diaqcprice?.reduce((acc, obj) => acc + obj.S, 0)
       let diaRate = diaqcprice?.reduce((acc, obj) => acc + obj.O, 0)
@@ -415,14 +415,14 @@ export default function CartPage() {
         ele.H == findCsQcIdDiff(cSQopt)[0]?.QualityId &&
         ele.J == findCsQcIdDiff(cSQopt)[0]?.ColorId
         :
-        ele.A == srProductsData?.autocode
+        ele.A == cartSelectData?.autocode
 
     );
 
     console.log("cartcsqcpirce",csqcpirce)
     
     let showPrice2 = 0;
-    if (csqcpirce && csqcpirce.length > 0) {
+    if (csqcpirce) {
       // showPrice2 = srProductsData?.price - ((srProductsData?.price - srProductsData?.csrd2) + (csqcpirce[0]?.S ?? 0));
       let totalPrice = csqcpirce?.reduce((acc, obj) => acc + obj.S, 0)
       let diaRate = csqcpirce?.reduce((acc, obj) => acc + obj.O, 0)
@@ -450,11 +450,10 @@ export default function CartPage() {
     let qualityColor = `${cartSelectData?.diamondquality}#${cartSelectData?.diamondcolor}`;
     setDiaQColOpt(qualityColor);
 
-    let csQualColor = `${cartSelectData?.colorstonequality}#${cartSelectData?.colorstonecolor}`;
-    setCSQOpt(csQualColor);
-
+    let csQualColor = `${cartSelectData?.colorstonequality}#${cartSelectData?.colorstonecolor}`
+    setCSQOpt(csQualColor)
+    
     setSelectedColor(cartSelectData?.metalcolorname)
-
 
     setSizeOption(cartSelectData?.detail_ringsize)
 
