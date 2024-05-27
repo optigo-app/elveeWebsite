@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import Carousel from 'react-bootstrap/Carousel';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import bg1 from '../../../../../assets/blog-banner/blog-slider-big-1.jpg'
-import bg2 from '../../../../../assets/blog-banner/blog-slider-big-2.jpeg'
-import bg3 from '../../../../../assets/blog-banner/blog-slider-big-3.jpg'
+// import bg1 from '../../../../../assets/blog-banner/blog-slider-big-1.jpg'
+// import bg2 from '../../../../../assets/blog-banner/blog-slider-big-2.jpeg'
+// import bg3 from '../../../../../assets/blog-banner/blog-slider-big-3.jpg'
 import './blog.css'
 import { TfiArrowCircleLeft } from "react-icons/tfi";
 import { TfiArrowCircleRight } from "react-icons/tfi";
@@ -60,7 +60,8 @@ export default function Blog() {
 
         >
           <Carousel.Item style={{ zIndex: -1, position: 'relative' }}>
-            <img src={bg1} alt="First slide" className="slick-img " />
+            {/* <img src={bg1} alt="First slide" className="slick-img " /> */}
+            <img src={""} alt="First slide" className="slick-img " />
             <Carousel.Caption className="slick-caption">
               <div className="slick-cap-div">
                 <div className='slick-cap-inner-div'>
@@ -77,7 +78,8 @@ export default function Blog() {
           </Carousel.Item >
 
           <Carousel.Item style={{ zIndex: -1, position: 'relative' }}>
-            <img src={bg2} alt="First slide" className="slick-img" />
+            {/* <img src={bg2} alt="First slide" className="slick-img" /> */}
+            <img src={""} alt="First slide" className="slick-img" />
             <Carousel.Caption className="slick-caption">
               <div className="slick-cap-div unique-class">
                 <div className='slick-cap-inner-div'>
@@ -92,7 +94,8 @@ export default function Blog() {
           </Carousel.Item>
 
           <Carousel.Item style={{ zIndex: -1, position: 'relative' }}>
-            <img src={bg3} alt="First slide" className="slick-img" />
+            {/* <img src={bg3} alt="First slide" className="slick-img" /> */}
+            <img src={""} alt="First slide" className="slick-img" />
             <Carousel.Caption className="slick-caption">
               <div className="slick-cap-div">
                 <div className='slick-cap-inner-div'>

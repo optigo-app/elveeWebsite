@@ -5,7 +5,7 @@ import Footer from '../blogFooter/Footer'
 import { Divider } from '@mui/material'
 import BlogHeader from '../header/BlogHeader'
 import BlogSearch from '../BlogSearch/BlogSearch'
-import bg2 from '../../../../../assets/blog-banner/blog-slider-big-2.jpeg'
+// import bg2 from '../../../../../assets/blog-banner/blog-slider-big-2.jpeg'
 import Carousel from 'react-bootstrap/Carousel';
 
 export default function ArticleDetailPage() {
@@ -20,7 +20,8 @@ export default function ArticleDetailPage() {
           nextIcon=''
         >
           <Carousel.Item>
-            <img src={bg2} alt="First slide" className="articaleTop-img" />
+            {/* <img src={bg2} alt="First slide" className="articaleTop-img" /> */}
+            <img src={""} alt="First slide" className="articaleTop-img" />
             <Carousel.Caption className="slick-caption">
               <div className="slick-cap-div" style={{ marginTop: "400px" }}>
                 <div style={{ width: "800px" }}>

@@ -12,7 +12,7 @@ import ContactUs from "./Pages/Components/contactUs/ContactUs";
 import Accessibility from "./Pages/Components/Accessibility/Accessibility";
 import PrivacyPolicy from "./Pages/Components/PrivacyPolicy/PrivacyPolicy";
 import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
-import phonesvg from "./Pages/assets/phone.svg";
+// import phonesvg from "./Pages/assets/phone.svg";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import Terms from "./Pages/Components/Terms/Terms";
 import ShippingReturn from "./Pages/Components/shippingReturn/ShippingReturn";
@@ -24,13 +24,13 @@ import FAQ from "./Pages/Components/FAQ/FAQ";
 import Charity from "./Pages/Components/Explore/Charity/Charity";
 import { makeStyles } from "@mui/styles";
 import "./gorjana.css";
-import jw1 from './Pages/assets/navjw/jw-1.avif';
-import jw2 from './Pages/assets/navjw/jw-2.avif';
-import jw3 from './Pages/assets/navjw/jw-3.avif';
-import jw4 from './Pages/assets/navjw/jw-4.avif';
-import jw5 from './Pages/assets/navjw/jw-5.avif';
-import jw6 from './Pages/assets/navjw/jw-6.avif';
-import jw7 from './Pages/assets/navjw/jw-7.avif';
+// import jw1 from './Pages/assets/navjw/jw-1.avif';
+// import jw2 from './Pages/assets/navjw/jw-2.avif';
+// import jw3 from './Pages/assets/navjw/jw-3.avif';
+// import jw4 from './Pages/assets/navjw/jw-4.avif';
+// import jw5 from './Pages/assets/navjw/jw-5.avif';
+// import jw6 from './Pages/assets/navjw/jw-6.avif';
+// import jw7 from './Pages/assets/navjw/jw-7.avif';
 import MontholyHoroscope from "./Pages/Components/Explore/MonthoHoroscope/MontholyHoroscope";
 import LayerLikeStyle from "./Pages/Components/Explore/LayerLikeStyle/LayerLikeStyle";
 import CareGuide from "./Pages/Components/Explore/CareGuide/CareGuide";
@@ -67,118 +67,118 @@ export default function GORJANA_App() {
     { label: "Explore" },
   ];
 
-  let subNavData = () =>{
+  // let subNavData = () =>{
 
-    let StoreData = [];
-    switch (navItem) {
-      case "Jewelry":
-        StoreData.push({
-          navLabel:[
-            {label:'Necklaces'},
-            {label:'Earrings'},
-            {label:'Bracelets'},
-            {label:'Rings'},
-            {label:'Charms'},
-            {label:'Accessories'},
-          ],
-          navImg:[
-            {imgLink:jw1},
-            {imgLink:jw2},
-            {imgLink:jw3},
-            {imgLink:jw4},
-            {imgLink:jw5},
-            {imgLink:jw6},
-            {imgLink:jw7},
-          ]
-        })
-        break;
-      case "Fine Jewelry":
-        StoreData.push({
-          navLabel:[
-            {label:'Necklaces'},
-            {label:'Earrings'},
-            {label:'Bracelets'},
-            {label:'Rings'},
-            {label:'Charms'},
-          ],
-          navImg:[
-            {imgLink:jw1},
-            {imgLink:jw2},
-            {imgLink:jw3},
-            {imgLink:jw4},
-          ]
-        })
-        break;
-      case "New Arrivals":
-        StoreData.push({
-          navLabel:[],
-          navImg:[
-            {imgLink:jw1},
-            {imgLink:jw2},
-            {imgLink:jw3},
-            {imgLink:jw4},
-            {imgLink:jw5},
-            {imgLink:jw6},
-          ]
-        })
-        break;
-      case "Best Sellers":
-        StoreData.push({
-          navLabel:[],
-          navImg:[
-            {imgLink:jw1},
-            {imgLink:jw2},
-            {imgLink:jw3},
-            {imgLink:jw4},
-            {imgLink:jw5},
-            {imgLink:jw6},
-          ]
-        })
-        break;
-      case "Gifts":
-        StoreData.push({
-          navLabel:[
-            {label:'Personalized Gifts'},
-            {label:'Top Gifts'},
-            {label:'Top Fine Gifts'},
-            {label:'Gifts Under $150'},
-            {label:'Gift Sets'},
-          ],
-          navImg:[
-            {imgLink:jw1},
-            {imgLink:jw2},
-            {imgLink:jw3},
-            {imgLink:jw4},
-          ]
-        })
-        break;
-      case "Explore":
-        StoreData.push({
-          navLabel:[
-            {label:'Our Story'},
-            {label:'Charity'},
-            {label:'Now Trending'},
-            {label:'Layer Like a Stylist'},
-            {label:'Styled By You'},
-            {label:'Monthly Horoscope'},
-            {label:"jessica's Layers"},
-          ],
-          navImg:[
-            {imgLink:jw1},
-            {imgLink:jw2},
-          ]
-        })
-        break;
-      default:
-        StoreData.push({
-          navLabel:[],
-          navImg:[]
-        })
-        break;
-    }
+  //   let StoreData = [];
+  //   switch (navItem) {
+  //     case "Jewelry":
+  //       StoreData.push({
+  //         navLabel:[
+  //           {label:'Necklaces'},
+  //           {label:'Earrings'},
+  //           {label:'Bracelets'},
+  //           {label:'Rings'},
+  //           {label:'Charms'},
+  //           {label:'Accessories'},
+  //         ],
+  //         navImg:[
+  //           {imgLink:jw1},
+  //           {imgLink:jw2},
+  //           {imgLink:jw3},
+  //           {imgLink:jw4},
+  //           {imgLink:jw5},
+  //           {imgLink:jw6},
+  //           {imgLink:jw7},
+  //         ]
+  //       })
+  //       break;
+  //     case "Fine Jewelry":
+  //       StoreData.push({
+  //         navLabel:[
+  //           {label:'Necklaces'},
+  //           {label:'Earrings'},
+  //           {label:'Bracelets'},
+  //           {label:'Rings'},
+  //           {label:'Charms'},
+  //         ],
+  //         navImg:[
+  //           {imgLink:jw1},
+  //           {imgLink:jw2},
+  //           {imgLink:jw3},
+  //           {imgLink:jw4},
+  //         ]
+  //       })
+  //       break;
+  //     case "New Arrivals":
+  //       StoreData.push({
+  //         navLabel:[],
+  //         navImg:[
+  //           {imgLink:jw1},
+  //           {imgLink:jw2},
+  //           {imgLink:jw3},
+  //           {imgLink:jw4},
+  //           {imgLink:jw5},
+  //           {imgLink:jw6},
+  //         ]
+  //       })
+  //       break;
+  //     case "Best Sellers":
+  //       StoreData.push({
+  //         navLabel:[],
+  //         navImg:[
+  //           {imgLink:jw1},
+  //           {imgLink:jw2},
+  //           {imgLink:jw3},
+  //           {imgLink:jw4},
+  //           {imgLink:jw5},
+  //           {imgLink:jw6},
+  //         ]
+  //       })
+  //       break;
+  //     case "Gifts":
+  //       StoreData.push({
+  //         navLabel:[
+  //           {label:'Personalized Gifts'},
+  //           {label:'Top Gifts'},
+  //           {label:'Top Fine Gifts'},
+  //           {label:'Gifts Under $150'},
+  //           {label:'Gift Sets'},
+  //         ],
+  //         navImg:[
+  //           {imgLink:jw1},
+  //           {imgLink:jw2},
+  //           {imgLink:jw3},
+  //           {imgLink:jw4},
+  //         ]
+  //       })
+  //       break;
+  //     case "Explore":
+  //       StoreData.push({
+  //         navLabel:[
+  //           {label:'Our Story'},
+  //           {label:'Charity'},
+  //           {label:'Now Trending'},
+  //           {label:'Layer Like a Stylist'},
+  //           {label:'Styled By You'},
+  //           {label:'Monthly Horoscope'},
+  //           {label:"jessica's Layers"},
+  //         ],
+  //         navImg:[
+  //           {imgLink:jw1},
+  //           {imgLink:jw2},
+  //         ]
+  //       })
+  //       break;
+  //     default:
+  //       StoreData.push({
+  //         navLabel:[],
+  //         navImg:[]
+  //       })
+  //       break;
+  //   }
 
-    return StoreData;
-  }
+  //   return StoreData;
+  // }
 
 
   const CheckFlag = () => {
@@ -323,7 +323,7 @@ export default function GORJANA_App() {
                     }}
                   >
                     <div>
-                      <img src={phonesvg} alt={""} style={{ width: "20px" }} />
+                      {/* <img src={phonesvg} alt={""} style={{ width: "20px" }} /> */}
                     </div>
                     Contact Us
                   </span>
@@ -372,7 +372,7 @@ export default function GORJANA_App() {
               {navItem}
             </div>
 
-            <div
+            {/* <div
               style={{
                 fontFamily: "FreightDisp Pro Medium",
                 display: "flex",
@@ -385,7 +385,7 @@ export default function GORJANA_App() {
              {subNavData()[0]?.navLabel.map((data,i)=>(
               <span className="navItemsLabel" key={i}>{data.label}</span>
              ))}
-            </div>
+            </div> */}
 
             { !(navItem === "New Arrivals" ||  "Best Sellers") && <div style={{paddingLeft: "40px",fontSize: "14px",marginTop:'10px',textDecoration:'underline',textUnderlineOffset:'3px',cursor:'pointer'}}>
               Shop All
@@ -397,12 +397,12 @@ export default function GORJANA_App() {
             </div>
 
             <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',paddingLeft: "40px",marginTop:'24px'}}>
-            {subNavData()[0]?.navImg.map((data)=>(
+            {/* {subNavData()[0]?.navImg.map((data)=>(
               <div className="submenu_img_div">
                 <img style={{width:'134px',objectFit:'cover'}} src={data.imgLink} alt={''}/>
                 <p>Layering Sets</p>
               </div>
-            ))}
+            ))} */}
               {/* <div className="submenu_img_div">
                 <img style={{width:'134px',objectFit:'cover'}} src={jw2} alt={''}/>
                 <p>Alphabet</p>

@@ -1,6 +1,6 @@
 import React from "react";
 import "./index.css";
-import i1 from "../../assets/Impact/campaign/banner.webp";
+// import i1 from "../../assets/Impact/campaign/banner.webp";
 import Campaign from "./campaign/Campaign";
 import Header from "../home/Header/Header";
 import Explore from "./Explore/Explore";
