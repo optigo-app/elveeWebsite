@@ -63,7 +63,7 @@ const PromoComponent1 = () => {
                                 <p style={{ fontSize: '22px', color: 'rgba(29, 50, 88, 0.8)' }}>{item.description}</p>
                             </div>
                             <div className='promo-daimondBox2'>
-                                <img src={storImagePath() + item.image} className='promo-daimondBox2-image' alt={`Item ${index + 1}`} />
+                                <img loading="lazy" src={storImagePath() + item.image} className='promo-daimondBox2-image' alt={`Item ${index + 1}`} />
                             </div>
                         </div>
                     </SwiperSlide>
