@@ -1,28 +1,30 @@
 import React from "react";
-import image1 from "../../../assets/staticImg/impact2.jpg";
-import image2 from "../../../assets/Impact/campaign/img2.webp";
-import image3 from "../../../assets/Impact/campaign/img3.webp";
-import image4 from "../../../assets/Impact/campaign/img4.webp";
-import edu1 from "../../../assets/Impact/smallogo/edu-logo-1.avif";
-import edu2 from "../../../assets/Impact/smallogo/edu-logo-2.avif";
-import med1 from "../../../assets/Impact/smallogo/med1.avif";
-import med2 from "../../../assets/Impact/smallogo/med2.avif";
-import trees1 from "../../../assets/Impact/smallogo/trees1.avif";
-import tress2 from "../../../assets/Impact/smallogo/trees2.avif";
-import tress3 from "../../../assets/Impact/smallogo/trees3.avif";
-import ani from "../../../assets/Impact/smallogo/ani1.avif";
-import hat from "../../../assets/Impact/smallicons/gradHat.png";
-import leaf from "../../../assets/Impact/smallicons/leaf.png";
-import heart from "../../../assets/Impact/smallicons/heart.png";
-import paws from "../../../assets/Impact/smallicons/paws.png";
+// import image1 from "../../../assets/staticImg/impact2.jpg";
+// import image2 from "../../../assets/Impact/campaign/img2.webp";
+// import image3 from "../../../assets/Impact/campaign/img3.webp";
+// import image4 from "../../../assets/Impact/campaign/img4.webp";
+// import edu1 from "../../../assets/Impact/smallogo/edu-logo-1.avif";
+// import edu2 from "../../../assets/Impact/smallogo/edu-logo-2.avif";
+// import med1 from "../../../assets/Impact/smallogo/med1.avif";
+// import med2 from "../../../assets/Impact/smallogo/med2.avif";
+// import trees1 from "../../../assets/Impact/smallogo/trees1.avif";
+// import tress2 from "../../../assets/Impact/smallogo/trees2.avif";
+// import tress3 from "../../../assets/Impact/smallogo/trees3.avif";
+// import ani from "../../../assets/Impact/smallogo/ani1.avif";
+// import hat from "../../../assets/Impact/smallicons/gradHat.png";
+// import leaf from "../../../assets/Impact/smallicons/leaf.png";
+// import heart from "../../../assets/Impact/smallicons/heart.png";
+// import paws from "../../../assets/Impact/smallicons/paws.png";
 import './impcards.css'
 
 const ImpCards = () => {
 
   const JsonData = [
     {
-      banner: image1,
-      icon: hat,
+      banner:"",
+      // banner: image1,
+      // icon: hat,
+      icon: "",
       title: "Education Support",
       descript:
         "Education is the key to a better life.There are many children who lack access to education which can lead to lifelong struggles. Your support will go to charities that provide funding and resources to build schools, provide supplies and more.",
@@ -31,11 +33,13 @@ const ImpCards = () => {
         { a: "6", b: "Digital Library" },
         { a: "50 Enrolled", b: "in Female-led Skill Training Program" },
       ],
-      fund: [{ i: edu1 }, { i: edu2 }]
+      // fund: [{ i: edu1 }, { i: edu2 }]
+      fund: [{ i:"" }, { i:"" }]
     },
     {
       banner: "https://img.freepik.com/premium-photo/people-hands-planting-small-tree-sunset-concept-save-earth_34152-3251.jpg",
-      icon: leaf,
+      // icon: leaf,
+      icon: "",
       title: "Environmental Protection",
       descript:
         "KayraCreation has launched a Carbon For Carbon initiative. We are working with NGOs to launch this campaign and research the amount of CO2 produced by one human cycle which will be offset with the amounts of trees that need to be planted to improve the environment impact of unnecessary carbon usage.",
@@ -44,11 +48,12 @@ const ImpCards = () => {
         { a: "159,619 +", b: "Trees Planted" },
         { a: "37,540", b: "Pounds Ocean Trash Remove" },
       ],
-      fund: [{ i: trees1 }, { i: tress2 }, { i: tress3 }]
+      fund: [{ i: "" }, { i: "" }, { i: "" }]
     },
     {
       banner: "https://media.istockphoto.com/id/1369620254/photo/shot-of-a-doctor-using-a-cotton-ball-on-a-little-girls-arm-while-administering-an-injection.jpg?s=612x612&w=0&k=20&c=1k44-DJxeSdtKIltzVk2tSPs19dW1EO_oeDjvlDsI3g=",
-      icon: heart,
+      icon: "",
+      // icon: heart,
       title: "Medical Support",
       descript:
         "More than 400 million people do not have access to essential health services. Your support will go to charities that provide funding and resources to build more hospitals, provide medical supplies and more.",
@@ -58,11 +63,12 @@ const ImpCards = () => {
         { a: "", b: "" },
 
       ],
-      fund: [{ i: edu2 }, { i: med1 }, { i: med2 }]
+      fund: [{ i: "" }, { i: "" }, { i: "" }]
     },
     {
       banner: "https://www.shutterstock.com/image-photo/animals-care-protection-mixed-media-260nw-528609712.jpg",
-      icon: paws,
+      icon: "",
+      // icon: paws,
       title: "Animal Protection",
       descript:
         "Earth has lost half of its wildlife in the past 40 years. Your support will go to charities that provide resources to restore habitats and protect nature and the extraordinary species that inhabit some of the last wild spaces.",
@@ -72,7 +78,7 @@ const ImpCards = () => {
         { a: "", b: "" },
 
       ],
-      fund: [{ i: ani }]
+      fund: [{ i: "" }]
     },
   ];
 

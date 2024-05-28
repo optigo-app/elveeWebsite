@@ -1,6 +1,6 @@
 import React from 'react'
 import './JewelleryGiftsBannerPage.css'
-import giftsBannner from '../../../assets/other/giftsBannner.webp'
+// import giftsBannner from '../../../assets/other/giftsBannner.webp'
 import { useNavigate } from 'react-router-dom'
 
 export default function JewelleryGiftsBannerPage() {
@@ -11,10 +11,15 @@ export default function JewelleryGiftsBannerPage() {
 
             <div className='gitftBanner'>
                 <img
-                    src={giftsBannner}
+                    src={""}
                     className='giftBanner-img'
                     style={{ width: "1560.47px" }}
                 />
+                {/* <img
+                    src={giftsBannner}
+                    className='giftBanner-img'
+                    style={{ width: "1560.47px" }}
+                /> */}
             </div>
             <div style={{display : 'flex' ,flexDirection: 'column', alignItems : 'center'}}>
                 <p style={{margin : '0px 0px 20px' ,textAlign : 'center' , fontSize : '14px'}}>Cherish all shades of love with meaningful gifts for birthdays, anniversaries,festivities and milestone moments.</p>

@@ -14,13 +14,13 @@ export const SearchPriceDataAPI = async (autocodeList,searchVar) => {
   let encodedFilter = {
     "PageNo":1,
     "Metalid":`${item[0]?.Metalid}`,
-    "DiaQCid":`${loginUserDetail?.cmboDiaQCid === "0,0" ? `${diaColQuality[0]?.QualityId},${diaColQuality[0]?.ColorId}`:loginUserDetail?.cmboDiaQCid}`,
-    "CsQCid":`${loginUserDetail?.cmboCSQCid === "0,0" ? `${colorStone[0]?.QualityId},${colorStone[0]?.ColorId}`: loginUserDetail?.cmboCSQCid}`,
+    "DiaQCid":`${loginUserDetail?.cmboDiaQCid == "0,0" ? `${diaColQuality[0]?.QualityId},${diaColQuality[0]?.ColorId}`:loginUserDetail?.cmboDiaQCid}`,
+    "CsQCid":`${loginUserDetail?.cmboCSQCid == "0,0" ? (storeInit?.IsCsCustomization == 0 ? "0,0" : `${colorStone[0]?.QualityId},${colorStone[0]?.ColorId}`): loginUserDetail?.cmboCSQCid}`,
     "SearchKey":`${searchVar}`,
     "AutoCodeList":`${autocodeList}`
   }
 
-  console.log("log11",encodedFilter)
+  console.log("log11",(storeInit?.IsCsCustomization == 0 ? "0,0" : `${colorStone[0]?.QualityId},${colorStone[0]?.ColorId}`))
 
   const GetPriceReq = {
     "CurrencyRate": `${loginUserDetail?.CurrencyRate}`,

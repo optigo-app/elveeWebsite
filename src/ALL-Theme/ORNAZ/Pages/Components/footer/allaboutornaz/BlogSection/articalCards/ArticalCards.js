@@ -1,12 +1,13 @@
 import React from 'react'
-import bg2 from '../../../../../assets/blog-banner/blog-slider-small-2.jpeg'
+// import bg2 from '../../../../../assets/blog-banner/blog-slider-small-2.jpeg'
 import './articalcards.css'
 
 export default function ArticalCards() {
   return (
     <div className='Articards-container'>
       <img
-        src={bg2}
+        // src={bg2}
+        src={""}
         className='Articards-img'
       />
       <div
