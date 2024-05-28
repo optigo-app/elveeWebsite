@@ -7,7 +7,6 @@ import { loginState } from "../../../../../../Recoil/atom";
 import ReactPlayer from 'react-player';
 import Skeleton from '@mui/material/Skeleton';
 import { LocalDining } from "@mui/icons-material";
-
 export default function Video() {
   const islogin = useRecoilValue(loginState);
   const [loading, setLoading] = useState(true);
@@ -52,7 +51,7 @@ console.log('loding--', loading);
         </>
       ) :
         <>
-          <img src={`${storImagePath()}/images/HomePage/MainBanner/image/HomepageMainBannerVideo.png`} style={{ width: '100%' }} />
+          <img loading="lazy" src={`${storImagePath()}/images/HomePage/MainBanner/image/HomepageMainBannerVideo.png`} style={{ width: '100%' }} />
           <CountdownTimer />
         </>
       }
