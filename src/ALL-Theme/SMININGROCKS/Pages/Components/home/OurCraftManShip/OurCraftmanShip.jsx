@@ -33,7 +33,7 @@ export default function App() {
       >
       {sliderData.map((slide, index) => (
           <SwiperSlide key={index}>
-            <img src={storImagePath() + slide.imageUrl} alt={`Slide ${index}`} style={{width:'100%', height:'40vh', objectFit:'cover'}} />
+            <img loading="lazy" src={storImagePath() + slide.imageUrl} alt={`Slide ${index}`} style={{width:'100%', height:'40vh', objectFit:'cover'}} />
           </SwiperSlide>
         ))}
       </Swiper>
