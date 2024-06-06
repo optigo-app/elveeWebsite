@@ -2891,7 +2891,7 @@ export default function CartPage() {
                         backgroundColor: "#e1e1e1",
                         padding: "10px 17px",
                         width: '100%',
-                        position: 'absolute',
+                        position: 'fixed',
                         bottom: '0px',
                         borderRadius: "4px",
                       }}
