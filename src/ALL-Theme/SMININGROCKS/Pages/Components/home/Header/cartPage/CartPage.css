@@ -363,7 +363,7 @@
     color: #4a5568;
     /* box-shadow: rgba(0, 0, 0, 0.20) 0px 5px 15px; */
     padding-inline: 3px;
-    width: 60%;
+    width: 70%;
 }
 
 .feature {
@@ -996,6 +996,7 @@
 
     .ItemRemarkMain {
         width: 100% !important;
+        margin-bottom: 20px;
     }
 
     .prodTitleLine {

@@ -6,7 +6,7 @@ const CurrentVersion = () => {
             <div className="card w-50">
                 <div className="card-body text-center">
                     <span style={{ fontSize: '20px', color: '#7D7f85', fontWeight:'500' }}>Current Version : </span>
-                    <span style={{ fontSize: '20px', color: '#7D7f85' }}>R66B1|Live|23-05-2024|01:33</span>
+                    <span style={{ fontSize: '20px', color: '#7D7f85' }}>R66B1|V7|01-06-2024|03:01</span>
                 </div>
             </div>
         </div>
